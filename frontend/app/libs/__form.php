@@ -71,11 +71,9 @@ class _Form extends Form {
      * @source frontend\app\libs\ _form.php
      * */
    private static function createFieldset($content, $legend = '', $attrs = '') {
-      if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
-      return "<fieldset $attrs>
-              <legend>$legend</legend>
-              $content
-            </fieldset>";
+      $legend = self::createTag('legend', $legend);
+      return self::createTag('fieldset', $legend.$content, $attrs);
+
    }
 
   public function __toString() {

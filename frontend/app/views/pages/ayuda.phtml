@@ -1,0 +1,14 @@
+
+   <h1>Help</h1>
+   <?= _Tag::meter()?>
+   <?= _Icons::solid('flag', 'w3-xxxlarge') ?>
+   <?= phpinfo() ?>
+   <?php
+      list($id, $name, $value) = array(1,2,3);
+      echo $id.'-'.$name.'-'.$value;
+
+      $array = ['locality' => 'Tunis', 'postal_code' => '1110'];
+      list('postal_code' => $zipCode, 'locality' => $locality) = $array;
+      print $zipCode; // will output 1110
+      print $locality; // will output Tunis
+   ?>

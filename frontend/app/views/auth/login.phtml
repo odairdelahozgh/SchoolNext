@@ -1,0 +1,53 @@
+<?= View::flash(); ?>
+
+<div class="w3-content w3-center w3-padding w3-margin">
+  <?= _Tag::img('ws_logo.png', 'logo', "style=\"width:80%;\""); ?>
+  <div class="w3-card-4 w3-blue-gray">
+    <div class="w3-row w3-theme-dark">
+      <h2> <?=$colegio_nombre?></h2>
+      <h3>SchoolNext App</h3>
+    </div>
+    
+    <div class="w3-theme-dark">
+    <?php echo Form::open('auth/login','post','class="w3-container"') ?>
+      <input name="mode" type="hidden" value="auth">
+      
+      <label>Usuario:
+        <?= Form::text('username', 'class="w3-input w3-border w3-hover-pale-yellow" placeholder="ingrese usuario"') ?>
+      </label>
+      
+      <label>Clave:
+      <?= Form::password('password', 'class="w3-input w3-border w3-hover-pale-yellow" placeholder="ingrese clave de usuario"') ?>
+      </label>
+      
+      <p><?= Form::submit('ENTRAR') ?></p>
+    </form>
+    </div>
+  </div>
+
+  <div class="w3-bar">
+    <br/><b>¿Necesita ayuda para ingresar?</b><br/>
+    <a title="Escríbenos" href="whatsapp://send?phone=<?=$soporte_telefono?>&amp;text=Requiero+soporte+técnico">
+    <?= _Icons::brands('whatsapp', 'w3-xxlarge')?> </a>
+
+    <a title="Llámanos" href="tel:<?=$soporte_whatsapp?>">
+    <?= _Icons::solid('square-phone', 'w3-xxlarge')?> </a>
+  
+    <a title="Envianos un email" href="mailto:<?=$soporte_email?>">
+    <?= _Icons::solid('envelope', 'w3-xxlarge')?></a>
+    <br/>
+    <span>
+        <?= $copy_right ?><br/>
+        <?= $copy_text ?><br/>
+        <a href="<?=$sw_house_twitter?>" target="_blank"><?=$sw_house_name?></a> 
+    </span>
+  </div>
+
+
+</div>
+
+<script>
+  window.onload = function() {
+    document.getElementById("username").focus();
+  };
+</script>

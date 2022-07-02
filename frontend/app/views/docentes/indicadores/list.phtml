@@ -1,0 +1,37 @@
+<?php View::flash(); ?>
+
+<div class="w3-container">
+   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+   <h2> <?="<b>$asignatura</b> -- <b>$grado [°$grado->id]</b>"?> </h2>
+   
+   <div class="w3-bar w3-theme w3-card">
+      <button class="w3-bar-item w3-mobile w3-button tablink w3-theme-action" onclick="openTab(event,'p1')">Periodo 1</button>
+      <button class="w3-bar-item w3-mobile w3-button tablink" onclick="openTab(event,'p2')">Periodo 2</button>
+      <button class="w3-bar-item w3-mobile w3-button tablink" onclick="openTab(event,'p3')">Periodo 3</button>
+      <button class="w3-bar-item w3-mobile w3-button tablink" onclick="openTab(event,'p4')">Periodo 4</button>
+      <button class="w3-bar-item w3-mobile w3-button tablink" onclick="openTab(event,'p5')">Periodo 5</button>
+   </div>
+
+   <?php
+      $result = '';
+      foreach ($data as $periodo => $regs_periodo) {
+         $tabla = new _Table($attrs='class="w3-table w3-striped "');
+         $att2 = array('style="width:10%"');
+         $tabla->caption('Periodo '.$periodo);
+         foreach ($regs_periodo as $key => $indic) {
+            $cod = '<u>'.$indic->codigo.' '.$indic->valorativo.'</u><br>';
+            $data=array($cod.$indic->concepto);
+            $t1=($themei=='d'?'d1':'l1');      $t2=($themei=='d'?'d2':'l3');
+            $attr = 'class="w3-theme-'.((($key%2)==0) ? $t1:$t2).'"';
+            $tabla->body($data, $attr);
+         }
+         $display = ($periodo!=1) ? "style=\"display:none\"" : '' ;
+         $result .= "<div id=\"p$periodo\" class=\"tab w3-card-4 w3-padding\" $display >";
+         $result .= $tabla;
+         $result .= '</div>';
+      }
+      echo $result;
+   ?>
+</div>
+
+<?= tag::js("tabs_h", false);?>

@@ -1,0 +1,38 @@
+[Fri, 01 Jul 22 00:03:45 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:33 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:34 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:35 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:35 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:36 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:37 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:37 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:56 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:04:59 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:05:16 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:05:49 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:06:31 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:07:27 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:09:14 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] .
+[Fri, 01 Jul 22 00:09:14 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] ojo.
+[Fri, 01 Jul 22 00:12:20 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:12:33 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:12:33 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create despues.
+[Fri, 01 Jul 22 00:12:33 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] .
+[Fri, 01 Jul 22 00:12:33 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] beforeCreate uuid: asasas.
+[Fri, 01 Jul 22 00:21:31 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:21:38 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:21:38 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create despues.
+[Fri, 01 Jul 22 00:21:38 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] nombre pre:.
+[Fri, 01 Jul 22 00:21:38 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] beforeCreate uuid: asasas.
+[Fri, 01 Jul 22 00:22:21 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:22:29 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:22:29 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create despues.
+[Fri, 01 Jul 22 00:22:29 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] nombre pre:.
+[Fri, 01 Jul 22 00:22:29 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] beforeCreate uuid: asasas.
+[Fri, 01 Jul 22 00:22:33 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:22:42 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:22:42 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create despues.
+[Fri, 01 Jul 22 00:22:42 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] nombre pre:.
+[Fri, 01 Jul 22 00:22:42 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] beforeCreate uuid: asasas.
+[Fri, 01 Jul 22 00:22:48 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] Create antes.
+[Fri, 01 Jul 22 00:29:06 -0500][DEBUG] [/admin/grados/create][][127.0.0.1] beforeCreate uuid: asasas.

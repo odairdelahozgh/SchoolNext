@@ -1,0 +1,4 @@
+[Sun, 26 Jun 22 08:59:57 -0500][AUTH] (ModelAuth::_check) Login Correcto: admin
+[Sun, 26 Jun 22 14:59:30 -0500][AUTH] (ModelAuth::_check) Login Correcto: admin
+[Sun, 26 Jun 22 15:12:08 -0500][AUTH] (Auth2Odair::logout) LOGOUT admin
+[Sun, 26 Jun 22 15:12:12 -0500][AUTH] (ModelAuth::_check) Login Correcto: admin

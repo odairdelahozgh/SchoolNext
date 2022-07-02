@@ -1,0 +1,19 @@
+<?php View::content() ?>
+<div class="page">
+    <div class="page-inner">
+        <header class="page-title-bar">
+          <h1 class="page-title">Crear Grado</h1>
+        </header>
+        
+        <?php echo Html::link('admin/grados/list','Ir a Lista de Grados') ?>
+
+        <div class="page-section">
+        <?= Form::open('admin/grados/edit', 'post') ?>
+            <?= form::hidden('grados.id'); ?>
+            <?= form::text('grados.nombre'); ?>
+            <?= Form::submit('Guardar') ?>
+         <?= Form::close() ?>
+        </div>
+    </div>
+</div>
+

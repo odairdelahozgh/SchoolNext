@@ -1,0 +1,38 @@
+<?php View::flash(); ?>
+
+<div class="w3-container">
+
+   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+
+   <div class="w3-row w3-section">
+      <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-search"></i></div>
+      <div class="w3-rest">
+            <input class="w3-input w3-border" style="width:30%;" oninput="w3.filterHTML('#myTable', '.item', this.value)"  placeholder="Filtro..">
+         </div>
+   </div>
+   <span class="w3-small"><?= 'Total Grupos Asignados: '.count($data); ?></span><br/>
+
+   <table id="myTable" class="w3-table w3-striped w3-responsive w3-hoverable">
+      <thead>
+         <tr>
+            <th onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(1)')">°Salon</th>
+            <th onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(2)')">°Asignatura</th>
+            <th>Indicadores</th>
+            <th>Notas</th>
+         </tr>
+      </thead>
+      <tbody>      
+         <?php foreach($data as $key => $carga) : ?>
+            <?php $t1=($themei=='d'?'d1':'l1'); ?>
+            <?php $t2=($themei=='d'?'d2':'l3'); ?>
+            <tr class="item w3-theme-<?=((($key%2)==0) ? $t1:$t2);?> ">
+              <td> <?=$carga->salon?> <?=($user_id==1)?"[$carga->salon_id]":'';?> </td>
+              <td> <?=OdaUtils::sanear_string($carga->asignatura)?> <?=($user_id==1)?"[$carga->asignatura_id]":'';?></td>
+              <td><?=_Tag::link("docentes/indicadores/$carga->asignatura_id/$carga->grado_id", 'Indicadores');?></td>
+              <td><?=_Tag::link("docentes/notas/$carga->asignatura_id/$carga->salon_id", 'Notas');?></td>
+            </tr>
+         <?php endforeach ?>
+      </tbody>
+   </table>
+
+</div>

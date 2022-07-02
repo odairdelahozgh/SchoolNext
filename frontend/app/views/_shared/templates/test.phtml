@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+ <head>
+  <meta charset=<?= APP_CHARSET ?> >
+  <title>School-NEXT-> App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <?= Tag::css('w3/w3') ?>
+  <?= Tag::css("w3/$theme") ?>
+  <?= Tag::css("fullcalendar.min") ?>
+  <?= Tag::css('propios') ?>
+  <?= Html::includeCss() ?>
+  <script src="https://kit.fontawesome.com/174118a0df.js" crossorigin="anonymous"></script>
+  <style> html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif} </style>
+</head>
+
+<body class="w3-light-grey">
+    <?php View::partial('header', false, array('page_title' =>$page_title)) ?>
+    <?php View::partial('aside') ?>
+    
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left:250px;margin-top:43px;">
+      <?php View::content() ?>
+      <?php View::partial('footer', false, array('template' =>'default.phtml')) ?>
+    </div>
+
+  <script>
+    var mySidebar = document.getElementById("mySidebar"); // Get the Sidebar
+    var overlayBg = document.getElementById("myOverlay"); // Get the DIV with overlay effect
+    function w3_open() { // Toggle between showing and hiding the sidebar, and add overlay effect
+      if (mySidebar.style.display === 'block') {
+        mySidebar.style.display = 'none';
+        overlayBg.style.display = "none";
+      } else {
+        mySidebar.style.display = 'block';
+        overlayBg.style.display = "block";
+      }
+    }
+    function w3_close() { // Close the sidebar with the close button
+      mySidebar.style.display = "none";
+      overlayBg.style.display = "none";
+    }
+  </script>
+
+  <!-- BEGIN BASE JS -->
+  <?= Tag::js('jquery/jquery+kumbiaphp.min');?>
+  <?= Tag::js('jquery/pickadate');?>
+  <?= Tag::js('bootstrap.bundle.min');?>
+  <?= Tag::js("table_filter"); ?>
+  <?= Tag::js('w3');?>
+  <?= Tag::js('fullcalendar.min');?>
+</body>
+
+</html>

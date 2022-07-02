@@ -1,0 +1,35 @@
+<div class="w3-container">
+  <h2>Tabs</h2>
+  <p>Tabs are perfect for single page web applications, or for web pages capable of displaying different subjects. Click on the links below.</p>
+  
+  <div class="w3-bar w3-theme">
+    <button class="w3-bar-item w3-button tablink w3-theme-action" onclick="openTab(event,'London')">London</button>
+    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Paris')">Paris</button>
+    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Tokyo')">Tokyo</button>
+  </div>
+
+  <div id="London" class="w3-display-container tab">
+    <span onclick="this.parentElement.style.display='none'"
+  class="w3-button w3-display-topright">X</span>
+    <h2>London</h2>
+    <p>London is the capital city of England.</p>
+</div>
+
+<div id="Paris" class="w3-display-container tab" style="display:none">
+    <span onclick="this.parentElement.style.display='none'"
+  class="w3-button w3-display-topright">X</span>
+  <h2>Paris</h2>
+  <p>Paris is the capital of France.</p> 
+</div>
+
+<div id="Tokyo" class="w3-display-container tab" style="display:none">
+    <span onclick="this.parentElement.style.display='none'"
+  class="w3-button w3-display-topright">X</span>
+  <h2>Tokyo</h2>
+  <p>Tokyo is the capital of Japan.</p>
+</div>
+
+</div>
+
+
+<?= Tag::js("tabs_h"); ?>

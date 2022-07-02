@@ -1,0 +1,12 @@
+<div class="w3-bar-block">
+   <?= _Tag::linkBarItem('docen-carga-academica', 'Mi Carga', 'people-line') ?>
+   <?= _Tag::linkBarItem('docen-registros-gen', 'Mis Registros', 'address-card') ?>
+   <?= _Tag::linkBarItem('docen-dir-grupo', 'Mi Grupo', 'clipboard') ?>
+</div>
+
+<?php if(Session::get('roll')=='coordinadores'): ?>
+   <details class="w3-padding">
+      <summary> <u>Coordinación</u> </summary>
+      <?php View::partial("coordinador/coordinador_menu") ?>
+   </details>
+<?php endif; ?>

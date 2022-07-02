@@ -1,0 +1,4 @@
+<?php $writer = new xlsxwriter(); ?>
+<?php $writer->writeSheetHeader('Sheet1', $header); ?>
+<?php $writer->writeSheet($rows,'Sheet1', $header);//or write the whole sheet in 1 call ?>
+<?php $writer->writeToFile('xlsx-simple.xlsx'); ?>

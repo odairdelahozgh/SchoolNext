@@ -1,0 +1,65 @@
+<?php View::content() ?>
+
+<div class="w3-container">
+  <?php echo _Tag::linkButton('admin/grados/list','Volver a la Lista') ?>
+  <h1>Crear Grado</h1>
+  
+  <div class="w3-panel">
+    <?php
+          /*
+          $Modelo = new Grado();
+          $myForm = new _Form($Modelo, 'admin/grados/create', 2);
+          $myForm->setHiddens('id, uuid, created_by, updated_by, created_at, updated_at, is_active');
+
+          $myForm->add(1, 'text',   'nombre', '');
+          $myForm->add(1, 'text',   'abrev');
+          $myForm->add(1, 'number', 'seccion_id');
+          $myForm->add(2, 'number', 'salon_default');
+          $myForm->add(1, 'number', 'valor_matricula');
+          $myForm->add(1, 'text',   'matricula_palabras');
+          $myForm->add(1, 'number', 'valor_pension');
+          $myForm->add(1, 'text',   'pension_palabras');
+
+          $myForm->add(2, 'number', 'orden');
+          $myForm->add(2, 'number', 'proximo_grado');
+          $myForm->add(2, 'number', 'proximo_salon');
+
+          echo $myForm;
+          */
+    ?>
+
+    <?= Form::open('admin/grados/create', 'post');?>
+    <?php //$myForm .= Form::hidden('grados.id'); ?>
+    <?= Form::hidden('grados.uuid', '');?>
+    <?= Form::hidden('grados.created_by', 1);?>
+    <?= Form::hidden('grados.updated_by', 1);?>
+    <?= Form::hidden('grados.created_at', '');?>
+    <?= Form::hidden('grados.updated_at', '');?>
+    <?= Form::hidden('grados.is_active', 1);?>
+    <div class="w3-row">
+      <div class="w3-half">
+        <fieldset style="width:90%">
+          <legend>Columna 1</legend>
+          <label>Nombre<br><?= Form::text('grados.nombre', 'class="w3-input w3-border"', ' '); ?></label><br>
+          <label>abrev<br><?= Form::text('grados.abrev', 'class="w3-input w3-border"', ''); ?></label><br>
+          <label>seccion<br><?= Form::number('grados.seccion_id', 'class="w3-input w3-border"', 1); ?></label><br>
+          <label>salon default<br><?= Form::number('grados.salon_default', 'class="w3-input w3-border"', 1); ?></label><br>
+          <label>valor matricula<br><?= Form::number('grados.valor_matricula', 'class="w3-input w3-border"', 0); ?></label><br>
+          <label>matricula palabras<br><?= Form::text('grados.matricula_palabras', 'class="w3-input w3-border"', ''); ?></label><br>
+          <label>valor pension<br><?= Form::number('grados.valor_pension', 'class="w3-input w3-border"', 0); ?></label><br>
+          <label>pension palabras<br><?= Form::text('grados.pension_palabras', 'class="w3-input w3-border"', ''); ?></label><br>
+        </fieldset>
+      </div>
+      <div class="w3-half">
+        <fieldset style="width:90%">
+          <legend>Columna 2</legend>
+          <label>orden<br><?= Form::number('grados.orden', '', 0); ?></label><br>
+          <label>proximo grado<br><?= Form::number('grados.proximo_grado', '', 1); ?></label><br>
+          <label>proximo_salon<br><?= Form::number('grados.proximo_salon', '', 1); ?></label><br>
+        </fieldset>
+      </div>
+    </div>
+    <?= Form::submit('Enviar', 'class="w3-btn"'); ?>
+    <?= Form::close(); ?>
+  </div>
+</div>

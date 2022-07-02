@@ -23,9 +23,8 @@ class Grado extends LiteRecord
   ];
 
   public function __construct() {
-    
     $user_id = Session::get('id');
-
+    
     self::$_defaults = array(
       'is_active'          => 1,
       'orden'              => 1,
@@ -39,48 +38,44 @@ class Grado extends LiteRecord
       'pension_palabras'   => '',
       'proximo_grado'      => 1,
       'proximo_salon'      => 1,
-      'created_by'         => $user_id,
-      'updated_by'         => $user_id,
-      'created_at'         => date('Y-m-d H:i:s', time()),
-      'updated_at'         => date('Y-m-d H:i:s', time()),
     );
     
     self::$_labels = array(
       'is_active'          => 'Está Activo?',
-      'orden'              => 'Orden',
-      'nombre'             => '** Nombre del Grado',
-      'abrev'              => 'Abreviatura',
-      'seccion_id'         => 'Sección',
-      'salon_default'      => 'Salón por defecto',
-      'valor_matricula'    => 'Valor Matrícula',
-      'matricula_palabras' => 'Valor Matrícula en palabras',
-      'valor_pension'      => 'Valor Pensión',
-      'pension_palabras'   => 'Valor Pensión en palabras',
-      'proximo_grado'      => 'Próximo Grado',
-      'proximo_salon'      => 'Próximo Salon',
-      'created_by'         => 'Creado por',
-      'updated_by'         => 'Actualizado por',
-      'created_at'         => 'Creado a',
-      'updated_at'         => 'Actualizado a',
+      'orden'              => 'Orden:',
+      'nombre'             => 'Nombre del Grado:',
+      'abrev'              => 'Abreviatura:',
+      'seccion_id'         => 'Sección:',
+      'salon_default'      => 'Salón por defecto:',
+      'valor_matricula'    => 'Valor Matrícula:',
+      'matricula_palabras' => 'Valor Matrícula en palabras:',
+      'valor_pension'      => 'Valor Pensión:',
+      'pension_palabras'   => 'Valor Pensión en palabras:',
+      'proximo_grado'      => 'Próximo Grado:',
+      'proximo_salon'      => 'Próximo Salon:',
+      'created_by'         => 'Creado por:',
+      'updated_by'         => 'Actualizado por:',
+      'created_at'         => 'Creado:',
+      'updated_at'         => 'Actualizado:',
     );
     
     self::$_placeholders = array(
-      'is_active'          => '',
-      'orden'              => '',
+      //'is_active'          => '',
+      //'orden'              => '',
       'nombre'             => 'Nombre del Grado',
       'abrev'              => 'Abreviatura para el Grado',
       'seccion_id'         => 'Sección',
-      'salon_default'      => '',
-      'valor_matricula'    => '',
+      //'salon_default'      => '',
+      //'valor_matricula'    => '',
       'matricula_palabras' => 'Valor matrícula en palabras',
-      'valor_pension'      => '',
+      //'valor_pension'      => '',
       'pension_palabras'   => 'Valor pensión en palabras',
-      'proximo_grado'      => '',
-      'proximo_salon'      => '',
-      'created_by'         => '',
-      'updated_by'         => '',
-      'created_at'         => '',
-      'updated_at'         => '',
+      //'proximo_grado'      => '',
+      //'proximo_salon'      => '',
+      //'created_by'         => '',
+      //'updated_by'         => '',
+      //'created_at'         => '',
+      //'updated_at'         => '',
     );
 
     
@@ -97,26 +92,26 @@ class Grado extends LiteRecord
       'pension_palabras'   => 'to-do: hidden, hacer en automático',
       'proximo_grado'      => 'Próximo grado al promoverse.',
       'proximo_salon'      => 'Próximo salón al promoverse.',
-      'created_by'         => '',
-      'updated_by'         => '',
-      'created_at'         => '',
-      'updated_at'         => '',
+      //'created_by'         => '',
+      //'updated_by'         => '',
+      //'created_at'         => '',
+      //'updated_at'         => '',
     );
     
     
     self::$_attribs = array(
-      'is_active'          => '',
-      'orden'              => '',
+      //'is_active'          => '',
+      //'orden'              => '',
       'nombre'             => 'required="required" maxlength="50"',
       'abrev'              => 'maxlength="10"',
-      'seccion_id'         => '',
-      'salon_default'      => '',
-      'valor_matricula'    => '',
+      //'seccion_id'         => '',
+      //'salon_default'      => '',
+      //'valor_matricula'    => '',
       //'matricula_palabras' => '',
-      'valor_pension'      => '',
+      //'valor_pension'      => '',
       //'pension_palabras'   => '',
-      'proximo_grado'      => '',
-      'proximo_salon'      => '',
+      //'proximo_grado'      => '',
+      //'proximo_salon'      => '',
       //'created_by'         => '',
       //'updated_by'         => '',
       //'created_at'         => '',
@@ -126,6 +121,9 @@ class Grado extends LiteRecord
   }
   
   public function _beforeUpdate() {
+    if ($this->uuid) {
+      $this->uuid = $this->uniqidReal(20);
+    }
   }
 
   public function _beforeCreate() { // Antes de Crear el nuevo registro

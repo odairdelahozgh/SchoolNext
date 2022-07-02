@@ -1,19 +1,26 @@
 <?php View::content() ?>
-<div class="page">
-    <div class="page-inner">
-        <header class="page-title-bar">
-          <h1 class="page-title">Crear Grado</h1>
-        </header>
-        
-        <?php echo Html::link('admin/grados/list','Ir a Lista de Grados') ?>
 
-        <div class="page-section">
-        <?= Form::open('admin/grados/edit', 'post') ?>
-            <?= form::hidden('grados.id'); ?>
-            <?= form::text('grados.nombre'); ?>
-            <?= Form::submit('Guardar') ?>
-         <?= Form::close() ?>
-        </div>
-    </div>
+<div class="w3-container">
+  <?php echo _Tag::linkButton('admin/grados/list','Volver a la Lista') ?>
+  <h1>Edit Grado </h1>
+  
+  <div class="w3-panel">
+    <?php
+        $myForm = new _Form($Modelo::class, 'admin/grados/create', 2);
+
+        $myForm->addInput(1, 'text',   'nombre');
+        $myForm->addInput(1, 'text',   'abrev');
+        $myForm->addInput(2, 'number', 'salon_default');
+        $myForm->addInput(1, 'number', 'valor_matricula');
+        $myForm->addInput(1, 'number', 'valor_pension');
+        $myForm->addSelect(1, 'seccion_id', $Modelo::SECCIONES, 'required pattern="'.implode('|', $Modelo::SECCIONES).'"') ;
+          
+        $myForm->addInput(2, 'number', 'orden');
+        $myForm->addInput(2, 'number', 'proximo_grado');
+        $myForm->addInput(2, 'number', 'proximo_salon');
+
+        echo $myForm;
+    ?>
+
+  </div>
 </div>
-

@@ -19,11 +19,12 @@ class _Form extends Form {
    private $_fmethod = '';
    private $_fattrs = '';
    private $_fhiddens = '';
-   private $_ffields = array();   
+   private $_ffields = array();
+   public $_isNew = false;
    
    public function __construct($modelo, $action, $cols=1, $method='post', $attrs = '') {
-      $this->_modelo   = $modelo;
-      $this->_fname    = (new $this->_modelo)->getFormName($modelo);
+      $this->_modelo   = new $modelo;
+      $this->_fname    = $this->_modelo->getFormName($modelo);
       $this->_faction  = $action;
       $this->_fmethod  = $method;
       $this->_fattrs   = $attrs;
@@ -48,7 +49,7 @@ class _Form extends Form {
 
     
     /**
-     * Crea un tag
+     * Crea un tag HTML
      *
      * @param string $tag nombre de tag
      * @param string|null $content contenido interno
@@ -113,18 +114,23 @@ class _Form extends Form {
    } // END-setHiddens
    
 
+   private function isRequired($field) {
+      $attribs = (new $this->_modelo)->getAttrib($field);
+      return str_contains($attribs, 'required');
+   }
+
    private function getDefault($field) {
       return (((new $this->_modelo)->getDefault($field)) ? (new $this->_modelo)->getDefault($field) : '') ;
    } // END-getDefault
 
    private function getLabel($field) {
-      return (((new $this->_modelo)->getLabel($field)) ? '<b>'.(new $this->_modelo)->getLabel($field).'</b><br>' : '') ;
+      $info_reg = ($this->isRequired($field)) ? '** ' : '' ;
+      return (((new $this->_modelo)->getLabel($field)) ? '<b>'.$info_reg.(new $this->_modelo)->getLabel($field).'</b><br>' : '') ;
    } // END-getLabel
 
    private function getHelp($field) {
-      $attribs = (new $this->_modelo)->getAttrib($field);
-
-      return (((new $this->_modelo)->getHelp($field)) ? _Icons::solid('circle-info').' <small>'.(new $this->_modelo)->getHelp($field).'</small><br>' : '') ;
+      $info_reg = ($this->isRequired($field)) ? 'requerido: ' : '' ;
+      return (((new $this->_modelo)->getHelp($field)) ? _Icons::solid('circle-info').' <small>'.$info_reg.(new $this->_modelo)->getHelp($field).'</small><br>' : '') ;
    } // END-getHelp
 
    private function getPlaceholder($field) {
@@ -149,15 +155,15 @@ class _Form extends Form {
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input  
     * @source  frontend\app\libs\ _form.php
     */
-   public function addInput($columna, $tipo, $field, $value=null, $attr='') {
-      $name_field  = trim($this->_fname.'.'.$field);
-      $label       = $this->getLabel($field);
-      $help        = $this->getHelp($field);
-      $default     = ($value) ? $value : $this->getDefault($field);
-      $attr        = ($attr) ? $attr : $this->getAttrib($field);
-      $attrs       = $this->_style.$this->getPlaceholder($field).$attr ;
+   public function addInput($columna, $tipo, $field, $attr='') {
+      $form_field = trim($this->_fname.'.'.$field);
+      $label = $this->getLabel($field);
+      $help  = $this->getHelp($field);
+      $value = ($this->_isNew) ? $this->getDefault($field) : $this->getDefault($field);
+      $attr  = ($attr) ? $attr : $this->getAttrib($field);
+      $attrs = $this->_style.$this->getPlaceholder($field).$attr ;
 
-      $campo_input = $this::input($tipo, $name_field, $attrs, $default);
+      $campo_input = $this::input($tipo, $form_field, $attrs, $value);
 
       $this->_ffields[(int)$columna] .=
          "<label> $label" 

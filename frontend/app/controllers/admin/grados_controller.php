@@ -58,7 +58,6 @@ class GradosController extends AppController
 
 
     public function enviar($datos) {
-    		
         $validador = new Validate($datos, $this->reglas() );
         if (!$validador->exec()) {
                 $validador->flash();
@@ -71,15 +70,14 @@ class GradosController extends AppController
      * Crea un Registro
      */
     public function create() {
+        $Grado = new Grado(true);
         if (Input::hasPost('grados')) {
-            
             /*$validador = new Validate(Input::post('grados.nombre'), $this->reglas() );
             if (!$validador->exec()) {
                 $validador->flash();
                 return false;
             }*/
-
-            if ( (new Grado())->create(Input::post('grados'))) {
+            if ( $Grado->create(Input::post('grados'))) {
                 Flash::valid('Operación exitosa :: Crear Registro Grado');
                 Input::delete();
                 return Redirect::to(); // al index del controller
@@ -94,18 +92,17 @@ class GradosController extends AppController
      *
      * @param int $id (requerido)
      */
-    public function edit($id=0)
-    {
-        $grado = new Grado();
+    public function edit($id=0) {
+        $Grado = new Grado();
         if (Input::hasPost('grados')) {
-            if ($grado->update(Input::post('grados'))) {
+            if ($Grado->update(Input::post('grados'))) {
                 Flash::valid('Operación exitosa');
                 return Redirect::to(); // al index del controller
             }
             Flash::error('Falló Operación');
             return;
         }
-        $this->grados = $grado->get((int) $id);
+        $this->Modelo = $Grado->get((int) $id);
     }
 
     /**

@@ -33,11 +33,11 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     public function getHelp($field)        { return ((array_key_exists($field, self::$_helps)) ? self::$_helps[$field]: ''); }
     public function getAttrib($field)      { return ((array_key_exists($field, self::$_attribs)) ? self::$_attribs[$field]: ''); }
     
-    public function getDefaults()     { return self::$_defaults; }
-    public function getLabels()       { return self::$_labels; }
-    public function getPlaceholders() { return self::$_placeholders; }
-    public function getHelps()        { return self::$_helps; }
-    public function getAttribs()      { return self::$_attribs; }
+    //public function getDefaults()     { return self::$_defaults; }
+    //public function getLabels()       { return self::$_labels; }
+    //public function getPlaceholders() { return self::$_placeholders; }
+    //public function getHelps()        { return self::$_helps; }
+    //public function getAttribs()      { return self::$_attribs; }
     
     public static function valor_moneda($valor){
       return '$'.number_format($valor);

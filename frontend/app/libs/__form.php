@@ -7,9 +7,9 @@
  * @author    ConstruxZion Soft (odairdelahoz@gmail.com).
  * @todo      Reemplazar todos los tipos de campos de la clase Form que viene en el Core.
  */
-   
+
 /**
- * Helper para construir formularios.
+ * Helper para construir formularios personalizados.
  */
 class _Form extends Form {
    private $_style = ' class="w3-input w3-border" ';
@@ -59,31 +59,31 @@ class _Form extends Form {
    
 
    private function isRequired($field) {
-      $attribs = (new $this->_modelo)->getAttrib($field);
+      $attribs = $this->_modelo->getAttrib($field);
       return str_contains($attribs, 'required');
    }
 
    private function getDefault($field) {
-      return (((new $this->_modelo)->getDefault($field)) ? (new $this->_modelo)->getDefault($field) : '') ;
+      return (($this->_modelo->getDefault($field)) ? $this->_modelo->getDefault($field) : '') ;
    } // END-getDefault
 
    private function getLabel($field, $inline=false) {
-      $info_reg = ($this->isRequired($field)) ? '** ' : '' ;
+      $requerido = ($this->isRequired($field)) ? '** ' : '' ;
       $in_line = ($inline) ? '<br>' : '' ;
-      return (((new $this->_modelo)->getLabel($field)) ? '<b>'.$info_reg.(new $this->_modelo)->getLabel($field).'</b><br>' : '') ;
+      return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : '') ;
    } // END-getLabel
 
    private function getHelp($field) {
-      $info_reg = ($this->isRequired($field)) ? 'requerido: ' : '' ;
-      return (((new $this->_modelo)->getHelp($field)) ? _Icons::solid('circle-info').' <small>'.$info_reg.(new $this->_modelo)->getHelp($field).'</small><br>' : '') ;
+      return (($this->_modelo->getHelp($field)) ? _Icons::solid('circle-info').' <small>'.$this->_modelo->getHelp($field).'</small><br>' : '') ;
    } // END-getHelp
 
    private function getPlaceholder($field) {
-      return (((new $this->_modelo)->getPlaceholder($field)) ? ' placeholder="'.(new $this->_modelo)->getPlaceholder($field).'" ' : '') ;
+      $requerido = ($this->isRequired($field)) ? 'obligatorio ' : '' ;
+      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$requerido.': '.$this->_modelo->getPlaceholder($field).'" ' : '') ;
    } // END-getPlaceholder
 
    private function getAttrib($field) {
-      return (((new $this->_modelo)->getAttrib($field)) ? ' '.(new $this->_modelo)->getAttrib($field).' ' : '') ;
+      return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : '') ;
    } // END-getAttrib
 
    /**
@@ -100,18 +100,15 @@ class _Form extends Form {
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input  
     * @source  frontend\app\libs\ _form.php
     */
-   public function addInput($columna, $tipo, $field, $attr='', $inline=false) {
-      $form_field = trim($this->_fname.'.'.$field);
+   public function addInput($columna, $tipo, $field, $value=null, $attr='', $inline=false) {
+      $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+      $fieldname = trim($this->_fname.'.'.$field);
       $label = $this->getLabel($field, $inline);
       $help  = $this->getHelp($field);
+      $value_input = (is_null($value)) ? $this->getDefault($field) : $value;
+      //$value_input = $this->_modelo->getProperty($field);
 
-      $modelo = $this->_modelo;
-
-      $value = ($this->_isNew) ? $this->getDefault($field) : $modelo->$field;
-      $attr  = ($attr) ? $attr : $this->getAttrib($field);
-      $attrs = $this->_style.$this->getPlaceholder($field).$attr ;
-
-      $campo_input = $this::input($tipo, $form_field, $attrs, $value);
+      $campo_input = $this::input($tipo, $fieldname, $attr, $value_input);
 
       $this->_ffields[(int)$columna] .=
          "<label> $label" 
@@ -133,14 +130,15 @@ class _Form extends Form {
     * @source frontend\app\libs\ _form.php
     */
     public function addSelect($columna, $field, $value=null, $attr='') {
-      $name_field  = trim($this->_fname.'.'.$field);
+      $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+      $fieldname  = trim($this->_fname.'.'.$field);
       $label       = $this->getLabel($field);
       $help        = $this->getHelp($field);
-      $default     = ($value) ? $value : $this->getDefault($field);
-      $attr        = ($attr) ? $attr : $this->getAttrib($field);
-      $attrs       = $this->_style.$this->getPlaceholder($field).$attr ;
+      $default     = (is_null($value)) ? $this->getDefault($field) : $value ;
+      //$attr        = ($attr) ? $attr : $this->getAttrib($field);
+      //$attrs       = $this->_style.$this->getPlaceholder($field).$attr ;
 
-      $campo_select = $this::select($name_field, $value, $attr).'<br>';
+      $campo_select = $this::select($fieldname, $value, $attr);
 
       $this->_ffields[(int)$columna] .=
          "<label> $label" 

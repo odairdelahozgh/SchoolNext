@@ -169,6 +169,10 @@ class Grado extends LiteRecord
     return $this->nombre;
   } // END-toString
 
-  
+ 
+  //=========
+  public function getProperty($field) {
+    return $this->$field;
+  } // END-toString 
 
 }

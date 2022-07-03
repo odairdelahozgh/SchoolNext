@@ -4,23 +4,23 @@
   <?php echo _Tag::linkButton('admin/grados/list','Volver a la Lista') ?>
   <h1>Edit Grado </h1>
   
-  <div class="w3-panel">
     <?php
-        //echo form::input('text','nombre', '', $Modelo->nombre);
         $myForm = new _Form($Modelo::class, 'admin/grados/edit', 2);
+
         $myForm->addInput(1, 'text',   'nombre', $Modelo->nombre, '', true);
         $myForm->addInput(1, 'text',   'abrev', $Modelo->abrev);
         $myForm->addInput(2, 'number', 'salon_default', $Modelo->salon_default);
         $myForm->addInput(1, 'number', 'valor_matricula', $Modelo->valor_matricula);
         $myForm->addInput(1, 'number', 'valor_pension', $Modelo->valor_pension);
         $myForm->addSelect(1, 'seccion_id', $Modelo::SECCIONES, 'required pattern="'.implode('|', $Modelo::SECCIONES).'"') ;
-
+        
         $myForm->addInput(2, 'number', 'orden', $Modelo->orden);
         $myForm->addInput(2, 'number', 'proximo_grado', $Modelo->proximo_grado);
         $myForm->addInput(2, 'number', 'proximo_salon', $Modelo->proximo_salon);
-
+        $myForm->addInput(2, 'number', 'is_active', $Modelo->is_active);
+        
+        $myForm->addHiddens('created_by,updated_by,created_at,updated_at');
         echo $myForm;
     ?>
 
-  </div>
 </div>

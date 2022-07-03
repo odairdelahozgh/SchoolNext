@@ -13,6 +13,7 @@
 class Grado extends LiteRecord
 {
   protected static $table = 'sweb_grados';
+  protected static $user_id = 0;
   
   //=========
     const SECCIONES = [
@@ -23,7 +24,7 @@ class Grado extends LiteRecord
   ];
 
   public function __construct() {
-    $user_id = Session::get('id');
+    self::$user_id = Session::get('id');
     
     self::$_defaults = array(
       'is_active'          => 1,
@@ -121,18 +122,18 @@ class Grado extends LiteRecord
   }
   
   public function _beforeUpdate() {
-    if ($this->uuid) {
-      $this->uuid = $this->uniqidReal(20);
-    }
+    if ($this->uuid) $this->uuid = $this->uniqidReal(20);
+    $ahora = $this::now();
+    $this->updated_by = self::$user_id;
+    $this->updated_at = $ahora;
   }
 
   public function _beforeCreate() { // Antes de Crear el nuevo registro
-    $user_id = Session::get('id');
     $ahora = $this::now();
     
     $this->uuid = $this->uniqidReal(20);
-    $this->created_by = $user_id;
-    $this->updated_by = $user_id;
+    $this->created_by = self::$user_id;
+    $this->updated_by = self::$user_id;
     $this->created_at = $ahora;
     $this->updated_at = $ahora;
     $this->is_active = 1;
@@ -169,10 +170,5 @@ class Grado extends LiteRecord
     return $this->nombre;
   } // END-toString
 
- 
-  //=========
-  public function getProperty($field) {
-    return $this->$field;
-  } // END-toString 
 
 }

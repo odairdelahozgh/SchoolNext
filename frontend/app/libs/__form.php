@@ -24,7 +24,7 @@ class _Form extends Form {
    
    public function __construct($modelo, $action, $cols=1, $method='post', $attrs = '') {
       $this->_modelo   = new $modelo;
-      $this->_fname    = $this->_modelo->getFormName($modelo);
+      $this->_fname    = trim($this->_modelo->getFormName($modelo));
       $this->_faction  = $action;
       $this->_fmethod  = $method;
       $this->_fattrs   = $attrs;
@@ -32,60 +32,29 @@ class _Form extends Form {
    } // END-__construct
 
 
-  public function __toString() {
-
-      $salida = self::open($this->_faction, $this->_fmethod, $this->_fattrs)
-               .self::getHiddens();
+   public function __toString() {
       $cols_max = array_key_last($this->_ffields);
-
+      $form  = '';
+      $data_sets = '';
       if ($cols_max==2) {
-         $fielset1 = self::createFieldset($this->_ffields[1], 'Columna 1', 'style="width:90%"');
-         $columna1 = Tag::create('div', $fielset1, 'class="w3-half"');         
-         
-         $fielset2 = self::createFieldset($this->_ffields[2], 'Columna 2', 'style="width:90%"');
-         $columna2 = Tag::create('div', $fielset2, 'class="w3-rest"');
-         
-         $salida .= Tag::create('div', $columna1.$columna2, 'class="w3-row"');
-
+         $fielset1   = self::createFieldset($this->_ffields[1], 'Columna 1', ' style="width:90%" ');
+         $data_sets .= self::createTag('div', $fielset1, 'class="w3-half w3-container"');
+         $fielset2   = self::createFieldset($this->_ffields[2], 'Columna 2', ' style="width:90%" ');
+         $data_sets .= self::createTag('div', $fielset2, 'class="w3-half w3-container"');         
       } else {
-         $fieldset = self::createFieldset($this->_ffields[1], 'Registro', 'style="width:50%"');
-         $salida .= Tag::create('div', $fieldset, 'class="w3-row"');
+         $fieldset   = self::createFieldset($this->_ffields[1], 'Registro', ' style="width:50%" ');
+         $data_sets .= self::createTag('div', $fieldset, 'class="w3-col w3-container"');
       }
-      $salida .= '<br>'.$this->submit('Guardar').'<br>';
-      $salida .= $this->close().'<br>';
-      return $salida;
+
+      $form .= self::open($this->_faction, $this->_fmethod, $this->_fattrs);
+      $form .= self::getHiddens();
+      $form .= self::createTag('div', $data_sets, 'class="w3-row"');
+      $form .= '<br>' .$this->submit('Guardar');
+      $form .= self::close();
+      return $form;
    } // END-__toString
    
    
-
-   private function isRequired($field) {
-      $attribs = $this->_modelo->getAttrib($field);
-      return str_contains($attribs, 'required');
-   }
-
-   private function getDefault($field) {
-      return (($this->_modelo->getDefault($field)) ? $this->_modelo->getDefault($field) : '') ;
-   } // END-getDefault
-
-   private function getLabel($field, $inline=false) {
-      $requerido = ($this->isRequired($field)) ? '** ' : '' ;
-      $in_line = ($inline) ? '<br>' : '' ;
-      return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : '') ;
-   } // END-getLabel
-
-   private function getHelp($field) {
-      return (($this->_modelo->getHelp($field)) ? _Icons::solid('circle-info').' <small>'.$this->_modelo->getHelp($field).'</small><br>' : '') ;
-   } // END-getHelp
-
-   private function getPlaceholder($field) {
-      $requerido = ($this->isRequired($field)) ? 'obligatorio ' : '' ;
-      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$requerido.': '.$this->_modelo->getPlaceholder($field).'" ' : '') ;
-   } // END-getPlaceholder
-
-   private function getAttrib($field) {
-      return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : '') ;
-   } // END-getAttrib
-
    /**
     * Retorna un campos Input dependiendo del "tipo".
     * @param integer           $columna:  Columna en que se muestra.
@@ -101,19 +70,14 @@ class _Form extends Form {
     * @source  frontend\app\libs\ _form.php
     */
    public function addInput($columna, $tipo, $field, $value=null, $attr='', $inline=false) {
-      $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-      $fieldname = trim($this->_fname.'.'.$field);
-      $label = $this->getLabel($field, $inline);
-      $help  = $this->getHelp($field);
+      $attr        = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+      $fieldname   = $this->_fname.'.'.trim($field);
+      $label       = $this->getLabel($field, $inline);
+      $help        = $this->getHelp($field);
       $value_input = (is_null($value)) ? $this->getDefault($field) : $value;
-      //$value_input = $this->_modelo->getProperty($field);
 
       $campo_input = $this::input($tipo, $fieldname, $attr, $value_input);
-
-      $this->_ffields[(int)$columna] .=
-         "<label> $label" 
-            .$campo_input .$help
-        ."</label><br>";
+      $this->_ffields[(int)$columna] .= "<br><label> $label" .$campo_input .$help ."</label><br>";
    } // END-addInput
 
    
@@ -135,16 +99,51 @@ class _Form extends Form {
       $label       = $this->getLabel($field);
       $help        = $this->getHelp($field);
       $default     = (is_null($value)) ? $this->getDefault($field) : $value ;
-      //$attr        = ($attr) ? $attr : $this->getAttrib($field);
-      //$attrs       = $this->_style.$this->getPlaceholder($field).$attr ;
 
       $campo_select = $this::select($fieldname, $value, $attr);
-
-      $this->_ffields[(int)$columna] .=
-         "<label> $label" 
-            .$campo_select .$help
-        ."</label><br>";
+      $this->_ffields[(int)$columna] .= "<br><label> $label" .$campo_select .$help ."</label><br>";
    } // END-addInput
+
+   
+   private function isRequired($field) {
+      $attribs = $this->_modelo->getAttrib($field);
+      return str_contains($attribs, 'required');
+   }
+
+   private function getDefault($field) {
+      return (($this->_modelo->getDefault($field)) ? $this->_modelo->getDefault($field) : '') ;
+   } // END-getDefault
+
+   private function getLabel($field, $inline=false) {
+      $requerido = ($this->isRequired($field)) ? '** ' : '' ;
+      $in_line = ($inline) ? '<br>' : '' ;
+      return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : '') ;
+   } // END-getLabel
+
+   private function getHelp($field) {
+      return (($this->_modelo->getHelp($field)) ? _Icons::solid('circle-info').' <small>'.$this->_modelo->getHelp($field).'</small>' : '') ;
+   } // END-getHelp
+
+   private function getPlaceholder($field) {
+      $requerido = ($this->isRequired($field)) ? 'obligatorio ' : '' ;
+      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$requerido.': '.$this->_modelo->getPlaceholder($field).'" ' : '') ;
+   } // END-getPlaceholder
+
+   private function getAttrib($field) {
+      return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : '') ;
+   } // END-getAttrib
+
+
+   /**
+    * Establece cuáles campos serán ocultos (type="hide") en el formulario.
+    * @param  string  $fields  Lista de campos (separados por coma).
+    * @return string
+    * @example        echo $myForm->setHiddens('id, created_by, updated_by, created_at, updated_at, is_active');
+    * @source         frontend\app\libs\ _form.php
+    */
+    public function addHiddens($fields='id') {
+      $this->_fhiddens = str_replace(' ', '', $fields);
+   } // END-setHiddens
 
    /**
     * Retorna todos los campos tipo "hidden" que están en $_fhiddens.
@@ -156,8 +155,8 @@ class _Form extends Form {
       $campos = explode(',',$this->_fhiddens);
       $result = '';
       foreach ($campos as $campo) {
-        $default_value = (new $this->_modelo)->getDefault($campo);
-        $result .= form::hidden(trim($this->_fname).'.'.trim($campo), '', $default_value);
+        $default_value = $this->_modelo->getDefault($campo);
+        $result .= form::hidden($this->_fname.'.'.trim($campo), '', $default_value);
       }
       return $result;
    } // END-getHiddens
@@ -196,19 +195,6 @@ class _Form extends Form {
     } // END-inputRango
 
 
-
-   // /**
-   //  * Establece cuáles campos serán ocultos (type="hide") en el formulario.
-   //  * @param  string  $fields  Lista de campos (separados por coma).
-   //  * @return string
-   //  * @example        echo $myForm->setHiddens('id, created_by, updated_by, created_at, updated_at, is_active');
-   //  * @source         frontend\app\libs\ _form.php
-   //  */
-   // public function setHiddens($fields='id') {
-   //    $this->_fhiddens = $fields;
-   // } // END-setHiddens
-   
-    
     /**
      * Crea un fieldset
      *
@@ -218,38 +204,40 @@ class _Form extends Form {
      * @source frontend\app\libs\ _form.php
      * */
    private static function createFieldset($content, $legend = '', $attrs = '') {
-      $legend = Tag::create('legend', $legend);
-      return Tag::create('fieldset', $legend.$content, $attrs);
+      return "<fieldset $attrs> 
+                  <legend> $legend </legend>
+                  $content
+              </fieldset>";
+    }
+
+    
+    /**
+     * Convierte los argumentos de un metodo de parametros por nombre a un string con los atributos
+     *
+     * @param string|array $params argumentos a convertir
+     * @return string
+     */
+   public static function getAttrs($params) {
+      if (!is_array($params)) { return (string)$params; }
+      $data = '';
+      foreach ($params as $k => $v) {
+          $data .= "$k=\"$v\" ";
+      }
+      return trim($data);
    }
-
-   //  /**
-   //   * Convierte los argumentos de un metodo de parametros por nombre a un string con los atributos
-   //   *
-   //   * @param string|array $params argumentos a convertir
-   //   * @return string
-   //   */
-   // public static function getAttrs($params) {
-   //    if (!is_array($params)) { return (string)$params; }
-   //    $data = '';
-   //    foreach ($params as $k => $v) {
-   //        $data .= "$k=\"$v\" ";
-   //    }
-   //    return trim($data);
-   // }
   
-   // /**
-   //  * Crea un tag HTML
-   //  *
-   //  * @param string $tag nombre de tag
-   //  * @param string|null $content contenido interno
-   //  * @param string|array $attrs atributos para el tag
-   //  * @return string
-   //  * */
-   // public static function createTag($tag, $content = null, $attrs = '') {
-   //    if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
-   //    if (is_null($content)) { return "<$tag $attrs/>"; }
-   //    return "<$tag $attrs>$content</$tag>";
-   // }
-
+   /**
+    * Crea un tag HTML
+    *
+    * @param string $tag nombre de tag
+    * @param string|null $content contenido interno
+    * @param string|array $attrs atributos para el tag
+    * @return string
+    * */
+   public static function createTag($tag, $content = null, $attrs = '') {
+      if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
+      if (is_null($content)) { return "<$tag $attrs/>"; }
+      return "<$tag $attrs>$content</$tag>";
+   }
 
 } // END-Class

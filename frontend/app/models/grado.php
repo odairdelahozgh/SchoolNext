@@ -150,21 +150,17 @@ class Grado extends LiteRecord
     
   //==============
   public function getList($estado=null) {
-    if (is_null($estado)) { // todos
-      $DQL = "SELECT g.*, s.nombre AS seccion
-      FROM ".self::$table." AS g
-      LEFT JOIN ".Config::get('tablas.seccion')." AS s ON g.seccion_id=s.id
-      ORDER BY g.orden";
-      return $this::all($DQL);
-    } else { // filtro por estado
-      $DQL = "SELECT g.*, s.nombre AS seccion
-      FROM ".self::$table." AS g
-      LEFT JOIN ".Config::get('tablas.seccion')." AS s ON g.seccion_id=s.id
-      WHERE (g.is_active=?)
-      ORDER BY g.orden";
+    $DQL = "SELECT g.*, s.nombre AS seccion
+            FROM ".self::$table." AS g
+            LEFT JOIN ".Config::get('tablas.seccion')." AS s ON g.seccion_id=s.id";
+    
+    if (!is_null($estado)) {
+      $DQL .= " WHERE (g.is_active=?) ORDER BY g.orden";
       return $this::all($DQL, array((int)$estado));
     }
 
+    $DQL .= " ORDER BY g.orden";
+    return $this::all($DQL);
   } // END-getList
   
 

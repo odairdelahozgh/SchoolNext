@@ -1,6 +1,10 @@
 vendor
 default/app/temp
 default/public/temp
+frontend/public/img/upload
+frontend/public/img/download
+frontend/public/files/upload
+frontend/public/files/download
 
 # Mac filesystem dust
 .DS_Store

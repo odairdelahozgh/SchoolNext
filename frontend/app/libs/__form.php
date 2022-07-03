@@ -32,51 +32,6 @@ class _Form extends Form {
    } // END-__construct
 
 
-    /**
-     * Convierte los argumentos de un metodo de parametros por nombre a un string con los atributos
-     *
-     * @param string|array $params argumentos a convertir
-     * @return string
-     */
-    public static function getAttrs($params) {
-        if (!is_array($params)) { return (string)$params; }
-        $data = '';
-        foreach ($params as $k => $v) {
-            $data .= "$k=\"$v\" ";
-        }
-        return trim($data);
-    }
-
-    
-    /**
-     * Crea un tag HTML
-     *
-     * @param string $tag nombre de tag
-     * @param string|null $content contenido interno
-     * @param string|array $attrs atributos para el tag
-     * @return string
-     * */
-    public static function createTag($tag, $content = null, $attrs = '') {
-        if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
-        if (is_null($content)) { return "<$tag $attrs/>"; }
-        return "<$tag $attrs>$content</$tag>";
-    }
-
-
-    /**
-     * Crea un fieldset
-     *
-     * @return string
-     * @example echo _Form->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
-     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
-     * @source frontend\app\libs\ _form.php
-     * */
-   private static function createFieldset($content, $legend = '', $attrs = '') {
-      $legend = self::createTag('legend', $legend);
-      return self::createTag('fieldset', $legend.$content, $attrs);
-
-   }
-
   public function __toString() {
 
       $salida = self::open($this->_faction, $this->_fmethod, $this->_fattrs)
@@ -85,33 +40,22 @@ class _Form extends Form {
 
       if ($cols_max==2) {
          $fielset1 = self::createFieldset($this->_ffields[1], 'Columna 1', 'style="width:90%"');
-         $columna1 = self::createTag('div', $fielset1, 'class="w3-half"');         
+         $columna1 = Tag::create('div', $fielset1, 'class="w3-half"');         
          
          $fielset2 = self::createFieldset($this->_ffields[2], 'Columna 2', 'style="width:90%"');
-         $columna2 = self::createTag('div', $fielset2, 'class="w3-rest"');
+         $columna2 = Tag::create('div', $fielset2, 'class="w3-rest"');
          
-         $salida .= self::createTag('div', $columna1.$columna2, 'class="w3-row"');
+         $salida .= Tag::create('div', $columna1.$columna2, 'class="w3-row"');
 
       } else {
          $fieldset = self::createFieldset($this->_ffields[1], 'Registro', 'style="width:50%"');
-         $salida .= self::createTag('div', $fieldset, 'class="w3-row"');
+         $salida .= Tag::create('div', $fieldset, 'class="w3-row"');
       }
       $salida .= '<br>'.$this->submit('Guardar').'<br>';
       $salida .= $this->close().'<br>';
       return $salida;
    } // END-__toString
    
-   
-   /**
-    * Establece cuáles campos serán ocultos (type="hide") en el formulario.
-    * @param  string  $fields  Lista de campos (separados por coma).
-    * @return string
-    * @example        echo $myForm->setHiddens('id, created_by, updated_by, created_at, updated_at, is_active');
-    * @source         frontend\app\libs\ _form.php
-    */
-   public function setHiddens($fields='id') {
-      $this->_fhiddens = $fields;
-   } // END-setHiddens
    
 
    private function isRequired($field) {
@@ -123,8 +67,9 @@ class _Form extends Form {
       return (((new $this->_modelo)->getDefault($field)) ? (new $this->_modelo)->getDefault($field) : '') ;
    } // END-getDefault
 
-   private function getLabel($field) {
+   private function getLabel($field, $inline=false) {
       $info_reg = ($this->isRequired($field)) ? '** ' : '' ;
+      $in_line = ($inline) ? '<br>' : '' ;
       return (((new $this->_modelo)->getLabel($field)) ? '<b>'.$info_reg.(new $this->_modelo)->getLabel($field).'</b><br>' : '') ;
    } // END-getLabel
 
@@ -155,11 +100,14 @@ class _Form extends Form {
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input  
     * @source  frontend\app\libs\ _form.php
     */
-   public function addInput($columna, $tipo, $field, $attr='') {
+   public function addInput($columna, $tipo, $field, $attr='', $inline=false) {
       $form_field = trim($this->_fname.'.'.$field);
-      $label = $this->getLabel($field);
+      $label = $this->getLabel($field, $inline);
       $help  = $this->getHelp($field);
-      $value = ($this->_isNew) ? $this->getDefault($field) : $this->getDefault($field);
+
+      $modelo = $this->_modelo;
+
+      $value = ($this->_isNew) ? $this->getDefault($field) : $modelo->$field;
       $attr  = ($attr) ? $attr : $this->getAttrib($field);
       $attrs = $this->_style.$this->getPlaceholder($field).$attr ;
 
@@ -180,7 +128,7 @@ class _Form extends Form {
     * @param string/array      $attr:     atributos html.
     * @return string
     * @example $Modelo = new Grado();
-    * @example $myForm = new _Form($Modelo, 'admin/grados/create', 2);
+    * @example $myForm = new _Form($Modelo, 'grados/create', 2);
     * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
     * @source frontend\app\libs\ _form.php
     */
@@ -248,6 +196,62 @@ class _Form extends Form {
           <label for=\"$id\">$caption</label>
         </div>";
     } // END-inputRango
+
+
+
+   // /**
+   //  * Establece cuáles campos serán ocultos (type="hide") en el formulario.
+   //  * @param  string  $fields  Lista de campos (separados por coma).
+   //  * @return string
+   //  * @example        echo $myForm->setHiddens('id, created_by, updated_by, created_at, updated_at, is_active');
+   //  * @source         frontend\app\libs\ _form.php
+   //  */
+   // public function setHiddens($fields='id') {
+   //    $this->_fhiddens = $fields;
+   // } // END-setHiddens
+   
+    
+    /**
+     * Crea un fieldset
+     *
+     * @return string
+     * @example echo _Form->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
+     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
+     * @source frontend\app\libs\ _form.php
+     * */
+   private static function createFieldset($content, $legend = '', $attrs = '') {
+      $legend = Tag::create('legend', $legend);
+      return Tag::create('fieldset', $legend.$content, $attrs);
+   }
+
+   //  /**
+   //   * Convierte los argumentos de un metodo de parametros por nombre a un string con los atributos
+   //   *
+   //   * @param string|array $params argumentos a convertir
+   //   * @return string
+   //   */
+   // public static function getAttrs($params) {
+   //    if (!is_array($params)) { return (string)$params; }
+   //    $data = '';
+   //    foreach ($params as $k => $v) {
+   //        $data .= "$k=\"$v\" ";
+   //    }
+   //    return trim($data);
+   // }
+  
+   // /**
+   //  * Crea un tag HTML
+   //  *
+   //  * @param string $tag nombre de tag
+   //  * @param string|null $content contenido interno
+   //  * @param string|array $attrs atributos para el tag
+   //  * @return string
+   //  * */
+   // public static function createTag($tag, $content = null, $attrs = '') {
+   //    if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
+   //    if (is_null($content)) { return "<$tag $attrs/>"; }
+   //    return "<$tag $attrs>$content</$tag>";
+   // }
 
 
 } // END-Class

@@ -6,8 +6,8 @@
   
   <div class="w3-panel">
     <?php
+        echo form::input('text','nombre', '', $Modelo->nombre);
         $myForm = new _Form($Modelo::class, 'admin/grados/create', 2);
-
         $myForm->addInput(1, 'text',   'nombre');
         $myForm->addInput(1, 'text',   'abrev');
         $myForm->addInput(2, 'number', 'salon_default');

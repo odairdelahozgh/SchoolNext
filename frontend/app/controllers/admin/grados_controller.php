@@ -65,6 +65,11 @@ class GradosController extends AppController
         }
         // proseguir con el proceso
     }
+    /*$validador = new Validate(Input::post('grados.nombre'), $this->reglas() );
+    if (!$validador->exec()) {
+        $validador->flash();
+        return false;
+    }*/
 
     /**
      * Crea un Registro
@@ -72,16 +77,10 @@ class GradosController extends AppController
     public function create() {
         $Grado = new Grado(true);
         if (Input::hasPost('grados')) {
-            /*$validador = new Validate(Input::post('grados.nombre'), $this->reglas() );
-            if (!$validador->exec()) {
-                $validador->flash();
-                return false;
-            }*/
             if ( $Grado->create(Input::post('grados'))) {
                 Flash::valid('Operación exitosa :: Crear Registro Grado');
                 Input::delete();
                 return Redirect::to(); // al index del controller
-                //return;
             }
             Flash::error('Falló Operación :: Crear Registro Grado');
         }
@@ -96,11 +95,11 @@ class GradosController extends AppController
         $Grado = new Grado();
         if (Input::hasPost('grados')) {
             if ($Grado->update(Input::post('grados'))) {
-                Flash::valid('Operación exitosa');
+                //Flash::valid('Operación exitosa');
                 return Redirect::to(); // al index del controller
             }
             Flash::error('Falló Operación');
-            return;
+            return; // Redirect::to('?');
         }
         $this->Modelo = $Grado->get((int) $id);
     }
@@ -112,7 +111,7 @@ class GradosController extends AppController
      */
     public function del($uuid) {
         if ((new Grado)->deleteUuid($uuid)) {
-            Flash::valid('Operación exitosa: Borrado grado $id');
+            Flash::valid('Operación exitosa: grado id=$id eliminado');
         } else {
             Flash::error('Falló Operación');
         }

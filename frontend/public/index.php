@@ -1,5 +1,5 @@
 <?php
-setlocale(LC_ALL, 'spanish');
+setlocale(LC_ALL, 'es_ES');
 ini_set('date.timezone', 'America/Bogota');
 const APP_CHARSET = 'UTF-8';
 

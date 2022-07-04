@@ -1,8 +1,6 @@
 <?php
 
 class _tag {
-   
-   // HELPERS PARA FORMULARIOS VAN EN _Form
 
    // HELPERS PARA TABLAS
    public static function multiTags( $tag='span', $data=array(), $attrs='' ) {
@@ -11,22 +9,6 @@ class _tag {
       foreach ($data as $value) { $tags .="<$tag $attrs>".$value."</$tag>"; }
       return $tags;
    } // END-multiTags
-
-   /*
-   public static function tbl_plantilla($tdata, $head=null, $foot=null, $titulo=null) {
-      $caption = (!is_null($titulo)) ? "<caption>$titulo</caption>"    : '';
-      $thead   = (!is_null($head))   ? "<thead><tr>$head</tr></thead>" : '';
-      $tfoot   = (!is_null($foot))   ? "<tfoot><tr>$foot</tr></tfoot>" : '';
-      return  "<table class=\"w3-table w3-striped w3-border w3-bordered\">
-                  $caption
-                  $thead
-                  <tbody>
-                     $tdata
-                  </tbody>
-                  $tfoot
-               </table>";
-   } // END-tbl_plantilla
-   */
 
    // HELPERS PARA LINKS    
    public static function getAttrs($params) {

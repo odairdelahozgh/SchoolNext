@@ -11,7 +11,8 @@
 /**
  * Helper para construir formularios personalizados.
  */
-class _Form extends Form {
+class OdaForm extends Form {
+   private $version = '2002.07.04';
    private $_style = ' class="w3-input w3-border" ';
    private $_modelo = '';
    private $_fname   = '';
@@ -240,4 +241,8 @@ class _Form extends Form {
       return "<$tag $attrs>$content</$tag>";
    }
 
+   public function v(){
+      $version = \DateTime::createFromFormat('Y.m.d', $this->version);
+      return 'PHP Helper OdaForm -> Version '.$version->format('d M Y');
+   }
 } // END-Class

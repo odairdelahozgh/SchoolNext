@@ -1,4 +1,8 @@
 <div class="w3-container">
+  <?php 
+  $form = new OdaForm('grado', 'post');
+  echo $form->v();
+  ?>
   <h2>Tabs</h2>
   <p>Tabs are perfect for single page web applications, or for web pages capable of displaying different subjects. Click on the links below.</p>
   
@@ -30,6 +34,5 @@
 </div>
 
 </div>
-
 
 <?= Tag::js("tabs_h"); ?>

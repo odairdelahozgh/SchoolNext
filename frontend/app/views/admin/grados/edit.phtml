@@ -5,7 +5,7 @@
   <h1>Edit Grado </h1>
   
     <?php
-        $myForm = new _Form($Modelo::class, 'admin/grados/edit', 2);
+        $myForm = new OdaForm($Modelo::class, 'admin/grados/edit', 2);
 
         $myForm->addInput(1, 'text',   'nombre', $Modelo->nombre, '', true);
         $myForm->addInput(1, 'text',   'abrev', $Modelo->abrev);

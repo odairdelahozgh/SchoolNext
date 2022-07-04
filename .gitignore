@@ -5,6 +5,7 @@ frontend/public/img/upload
 frontend/public/img/download
 frontend/public/files/upload
 frontend/public/files/download
+frontend/app/temp
 
 # Mac filesystem dust
 .DS_Store

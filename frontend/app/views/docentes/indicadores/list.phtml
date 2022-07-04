@@ -15,7 +15,7 @@
    <?php
       $result = '';
       foreach ($data as $periodo => $regs_periodo) {
-         $tabla = new _Table($attrs='class="w3-table w3-striped "');
+         $tabla = new OdaTable('class="w3-table w3-striped "');
          $att2 = array('style="width:10%"');
          $tabla->caption('Periodo '.$periodo);
          foreach ($regs_periodo as $key => $indic) {

@@ -5,11 +5,7 @@
  * @category  Helper.
  * @package   KumbiaPHP.
  * @author    ConstruxZion Soft (odairdelahoz@gmail.com).
- * @todo      Reemplazar todos los tipos de campos de la clase Form que viene en el Core.
- */
-
-/**
- * Helper para construir formularios personalizados.
+ * @todo      Pendiente: Reemplazar todos los tipos de campos de la clase Form que viene en el Core.
  */
 class OdaForm extends Form {
    private $version = '2002.07.04';
@@ -23,7 +19,7 @@ class OdaForm extends Form {
    private $_ffields = array();
    public $_isNew = false;
    
-   public function __construct($modelo, $action, $cols=1, $method='post', $attrs = '') {
+   public function __construct(string $modelo, string $action, int $cols=1, string $method='post', string $attrs = '') {
       $this->_modelo   = new $modelo;
       $this->_fname    = trim($this->_modelo->getFormName($modelo));
       $this->_faction  = $action;
@@ -33,7 +29,7 @@ class OdaForm extends Form {
    } // END-__construct
 
 
-   public function __toString() {
+   public function __toString(): string {
       $cols_max = array_key_last($this->_ffields);
       $form  = '';
       $data_sets = '';

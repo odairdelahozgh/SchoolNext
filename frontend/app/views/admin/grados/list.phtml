@@ -3,7 +3,7 @@
   
   require('listHeader.phtml');
 
-  $tabla = new _Table();
+  $tabla = new OdaTable();
   $tabla->head(array('Acciones', 'Grado', 'Id', 'Estado', 'Abrev', 'Sección', 'Matr&iacute;cula', 'Pensi&oacute;n'));
   foreach ($data as $key => $grado) {
     $lnkEditar = _Tag::linkIcon("admin/grados/edit/$grado->id/", 'square-pen', 'title="Editar Registro"' );

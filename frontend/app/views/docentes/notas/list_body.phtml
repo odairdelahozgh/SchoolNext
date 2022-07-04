@@ -7,7 +7,7 @@
          if (isset($regs_periodo[0])) {
             $tabbuttons .= "<button class=\"w3-bar-item w3-mobile w3-button tablink w3-theme-action\" 
                               onclick=\"openTab(event,'p$periodo')\">Periodo $periodo</button>";
-            $tabla = new _Table('class="w3-table w3-striped "');
+            $tabla = new OdaTable('class="w3-table w3-striped "');
             $tabla->caption('PERIODO '.$periodo, 'class="w3-left"');
             foreach ($regs_periodo as $key => $nota) {
               

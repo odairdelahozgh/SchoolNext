@@ -1,6 +1,6 @@
 <?php
 
-class _Table {
+class OdaTable {
    private $_attrs = '';
    private $_thead  = '';
    private $_tbody  = '';

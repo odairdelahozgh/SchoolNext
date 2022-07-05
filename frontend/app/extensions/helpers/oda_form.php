@@ -1,11 +1,10 @@
 <?php
 /**
- * Helper para Formularios con W3-CSS.
+ * Helper para Formularios Odair.
  * 
- * @category  Helper.
- * @package   KumbiaPHP.
- * @author    ConstruxZion Soft (odairdelahoz@gmail.com).
- * @todo      Pendiente: Reemplazar todos los tipos de campos de la clase Form que viene en el Core.
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category Helper.
+ * @source   frontend\app\extensions\helpers\oda_form.php
  */
 class OdaForm extends Form {
    private $version = '2002.07.04';
@@ -16,18 +15,30 @@ class OdaForm extends Form {
    private $_fmethod = '';
    private $_fattrs = '';
    private $_fhiddens = '';
-   private $_ffields = array();
-   public $_isNew = false;
+   private $_ffields = array(1=>' ');
+   private $_isEdit = false;
    
-   public function __construct(string $modelo, string $action, int $cols=1, string $method='post', string $attrs = '') {
-      $this->_modelo   = new $modelo;
-      $this->_fname    = trim($this->_modelo->getFormName($modelo));
+   const METHOD = [
+      'POST' => 'post',
+      'GET'  => "get",
+   ];
+
+   /**
+    * @param string        $modelo: modelo de datos que usará.
+    * @param string        $action: accion del formulario.
+    * @param int           $max_cols: número de columnas del formulario.
+    * @param string        $method: método HTTP que usará el formulario.
+    * @param string/array  $attr: atributos html.
+    * @return void
+    * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
+    * @source  frontend\app\extensions\helpers\oda_form.php
+    */
+   public function __construct(object $modelo, string $action, string $method = self::METHOD['POST']) {
+      $this->_modelo   = $modelo;
+      $this->_fname    = $modelo->getFormName($modelo::class);
       $this->_faction  = $action;
       $this->_fmethod  = $method;
-      $this->_fattrs   = $attrs;
-      $this->_ffields  = array_fill(1, (int)$cols, ' ');
    } // END-__construct
-
 
    public function __toString(): string {
       $cols_max = array_key_last($this->_ffields);
@@ -54,27 +65,24 @@ class OdaForm extends Form {
    
    /**
     * Retorna un campos Input dependiendo del "tipo".
-    * @param integer           $columna:  Columna en que se muestra.
+    * @param integer           $columna:  Columna en la que se muestrará el elemento.
     * @param string            $tipo:     Tipo de input (text, number, etc).
     * @param string            $field:    Nombre del campo en la tabla.
     * @param string|Integer    $value:    Valor por defecto.
     * @param string/array      $attr:     atributos html.
     * @return string
-    * @example echo $Modelo = new Grado();
-    * @example echo $myForm = new _Form($Modelo, 'admin/grados/create', 2);
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
-    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input  
-    * @source  frontend\app\libs\ _form.php
+    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
-   public function addInput($columna, $tipo, $field, $value=null, $attr='', $inline=false) {
+   public function addInput(int $columna=1, string $tipo, string $field, $attr='', $inline=false) {
       $attr        = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname   = $this->_fname.'.'.trim($field);
       $label       = $this->getLabel($field, $inline);
       $help        = $this->getHelp($field);
-      $value_input = (is_null($value)) ? $this->getDefault($field) : $value;
+      $value_input = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
 
       $campo_input = $this::input($tipo, $fieldname, $attr, $value_input);
-      $this->_ffields[(int)$columna] .= "<br><label> $label" .$campo_input .$help ."</label><br>";
+      $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label><br>";
    } // END-addInput
 
    
@@ -85,23 +93,50 @@ class OdaForm extends Form {
     * @param string|Integer    $value:    Valor por defecto.
     * @param string/array      $attr:     atributos html.
     * @return string
-    * @example $Modelo = new Grado();
-    * @example $myForm = new _Form($Modelo, 'grados/create', 2);
     * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
-    * @source frontend\app\libs\ _form.php
     */
-    public function addSelect($columna, $field, $value=null, $attr='') {
+    public function addSelect(int $columna, string $field, array $data, string $attr='') {
       $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = trim($this->_fname.'.'.$field);
       $label       = $this->getLabel($field);
       $help        = $this->getHelp($field);
-      $default     = (is_null($value)) ? $this->getDefault($field) : $value ;
+      $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
 
-      $campo_select = $this::select($fieldname, $value, $attr);
+      $campo_select = $this::select($fieldname, $data, $attr, $value);
       $this->_ffields[(int)$columna] .= "<br><label> $label" .$campo_select .$help ."</label><br>";
    } // END-addInput
 
    
+   /**
+    * Establece el número de columnas que tendrá el formuario.
+    * @param int $max_cols: número de columnas del formulario.
+    * @return void
+    * @example echo $myForm->setColumnas(2);
+    */
+    public function setEdit() {
+      $this->_isEdit = true;
+   }
+
+   /**
+    * Establece el número de columnas que tendrá el formuario.
+    * @param int $max_cols: número de columnas del formulario.
+    * @return void
+    * @example echo $myForm->setColumnas(2);
+    */
+   public function setColumnas(int $max_cols=1) {
+      $this->_ffields  = array_fill(1, (int)$max_cols, ' ');
+   }
+
+   /**
+    * Establece los atributos que tendrá el formuario.
+    * @param string|array $attrs: atributos.
+    * @return void
+    * @example echo $myForm->setColumnas(2);
+    */
+    public function setAtrib(string|array $attrs = '') {
+      $this->_fattrs = self::getAttrs($attrs);
+   }
+
    private function isRequired($field) {
       $attribs = $this->_modelo->getAttrib($field);
       return str_contains($attribs, 'required');
@@ -136,7 +171,6 @@ class OdaForm extends Form {
     * @param  string  $fields  Lista de campos (separados por coma).
     * @return string
     * @example        echo $myForm->setHiddens('id, created_by, updated_by, created_at, updated_at, is_active');
-    * @source         frontend\app\libs\ _form.php
     */
     public function addHiddens($fields='id') {
       $this->_fhiddens = str_replace(' ', '', $fields);
@@ -146,14 +180,13 @@ class OdaForm extends Form {
     * Retorna todos los campos tipo "hidden" que están en $_fhiddens.
     * @return string
     * @example echo _Form->getHiddens();
-    * @source frontend\app\libs\ _form.php
     */
    public function getHiddens() {
       $campos = explode(',',$this->_fhiddens);
       $result = '';
       foreach ($campos as $campo) {
-        $default_value = $this->_modelo->getDefault($campo);
-        $result .= form::hidden($this->_fname.'.'.trim($campo), '', $default_value);
+        $value_input = ($this->_isEdit) ? $this->_modelo->$campo : $this->getDefault($campo) ;
+        $result .= form::hidden($this->_fname.'.'.trim($campo), '', $value_input);
       }
       return $result;
    } // END-getHiddens
@@ -163,7 +196,6 @@ class OdaForm extends Form {
     * @return string
     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search
     * @example echo _Form::inputSerach();
-    * @source frontend\app\libs\ _form.php
     */
    public static function inputSerach($id='inputSerach') {
      $input = self::input('search', $id, "oninput=\"myFunctionFilter()\" class=\"w3-input w3-border\"  placeholder=\"Filtro..\"");
@@ -180,7 +212,6 @@ class OdaForm extends Form {
     * @return string
     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
     * @example echo _Form::range('r1','rango',5)
-    * @source frontend\app\libs\ _form.php
     */
     public static function inputRango($id,$caption,$value,$min=1,$max=10,$step=1) {
        return 
@@ -198,7 +229,6 @@ class OdaForm extends Form {
      * @return string
      * @example echo _Form->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
      * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
-     * @source frontend\app\libs\ _form.php
      * */
    private static function createFieldset($content, $legend = '', $attrs = '') {
       return "<fieldset $attrs> 

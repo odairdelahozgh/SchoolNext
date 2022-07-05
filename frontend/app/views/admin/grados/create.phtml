@@ -1,16 +1,16 @@
 <?php View::content() ?>
 
 <div class="w3-container">
-  <?php echo _Tag::linkButton('admin/grados/list','Volver a la Lista') ?>  
+  <?php echo _Tag::linkButton('admin/grados/list','Volver a la Lista') ?>
+  
   <h1>Crear Grado</h1>
   <div class="w3-row">
     <?php
           $Modelo = new Grado();
-          $myForm = new OdaForm($Modelo::class, 'admin/grados/create', 1);
-          //$myForm->_isNew = true;
+          $myForm = new OdaForm($Modelo, 'admin/grados/create');
+          $myForm->setAtrib('id="form_new"');
 
           $myForm->addInput(1, 'text',   'nombre');
-          
           $myForm->addInput(1, 'text',   'abrev');
           $myForm->addInput(1, 'number', 'salon_default');
           $myForm->addInput(1, 'number', 'valor_matricula');

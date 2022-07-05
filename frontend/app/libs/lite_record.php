@@ -21,12 +21,34 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     protected static $_placeholders = array();
     protected static $_helps = array();
     protected static $_attribs = array();
+    protected static $user_id = 0;
+
+    public function _beforeCreate() { // ANTES de CREAR el nuevo registro
+        $ahora = $this::now();
+        $this->uuid = $this->uniqidReal(20);
+        $this->created_by = self::$user_id;
+        $this->updated_by = self::$user_id;
+        $this->created_at = $ahora;
+        $this->updated_at = $ahora;
+        $this->is_active = 1;
+    }
+      
+    public function _beforeUpdate() { // ANTES de ACTUALIZAR el registro
+        if (strlen($this->uuid)==0) { $this->uuid = $this->uniqidReal(20); }
+        $this->updated_by = self::$user_id;
+        $this->updated_at = $this::now();
+    }
     
+    //public function _afterCreate() { }
+    //public function _afterUpdate() { }
+    
+    
+
     public function getFormName($clase)  { 
         $plural = $clase[strlen($clase)-1] == 's' ? $clase: $clase.'s';
         return strtolower($plural);
     }
-
+    
     public function getDefault($field)     { return ((array_key_exists($field, self::$_defaults)) ? self::$_defaults[$field] : null); }
     public function getLabel($field)       { return ((array_key_exists($field, self::$_labels)) ? self::$_labels[$field] : $field.': '); }
     public function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }

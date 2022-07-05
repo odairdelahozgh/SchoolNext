@@ -13,7 +13,6 @@
 class Grado extends LiteRecord
 {
   protected static $table = 'sweb_grados';
-  protected static $user_id = 0;
   
   //=========
     const SECCIONES = [
@@ -93,8 +92,8 @@ class Grado extends LiteRecord
       'pension_palabras'   => 'to-do: hidden, hacer en automático',
       'proximo_grado'      => 'Próximo grado al promoverse.',
       'proximo_salon'      => 'Próximo salón al promoverse.',
-      //'created_by'         => '',
-      //'updated_by'         => '',
+      'created_by'         => 'Creado por:',
+      'updated_by'         => 'Actualizado por',
       //'created_at'         => '',
       //'updated_at'         => '',
     );
@@ -121,34 +120,19 @@ class Grado extends LiteRecord
 
   }
   
-  public function _beforeUpdate() {
-    if ($this->uuid) $this->uuid = $this->uniqidReal(20);
-    $ahora = $this::now();
-    $this->updated_by = self::$user_id;
-    $this->updated_at = $ahora;
-  }
-
   public function _beforeCreate() { // Antes de Crear el nuevo registro
-    $ahora = $this::now();
-    
-    $this->uuid = $this->uniqidReal(20);
-    $this->created_by = self::$user_id;
-    $this->updated_by = self::$user_id;
-    $this->created_at = $ahora;
-    $this->updated_at = $ahora;
-    $this->is_active = 1;
+    parent::_beforeCreate();
     $this->abrev = strtoupper($this->abrev);
     $this->matricula_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_matricula));
     $this->pension_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_pension));
   }
   
-  public function _afterCreate() { }
+  public function _beforeUpdate() { // Antes de Crear el nuevo registro
+    parent::_beforeUpdate();
+    $this->matricula_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_matricula));
+    $this->pension_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_pension));
+  }
 
-  public function _afterUpdate() { }
-  
-  
-
-    
   //==============
   public function getList($estado=null) {
     $DQL = "SELECT g.*, s.nombre AS seccion

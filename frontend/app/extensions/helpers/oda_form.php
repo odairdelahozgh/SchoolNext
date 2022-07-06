@@ -35,7 +35,7 @@ class OdaForm extends Form {
     */
    public function __construct(object $modelo, string $action, string $method = self::METHOD['POST']) {
       $this->_modelo   = $modelo;
-      $this->_fname    = $modelo->getFormName($modelo::class);
+      $this->_fname    = strtolower(OdaUtils::pluralize($modelo::class));
       $this->_faction  = $action;
       $this->_fmethod  = $method;
    } // END-__construct

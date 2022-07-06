@@ -196,6 +196,11 @@ class OdaUtils {
         }
         return $returnArray;
     }
+    
+    public static function pluralize($cadena) {
+        return $cadena[strlen($cadena)-1] == 's' ? $cadena: $cadena.'s';
+    }
+
 
     /**
      * Escribe en letras un monto numerico

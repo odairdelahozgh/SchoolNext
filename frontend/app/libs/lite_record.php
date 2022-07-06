@@ -24,8 +24,8 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     protected static $user_id = 0;
 
     public function _beforeCreate() { // ANTES de CREAR el nuevo registro
-        $ahora = $this::now();
-        $this->uuid = $this->uniqidReal(20);
+        $ahora = date('Y-m-d H:i:s', time());
+        $this->uuid = $this->UUIDReal(20);
         $this->created_by = self::$user_id;
         $this->updated_by = self::$user_id;
         $this->created_at = $ahora;
@@ -34,32 +34,19 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     }
       
     public function _beforeUpdate() { // ANTES de ACTUALIZAR el registro
-        if (strlen($this->uuid)==0) { $this->uuid = $this->uniqidReal(20); }
+        if (strlen($this->uuid)==0) { $this->uuid = $this->UUIDReal(20); }
         $this->updated_by = self::$user_id;
-        $this->updated_at = $this::now();
+        $this->updated_at = date('Y-m-d H:i:s', time());
     }
     
     //public function _afterCreate() { }
     //public function _afterUpdate() { }
-    
-    
-
-    public function getFormName($clase)  { 
-        $plural = $clase[strlen($clase)-1] == 's' ? $clase: $clase.'s';
-        return strtolower($plural);
-    }
     
     public function getDefault($field)     { return ((array_key_exists($field, self::$_defaults)) ? self::$_defaults[$field] : null); }
     public function getLabel($field)       { return ((array_key_exists($field, self::$_labels)) ? self::$_labels[$field] : $field.': '); }
     public function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }
     public function getHelp($field)        { return ((array_key_exists($field, self::$_helps)) ? self::$_helps[$field]: ''); }
     public function getAttrib($field)      { return ((array_key_exists($field, self::$_attribs)) ? self::$_attribs[$field]: ''); }
-    
-    //public function getDefaults()     { return self::$_defaults; }
-    //public function getLabels()       { return self::$_labels; }
-    //public function getPlaceholders() { return self::$_placeholders; }
-    //public function getHelps()        { return self::$_helps; }
-    //public function getAttribs()      { return self::$_attribs; }
     
     public static function valor_moneda($valor){
       return '$'.number_format($valor);
@@ -81,7 +68,10 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
         return $ico.'&nbsp;'.self::IS_ACTIVE[$this->is_active];
     }
 
-    public function uniqidReal($lenght) {
+    
+
+    //Universally Unique IDentifier Generator optimized
+    public function UUIDReal(int $lenght):string {
         if (function_exists("random_bytes")) {
             $bytes = random_bytes(ceil($lenght / 2));
         } elseif (function_exists("openssl_random_pseudo_bytes")) {
@@ -93,10 +83,10 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     }
     
     
-    public function setUuidAll_ojo($long=13) {
+    public function setUUIDAll_ojo($long=13) {
       $Todos = $this::all();
       foreach ($Todos as $key => $reg) {
-        $reg->uuid = $this->uniqidReal($long);
+        $reg->uuid = $this->UUIDReal($long);
         $reg->update();
       }
     } // END-setUuid()
@@ -107,12 +97,11 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
      * @param  string    $uuid valor para clave primaria uuid
      * @return bool
      */
-    public static function deleteUuid($uuid): bool {
+    public static function deleteUUID($uuid): bool {
         $source  = static::getSource();
         return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
     }
 
-    public static function now(){
-        return date('Y-m-d H:i:s', time());
-    }
+
+
 }

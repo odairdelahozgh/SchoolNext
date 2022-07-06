@@ -78,11 +78,11 @@ class GradosController extends AppController
         $Grado = new Grado(true);
         if (Input::hasPost('grados')) {
             if ( $Grado->create(Input::post('grados'))) {
-                Flash::valid('Operación exitosa :: Crear Registro Grado');
+                OdaFlash::valid('Operación exitosa :: Crear Registro Grado');
                 Input::delete();
                 return Redirect::to(); // al index del controller
             }
-            Flash::error('Falló Operación :: Crear Registro Grado');
+            OdaFlash::error('Falló Operación :: Crear Registro Grado');
         }
     }
    
@@ -95,10 +95,10 @@ class GradosController extends AppController
         $Grado = new Grado();
         if (Input::hasPost('grados')) {
             if ($Grado->update(Input::post('grados'))) {
-                //Flash::valid('Operación exitosa');
+                OdaFlash::valid('Operación exitosa: Se guardó el registro');
                 return Redirect::to(); // al index del controller
             }
-            Flash::error('Falló Operación');
+            OdaFlash::error('Falló Operación: Editar Registro');
             return; // Redirect::to('?');
         }
         $this->Modelo = $Grado->get((int) $id);
@@ -110,10 +110,10 @@ class GradosController extends AppController
      * @param int $id (requerido)
      */
     public function del($uuid) {
-        if ((new Grado)->deleteUuid($uuid)) {
-            Flash::valid('Operación exitosa: grado id=$id eliminado');
+        if ((new Grado)->deleteUUID($uuid)) {
+            OdaFlash::valid('Operación exitosa: Se eliminó el registro');
         } else {
-            Flash::error('Falló Operación');
+            OdaFlash::error('Falló Operación: eliminar registro');
         }
         return Redirect::to();
     }

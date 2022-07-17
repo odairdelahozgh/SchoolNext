@@ -1,14 +1,22 @@
 <?php
-
+/**
+ * Helper para Formularios Odair.
+ * 
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category Helper.
+ * @source   frontend\app\extensions\helpers\oda_table.php
+ */
 class OdaTable {
-   private $_attrs = '';
+   private $_attrs = 'class="w3-table w3-border w3-bordered" ';
    private $_thead  = '';
    private $_tbody  = '';
    private $_tfoot  = '';
    private $_tcaption = '';
    
-   public function __construct($attrs='class="w3-table w3-border w3-bordered"') {
-      $this->_attrs=$attrs;
+   public function __construct(string|array $attrs='') {
+      if ($attrs) {
+         $this->_attrs = self::getAttrs($attrs);
+      }
    }
    
    public function __toString() {
@@ -22,7 +30,17 @@ class OdaTable {
                </table>";
    }
    
-   public function head($arr_head, $attrs='', $attrs2=array()) {
+   /**
+    * Formatea el encabezado de la Tabla.
+    *
+    * @param string $arr_head: encabezados de cada columna (separados por coma).
+    * @param string $attrs: 
+    * @param string $attrs2:
+    * @return string
+    * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
+    * @source  frontend\app\extensions\helpers\oda_form.php
+    */
+   public function setHead(string|array $arr_head, string|array $attrs='', array $attrs2=array()):void {
       $arr_head = self::strToArray($arr_head);
       $attrs = self::getAttrs($attrs);
       $head = '';
@@ -33,7 +51,7 @@ class OdaTable {
       $this->_thead = "<thead $attrs><tr>".$head.'</tr></thead>';
    }
    
-   public function body($data, $attrs='', $attrs2=array()) {
+   public function setBody(string|array $data, string|array $attrs='', string|array $attrs2=array()):void {
       $data  = self::strToArray($data);
       $attrs = self::getAttrs($attrs);
       $this->_tbody.= "<tr $attrs>";
@@ -44,7 +62,7 @@ class OdaTable {
       $this->_tbody.= '</tr>';
    }
 
-   public function foot($arr_foot, $attrs='') {
+   public function setFoot(string|array $arr_foot, string|array $attrs=''):void {
       $arr_foot = self::strToArray($arr_foot);
       $attrs = self::getAttrs($attrs);
       $foot = '';
@@ -54,26 +72,26 @@ class OdaTable {
       $this->_tfoot = '<tfoot><tr>'.$foot.'</tr></tfoot>';
    }
 
-   public function caption($caption, $attrs='class="w3-left-align"') {
+   public function setCaption(string $caption, string|array $attrs='class="w3-left-align"'):void {
       $attrs = self::getAttrs($attrs);
       $this->_tcaption = "<caption $attrs>" .strtoupper($caption) .'</caption>';
    }
 
    
-   public static function multiTags($data, $tag='span', $attrs='') {
+   public static function multiTags(string|array $data, string $tag='span', string|array $attrs=''): string {
       if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
       $tags='';
       foreach ($data as $value) { $tags .="<$tag $attrs>".$value."</$tag>"; }
       return $tags;
    } // END-multiTags
 
-   public static function strToArray($params) {
+   public static function strToArray(string|array $params):array {
       if (!is_string($params)) { return (array) $params; 
       }
       return explode(',', $params);
    } // END-strToArray
 
-   public static function getAttrs($params) {
+   public static function getAttrs(string|array $params): string {
        if (!is_array($params)) { return (string)$params; }
        $data = '';
        foreach ($params as $k => $v) { $data .= "$k=\"$v\" "; }

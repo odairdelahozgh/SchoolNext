@@ -9,48 +9,53 @@
 
 class Salon extends LiteRecord
 {
+  use SalonT;
   protected static $table = 'sweb_salones';
-    
-  const ESTADO = [
-    0 => 'Inactivo',
-    1 => 'Activo'
-  ];
   
-  
-  //=============
-  public $before_delete = 'no_borrar_activos';
-  public function no_borrar_activos() {
-    if($this->is_active==1) {
-      OdaFlash::error('No se puede borrar un registro activo');
-      return 'cancel';
-    }
-  } //END-no_borrar_activos
-  
-  //=============
-  public function after_delete() {
-    OdaFlash::valid("Se borró el registro");
-  } //END-after_delete
-
-  //=============
-  public function before_create() { 
-    $this->is_active = 1; 
-  } //END-before_create
-
-  public function __toString() { return $this->nombre; }
-  
-////////////////////////////////
-//  MÉTODOS DE LA CLASE
-////////////////////////////////
-  
-  //=============
-  public function getListTodos() {
-    return (new Salon)::all();
-  } // END-getListTodos
-    
-    
   //=============
   public function getIsActiveF() {
     return (($this->is_active) ? '<i class="bi-check-circle-fill">' : '<i class="bi-x">');
   } // END-getIsActiveF
+
+  
+    /**
+     * Retrona lista de Secciones, limitando por estado y los campos a $select.
+     * @return array
+     * @example echo (new Seccion)->getList();
+     * @example echo (new Seccion)->getLists(1, 'id, nombre');
+     */
+    public function getList($estado=null, $select='*') {
+      $DQL = "SELECT $select FROM ".self::$table;
+      
+      if (!is_null($estado)) {
+      $DQL .= " WHERE (is_active=?) ORDER BY position ";
+      return $this::all($DQL, array((int)$estado));
+      }
+
+      $DQL .= " ORDER BY position ";
+      return $this::all($DQL);
+  } // END-getList
+
+  
+  /**
+   * Retrona lista de Secciones activas, limitando los campos a $select.
+   * @return array
+   * @example echo (new Seccion)->getListActivos();
+   * @example echo (new Seccion)->getListActivos('id, nombre');
+   */
+  public function getListActivos(string $select='*'): array {
+      return $this->getList(1, $select);
+  }
+
+  /**
+   * Retrona lista de Secciones activas, limitando los campos a $select.
+   * @return array
+   * @example echo (new Seccion)->getListActivos();
+   * @example echo (new Seccion)->getListActivos('id, nombre');
+   */
+  public function getListInactivos(string $select='*'): array {
+      return $this->getList(0, $select);
+  }
+  
 
 }

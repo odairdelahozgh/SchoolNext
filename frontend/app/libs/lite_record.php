@@ -14,6 +14,13 @@
 
 //use Kumbia\ActiveRecord\LiteRecord as ORM;
 
+enum Estado: int
+{
+    case Activo = 1;
+    case Inactivo = 0;
+}
+
+
 class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 {    
     protected static $_defaults = array();
@@ -21,13 +28,13 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     protected static $_placeholders = array();
     protected static $_helps = array();
     protected static $_attribs = array();
-    protected static $user_id = 0;
+    protected static $session_user_id = 0;
 
     public function _beforeCreate() { // ANTES de CREAR el nuevo registro
         $ahora = date('Y-m-d H:i:s', time());
         $this->uuid = $this->UUIDReal(20);
-        $this->created_by = self::$user_id;
-        $this->updated_by = self::$user_id;
+        $this->created_by = self::$session_user_id;
+        $this->updated_by = self::$session_user_id;
         $this->created_at = $ahora;
         $this->updated_at = $ahora;
         $this->is_active = 1;
@@ -35,7 +42,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
       
     public function _beforeUpdate() { // ANTES de ACTUALIZAR el registro
         if (strlen($this->uuid)==0) { $this->uuid = $this->UUIDReal(20); }
-        $this->updated_by = self::$user_id;
+        $this->updated_by = self::$session_user_id;
         $this->updated_at = date('Y-m-d H:i:s', time());
     }
     
@@ -52,12 +59,13 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
       return '$'.number_format($valor);
     }
 
-      
     //=========
     const IS_ACTIVE = [
         0 => 'Inactivo',
-        1 => 'Activo'
+        1 => 'Activo',
     ];
+
+
 
     public function ico_is_active($attr="w3-small") {
         return (($this->is_active) ? '<span class="w3-text-green">'._Icons::solid('check',$attr).'</span>' : '<span class="w3-text-red">'._Icons::solid('xmark',$attr).'</span>');
@@ -65,10 +73,10 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 
     public function is_active_f($show_ico=false) {
         $ico = ($show_ico) ? $this->ico_is_active() : '' ;
-        return $ico.'&nbsp;'.self::IS_ACTIVE[$this->is_active];
+        $estado = $this->is_active ?? 0;
+        //$estado = Estado::tryFrom($this->is_active) ?? Estado::INACTIVO;
+        return $ico.'&nbsp;'.self::IS_ACTIVE[$estado];
     }
-
-    
 
     //Universally Unique IDentifier Generator optimized
     public function UUIDReal(int $lenght):string {
@@ -83,7 +91,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     }
     
     
-    public function setUUIDAll_ojo($long=13) {
+    public function setUUID_All_ojo($long=13) {
       $Todos = $this::all();
       foreach ($Todos as $key => $reg) {
         $reg->uuid = $this->UUIDReal($long);
@@ -103,5 +111,5 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     }
 
 
-
+    
 }

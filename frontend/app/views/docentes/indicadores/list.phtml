@@ -15,15 +15,15 @@
    <?php
       $result = '';
       foreach ($data as $periodo => $regs_periodo) {
-         $tabla = new OdaTable('class="w3-table w3-striped "');
+         $tabla = new OdaTable();
          $att2 = array('style="width:10%"');
-         $tabla->caption('Periodo '.$periodo);
+         $tabla->setCaption('Periodo '.$periodo);
          foreach ($regs_periodo as $key => $indic) {
             $cod = '<u>'.$indic->codigo.' '.$indic->valorativo.'</u><br>';
             $data=array($cod.$indic->concepto);
             $t1=($themei=='d'?'d1':'l1');      $t2=($themei=='d'?'d2':'l3');
             $attr = 'class="w3-theme-'.((($key%2)==0) ? $t1:$t2).'"';
-            $tabla->body($data, $attr);
+            $tabla->setBody($data, $attr);
          }
          $display = ($periodo!=1) ? "style=\"display:none\"" : '' ;
          $result .= "<div id=\"p$periodo\" class=\"tab w3-card-4 w3-padding\" $display >";

@@ -15,7 +15,7 @@ class GradosController extends AppController
     public function list() {
         $this->page_action = 'Lista de Grados';
         $this->breadcrumb  = $this->bc('Grados');
-        $this->data = (new Grado)->getList();
+        $this->data = (new Grado)->getListSeccion();
         $this->tot_regs = count($this->data);
     }
     
@@ -23,7 +23,7 @@ class GradosController extends AppController
 	private function reglas() {
 	
 		return array(
-            'grados.nombre' => [
+            'grados.abrev' => [
                 'required' => ['error' => 'El nombre es obligatorio.'],
             ],
             /*
@@ -75,14 +75,25 @@ class GradosController extends AppController
      * Crea un Registro
      */
     public function create() {
+        $this->page_action = 'CREAR Registro';
         $Grado = new Grado(true);
+        $this->secciones = (new Seccion)->getListActivos('id, nombre');
+        $this->salones   = (new Salon)->getListActivos('id, nombre');
+        $this->grados    = (new Grado)->getListActivos('id, nombre');
+
         if (Input::hasPost('grados')) {
+/*             $validador = new Validate(Input::post('grados.nombre'), $this->reglas() );
+            if (!$validador->exec()) {
+                $validador->flash();
+                //OdaFlash::error('Falló Operación VALIDAR :: Crear Registro');
+                return false;
+            } */
             if ( $Grado->create(Input::post('grados'))) {
-                OdaFlash::valid('Operación exitosa :: Crear Registro Grado');
+                OdaFlash::valid('Operación exitosa :: Crear Registro');
                 Input::delete();
                 return Redirect::to(); // al index del controller
             }
-            OdaFlash::error('Falló Operación :: Crear Registro Grado');
+            OdaFlash::error('Falló Operación :: Crear Registro');
         }
     }
    
@@ -92,7 +103,12 @@ class GradosController extends AppController
      * @param int $id (requerido)
      */
     public function edit($id=0) {
+        $this->page_action = 'EDITAR un Registro';
         $Grado = new Grado();
+        $this->secciones = (new Seccion)->getListActivos('id, nombre');
+        $this->salones   = (new Salon)->getListActivos('id, nombre');
+        $this->grados    = (new Grado)->getListActivos('id, nombre');
+        
         if (Input::hasPost('grados')) {
             if ($Grado->update(Input::post('grados'))) {
                 OdaFlash::valid('Operación exitosa: Se guardó el registro');

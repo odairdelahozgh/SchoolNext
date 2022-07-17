@@ -75,13 +75,13 @@ class OdaForm extends Form {
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
    public function addInput(int $columna=1, string $tipo, string $field, $attr='', $inline=false) {
-      $attr        = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-      $fieldname   = $this->_fname.'.'.trim($field);
-      $label       = $this->getLabel($field, $inline);
-      $help        = $this->getHelp($field);
-      $value_input = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
+      $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+      $fieldname  = $this->_fname.'.'.trim($field);
+      $label      = $this->getLabel($field, $inline);
+      $help       = $this->getHelp($field);
+      $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
 
-      $campo_input = $this::input($tipo, $fieldname, $attr, $value_input);
+      $campo_input = $this::input($tipo, $fieldname, $attr, $value);
       $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label><br>";
    } // END-addInput
 
@@ -95,7 +95,7 @@ class OdaForm extends Form {
     * @return string
     * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
     */
-    public function addSelect(int $columna, string $field, array $data, string $attr='') {
+   public function addSelect(int $columna, string $field, array $data, string $attr='') {
       $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = trim($this->_fname.'.'.$field);
       $label       = $this->getLabel($field);
@@ -104,16 +104,77 @@ class OdaForm extends Form {
 
       $campo_select = $this::select($fieldname, $data, $attr, $value);
       $this->_ffields[(int)$columna] .= "<br><label> $label" .$campo_select .$help ."</label><br>";
-   } // END-addInput
+   } // END-addSelect
 
    
+   
+   /**
+    * Retorna un campo CHECKBOX.
+    * @param string            $field:      Nombre del campo en la tabla.
+    * @param string|Integer    $radioValue: Valor por defecto.
+    * @param string/array      $attrs:      atributos html.
+    * @param bool              $checked:    .
+    * @example echo $myForm->addCheck(2, 'is_active', 'class="w3-red"');
+    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+    */
+    public function addCheck(int $columna, string $field, string|array $attr=''){
+      $label = $this->getLabel($field);
+      $help  = $this->getHelp($field);
+      
+      $value = ($this->_isEdit) ? $this->_modelo->$field : 0;
+      $check = Form::check($field, $value, $attr).'<br>'.$help;
+      
+      $this->_ffields[(int)$columna] .= "<br><label> $label" .$check .$help ."</label><br>";
+   }
+
+   
+   /**
+    * Retorna un campos radio button.
+    * @param string            $field:      Nombre del campo en la tabla.
+    * @param string|Integer    $radioValue: Valor por defecto.
+    * @param string/array      $attrs:      atributos html.
+    * @param bool              $checked:    .
+    * @return string
+    * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
+    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
+    */
+   public function addRadio(int $columna, string $field, string|array $attrs='', bool $checked=false){
+      /*
+      <fieldset>
+         <legend>Select a maintenance drone:</legend>
+         <div>
+            <input type="radio" id="huey" name="drone" value="huey"
+                  checked>
+            <label for="huey">Huey</label>
+         </div>
+         <div>
+            <input type="radio" id="louie" name="drone" value="louie">
+            <label for="louie">Louie</label>
+         </div>
+      </fieldset>
+       */
+      $value_defa = ($this->_isEdit) ? $this->_modelo->$field : 1;
+      $help  = $this->getHelp($field);
+      
+      $radio_group = '<div class="w3-bar">';
+      foreach ($this->getDefault($field) as $key_radio => $value_radio) {
+         $checked = ($value_defa==$key_radio) ? true : false ;
+         $radio_group .= "<div class=\"w3-bar-item\">$value_radio&nbsp;&nbsp;".Form::radio($field, $key_radio, $attrs, $checked).'</div>  ';
+      }
+      $radio_group .= '</div>'.$help;
+
+      $label = $this->getLabel($field);
+      $campo_radio = self::createFieldset($radio_group, $label);
+      $this->_ffields[(int)$columna] .= '<br>'.$campo_radio;
+   }
+
    /**
     * Establece el número de columnas que tendrá el formuario.
     * @param int $max_cols: número de columnas del formulario.
     * @return void
     * @example echo $myForm->setColumnas(2);
     */
-    public function setEdit() {
+   public function setEdit() {
       $this->_isEdit = true;
    }
 
@@ -133,7 +194,7 @@ class OdaForm extends Form {
     * @return void
     * @example echo $myForm->setColumnas(2);
     */
-    public function setAtrib(string|array $attrs = '') {
+   public function setAtrib(string|array $attrs = '') {
       $this->_fattrs = self::getAttrs($attrs);
    }
 
@@ -157,8 +218,8 @@ class OdaForm extends Form {
    } // END-getHelp
 
    private function getPlaceholder($field) {
-      $requerido = ($this->isRequired($field)) ? 'obligatorio ' : '' ;
-      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$requerido.': '.$this->_modelo->getPlaceholder($field).'" ' : '') ;
+      $requerido = ($this->isRequired($field)) ? 'obligatorio: ' : '' ;
+      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$requerido.$this->_modelo->getPlaceholder($field).'" ' : '') ;
    } // END-getPlaceholder
 
    private function getAttrib($field) {

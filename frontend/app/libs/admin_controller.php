@@ -18,7 +18,7 @@ require_once CORE_PATH . 'kumbia/controller.php';
 abstract class AdminController extends Controller
 {
     public $page_action = '';
-    public $page_title  = 'T¨ªtulo P¨¢gina';
+    public $page_title  = 'Titulo Pagina';
     public $breadcrumb  = 'Inicio';
 
     public $theme       = 'dark';

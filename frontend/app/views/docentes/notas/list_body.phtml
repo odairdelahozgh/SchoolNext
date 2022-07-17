@@ -7,8 +7,8 @@
          if (isset($regs_periodo[0])) {
             $tabbuttons .= "<button class=\"w3-bar-item w3-mobile w3-button tablink w3-theme-action\" 
                               onclick=\"openTab(event,'p$periodo')\">Periodo $periodo</button>";
-            $tabla = new OdaTable('class="w3-table w3-striped "');
-            $tabla->caption('PERIODO '.$periodo, 'class="w3-left"');
+            $tabla = new OdaTable();
+            $tabla->setCaption('PERIODO '.$periodo, 'class="w3-left"');
             foreach ($regs_periodo as $key => $nota) {
               
               $foto = _Tag::img("upload/estudiantes/$nota->estudiante_id.png",$nota->estudiante_id,
@@ -19,19 +19,19 @@
               $t1=($themei=='d'?'d1':'l1');      $t2=($themei=='d'?'d2':'l3');
               $attr = "id=\"$nota->id-1\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
               $attr2 = array('class="w3-center" rowspan="3"' , 'colspan="10"');
-              $tabla->body($fila1, $attr, $attr2);
+              $tabla->setBody($fila1, $attr, $attr2);
                
               $fila2 = array($nota->i01, $nota->i02, $nota->i03, $nota->i04, $nota->i05, 
                              $nota->i06, $nota->i07, $nota->i08, $nota->i09, $nota->i10);
               $attr = "id=\"$nota->id-2\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
               $str = 'style="width:8%"'.str_repeat(',style="width:8%"',9);
               $attr2 = explode(',',$str);
-              $tabla->body($fila2, $attr, $attr2);
+              $tabla->setBody($fila2, $attr, $attr2);
               
               $fila3 = array($nota->i11, $nota->i12, $nota->i13, $nota->i14, $nota->i15, 
                              $nota->i16, $nota->i17, $nota->i18, $nota->i19, $nota->i20);
               $attr = "id=\"$nota->id-3\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
-              $tabla->body($fila3, $attr, $attr2);
+              $tabla->setBody($fila3, $attr, $attr2);
             }
             $display = ($periodo!=1) ? "style=\"display:none\"" : '' ;
             $result .= "<div id=\"p$periodo\" class=\"tab w3-card-4 w3-padding\" $display >";

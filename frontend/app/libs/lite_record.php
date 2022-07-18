@@ -73,9 +73,8 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 
     public function is_active_f($show_ico=false) {
         $ico = ($show_ico) ? $this->ico_is_active() : '' ;
-        $estado = $this->is_active ?? 0;
-        //$estado = Estado::tryFrom($this->is_active) ?? Estado::INACTIVO;
-        return $ico.'&nbsp;'.self::IS_ACTIVE[$estado];
+        $estado = Estado::from((int)$this->is_active) ?? Estado::Inactivo;
+        return $ico.'&nbsp;'.$estado->name;
     }
 
     //Universally Unique IDentifier Generator optimized

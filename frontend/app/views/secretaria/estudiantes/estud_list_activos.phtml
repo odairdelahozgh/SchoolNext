@@ -23,7 +23,7 @@
             <tr <?= $row_type?> >
               <td>
                  <?= $estud->getFoto(); ?><br/> 
-                 <span class="w3-red"> <?= Html::linkAction("estud_edit_activos/$estud->id/", 'Editar '._Icons::solid('pen-to-square', 'w3-large'));?></span>
+                 <span class="w3-red"> <?= Html::linkAction("estud_edit_activos/$estud->id/", 'Modificar '._Icons::solid('pen-to-square', 'w3-large'));?></span>
               </td>
               <td class="searchTdata">
                  <b><u><?= strtoupper($estud->estud);?></u></b> <br/>

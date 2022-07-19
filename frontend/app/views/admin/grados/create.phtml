@@ -22,8 +22,8 @@
           $myForm->addSelect(2, 'proximo_grado', $grados, 'required pattern="'.implode('|', $grados).'"') ;
           $myForm->addSelect(2, 'proximo_salon', $salones, 'required pattern="'.implode('|', $salones).'"') ;
 
-          $myForm->addHiddens('created_by,updated_by,created_at,updated_at');
-          
+          $myForm->addHiddens('is_active,created_by,updated_by,created_at,updated_at');
+
           echo $myForm;
     ?>
 

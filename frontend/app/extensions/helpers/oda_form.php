@@ -103,28 +103,29 @@ class OdaForm extends Form {
       $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
 
       $campo_select = $this::select($fieldname, $data, $attr, $value);
-      $this->_ffields[(int)$columna] .= "<br><label> $label" .$campo_select .$help ."</label><br>";
+      $this->_ffields[(int)$columna] .= "<br><label> $label $campo_select $help </label><br>";
    } // END-addSelect
 
    
    
    /**
     * Retorna un campo CHECKBOX.
-    * @param string            $field:      Nombre del campo en la tabla.
-    * @param string|Integer    $radioValue: Valor por defecto.
-    * @param string/array      $attrs:      atributos html.
-    * @param bool              $checked:    .
+    * @param integer           $columna: Columna en que se muestra.
+    * @param string            $field:   Nombre del campo en la tabla.
+    * @param string/array      $attrs:   Atributos html.
     * @example echo $myForm->addCheck(2, 'is_active', 'class="w3-red"');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
     */
     public function addCheck(int $columna, string $field, string|array $attr=''){
+      $fieldname  = trim($this->_fname.'.'.$field);
       $label = $this->getLabel($field);
       $help  = $this->getHelp($field);
-      
-      $value = ($this->_isEdit) ? $this->_modelo->$field : 0;
-      $check = Form::check($field, $value, $attr).'<br>'.$help;
-      
-      $this->_ffields[(int)$columna] .= "<br><label> $label" .$check .$help ."</label><br>";
+      $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+      $value = ($value) ?: 0;
+      $is_checked = ($value) ? true : false ;
+
+      $check = Form::check($fieldname, $value, $attr, $is_checked).'<br>'.$help;
+      $this->_ffields[(int)$columna] .= "<br><label> $label $check </label><br>";
    }
 
    

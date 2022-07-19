@@ -16,7 +16,6 @@ class Grado extends LiteRecord
   protected static $table = 'sweb_grados';
 
   public function __construct() {
-    self::$session_user_id = Session::get('id');
     self::$_defaults     = $this->getTDefaults();
     self::$_labels       = $this->getTLabels();
     self::$_placeholders = $this->getTPlaceholders();
@@ -70,14 +69,13 @@ class Grado extends LiteRecord
   }
 
   /**
-   * Retrona lista de Secciones activas, limitando los campos a $select.
+   * Retrona lista de Secciones Inactivas, limitando los campos a $select.
    * @return array
    * @example echo (new Seccion)->getListActivos();
    * @example echo (new Seccion)->getListActivos('id, nombre');
    */
   public function getListInactivos(string $select='*'): array {
       return $this->getList(0, $select);
-  }
-  
+  } 
   
 }

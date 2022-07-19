@@ -20,8 +20,8 @@
         $myForm->addInput(2,  'number', 'orden');
         $myForm->addSelect(2, 'proximo_grado', $grados, 'required pattern="'.implode('|', $grados).'"') ;
         $myForm->addSelect(2, 'proximo_salon', $salones, 'required pattern="'.implode('|', $salones).'"') ;
-        //$myForm->addInput(2,  'number', 'is_active');
-        $myForm->addRadio(2, 'is_active');
+        $myForm->addCheck(2, 'is_active');
+        
         $myForm->addHiddens('id,uuid,created_by,created_at,updated_by,updated_at');
         echo $myForm;
     ?>

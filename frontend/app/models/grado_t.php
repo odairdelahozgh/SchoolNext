@@ -1,37 +1,52 @@
 <?php
 
 trait GradoT {
-  
+
+    // En la nueva versión se eliminarán estpa dos campos: matricula_palabras y pension_palabras
+    public function _beforeCreate() { // Antes de Crear el nuevo registro
+        parent::_beforeCreate();
+        $this->abrev = strtoupper($this->abrev);
+        $this->matricula_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_matricula));
+        $this->pension_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_pension));
+    }
+    
+    public function _beforeUpdate() { // Antes de Crear el nuevo registro
+        parent::_beforeUpdate();
+        $this->matricula_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_matricula));
+        $this->pension_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_pension));
+    }
+
     public function __toString() {
         return $this->nombre;
     } // END-toString
+
     
     public function getTLabels() {
         return 
             array(
-                'is_active'          => 'Está Activo?',
-                'orden'              => 'Orden:',
-                'nombre'             => 'Nombre del Grado:',
-                'abrev'              => 'Abreviatura:',
-                'seccion_id'         => 'Sección:',
-                'salon_default'      => 'Salón por defecto:',
-                'valor_matricula'    => 'Valor Matrícula:',
-                'matricula_palabras' => 'Valor Matrícula en palabras:',
-                'valor_pension'      => 'Valor Pensión:',
-                'pension_palabras'   => 'Valor Pensión en palabras:',
-                'proximo_grado'      => 'Próximo Grado:',
-                'proximo_salon'      => 'Próximo Salon:',
-                'created_by'         => 'Creado por:',
-                'updated_by'         => 'Actualizado por:',
-                'created_at'         => 'Creado:',
-                'updated_at'         => 'Actualizado:',
+                'is_active'          => 'Está Activo? ',
+                'orden'              => 'Orden: ',
+                'nombre'             => 'Nombre del Grado: ',
+                'abrev'              => 'Abreviatura: ',
+                'seccion_id'         => 'Sección: ',
+                'salon_default'      => 'Salón por defecto: ',
+                'valor_matricula'    => 'Valor Matrícula: ',
+                'matricula_palabras' => 'Valor Matrícula en palabras: ',
+                'valor_pension'      => 'Valor Pensión: ',
+                'pension_palabras'   => 'Valor Pensión en palabras: ',
+                'proximo_grado'      => 'Próximo Grado: ',
+                'proximo_salon'      => 'Próximo Salon: ',
+                'created_at'         => 'Creado el: ',
+                'created_by'         => 'Creado por: ',
+                'updated_at'         => 'Actualizado el: ',
+                'updated_by'         => 'Actualizado por: ',
           );
     }
 
     public function getTDefaults() {
         return 
             array(
-                'is_active'          => array(0=>'No Activo', 1=>'Activo'),
+                'is_active'          => 1,
                 'orden'              => 1,
                 'nombre'             => '',
                 'abrev'              => '',
@@ -112,19 +127,5 @@ trait GradoT {
             );
     }
     
-    public function _beforeCreate() { // Antes de Crear el nuevo registro
-        parent::_beforeCreate();
-        $this->abrev = strtoupper($this->abrev);
-        $this->matricula_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_matricula));
-        $this->pension_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_pension));
-    }
-    
-    public function _beforeUpdate() { // Antes de Crear el nuevo registro
-        parent::_beforeUpdate();
-        $this->matricula_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_matricula));
-        $this->pension_palabras = strtolower(OdaUtils::getNumeroALetras($this->valor_pension));
-    }
-
-
     
 }

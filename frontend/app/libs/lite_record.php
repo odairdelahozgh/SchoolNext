@@ -14,10 +14,30 @@
 
 //use Kumbia\ActiveRecord\LiteRecord as ORM;
 
-enum Estado: int
-{
-    case Activo = 1;
+// $this->name => $this->value
+// Estado::cases();
+
+/**
+ * @link https://www.php.net/manual/es/language.enumerations.expressions.php
+ */
+enum Estado: int {
+    case Activo   = 1;
     case Inactivo = 0;
+    
+    public function label(): string {
+        return match($this) {
+            static::Activo   => 'Activo',
+            static::Inactivo => 'Inactivo',
+        };
+    }
+    
+    public function labelIcon($attr="w3-small"): string {
+        return match($this) {
+            static::Activo   => '<span class="w3-text-green">'._Icons::solid('check',$attr).'</span> '.$this->label(),
+            static::Inactivo => '<span class="w3-text-red">'  ._Icons::solid('xmark',$attr).'</span> '.$this->label(),
+        };
+    }
+
 }
 
 
@@ -29,6 +49,10 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     protected static $_helps = array();
     protected static $_attribs = array();
     protected static $session_user_id = 0;
+
+    public function __construct() {
+        self::$session_user_id = Session::get('id');
+    }
 
     public function _beforeCreate() { // ANTES de CREAR el nuevo registro
         $ahora = date('Y-m-d H:i:s', time());
@@ -55,26 +79,15 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     public function getHelp($field)        { return ((array_key_exists($field, self::$_helps)) ? self::$_helps[$field]: ''); }
     public function getAttrib($field)      { return ((array_key_exists($field, self::$_attribs)) ? self::$_attribs[$field]: ''); }
     
-    public static function valor_moneda($valor){
-      return '$'.number_format($valor);
-    }
-
-    //=========
-    const IS_ACTIVE = [
-        0 => 'Inactivo',
-        1 => 'Activo',
-    ];
-
-
-
-    public function ico_is_active($attr="w3-small") {
-        return (($this->is_active) ? '<span class="w3-text-green">'._Icons::solid('check',$attr).'</span>' : '<span class="w3-text-red">'._Icons::solid('xmark',$attr).'</span>');
-    }
+    // //=========
+    // const IS_ACTIVE = [
+    //     0 => 'Inactivo',
+    //     1 => 'Activo',
+    // ];
 
     public function is_active_f($show_ico=false) {
-        $ico = ($show_ico) ? $this->ico_is_active() : '' ;
         $estado = Estado::from((int)$this->is_active) ?? Estado::Inactivo;
-        return $ico.'&nbsp;'.$estado->name;
+        return $estado->labelIcon();
     }
 
     //Universally Unique IDentifier Generator optimized
@@ -108,7 +121,14 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
         $source  = static::getSource();
         return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
     }
-
-
+ 
+    public static function valor_moneda($valor){
+        return '$'.number_format($valor);
+    }
+  
+    public function aLetras($valor) {
+          return strtolower(OdaUtils::getNumeroALetras($valor));
+    }
     
+      
 }

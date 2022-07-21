@@ -23,9 +23,6 @@ class Estudiante extends LiteRecord
   public function getLabel($field) { return ((array_key_exists($field, self::$_labels)) ? self::$_labels[$field] : $field.': '); }
   public function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }
   public function getHelp($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_helps[$field]: ''); }
-  
-  protected function initialize() {
-  }
 
   /*  CALLBACKS:
   before_validation, before_validation_on_create, before_save, before_update, before_validation_on_update, before_create

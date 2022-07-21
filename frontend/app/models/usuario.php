@@ -1,73 +1,24 @@
 <?php
-Load::lib('auth2');
+/**
+  * Modelo de Usuario  
+  * @category App
+  * @package Models 
+  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
+  */
 
-class Usuario extends ActiveRecord
+class Usuario extends LiteRecord
 {
-    protected $source = 'dm_user';
-      
-    const IS_ACTIVE = [
-        0 => 'Inactivo',
-        1 => 'Activo'
-      ];
-    
-    public $before_delete = 'no_borrar_activos';
-    public function no_borrar_activos() {
-        if($this->is_active==1) {
-            Flash::warning('No se puede borrar un registro activo');
-            return 'cancel';
-        }
-    }
-
-    public function after_delete() {
-        Flash::valid("Se borró el registro $this->id");
-    }
-
-    public function before_create() { 
-        $this->is_active = 1; 
-    }
-
-    public function before_save() {            
-        $rs = $this->find_first("documento = $this->documento");
-        if($rs) {
-            Flash::warning('Ya existe un usuario registrado bajo esta cédula');
-            return 'cancel';
-        }                
-    }
-
-    /**
-      * Retorna TODOS los registros del modelo Salon sin paginación
-      */
-    public function getList() {
-        return (new Usuario)->find();
-    }
-
-   /**
-      * Retorna TODOS los registros del modelo Usuario para ser paginados
-      * @param int $page  [requerido] página a visualizar
-      * @param int $ppage [opcional] por defecto 20 por página
-      */
-    public function getUsuarios($page, $ppage=50) {
-        return $this->paginate("page: $page", "per_page: $ppage", 'order: id desc');
-    }
-
-   /**
-      * Retorna los registros ACTIVOS del modelo Salon para ser paginados
-      * @param int $page  [requerido] página a visualizar
-      * @param int $ppage [opcional] por defecto 20 por página
-      */
-    public function getUsuariosActivos($page, $ppage=50) {
-        return $this->paginate("page: $page", 'conditions: is_active=1' , "per_page: $ppage", 'order: id desc');
-    }
-
-   /**
-      * Retorna los registros INACTIVOS del modelo Salon para ser paginados
-      * @param int $page  [requerido] página a visualizar
-      * @param int $ppage [opcional] por defecto 20 por página
-      */
-    public function getUsuariosInactivos($page, $ppage=50) {
-        return $this->paginate("page: $page", 'conditions: is_active=0' , "per_page: $ppage", 'order: id desc');
-    }
-    
+  use UsuarioT;
+  protected static $table = 'dm_user';
+  
+  public function __construct() {
+    self::$_defaults     = $this->getTDefaults();
+    self::$_labels       = $this->getTLabels();
+    self::$_placeholders = $this->getTPlaceholders();
+    self::$_helps        = $this->getTHelps();
+    self::$_attribs      = $this->getTAttribs();
+  }
+  
    //=========
    public function __toString() {
     return $this->getNombreCompleto('a1 a2 n');
@@ -105,55 +56,4 @@ class Usuario extends ActiveRecord
     public function getIsActiveF() {
         return (($this->is_active) ? '<i class="bi-check-circle-fill">' : '<i class="bi-x">');
     }
-
-    /**
-     * Iniciar sesion
-     *
-     */
-    public function login() {
-        $auth = Auth2Odair::factory('model'); // Obtiene el adaptador
-        $auth->setModel('Usuario'); // Modelo que utilizará para consultar
-        $auth->setFields(array('id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'identificacion', 'usuario_instit', 'clave_instit', 'theme'));
-        $auth->setLogin('username');
-        $auth->setPass('password');
-        $auth->setAlgos('sha1');
-        $auth->setKey('usuario_logged');
-        
-        $estePeriodo = (new Periodo)->getPeriodoActual();
-        Session::set('annio',        (int)Config::get('academico.annio_actual'));
-        Session::set('periodo',      (int)Config::get('academico.periodo_actual'));
-        Session::set('fecha_inicio', $estePeriodo->fecha_inicio);
-        Session::set('fecha_fin',    $estePeriodo->fecha_fin);
-        Session::set('f_ini_notas',  $estePeriodo->f_ini_notas);
-        Session::set('f_fin_notas',  $estePeriodo->f_fin_notas);
-        Session::set('f_open_day',   $estePeriodo->f_open_day);
-        
-        if($auth->identify()) return true;
-
-        if ($auth->getError()) {
-            OdaFlash::error($auth->getError());
-        }
-        return false;
-    }
-
-    /**
-     * Terminar sesion
-     * 
-     */
-    public function logout() {
-        $auth = Auth2Odair::factory('model'); // Obtiene el adaptador
-        $auth->setModel('Usuario'); // Modelo que utilizará para consultar
-        $auth->logout();
-    }
-
-    /**
-     * Verifica si el usuario esta autenticado
-     * 
-     * @return boolean
-     */
-    public function logged() {
-        return Auth2Odair::factory('model')->isValid();
-    }
-
-
 }

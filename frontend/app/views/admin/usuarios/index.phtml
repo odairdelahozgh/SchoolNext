@@ -1,0 +1,40 @@
+<div id="scaffold" class="w3-container">
+    <?php View::content()?>
+
+    <h1><?= ucwords("$model"), ": <span>$action_name</span>" ?></h1>
+    <div class="actions">
+        <?= Html::linkAction("crear/", 'Crear registro', 'class="w3-btn w3-btn-primary"')?>
+    </div>
+
+    <?php if (isset($data) && (count($data) > 0)) : ?>
+        <table id="myTable" class="w3-table-all w3-responsive">
+            <thead>
+                <tr class="w3-theme">
+                    <?php echo OdaTable::multiTags($arrColumnas, 'th') ?>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($data as $key1 => $item) : ?>
+                    <?php $row_type = ($key1%2==0 ) ? 'class="item w3-theme-d1"' : 'class="item w3-theme-d3"' ; ?>
+                    <tr <?= $row_type?> >
+                            <td><?= $item->is_active_f() ?></td>
+                            <td><?= $item->id ?></td>
+                            <td><?= $item->username ?></td>
+                            <td><?= $item->documento ?></td>
+                            <td><?= $item->getNombreCompleto2('n a1 a2', true, true) ?></td>
+                        <td>
+                            <?= Html::linkAction("ver/$item->id", 'Ver')?> |
+                            <?= Html::linkAction("editar/$item->id", 'Editar')?> |
+                            <?= Html::linkAction("borrar/$item->id", 'Borrar', 'onclick="return confirm(\'¿Está seguro?\')"') ?>
+                        </td>
+                    </tr>
+                <?php endforeach?>
+            </tbody>
+        </table>
+        <?php // View::partial('paginators/digg', false, array('per_page'=>30, 'page' => $data ,'url' => Router::get('controller_path').'/index')) ?>
+
+    <?php else : ?>
+        <h2>No hay registros para mostrar</h2>
+    <?php endif ?>
+</div>

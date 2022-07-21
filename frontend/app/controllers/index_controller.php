@@ -28,7 +28,7 @@ class IndexController extends AppController
 
 
     public function logout() {
-        Load::model('Usuario')->logout();
+        Load::model('User')->logout();
         Redirect::toAction('login');
     }
 

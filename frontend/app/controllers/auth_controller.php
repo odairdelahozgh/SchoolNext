@@ -23,11 +23,11 @@ class AuthController extends AdminController
         $this->copy_right       = Config::get('construxzion.copy');
         $this->copy_text        = Config::get('construxzion.copy_text');
         View::template('login');
-        if(Load::model('usuario')->login()) { Redirect::to('index'); }
+        if(Load::model('user')->login()) { Redirect::to('index'); }
     } 
 
     public function logout() {
-        Load::model('usuario')->logout();
+        Load::model('user')->logout();
         Redirect::toAction('login');
     }
 

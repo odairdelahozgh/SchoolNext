@@ -1,13 +1,19 @@
 <?php
 /**
- *
- * Clase para el manejo de texto y otras cosas
- *
+ * Clase con diversas utilidades
+ * ::camelcase($str, $lower = false)
+ * ::smallcase($str)
+ * ::smallcase($str)
+ * ::underscore($str)
+ * ::dash($str)
+ * ::humanize($str)
+ * ::getParams($params)
+ * ::encomillar($lista)
+ * 
  * @package     Libs
  */
 
-class OdaUtils {
-
+class OdaUtils extends Util {
 
     //====================
     public static function random($length = 8) {

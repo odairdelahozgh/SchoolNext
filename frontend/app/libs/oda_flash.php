@@ -57,11 +57,14 @@ class OdaFlash {
         Session::set('flash_message', self::$_contentMsj);
         if($audit) {  //Verifico si el mensaje se almacena como looger (auditoria)
             if($name=='success') {
-                DwAudit::debug($msg);
+                //DwAudit::debug($msg);
+                OdaLog::set('INFO', $msg, '');
             } else if($name=='danger') {
-                DwAudit::error($msg);
+                //DwAudit::error($msg);
+                OdaLog::set('DEBUG', $msg, '');
             } else {
-                DwAudit::$name($msg);                
+                //DwAudit::$name($msg);                
+                OdaLog::set('ERROR', $msg, '');             
             }
         }            
     }

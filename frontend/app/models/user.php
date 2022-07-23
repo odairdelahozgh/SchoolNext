@@ -110,14 +110,16 @@ class User extends ActiveRecord
      *
      */
     public function login() {
+        
         $auth = Auth2Odair::factory('model'); // Obtiene el adaptador
         $auth->setModel('User'); // Modelo que utilizará para consultar
-        $auth->setFields(array('id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'identificacion', 'usuario_instit', 'clave_instit', 'theme'));
+        $auth->setFields(array('id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'documento', 'usuario_instit', 'clave_instit', 'theme'));
         $auth->setLogin('username');
         $auth->setPass('password');
         $auth->setAlgos('sha1');
         $auth->setKey('usuario_logged');
         
+        Session::set('ip', OdaUtils::getIp() );
         $estePeriodo = (new Periodo)->getPeriodoActual();
         Session::set('annio',        (int)Config::get('academico.annio_actual'));
         Session::set('periodo',      (int)Config::get('academico.periodo_actual'));

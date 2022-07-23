@@ -103,7 +103,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     }
     
     
-    public function setUUID_All_ojo($long=13) {
+    public function setUUID_All_ojo($long=20) {
       $Todos = $this::all();
       foreach ($Todos as $key => $reg) {
         $reg->uuid = $this->UUIDReal($long);
@@ -120,6 +120,19 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     public static function deleteUUID($uuid): bool {
         $source  = static::getSource();
         return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
+    }
+
+    /**
+     * Buscar por UUID.
+     *
+     * @param  string       $uuid valor para clave primaria
+     * @param  string       $fields campos que se desean obtener separados por coma
+     * 
+     * @return self|false
+     */
+    public static function get_uuid(string $uuid, string $fields = '*') {
+        $sql = "SELECT $fields FROM ".static::getSource().' WHERE uuid = ?';
+        return static::query($sql, [$uuid])->fetch();
     }
  
     public static function valor_moneda($valor){

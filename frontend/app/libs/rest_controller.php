@@ -14,7 +14,10 @@
  */
 require_once CORE_PATH . 'kumbia/kumbia_rest.php';
 abstract class RestController extends KumbiaRest {
-
+    protected $users = array(
+        'admin' => '123456',
+        'ashrey' => '0000'
+    );
     /**
      * Inicialización de la petición
      * ****************************************
@@ -22,7 +25,15 @@ abstract class RestController extends KumbiaRest {
      * ****************************************
      */
     final protected function initialize() {
-        
+/*         $user = isset($_SERVER['PHP_AUTH_USER']) ? filter_var($_SERVER['PHP_AUTH_USER']) : null;
+        $pass = isset($_SERVER['PHP_AUTH_PW']) ? filter_var($_SERVER['PHP_AUTH_PW']) : null;
+        if (isset($this->users[$user]) && ($this->users[$user] == $pass)) {
+            return true;
+        } else {
+            $this->data = $this->error("Fail authentication", 401);
+            header('WWW-Authenticate: Basic realm="Private Area"');
+            return false;
+        } */
     }
 
     final protected function finalize() {

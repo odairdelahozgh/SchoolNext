@@ -33,7 +33,7 @@ class DwAudit extends Logger {
     /**
      * Inicializa el Logger
      */
-    public static function initialize($name='') {
+    public static function initialize(string $name=''):void {
         if(empty($name)){
             self::$_logName = 'audit-' . date('Y-m-d') . '.txt';
         }        
@@ -49,7 +49,7 @@ class DwAudit extends Logger {
      * @param string $msg
      * @param string $name_log
      */
-    public static function log($type='DEBUG', $msg, $name_log) {
+    public static function log(string $type='DEBUG', string|array $msg, string $name_log): void {
         self::initialize($name_log);        
         $msg = trim(trim($msg),'.').'.';
         parent::log($type, '['.self::$_route.']['.self::$_login.']['.self::$_ip.'] '.$msg, self::$_logName);
@@ -62,7 +62,7 @@ class DwAudit extends Logger {
      * @param string $msg
      * @param string $name_log
      */
-    public static function warning ($msg, $name_log='') {
+    public static function warning (string $msg, string $name_log = ''): void {
         self::log('WARNING', $msg, $name_log);
     }
 
@@ -73,7 +73,7 @@ class DwAudit extends Logger {
      * @param string $msg
      * @param string $name_log
      */
-    public static function error ($msg, $name_log='') {
+    public static function error (string|array $msg, string $name_log = ''): void {
         self::log('ERROR', $msg, $name_log);
     }
     
@@ -84,7 +84,7 @@ class DwAudit extends Logger {
      * @param string $msg
      * @param string $name_log
      */
-    public static function debug ($msg, $name_log='') {
+    public static function debug (string|array $msg, string $name_log = ''): void {
         self::log('DEBUG', $msg, $name_log);
     }
 
@@ -95,7 +95,7 @@ class DwAudit extends Logger {
      * @param string $msg
      * @param string $name_log
      */
-    public static function info ($msg, $name_log='') {
+    public static function info (string|array $msg, string $name_log = ''): void {
         self::log('INFO', $msg, $name_log);
     }
 }

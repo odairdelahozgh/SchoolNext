@@ -13,7 +13,7 @@
          <tr class="w3-theme">
             <th style="width:10%;">Actions</th>
             <th style="width:60%;">Estudiante</th>
-            <th style="width:30%;">Cambiar Salón</th>
+            <th style="width:30%;">Cambiar Salon</th>
          </tr>
       </thead>
       
@@ -21,16 +21,17 @@
          <?php foreach($data as $key => $estud) : ?>
             <?php $row_type = ($key%2==0 ) ? 'class="item w3-theme"' : 'class="item w3-theme"' ; ?>
             <tr <?= $row_type?> >
-              <td>
+              <td class="searchTdata w3-center">
+                 <?=$estud->salon ?> <br/>
                  <?= $estud->getFoto(); ?><br/> 
+                 <?=$estud->documento?><br/>
                  <span class="w3-red"> <?= Html::linkAction("estud_edit_activos/$estud->id/", 'Modificar '._Icons::solid('pen-to-square', 'w3-large'));?></span>
               </td>
               <td class="searchTdata">
                  <b><u><?= strtoupper($estud->estud);?></u></b> <br/>
-                 <span class="w3-margin"><?=$estud->getCodigo()?> <br/> 
-                 <span class="w3-margin">[Salon: <?=$estud->salon?>] </br>
-                 <span class="w3-margin">Doc: <?=$estud->documento?></span> </br>
-                 <span class="w3-margin">Último Mes Pagado: <span class="w3-badge"><?=$estud->mes_pagado?></span>
+                 <span></span> <?=$estud->getCuentaInstit()?></span><br/>
+                 <span><?=$estud->getCodigo()?> <br/> 
+                 <span>Mes Pagado: <?=$estud->mes_pagado?></span> <br/>
                  <?php if(!$estud->isPazYSalvo()): ?>
                     <span class="w3-tag w3-green w3-round"><?= Html::linkAction("actualizarPago/$estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large'));?></span>
                  <?php endif; ?>

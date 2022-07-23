@@ -9,9 +9,8 @@
       <table id="myTable" class="w3-table-all w3-responsive w3-hoverable" height:400px;">
       <thead>
          <tr class="w3-theme-d1">
-            <th style="width:10%;">Actions</th>
+            <th style="width:10%;"></th>
             <th style="width:60%;">Estudiante</th>
-            <th style="width:30%;">Cuenta Plataforma</th>
          </tr>
       </thead>
       
@@ -21,7 +20,7 @@
             <tr <?= $row_type?> >
               <td>
                  <?= $estud->getFoto(); ?><br/> 
-                 <?= Html::linkAction("estud_edit_activos/$estud->id/", 'Editar');?> <br/>
+                 <div class="w3-center"><?= Html::linkAction("activarEstudiante/$estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"');?> </div><br/>
               </td>
               <td class="searchTdata">
                  <b><u><?= strtoupper($estud->estud);?></u></b> <br/>
@@ -29,9 +28,7 @@
                  <span class="w3-margin">[Grado: <?=$estud->grado_mat?>] </br>
                  <span class="w3-margin">Doc: <?=$estud->documento?></span> </br>
                  <span class="w3-margin">Retiro: <?=$estud->fecha_ret?> - Motivo: <?=$estud->retiro?></span> </br>
-                 
               </td>
-              <td> <?= $estud->getCuentaInstit()?> </td>
             </tr>
          <?php endforeach ?>
       </tbody>

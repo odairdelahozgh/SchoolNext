@@ -40,16 +40,6 @@ class EstudianteApi extends LiteRecord
   } // END-
 
   
-
-
-
-  
-  //=============
-  public function getEstudiante($id) {
-    return $this::get($id);
-  } // END-getEstudiante    
-
-  
   //==============
   private function getList() {
     return "SELECT e.*, s.nombre as salon

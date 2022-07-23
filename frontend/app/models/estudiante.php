@@ -72,7 +72,6 @@ class Estudiante extends LiteRecord
 
   //=========
   public function isPazYSalvoIco() {
-    
     return ($this->isPazYSalvo()) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small') ; ;
   } // END-isPazYSalvo
 
@@ -96,12 +95,6 @@ class Estudiante extends LiteRecord
   } // END-getFotoCircle
 
 
-
-
-
-
-
-
   //public $before_delete = 'no_borrar_activos';
   //=============
   public function no_borrar_activos() {
@@ -120,16 +113,6 @@ class Estudiante extends LiteRecord
   public function before_create() { 
     $this->is_active = 1; 
   } // END-
-
-  
-
-
-
-  
-  //=============
-  public function getEstudiante($id) {
-    return $this::get($id);
-  } // END-getEstudiante    
 
   
   //==============
@@ -157,8 +140,9 @@ class Estudiante extends LiteRecord
       $DQL = "SELECT e.*, $nombre_estud, s.nombre AS salon
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
-      WHERE (e.is_active=?)
+      WHERE e.is_active=?
       ORDER BY $orden";
+      
       return $this::all($DQL, array((int)$estado));
     }
 
@@ -238,7 +222,16 @@ class Estudiante extends LiteRecord
     $Estud = (new Estudiante)->get((int)$estudiante_id);
     $Estud->mes_pagado = 6;
     $Estud->save();
+    return true;
   } // END-setActualizarPago
+    
+  
+  public function setActivar($estudiante_id) {
+    $Estud = (new Estudiante)->get((int)$estudiante_id);
+    $Estud->is_active = 1;
+    $Estud->save();
+    
+  } // END-setActivar
   
   
 

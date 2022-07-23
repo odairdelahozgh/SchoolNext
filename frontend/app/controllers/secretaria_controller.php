@@ -11,13 +11,13 @@ class SecretariaController extends AppController
       $this->page_action = 'M&oacute;dulo Secretar&iacute;a';
     }
     
-    public function estud_list_activos() {
+    public function listadoEstudActivos() {
       $this->page_action = 'Estudiantes Activos';
       $this->data = (new Estudiante)->getList(1);
       View::select('estudiantes/estud_list_activos');
     } // END-estud_list_activos
     
-    public function estud_list_inactivos() {
+    public function listadoEstudInactivos() {
       $this->page_action = 'Estudiantes Inactivos';
       $this->data = (new Estudiante)->getList(0);
       View::select('estudiantes/estud_list_inactivos');
@@ -29,11 +29,17 @@ class SecretariaController extends AppController
     } // END-actualizarPago
     
     
+    public function activarEstudiante($estudiante_id) {
+      (new Estudiante)->setActivar((int)$estudiante_id);
+      Redirect::toAction('/listadoEstudInactivos');
+    } // END-activarEstud
+    
+
     /**
      * Editar un Registro de Estudiante
      * @param int $id (requerido)
      */
-    public function estud_edit_activos($id) {
+    public function editarEstudActivos($id) {
       $this->page_action = 'Editar un Registro de Estudiante';
       $obj_estudiante = new Estudiante;
       if (Input::hasPost('estudiante')) { // se verifica si se ha enviado el formulario (submit)
@@ -41,7 +47,7 @@ class SecretariaController extends AppController
             OdaFlash::valid('Operaci&oacute;n exitosa [editar registro]');
               return Redirect::to(); // enrutando por defecto al index del controller
           }
-          OdaFlash::error("Fall&oacute; Operaci&oacute;n [editar registro estudiante id=$id]", __CLASS__);
+          OdaFlash::error("Fall&oacute; Operaci&oacute;n [editar registro estudiante id=$id]", true);
           return;
       }
       // Aplicando la autocarga de objeto, para comenzar la edici&oacute;n
@@ -56,12 +62,10 @@ class SecretariaController extends AppController
    * @param int $salon_id (requerido)
    */
   public function cambiar_salon_estudiante($estudiante_id, $salon_id, $audit = true) {
-    $estud = (new Estudiante)->get((int)$estudiante_id);
-    $cambiar_notas = true;
-    if ( $estud->setCambiarSalon((int)$salon_id, $cambiar_notas) ) {
-      OdaFlash::valid("Operaci&oacute;n exitosa [Cambiar sal&oacute;n a $estud]", $audit);
+    if ( (new Estudiante)->setCambiarSalon((int)$salon_id, $cambiar_notas=true) ) {
+      OdaFlash::valid("Operaci&oacute;n exitosa [Cambiar sal&oacute;n]", $audit);
     } else {
-      OdaFlash::error("Fall&oacute; Operaci&oacute;n [Cambiar sal&oacute;n a $estud]", $audit);
+      OdaFlash::error("Fall&oacute; Operaci&oacute;n [Cambiar sal&oacute;n]", true);
     }
     return Redirect::to('secretaria/estud_list_activos');
   }

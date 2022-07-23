@@ -19,6 +19,17 @@ class IndexController extends AppController
     
     public function index() {
         $roll_usuario = strtolower(trim(Session::get('roll')));
+        if (!$roll_usuario) {
+            if (trim(Session::get('username')) == trim(Session::get('documento'))) {
+                $roll_usuario = 'padres';
+            } else {
+                $roll_usuario = 'docentes';
+            }
+            $usr = (new Usuario)->first('SELECT * FROM dm_user WHERE documento = ?', [Session::get('documento')] );
+            $usr->roll = $roll_usuario;
+            $usr->save();
+        }
+        OdaLog::set('DEBUG', Session::get('username').' ?'.Session::get('documento').' => roll: '.$roll_usuario);
         if ( !array_key_exists($roll_usuario, self::MODULOS) ) {
             $this->logout();
         }

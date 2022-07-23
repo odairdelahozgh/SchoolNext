@@ -32,3 +32,4 @@ frontend\app\temp
 sonar-project.properties
 composer.lock
 frontend/app/temp/logs/audit-2022-07-01.txt
+KumbiaPHP/

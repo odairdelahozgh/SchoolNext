@@ -1,22 +1,33 @@
 <?php
 /**
-  * Controlador Academico  * @category App
+  * Controlador ESTUDIANTES  
+  * @category API
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
+  * @author odairdelahoz@gmail.com
+  * 
   */
 class EstudiantesController extends RestController
 {
+
    /**
-    * http://schoolnext.local.com/api/estudiantes/todos
+    * Obtiene todos los registros de estudiantes
+    * @link http://schoolnext.local.com/api/estudiantes/todos
     */
    public function get_todos() {
       $this->data = (new EstudianteApi())->all();
    }
 
    /**
-    * http://schoolnext.local.com/api/estudiantes/uno/1848
+    * Devuelve el estudiante buscado por UUID
+    * @link http://schoolnext.local.com/api/estudiantes/uno/1848
     */
-   public function get_uno($id) {
-      $this->data = (new EstudianteApi())->getEstudiante( (int) $id);
+   public function get_uno($uuid) {
+      $record = (new EstudianteApi())->get_uuid((int)$uuid);
+      if (isset($record)) {
+         $this->data = $record;
+      } else {
+         $this->error('El registro buscado no existe', 404);
+      }
    }
 
 }

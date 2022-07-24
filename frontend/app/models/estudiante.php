@@ -130,7 +130,7 @@ class Estudiante extends LiteRecord
       $orden
     );
 
-    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS nombre_estudiante";
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
@@ -138,13 +138,13 @@ class Estudiante extends LiteRecord
     );
 
     if (is_null($estado)) { // todos
-      $DQL = "SELECT e.*, $nombre_estud, s.nombre AS salon
+      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, s.nombre AS salon
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
       ORDER BY $orden";
       return $this::all($DQL);
     } else {
-      $DQL = "SELECT e.*, $nombre_estud, s.nombre AS salon
+      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, s.nombre AS salon
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
       WHERE e.is_active=?
@@ -164,14 +164,14 @@ class Estudiante extends LiteRecord
       $orden
     );
 
-    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS nombre_estudiante";
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
       $nombre_estud
     );
     
-    $DQL = "SELECT e.*, $nombre_estud, s.nombre AS salon
+    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, s.nombre AS salon
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
       WHERE e.is_active=1
@@ -189,14 +189,14 @@ class Estudiante extends LiteRecord
       $orden
     );
 
-    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS nombre_estudiante";
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
       $nombre_estud
     );
     
-    $DQL = "SELECT e.*, $nombre_estud, s.nombre AS salon
+    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, s.nombre AS salon
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
       WHERE e.is_active=0

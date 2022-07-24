@@ -130,7 +130,7 @@ class Estudiante extends LiteRecord
       $orden
     );
 
-    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS estud";
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS nombre_estudiante";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
@@ -164,7 +164,7 @@ class Estudiante extends LiteRecord
       $orden
     );
 
-    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS estud";
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS nombre_estudiante";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
@@ -189,7 +189,7 @@ class Estudiante extends LiteRecord
       $orden
     );
 
-    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS estud";
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS nombre_estudiante";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),

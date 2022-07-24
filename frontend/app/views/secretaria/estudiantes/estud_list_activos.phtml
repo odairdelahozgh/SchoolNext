@@ -23,6 +23,7 @@
             <tr <?= $row_type?> >
               <td class="searchTdata w3-center">
                  <?=$Estud->salon ?> <br/>
+                 <?=$Estud->is_active_f()?><br/>
                  <?= $Estud->getFoto(); ?><br/> 
                  <?=$Estud->documento?><br/>
                  <span class="w3-red"> <?= Html::linkAction("estud_edit_activos/$Estud->id/", 'Modificar '._Icons::solid('pen-to-square', 'w3-large'));?></span>

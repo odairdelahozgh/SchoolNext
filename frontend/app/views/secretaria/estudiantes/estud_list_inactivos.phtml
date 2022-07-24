@@ -14,21 +14,21 @@
          </tr>
       </thead>
       
-      <tbody id="searchBody">      
-         <?php foreach($data as $key => $estud) : ?>
+      <tbody id="searchBody">
+         <?php foreach($data as $key => $Estud) : ?>
             <?php $row_type = ($key%2==0 ) ? 'class="item w3-theme"' : 'class="item w3-theme"' ; ?>
             <tr <?= $row_type?> >
               <td class="w3-center">
-                  <?=$estud->is_active_f()?><br/>
-                  <?= $estud->getFoto(); ?><br/>
-                  <div><?= Html::linkAction("activarEstudiante/$estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"');?> </div><br/>
+                  <?=$Estud->is_active_f()?><br/>
+                  <?= $Estud->getFoto(); ?><br/>
+                  <div><?= Html::linkAction("activarEstudiante/$Estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"');?> </div><br/>
               </td>
               <td class="searchTdata">
-                 <b><u><?= strtoupper($estud->estud);?></u></b> <br/>
-                 <span class="w3-margin"><?=$estud->getCodigo()?> <br/> 
-                 <span class="w3-margin">[Grado: <?=$estud->grado_mat?>] </br>
-                 <span class="w3-margin">Doc: <?=$estud->documento?></span> </br>
-                 <span class="w3-margin">Retiro: <?=$estud->fecha_ret?> - Motivo: <?=$estud->retiro?></span> </br>
+                 <b><u><?= strtoupper($Estud->nombre_estudiante);?></u></b> <br/>
+                 <span class="w3-margin"><?=$Estud->getCodigo()?> <br/> 
+                 <span class="w3-margin">[Grado: <?=$Estud->grado_mat?>] </br>
+                 <span class="w3-margin">Doc: <?=$Estud->documento?></span> </br>
+                 <span class="w3-margin">Retiro: <?=$Estud->fecha_ret?> - Motivo: <?=$Estud->retiro?></span> </br>
               </td>
             </tr>
          <?php endforeach ?>

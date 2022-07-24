@@ -50,7 +50,7 @@ class OdaLog extends Logger {
      * @param string $msg
      * @param string $name_log
      */
-    public static function set(string $type='DEBUG', string|array $msg, string $name_log=''): void {
+    public static function set(string $type='DEBUG', string|array $msg='', string $name_log=''): void {
         self::initialize($name_log);        
         $msg = trim(trim($msg),'.').'.';
         parent::log(strtoupper(trim($type)), '['.self::$_route.']['.self::$_login.']['.self::$_ip.'] '.$msg, self::$_logName);

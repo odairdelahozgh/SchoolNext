@@ -16,7 +16,8 @@
 class Estudiante extends LiteRecord
 {
   protected static $table = 'sweb_estudiantes';
-
+  protected static $default_foto_estud = '';
+  protected static $default_foto_estud_circle = '';
   protected static $_defaults = array();
   protected static $_labels = array();
   protected static $_placeholders = array();
@@ -26,7 +27,12 @@ class Estudiante extends LiteRecord
   public function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }
   public function getHelp($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_helps[$field]: ''); }
   
-  
+  public function __construct() {
+    parent::__construct();
+    self::$default_foto_estud = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-round" style="width:100%;max-width:80 px">';
+    self::$default_foto_estud_circle = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-circle w3-bar-item" style="width:100%;max-width:80 px">';
+  }
+
   public function __toString() { return $this->getNombreCompleto(); }
 
   const IS_ACTIVE = [
@@ -84,14 +90,15 @@ class Estudiante extends LiteRecord
 
   //=============
   public function getFoto($max_width=80) {
+    //self::$default_foto_estud = _Tag::img("upload/estudiantes/user.png",'',"class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"");
     return _Tag::img("upload/estudiantes/$this->id.png",$this->id,
-               "class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"", 'sin foto');
+               "class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud);
   } // END-getFoto
 
   //=============
   public function getFotoCircle($max_width=80) {
     return _Tag::img("upload/estudiantes/$this->id.png",$this->id,
-               "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", 'sin foto');
+               "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud_circle);
   } // END-getFotoCircle
 
 

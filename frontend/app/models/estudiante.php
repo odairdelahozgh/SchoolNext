@@ -116,7 +116,7 @@ class Estudiante extends LiteRecord
 
   
   //==============
-  public function getList($estado=null, $orden='a1, a2, n') {
+  public function getList($estado=null, $orden='a1,a2,n') {
     $orden = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
@@ -146,6 +146,56 @@ class Estudiante extends LiteRecord
       return $this::all($DQL, array((int)$estado));
     }
 
+  } // END-getList
+  
+
+  //==============
+  public function getListActivos($orden='a1,a2,n') {
+    $orden = str_replace(
+      array('n', 'a1', 'a2'),
+      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      $orden
+    );
+
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS estud";
+    $nombre_estud = str_replace(
+      array('n', 'a1', 'a2'),
+      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      $nombre_estud
+    );
+    
+    $DQL = "SELECT e.*, $nombre_estud, s.nombre AS salon
+      FROM ".self::$table." AS e
+      LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
+      WHERE e.is_active=1
+      ORDER BY $orden";
+    
+    return $this::all($DQL);
+  } // END-getList
+  
+  
+  //==============
+  public function getListInactivos($orden='a1,a2,n') {
+    $orden = str_replace(
+      array('n', 'a1', 'a2'),
+      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      $orden
+    );
+
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n) AS estud";
+    $nombre_estud = str_replace(
+      array('n', 'a1', 'a2'),
+      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      $nombre_estud
+    );
+    
+    $DQL = "SELECT e.*, $nombre_estud, s.nombre AS salon
+      FROM ".self::$table." AS e
+      LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
+      WHERE e.is_active=0
+      ORDER BY $orden";
+    
+    return $this::all($DQL);
   } // END-getList
   
 

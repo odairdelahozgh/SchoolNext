@@ -14,12 +14,14 @@ class SecretariaController extends AppController
     public function listadoEstudActivos() {
       $this->page_action = 'Estudiantes Activos';
       $this->data = (new Estudiante)->getList(1);
+      $this->num_regs = Count($this->data);
       View::select('estudiantes/estud_list_activos');
     } // END-estud_list_activos
     
     public function listadoEstudInactivos() {
       $this->page_action = 'Estudiantes Inactivos';
       $this->data = (new Estudiante)->getList(0);
+      $this->num_regs = Count($this->data);
       View::select('estudiantes/estud_list_inactivos');
     } // END-estud_list_inactivos
     

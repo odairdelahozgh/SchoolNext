@@ -26,17 +26,18 @@
                  <?=$Estud->is_active_f()?><br/>
                  <?= $Estud->getFoto(); ?><br/> 
                  <?=$Estud->documento?><br/>
-                 <span class="w3-red"> <?= Html::linkAction("estud_edit_activos/$Estud->id/", 'Modificar '._Icons::solid('pen-to-square', 'w3-large'));?></span>
               </td>
               <td class="searchTdata">
-                 <b><u><?= strtoupper($Estud->nombre_estudiante);?></u></b> <br/>
+                 <span class=""> 
+                   <?= Html::linkAction("estud_edit_activos/$Estud->id/", strtoupper($Estud->nombre_estudiante).'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"MODIFICAR ESTUDIANTE\"");?>
+                 </span> <br/>
                  <span></span> <?=$Estud->getCuentaInstit()?></span><br/>
                  <span><?=$Estud->getCodigo()?> <br/> 
                  <span>Mes Pagado: <?=$Estud->mes_pagado?></span> <br/>
                  <?php if(!$Estud->isPazYSalvo()): ?>
-                    <span class="w3-tag w3-green w3-round"><?= Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large'));?></span>
+                    <span class="w3-tag w3-green w3-round"><?= Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large'));?></span> <br/>
                  <?php endif; ?>
-                 
+                 <br/>
               </td>
               <td> <?= $Estud->getSalonesCambiar('secretaria')?> </td>
          </tr>

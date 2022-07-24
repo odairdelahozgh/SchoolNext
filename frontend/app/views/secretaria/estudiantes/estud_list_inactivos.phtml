@@ -18,9 +18,10 @@
          <?php foreach($data as $key => $estud) : ?>
             <?php $row_type = ($key%2==0 ) ? 'class="item w3-theme"' : 'class="item w3-theme"' ; ?>
             <tr <?= $row_type?> >
-              <td>
-                 <?= $estud->getFoto(); ?><br/> 
-                 <div class="w3-center"><?= Html::linkAction("activarEstudiante/$estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"');?> </div><br/>
+              <td class="w3-center">
+                  <?=$estud->is_active_f()?><br/>
+                  <?= $estud->getFoto(); ?><br/>
+                  <div><?= Html::linkAction("activarEstudiante/$estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"');?> </div><br/>
               </td>
               <td class="searchTdata">
                  <b><u><?= strtoupper($estud->estud);?></u></b> <br/>

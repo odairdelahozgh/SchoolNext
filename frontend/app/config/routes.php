@@ -44,9 +44,8 @@ return [
         '/coord-consoli-notas'   => 'coordinador/consolidado_notas',
         '/coord-registros'       => 'coordinador/gestion_registros',
         
-        '/secre-estud-list-activos'   => 'secretaria/estud_list_activos',
-        '/secre-estud-edit-activos'   => 'secretaria/estud_edit_activos',
-        '/secre-estud-list-inactivos' => 'secretaria/estud_list_inactivos',
-        '/secre-estud-edit-inactivos' => 'secretaria/estud_edit_inactivos',
+        '/secre-estud-list-activos'   => 'secretaria/listadoEstudActivos',
+        '/secre-estud-edit-activos'   => 'secretaria/editarEstudActivos',
+        '/secre-estud-list-inactivos' => 'secretaria/listadoEstudInactivos',
         ],
 ];

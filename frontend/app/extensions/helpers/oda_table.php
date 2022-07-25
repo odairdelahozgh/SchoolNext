@@ -7,11 +7,12 @@
  * @source   frontend\app\extensions\helpers\oda_table.php
  */
 class OdaTable {
-   private $_attrs = 'class="w3-table w3-border w3-bordered" ';
+   private $_attrs = 'id="myTable" class="w3-table w3-responsive w3-bordered" ';
    private $_thead  = '';
    private $_tbody  = '';
    private $_tfoot  = '';
    private $_tcaption = '';
+   private $_tcaption_attrs = 'class="w3-left-align w3-bottombar w3-border-blue"';
    
    public function __construct(string|array $attrs='') {
       if ($attrs) {
@@ -72,9 +73,10 @@ class OdaTable {
       $this->_tfoot = '<tfoot><tr>'.$foot.'</tr></tfoot>';
    }
 
-   public function setCaption(string $caption, string|array $attrs='class="w3-left-align"'):void {
+   public function setCaption(string $caption, string|array $attrs=''):void {
       $attrs = self::getAttrs($attrs);
-      $this->_tcaption = "<caption $attrs>" .strtoupper($caption) .'</caption>';
+      $attrs = ($attrs) ? $attrs : $this->_tcaption_attrs ;
+      $this->_tcaption = "<caption $attrs><h2>" .strtoupper($caption) .'</h2></caption>';
    }
 
    

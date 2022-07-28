@@ -259,7 +259,7 @@ class OdaForm extends Form {
     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search
     * @example echo _Form::inputSerach();
     */
-   public static function inputSerach($id='inputSerach') {
+   public static function inputSearch($id='inputSearch') {
      $input = self::input('search', $id, "oninput=\"myFunctionFilter()\" class=\"w3-input w3-border\"  placeholder=\"Filtro..\"");
      $ico = _Icons::solid('search', 'w3-xxlarge');
      return  

@@ -8,7 +8,7 @@ function myFunctionFilter() {
     return str;
   } 
   */
- input = document.getElementById("inputSerach");
+ input = document.getElementById("inputSearch");
  filter = input.value.toUpperCase().trim();
  arrayDeFilter = filter.split(" ");
  /*
@@ -43,5 +43,5 @@ for (tri = 0; tri < tr.length; tri++) {
   }
 }
 
-document.getElementById("inputSerach").addEventListener("keyup", myFunctionFilter);
+document.getElementById("inputSearch").addEventListener("keyup", myFunctionFilter);
 //console.log('cambió');

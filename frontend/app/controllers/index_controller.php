@@ -43,4 +43,10 @@ class IndexController extends AppController
         Redirect::toAction('login');
     }
 
+    public function cambiarTheme() {
+        $new_modo = (Session::get('theme')=='dark') ? 'light' : 'dark' ;
+        Session::set('theme', $new_modo);
+        Redirect::toAction('index');
+    }
+
 }

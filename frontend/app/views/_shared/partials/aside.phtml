@@ -50,7 +50,7 @@
         <?php View::partial("$modulo/$modulo"."_menu") ?>
       </div>
       <br><br>
-      <button class="w3-centre">modo <?=(($theme=='dark') ? 'claro' : 'oscuro');?></button>
+      <?= _Tag::link('index/cambiarTheme', (($theme=='dark') ? 'Modo Claro' : 'Modo Oscuro'), 'class="w3-btn w3-theme"' ) ?>
     </menu>
 
     

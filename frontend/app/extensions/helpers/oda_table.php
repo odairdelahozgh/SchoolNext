@@ -8,8 +8,10 @@
  */
 class OdaTable {
    private $_attrs = 'id="myTable" class="w3-table w3-responsive w3-bordered" ';
+   private $_theme  = '';
    private $_thead  = '';
    private $_tbody  = '';
+   private $_tbody_cont = 0;
    private $_tfoot  = '';
    private $_tcaption = '';
    private $_tcaption_attrs = 'class="w3-left-align w3-bottombar w3-border-blue"';
@@ -18,13 +20,15 @@ class OdaTable {
       if ($attrs) {
          $this->_attrs = self::getAttrs($attrs);
       }
+      $this->_theme = substr(Session::get('theme'),0,1);
    }
    
    public function __toString() {
-      return  "<table $this->_attrs>
+      return  "<h5>Total Registros: $this->_tbody_cont</h5>"
+             ."<table $this->_attrs>
                   $this->_tcaption
                   $this->_thead
-                  <tbody>
+                  <tbody id=\"searchBody\">
                      $this->_tbody
                   </tbody>
                   $this->_tfoot
@@ -55,6 +59,10 @@ class OdaTable {
    public function setBody(string|array $data, string|array $attrs='', string|array $attrs2=array()):void {
       $data  = self::strToArray($data);
       $attrs = self::getAttrs($attrs);
+      $this->_tbody_cont +=1;
+      if (!$attrs) {
+         $attrs = ($this->_tbody_cont%2==0) ?  "class=\"item w3-theme-{$this->_theme}1\"" :  "class=\"item w3-theme-{$this->_theme}4\"" ;
+      }
       $this->_tbody.= "<tr $attrs>";
       foreach ($data as $key => $td) {
          $atr2 = (array_key_exists($key, $attrs2)) ? $attrs2[$key] : '' ;

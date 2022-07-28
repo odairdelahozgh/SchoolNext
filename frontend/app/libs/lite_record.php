@@ -37,7 +37,6 @@ enum Estado: int {
             static::Inactivo => '<span class="w3-text-red">'  ._Icons::solid('xmark',$attr).'</span> '.$this->label(),
         };
     }
-
 }
 
 
@@ -54,6 +53,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
         self::$session_user_id = Session::get('id');
     }
 
+    //public function _afterCreate() { }
     public function _beforeCreate() { // ANTES de CREAR el nuevo registro
         $ahora = date('Y-m-d H:i:s', time());
         $this->uuid = $this->UUIDReal(20);
@@ -64,14 +64,15 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
         $this->is_active = 1;
     }
       
+    //public function _afterUpdate() { }
     public function _beforeUpdate() { // ANTES de ACTUALIZAR el registro
         if (strlen($this->uuid)==0) { $this->uuid = $this->UUIDReal(20); }
         $this->updated_by = self::$session_user_id;
         $this->updated_at = date('Y-m-d H:i:s', time());
     }
     
-    //public function _afterCreate() { }
-    //public function _afterUpdate() { }
+    //public function _beforeSave() { }
+    //public function _afterSave() { }
     
     public function getDefault($field)     { return ((array_key_exists($field, self::$_defaults)) ? self::$_defaults[$field] : null); }
     public function getLabel($field)       { return ((array_key_exists($field, self::$_labels)) ? self::$_labels[$field] : $field.': '); }

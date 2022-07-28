@@ -1,51 +1,36 @@
 <div class="w3-panel">
    <?= View::Encab($controller_name, $page_action); ?>
    <?= View::flash(); ?>
-  
+
    <div class="w3-row w3-section">
-      <?=OdaForm::inputSerach();?>
+      <?=OdaForm::inputSearch();?>
    </div>
    
-   <span class="w3-small"><?="Total Registros: $num_regs"?></span><br/>
-   
-   <table id="myTable" class="w3-table-all w3-responsive w3-hoverable">
-      <thead>
-         <tr class="w3-theme">
-            <th style="width:10%;">Actions</th>
-            <th style="width:60%;">Estudiante</th>
-            <th style="width:30%;">Cambiar Salon</th>
-         </tr>
-      </thead>
-      
-      <tbody id="searchBody">      
-         <?php foreach($data as $key => $Estud) : ?>
-            <?php $row_type = ($key%2==0 ) ? 'class="item w3-theme"' : 'class="item w3-theme"' ; ?>
-            <tr <?= $row_type?> >
-              <td class="searchTdata w3-center">
-                 <?=$Estud->salon ?> <br/>
-                 <?=$Estud->is_active_f()?><br/>
-                 <?= $Estud->getFoto(); ?><br/> 
-                 <?=$Estud->documento?><br/>
-              </td>
-              <td class="searchTdata">
-                 <span class=""> 
-                   <?= Html::linkAction("estud_edit_activos/$Estud->id/", strtoupper($Estud->nombre_estudiante).'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"MODIFICAR ESTUDIANTE\"");?>
-                 </span> <br/>
-                 <span></span> <?=$Estud->getCuentaInstit()?></span><br/>
-                 <span><?=$Estud->getCodigo()?> <br/> 
-                 <span>Mes Pagado: <?=$Estud->mes_pagado?></span> <br/>
-                 <?php if(!$Estud->isPazYSalvo()): ?>
-                    <span class="w3-tag w3-green w3-round"><?= Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large'));?></span> <br/>
-                 <?php endif; ?>
-                 <br/>
-              </td>
-              <td> <?= $Estud->getSalonesCambiar('secretaria')?> </td>
-         </tr>
-         <?php endforeach ?>
-      </tbody>
-   </table>
-   
-   
+   <?php 
+      $tabla=new OdaTable();
+      $tabla->setHead(['Actions', 'Estudiante', 'Cambiar Salon'], 'class="w3-theme"', ['style="width:10%;"','style="width:60%;"','style="width:30%;"']);
+      foreach($data as $key => $Estud){
+         $col1 = $Estud->salon .'<br/>' 
+                .$Estud->is_active_f() .'<br/>'
+                .$Estud->getFoto() .'<br/>' 
+                .$Estud->documento .'<br/>';
+                
+         if(!$Estud->isPazYSalvo()) {
+            $lnk = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
+         }
+         $nombre = (!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : '' ;
+         $col2 = Html::linkAction("estud_edit_activos/$Estud->id/", $nombre.'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"").'<br/>'
+                 .$Estud->getCuentaInstit().'<br/>'
+                 .$Estud->getCodigo().'<br/>'
+                 .'Mes Pagado: '.$Estud->mes_pagado.'<br/>'
+                 .$lnk.'<br/>'
+                 .$Estud->linkOld_BoletinPeriodo();
+         $col3 = $Estud->getSalonesCambiar('secretaria');
+         $data=[$col1, $col2, $col3];
+         $tabla->setBody($data, '', ['class="searchTdata w3-center"', 'class="searchTdata"']);
+      }
+      echo $tabla;
+   ?>   
 </div>
 
-<?= Tag::js("table_filter"); ?>
+<?= Tag::js("table_filter", false); ?>

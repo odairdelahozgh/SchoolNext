@@ -15,111 +15,20 @@
  */
 class Estudiante extends LiteRecord
 {
+  use EstudianteTDefa, EstudianteTProps;
+
   protected static $table = 'sweb_estudiantes';
-  protected static $default_foto_estud = '';
-  protected static $default_foto_estud_circle = '';
-  protected static $_defaults = array();
-  protected static $_labels = array();
-  protected static $_placeholders = array();
-  protected static $_helps = array();
-  public function getDefault($field) { return ((array_key_exists($field, self::$_defaults)) ? self::$_defaults[$field] : null); }
-  public function getLabel($field) { return ((array_key_exists($field, self::$_labels)) ? self::$_labels[$field] : $field.': '); }
-  public function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }
-  public function getHelp($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_helps[$field]: ''); }
-  
+
   public function __construct() {
     parent::__construct();
-    self::$default_foto_estud = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-round" style="width:100%;max-width:80 px">';
+    self::$default_foto_estud        = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-round" style="width:100%;max-width:80 px">';
     self::$default_foto_estud_circle = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-circle w3-bar-item" style="width:100%;max-width:80 px">';
+    self::$_defaults     = $this->getTDefaults();
+    self::$_labels       = $this->getTLabels();
+    self::$_placeholders = $this->getTPlaceholders();
+    self::$_helps        = $this->getTHelps();
+    self::$_attribs      = $this->getTAttribs();
   }
-
-  public function __toString() { return $this->getNombreCompleto(); }
-
-  const IS_ACTIVE = [
-    0 => 'Inactivo',
-    1 => 'Activo'
-  ];
-
-  //=============
-  public function getCodigo() {
-    return '[Cod: '.$this->id.']';
-  } // END-getApellidos
-  
-  //=============
-  public function getApellidos() {
-    return $this->apellido1.' '.$this->apellido2;
-  } // END-getApellidos
-
-  //=============
-  public function getNombreCompleto($orden='a1 a2, n') {
-    return str_replace(
-          array('n', 'a1', 'a2'),
-          array($this->nombres, $this->apellido1, $this->apellido2),
-          $orden
-      );
-  } // END-getNombreCompleto
-
-  //=============
-  public function getIsActiveF() {
-    return (($this->is_active) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small') );
-  } // END-getIsActiveF
-
-  
-  //=========
-  public function isPazYSalvo() {
-    $periodo = Config::get('academico.periodo_actual');
-    if ($periodo==1 and $this->mes_pagado>=4) { return true; }
-    if ($periodo==2 and $this->mes_pagado>=6) { return true; }
-    if ($periodo==3 and $this->mes_pagado>=8) { return true; }
-    if ($periodo==4 and $this->mes_pagado>=11 and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
-    if ($periodo==5 and $this->mes_pagado>=11 and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
-    return false;
-  } // END-isPazYSalvo
-
-  //=========
-  public function isPazYSalvoIco() {
-    return ($this->isPazYSalvo()) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small') ; ;
-  } // END-isPazYSalvo
-
-
-  //=============
-  public function getCuentaInstit(){
-    return ($this->email_instit) ? $this->email_instit.'@'.Config::get('institucion.dominio').' '.$this->clave_instit : '';
-
-  } // END-getCuentaInstit
-
-  //=============
-  public function getFoto($max_width=80) {
-    //self::$default_foto_estud = _Tag::img("upload/estudiantes/user.png",'',"class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"");
-    return _Tag::img("upload/estudiantes/$this->id.png",$this->id,
-               "class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud);
-  } // END-getFoto
-
-  //=============
-  public function getFotoCircle($max_width=80) {
-    return _Tag::img("upload/estudiantes/$this->id.png",$this->id,
-               "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud_circle);
-  } // END-getFotoCircle
-
-
-  //public $before_delete = 'no_borrar_activos';
-  //=============
-  public function no_borrar_activos() {
-    if($this->is_active==1) {
-      OdaFlash::warning('No se puede borrar un registro activo');
-      return 'cancel';
-    }
-  } // END-
-
-  //=============
-  public function after_delete() { 
-    OdaFlash::valid('Se borró el registro'); 
-  } // END-
-
-  //=============
-  public function before_create() { 
-    $this->is_active = 1; 
-  } // END-
 
   
   //==============
@@ -245,9 +154,13 @@ class Estudiante extends LiteRecord
               14 => array(12=>'KD-A',13=>'KD-B',22=>'KD-C', 9=>'TN-A',14=>'TN-B'),
               15 => array(9=>'TN-A',14=>'TN-B', 1=>'01-A',2=>'01-B',23=>'01-C'),
           );
-          foreach ($salonesSig[$this->grado_mat] as $key_salon => $salon_nombre) {
+
+          if ( array_key_exists($this->grado_mat, $salonesSig) ) {
+            foreach ($salonesSig[$this->grado_mat] as $key_salon => $salon_nombre) {
               $lnk_cambio .= Html::link("$modulo/cambiar_salon_estudiante/$this->id/$key_salon/", $salon_nombre, 'class="btn btn-success btn-sm"').'  ';
+            }
           }
+
       }
       return $lnk_cambio;
   }
@@ -258,7 +171,7 @@ class Estudiante extends LiteRecord
           // Cambia el salón en la tabla de ESTUDIANTES
           $this->salon_id  = $salon->id;
           $this->grado_mat = $salon->grado_id;
-          $this->update();
+          $this->save();
           // Lo debe cambiar de salón en la tabla NOTAS también.
           $RegNotaEstud = (new Nota);
           if ($cambiar_en_notas) {

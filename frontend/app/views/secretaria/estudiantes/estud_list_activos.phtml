@@ -14,7 +14,7 @@
                 .$Estud->is_active_f() .'<br/>'
                 .$Estud->getFoto() .'<br/>' 
                 .$Estud->documento .'<br/>';
-                
+         $lnk = '';
          if(!$Estud->isPazYSalvo()) {
             $lnk = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
          }

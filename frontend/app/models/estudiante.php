@@ -47,18 +47,21 @@ class Estudiante extends LiteRecord
     );
 
     
-    $info_adic_admin = (Session::get("username")=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre AS salon " ;
+    $salon = (Session::get("username")=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre AS salon " ;
+    $grado = (Session::get("username")=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
 
     if (is_null($estado)) { // todos
-      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $info_adic_admin
+      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
+      LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
       ORDER BY $orden";
       return $this::all($DQL);
     } else {
-      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $info_adic_admin
+      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
+      LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
       WHERE e.is_active=?
       ORDER BY $orden";
       
@@ -83,10 +86,12 @@ class Estudiante extends LiteRecord
       $nombre_estud
     );
     
-    $info_adic_admin = (Session::get("username")=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre  AS salon " ;
-    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $info_adic_admin
+    $salon = (Session::get("username")=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre  AS salon " ;
+    $grado = (Session::get("username")=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
+    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
+      LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
       WHERE e.is_active=1
       ORDER BY $orden";
     
@@ -109,8 +114,8 @@ class Estudiante extends LiteRecord
       $nombre_estud
     );
 
-    $info_adic_admin = (Session::get("username")=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
-    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $info_adic_admin
+    $grado = (Session::get("username")=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
+    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $grado
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
       WHERE e.is_active=0

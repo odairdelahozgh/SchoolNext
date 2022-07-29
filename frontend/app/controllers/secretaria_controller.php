@@ -16,14 +16,14 @@ class SecretariaController extends AppController
       $this->data = (new Estudiante)->getListActivos();
       $this->num_regs = Count($this->data);
       View::select('estudiantes/estud_list_activos');
-    } // END-estud_list_activos
+    } // END-listadoEstudActivos
     
     public function listadoEstudInactivos() {
       $this->page_action = 'Estudiantes Inactivos';
       $this->data = (new Estudiante)->getListInactivos();
       $this->num_regs = Count($this->data);
       View::select('estudiantes/estud_list_inactivos');
-    } // END-estud_list_inactivos
+    } // END-listadoEstudInactivos
     
     public function actualizarPago($estudiante_id) {
       (new Estudiante)->setActualizarPago((int)$estudiante_id);
@@ -34,7 +34,7 @@ class SecretariaController extends AppController
     public function activarEstudiante($estudiante_id) {
       (new Estudiante)->setActivar((int)$estudiante_id);
       Redirect::toAction('/listadoEstudInactivos');
-    } // END-activarEstud
+    } // END-activarEstudiante
     
 
     /**
@@ -55,7 +55,7 @@ class SecretariaController extends AppController
       // Aplicando la autocarga de objeto, para comenzar la edici&oacute;n
       $this->estudiante = $obj_estudiante->get((int)$id);
       View::select('estudiantes/estud_edit_activos');
-    } // END-estud_edit_activos
+    } // END-editarEstudActivos
 
 
   /**

@@ -30,6 +30,4 @@ frontend/app/temp
 .scannerwork
 sonar-project.properties
 composer.lock
-frontend/app/temp/logs/audit-2022-07-01.txt
 KumbiaPHP/
-frontend/public/index.php

@@ -14,16 +14,17 @@
                 .$Estud->is_active_f() .'<br/>'
                 .$Estud->getFoto() .'<br/>' 
                 .$Estud->documento .'<br/>';
-         $lnk = '';
+         $lnk_act_pago = '';
          if(!$Estud->isPazYSalvo()) {
-            $lnk = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
+            $lnk_act_pago = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
          }
-         $nombre = (!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : '' ;
-         $col2 = Html::linkAction("estud_edit_activos/$Estud->id/", $nombre.'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"").'<br/>'
+         $nombre = ((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : '') ;
+         $col2 = 'Grado: '.$Estud->grado.'<br/>'
+                 .Html::linkAction("estud_edit_activos/$Estud->id/", $nombre.'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"").'<br/>'
                  .$Estud->getCuentaInstit().'<br/>'
                  .$Estud->getCodigo().'<br/>'
                  .'Mes Pagado: '.$Estud->mes_pagado.'<br/>'
-                 .$lnk.'<br/>'
+                 .$lnk_act_pago.'<br/>'
                  .$Estud->linkOld_BoletinPeriodo();
          $col3 = $Estud->getSalonesCambiar('secretaria');
          $data=[$col1, $col2, $col3];

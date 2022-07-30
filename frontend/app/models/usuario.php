@@ -28,14 +28,14 @@ class Usuario extends LiteRecord
     //=========
     public function getNombreCompleto2($orden='a1 a2, n', $sanear=true, $humanize=false) {
         if ($sanear) {
-            $this->nombres   = OdaUtils::sanear_string($this->nombres);
-            $this->apellido1 = OdaUtils::sanear_string($this->apellido1);
-            $this->apellido2 = OdaUtils::sanear_string($this->apellido2);
+            $this->nombres   = OdaUtils::sanearString($this->nombres);
+            $this->apellido1 = OdaUtils::sanearString($this->apellido1);
+            $this->apellido2 = OdaUtils::sanearString($this->apellido2);
         }
         if ($humanize) {
-            $this->nombres   = OdaUtils::nombre_persona($this->nombres);
-            $this->apellido1 = OdaUtils::nombre_persona($this->apellido1);
-            $this->apellido2 = OdaUtils::nombre_persona($this->apellido2);
+            $this->nombres   = OdaUtils::nombrePersona($this->nombres);
+            $this->apellido1 = OdaUtils::nombrePersona($this->apellido1);
+            $this->apellido2 = OdaUtils::nombrePersona($this->apellido2);
         }
         
         return str_replace(

@@ -9,7 +9,7 @@
       <?php if($tot_regs==0): ?>
          <?= Flash::valid('<h3>Atención!</h3><p>No hay registros para mostrar.</p>');?>
          <?php else: ?>
-            <?= OdaForm::inputSerach();?>
+            <?= OdaForm::inputSearch();?>
             <span class="w3-small"><?= 'Total Registros: '.count($data); ?></span><br/>   
             <table id="myTable" class="w3-table w3-border w3-responsive w3-hoverable">
                <thead>
@@ -24,7 +24,7 @@
                      <td><?=$reg->id?></td>
                      <td><?=$reg->annio?>-<?=$reg->periodo_id?></td>
                      <td><?=$reg->getFecha('d M')?></td>
-                     <td class="searchTdata"><?=ucwords(OdaUtils::sanear_string($reg->estudiante)); ?> </td>
+                     <td class="searchTdata"><?=ucwords(OdaUtils::sanearString($reg->estudiante)); ?> </td>
                      <td>
                         <?=substr($reg->asunto, 0, 120)?>... 
                         <button onclick="document.getElementById('<?=$reg->id?>').style.display='block'" class="w3-btn w3-theme-d5">ver mas</button>

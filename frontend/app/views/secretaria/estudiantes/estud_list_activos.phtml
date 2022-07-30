@@ -7,9 +7,13 @@
    </div>
    
    <?php 
-      $tabla=new OdaTable();
-      $tabla->setHead(['Actions', 'Estudiante', 'Cambiar Salon'], 'class="w3-theme"', ['style="width:10%;"','style="width:60%;"','style="width:30%;"']);
-      foreach($data as $key => $Estud){
+      $tabla = new OdaTable(_theme: $theme);
+      $tabla->setHead(
+         arr_head: ['Actions', 'Estudiante', 'Cambiar Salon'], 
+         attrs:    'class="w3-theme"', 
+         attrs2:   ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
+      );
+      foreach($data as $key => $Estud) {
          $col1 = $Estud->salon .'<br/>' 
                 .$Estud->is_active_f() .'<br/>'
                 .$Estud->getFoto() .'<br/>' 
@@ -18,7 +22,8 @@
          if(!$Estud->isPazYSalvo()) {
             $lnk_act_pago = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
          }
-         $nombre = ((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : '') ;
+         
+         $nombre = ((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : 'ERROR en nombre') ;
          $col2 = 'Grado: '.$Estud->grado.'<br/>'
                  .Html::linkAction("estud_edit_activos/$Estud->id/", $nombre.'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"").'<br/>'
                  .$Estud->getCuentaInstit().'<br/>'
@@ -28,7 +33,10 @@
                  .$Estud->linkOld_BoletinPeriodo();
          $col3 = $Estud->getSalonesCambiar('secretaria');
          $data=[$col1, $col2, $col3];
-         $tabla->setBody($data, '', ['class="searchTdata w3-center"', 'class="searchTdata"']);
+         $tabla->setBody(
+            data: $data, 
+            attrs2: ['class="searchTdata w3-center"', 'class="searchTdata"']
+         );
       }
       echo $tabla;
    ?>   

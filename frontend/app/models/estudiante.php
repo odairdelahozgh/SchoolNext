@@ -15,7 +15,7 @@
  */
 class Estudiante extends LiteRecord
 {
-  use EstudianteTDefa, EstudianteTProps;
+  use EstudianteTDefa, EstudianteTProps,  EstudianteTLinksOlds;
 
   protected static $table = 'sweb_estudiantes';
 
@@ -47,8 +47,8 @@ class Estudiante extends LiteRecord
     );
 
     
-    $salon = (Session::get("username")=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre AS salon " ;
-    $grado = (Session::get("username")=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
+    $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre AS salon " ;
+    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
 
     if (is_null($estado)) { // todos
       $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
@@ -86,8 +86,8 @@ class Estudiante extends LiteRecord
       $nombre_estud
     );
     
-    $salon = (Session::get("username")=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre  AS salon " ;
-    $grado = (Session::get("username")=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
+    $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre  AS salon " ;
+    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
     $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
@@ -114,7 +114,7 @@ class Estudiante extends LiteRecord
       $nombre_estud
     );
 
-    $grado = (Session::get("username")=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
+    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
     $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $grado
       FROM ".self::$table." AS e
       LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id

@@ -4,9 +4,9 @@
   
   <div class="w3-row w3-section">
       <?=OdaForm::inputSearch();?>
-      <span class="w3-small"><?="Total Registros: $num_regs"?></span><br/>
       
-      <?php 
+      <?php
+      
       $tabla = new OdaTable(_theme: $theme);
       $tabla->setHead(
          attrs2:   ['style="width:10%;"','style="width:90%;"'],

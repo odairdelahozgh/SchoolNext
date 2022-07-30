@@ -27,7 +27,7 @@
             <?php $t2=($themei=='d'?'d2':'l3'); ?>
             <tr class="item w3-theme-<?=((($key%2)==0) ? $t1:$t2);?> ">
               <td> <?=$carga->salon?> <?=($user_id==1)?"[$carga->salon_id]":'';?> </td>
-              <td> <?=OdaUtils::sanear_string($carga->asignatura)?> <?=($user_id==1)?"[$carga->asignatura_id]":'';?></td>
+              <td> <?=OdaUtils::sanearString($carga->asignatura)?> <?=($user_id==1)?"[$carga->asignatura_id]":'';?></td>
               <td><?=_Tag::link("docentes/indicadores/$carga->asignatura_id/$carga->grado_id", 'Indicadores');?></td>
               <td><?=_Tag::link("docentes/notas/$carga->asignatura_id/$carga->salon_id", 'Notas');?></td>
             </tr>

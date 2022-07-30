@@ -14,32 +14,6 @@
 
 //use Kumbia\ActiveRecord\LiteRecord as ORM;
 
-// $this->name => $this->value
-// Estado::cases();
-
-/**
- * @link https://www.php.net/manual/es/language.enumerations.expressions.php
- */
-enum Estado: int {
-    case Activo   = 1;
-    case Inactivo = 0;
-    
-    public function label(): string {
-        return match($this) {
-            static::Activo   => 'Activo',
-            static::Inactivo => 'Inactivo',
-        };
-    }
-    
-    public function labelIcon($attr="w3-small"): string {
-        return match($this) {
-            static::Activo   => '<span class="w3-text-green">'._Icons::solid('check',$attr).'</span> '.$this->label(),
-            static::Inactivo => '<span class="w3-text-red">'  ._Icons::solid('xmark',$attr).'</span> '.$this->label(),
-        };
-    }
-}
-
-
 class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 {    
     protected static $_defaults = array();
@@ -48,9 +22,11 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     protected static $_helps = array();
     protected static $_attribs = array();
     protected static $session_user_id = 0;
+    protected static $session_username = '';
 
     public function __construct() {
         self::$session_user_id = Session::get('id');
+        self::$session_username = Session::get('username');
     }
 
     //public function _afterCreate() { }
@@ -79,17 +55,23 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     public function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }
     public function getHelp($field)        { return ((array_key_exists($field, self::$_helps)) ? self::$_helps[$field]: ''); }
     public function getAttrib($field)      { return ((array_key_exists($field, self::$_attribs)) ? self::$_attribs[$field]: ''); }
-    
-    // //=========
-    // const IS_ACTIVE = [
-    //     0 => 'Inactivo',
-    //     1 => 'Activo',
-    // ];
-
-    public function is_active_f($show_ico=false) {
-        $estado = Estado::from((int)$this->is_active) ?? Estado::Inactivo;
-        return $estado->labelIcon();
+        
+    const IS_ACTIVE = [
+        0 => 'Inactivo',
+        1 => 'Activo',
+    ];
+    public function is_active_f(bool $show_ico=false, string $attr="w3-small"): string {
+        $estado = self::IS_ACTIVE[(int)$this->is_active] ?? 'Inactivo';
+        return match($estado) {
+            'Activo'   => '<span class="w3-text-green">'._Icons::solid('check',$attr).'</span> '.$estado,
+            'Inactivo' => '<span class="w3-text-red">'  ._Icons::solid('xmark',$attr).'</span> '.$estado,
+        };
     }
+
+    const SEXO = [
+        'M' => 'Masculino',
+        'F' => 'Femenino',
+    ];
 
     //Universally Unique IDentifier Generator optimized
     public function UUIDReal(int $lenght):string {

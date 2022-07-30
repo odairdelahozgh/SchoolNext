@@ -13,7 +13,7 @@
               
               $foto = _Tag::img("upload/estudiantes/$nota->estudiante_id.png",$nota->estudiante_id,
                            "class=\"w3-round\" style=\"width:100%;max-width:80px\"", 'sin foto');
-              $nom_estud = '<b>'.strtoupper(OdaUtils::nombre_persona($nota->estudiante)).'</b></br>'
+              $nom_estud = '<b>'.strtoupper(OdaUtils::nombrePersona($nota->estudiante)).'</b></br>'
                            .$nota->verNota();
               $fila1=array($foto, $nom_estud);
               $t1=($themei=='d'?'d1':'l1');      $t2=($themei=='d'?'d2':'l3');

@@ -13,21 +13,57 @@
  * @package     Libs
  */
 
-class OdaUtils extends Util {
 
-    //====================
-    public static function random($length = 8) {
-        $val = '';
+class OdaUtils extends Util {
+    
+    const MESES = [
+        'M' => 'Masculino',
+        'F' => 'Femenino',
+    ];
+    /**
+     * Obtiene el nombre del mes (valor numérico)
+     */
+    public static function nombreMes(int $mes=0): string {
+        return match((int)$mes) {
+            1       => 'Enero',
+            2       => 'Febrero',
+            3       => 'Marzo',
+            4       => 'Abril',
+            5       => 'Mayo',
+            6       => 'Junio',
+            7       => 'Julio',
+            8       => 'Agosto',
+            9       => 'Septiembre',
+            10      => 'Octubre',
+            11      => 'Noviembre',
+            12      => 'Diciembre',
+            default => 'Mes no existe',
+        };
+    } // END-nombreMes
+
+    
+    /**
+     * Genera una cadena de caracteres aleatrorios.
+     */
+    public static function randomString($length = 8) {
         $values = 'abcdefghijklmnopqrstuvwxyz0123456789';
         $len_values = strlen($values)-1;
+        $val = '';
         for ( $i = 0; $i < $length; $i++ ) {
         $val .= $values[rand( 0, $len_values )];
         }
         return $val;
-    } // END-random
+    } // END-randomString
 
-    //====================
-    public static function truncate($text, $length = 30, $truncateString = '...', $truncateLastspace = false) {
+    /**
+     * Retorna la misma cadena truncada.
+     */
+    public static function truncate(
+        string $text, 
+        int $length = 30, 
+        string $truncateString = '...', 
+        bool $truncateLastspace = false
+    ): string {
         if(is_array($text)) {
             throw new KumbiaException('No puede truncar un array: '.implode(', ', $text));
         }
@@ -43,14 +79,18 @@ class OdaUtils extends Util {
     } // END-truncate
 
   
-    //====================
-    static function nombre_persona($string) {
-        //return ucwords(mb_strtolower($string, 'UTF-8'));
-        return ucwords(mb_strtolower(OdaUtils::sanear_string($string), 'UTF-8'));
-    }
+    /***
+     * Retorna una cadena con cada palabra en su primera letra en mayusculas y el resto en minúsculas.
+     * 
+     */
+    static function nombrePersona(string $string): string {
+        return ucwords(mb_strtolower(OdaUtils::sanearString($string), 'UTF-8'));
+    } // END-nombrePersona
 
-  // ================
-  static function sanear_string($string) {
+  /***
+   * Retorna una cadena limpia de caracteres no deseados
+   */
+  static function sanearString($string) {
     $string = trim($string);
     $string = str_replace(
         array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
@@ -145,7 +185,7 @@ class OdaUtils extends Util {
     /*
      * Metodo para resaltar palabras de una cadena de texto
      */
-    public static function resaltar($palabra, $texto) {
+    public static function resaltar(string $palabra, string $texto) {
         $reemp  =   str_ireplace($palabra,'%s',$texto);
         $aux    =   $reemp;
         $veces  =   substr_count($reemp,'%s');
@@ -161,9 +201,13 @@ class OdaUtils extends Util {
     }
 
     /**
-     * Metodo para crear el slug de los titulos, categorias y etiquetas
+     * Metodo para crear el slug de cadenas de string dadas
      */
-    public static function getSlug($string, $separator = '-', $length = 100) {
+    public static function getSlug(
+        string $string, 
+        string $separator = '-', 
+        int $length = 100,
+    ): string {
         $search = explode(',', 'ç,Ç,ñ,Ñ,æ,Æ,œ,á,Á,é,É,í,Í,ó,Ó,ú,Ú,à,À,è,È,ì,Ì,ò,Ò,ù,Ù,ä,ë,ï,Ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u,Š,Œ,Ž,š,¥');
         $replace = explode(',', 'c,C,n,N,ae,AE,oe,a,A,e,E,i,I,o,O,u,U,a,A,e,E,i,I,o,O,u,U,ae,e,i,I,oe,ue,y,a,e,i,o,u,a,e,i,o,u,s,o,z,s,Y');
         $string = str_replace($search, $replace, $string);
@@ -186,7 +230,11 @@ class OdaUtils extends Util {
      * @param string $type Variable para indicar si ordena ASC o DESC
      * @return array
      */
-    public static function orderArray($toOrderArray, $field, $type='DESC') {
+    public static function orderArray(
+        array $toOrderArray, 
+        string|int $field, 
+        string $type='DESC'
+    ): array {
         $position = array();
         $newRow = array();
         foreach ($toOrderArray as $key => $row) {
@@ -205,9 +253,12 @@ class OdaUtils extends Util {
         return $returnArray;
     }
     
-    public static function pluralize($cadena) {
-        return $cadena[strlen($cadena)-1] == 's' ? $cadena: $cadena.'s';
-    }
+    /**
+     * Devuelve el plural de un texto
+     */
+    public static function pluralize(string $cadena): string {
+        return $cadena[strlen($cadena)-1] == 's' ? $cadena: $cadena.'s'; // debe mejorar
+    } // END-pluralize
 
 
     /**
@@ -218,7 +269,11 @@ class OdaUtils extends Util {
      * @param string $centavos
      * @return string
      */
-    public static function getNumeroALetras($valor=0, $moneda='PESOS', $centavos=0){
+    public static function getNumeroALetras(
+        int $valor=0, 
+        string $moneda='PESOS', 
+        int $centavos=0
+    ): string {
         $a = $valor;
         $p = $moneda;
         $c = $centavos;
@@ -243,6 +298,9 @@ class OdaUtils extends Util {
     }
 
 }
+
+
+
 
 /**
  * Las siguientes funciones son utilizadas para la generación

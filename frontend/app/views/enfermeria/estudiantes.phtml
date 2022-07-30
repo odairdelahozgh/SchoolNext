@@ -17,8 +17,8 @@
 
 <ul id="id01" class="w3-ul w3-card-4 w3-border w3-hoverable">
    <?php foreach($data as $key => $estud) : ?>
-      <?php $lnk_ajax1=Ajax::link("api/estudiantes/uno/$estud->id", OdaUtils::nombre_persona($estud->nombres), 'details');?>
-      <?php $lnk_ajax2=Ajax::link("api/estudiantes/uno/$estud->id", OdaUtils::nombre_persona($estud->getApellidos()), 'details');?>
+      <?php $lnk_ajax1=Ajax::link("api/estudiantes/uno/$estud->id", OdaUtils::nombrePersona($estud->nombres), 'details');?>
+      <?php $lnk_ajax2=Ajax::link("api/estudiantes/uno/$estud->id", OdaUtils::nombrePersona($estud->getApellidos()), 'details');?>
       <li class="w3-bar" >
          <div class="w3-bar-item w3-center">
             <?=$estud->getFoto(); ?>

@@ -1,14 +1,12 @@
 <?php
 /**
- * Helper para Formularios Odair.
+ * OdaTable: Helper para Formularios Odair.
  * 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category Helper.
  * @source   frontend\app\extensions\helpers\oda_table.php
  */
 class OdaTable {
-   private $_attrs = 'id="myTable" class="w3-table w3-responsive w3-bordered" ';
-   private $_theme  = '';
    private $_thead  = '';
    private $_tbody  = '';
    private $_tbody_cont = 0;
@@ -16,11 +14,10 @@ class OdaTable {
    private $_tcaption = '';
    private $_tcaption_attrs = 'class="w3-left-align w3-bottombar w3-border-blue"';
    
-   public function __construct(string|array $attrs='') {
-      if ($attrs) {
-         $this->_attrs = self::getAttrs($attrs);
-      }
-      $this->_theme = substr(Session::get('theme'),0,1);
+   public function __construct(
+      private string|array $_attrs='id="myTable" class="w3-table w3-responsive w3-bordered"',
+      private string $_theme = 'dark'
+   ) {
    }
    
    public function __toString() {
@@ -45,7 +42,12 @@ class OdaTable {
     * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
     * @source  frontend\app\extensions\helpers\oda_form.php
     */
-   public function setHead(string|array $arr_head, string|array $attrs='', array $attrs2=array()):void {
+   public function setHead(
+      string|array $arr_head='', 
+      string|array $attrs='', 
+      array $attrs2=array()
+   ):void 
+   {
       $arr_head = self::strToArray($arr_head);
       $attrs = self::getAttrs($attrs);
       $head = '';
@@ -56,12 +58,18 @@ class OdaTable {
       $this->_thead = "<thead $attrs><tr>".$head.'</tr></thead>';
    }
    
-   public function setBody(string|array $data, string|array $attrs='', string|array $attrs2=array()):void {
+   public function setBody(
+      string|array $data, 
+      string|array $attrs='', 
+      string|array $attrs2=array()
+   ):void 
+   {
       $data  = self::strToArray($data);
       $attrs = self::getAttrs($attrs);
       $this->_tbody_cont +=1;
+      $t = substr($this->_theme, 0, 1);
       if (!$attrs) {
-         $attrs = ($this->_tbody_cont%2==0) ?  "class=\"item w3-theme-{$this->_theme}1\"" :  "class=\"item w3-theme-{$this->_theme}4\"" ;
+         $attrs = ($this->_tbody_cont%2==0) ?  "class=\"item w3-theme-{$t}1\"" :  "class=\"item w3-theme-{$t}4\"" ;
       }
       $this->_tbody.= "<tr $attrs>";
       foreach ($data as $key => $td) {
@@ -96,8 +104,7 @@ class OdaTable {
    } // END-multiTags
 
    public static function strToArray(string|array $params):array {
-      if (!is_string($params)) { return (array) $params; 
-      }
+      if (!is_string($params)) { return (array) $params; }
       return explode(',', $params);
    } // END-strToArray
 
@@ -108,4 +115,4 @@ class OdaTable {
        return trim($data);
    } // END-getAttrs
    
-} // END-_table
+} // END-OdaTable

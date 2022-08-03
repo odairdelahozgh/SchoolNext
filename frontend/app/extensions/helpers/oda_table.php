@@ -1,6 +1,6 @@
 <?php
 /**
- * OdaTable: Helper para Formularios Odair.
+ * OdaTable: Helper para TABLAS Odair.
  * 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category Helper.

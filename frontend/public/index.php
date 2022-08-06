@@ -20,7 +20,7 @@ const ABS_PUBLIC_PATH = '/home2/dwsjrnmy/public_html/windsor_schoolnext_public';
 // =======================
 // DESARROLLO LOCAL
 const PRODUCTION = false;
-error_reporting(E_ALL ^ E_STRICT);ini_set('display_errors', 'On');
+//error_reporting(E_ALL ^ E_STRICT);ini_set('display_errors', 'On');
 define('APP_PATH', dirname(__DIR__).'/app/');
 define('CORE_PATH', dirname(dirname(APP_PATH)).'/core/');
 define('PUBLIC_PATH', substr($_SERVER['SCRIPT_NAME'], 0, -9)); // - index.php string[9]

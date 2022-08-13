@@ -42,7 +42,7 @@ class SecretariaController extends AppController
      * Editar un Registro de Estudiante
      * @param int $id (requerido)
      */
-    public function editarEstudActivos($id) {
+    public function editarEstudActivos(int $id) {
       $this->page_action = 'Editar un Registro de Estudiante';
       $obj_estudiante = new Estudiante;
       if (Input::hasPost('estudiante')) { // se verifica si se ha enviado el formulario (submit)
@@ -65,7 +65,7 @@ class SecretariaController extends AppController
    * @param int $salon_id (requerido)
    * @param int $audit (requerido)
    */
-  public function cambiar_salon_estudiante($estudiante_id, $salon_id, $cambiar_en_notas = true) {
+  public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {
     $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [(int)$estudiante_id]);
     if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_en_notas) ) {
       OdaFlash::valid("Operación exitosa [Cambiar salón] $Estud", true);

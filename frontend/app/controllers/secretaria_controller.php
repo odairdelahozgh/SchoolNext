@@ -61,15 +61,16 @@ class SecretariaController extends AppController
 
   /**
    * Cambiar de salón a un estudiante
-   * @param int $id (requerido)
+   * @param int $estudiante_id (requerido)
    * @param int $salon_id (requerido)
+   * @param int $audit (requerido)
    */
-  public function cambiar_salon_estudiante($estudiante_id, $salon_id, $audit = true) {
+  public function cambiar_salon_estudiante($estudiante_id, $salon_id, $cambiar_en_notas = true) {
     $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [(int)$estudiante_id]);
-    if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_notas=true) ) {
-      OdaFlash::valid("Operaci&oacute;n exitosa [Cambiar sal&oacute;n]", $audit);
+    if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_en_notas) ) {
+      OdaFlash::valid("Operación exitosa [Cambiar salón] $Estud", true);
     } else {
-      OdaFlash::error("Fall&oacute; Operaci&oacute;n [Cambiar sal&oacute;n]", true);
+      OdaFlash::error("Falló Operación [Cambiar salón]", true);
     }
     return Redirect::to('/secre-estud-list-activos');
   }

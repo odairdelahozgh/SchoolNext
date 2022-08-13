@@ -1,0 +1,23 @@
+<div class="page">
+    <div class="page-inner">
+        <header class="page-title-bar">
+          <h1 class="page-title">Grados</h1>
+        </header>
+
+        <div class="page-section">
+
+          <ul>
+          <?php foreach($listPageGrados->items as $item) : ?> 
+            <li>
+              <?php echo Html::linkAction("edit/$item->id/", 'Editar') ?>
+              <strong><?= $item ?></strong>
+            </li>
+            <?php endforeach ?>
+          </ul>
+          <?php if($listPageGrados->prev) echo Html::linkAction("index/$listPageGrados->prev/", '<< Anterior |') ?> 
+          <?php if($listPageGrados->next) echo Html::linkAction("index/$listPageGrados->next/", 'Proximo >>') ?> 
+
+        </div>
+        
+    </div>
+</div>

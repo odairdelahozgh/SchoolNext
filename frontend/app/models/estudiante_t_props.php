@@ -5,7 +5,7 @@ trait EstudianteTProps {
     protected static $default_foto_estud = '';
     protected static $default_foto_estud_circle = '';
 
-    public function __toString() { return $this->getNombreCompleto(); }
+    public function __toString() { return $this->getNombreCompleto().' '.$this->getCodigo(); }
     public function getCodigo() { return '[Cod: '.$this->id.']'; }
     public function getApellidos() { return $this->apellido1.' '.$this->apellido2; }    
     public function getNombreCompleto($orden='a1 a2, n') {

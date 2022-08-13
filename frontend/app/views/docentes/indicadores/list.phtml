@@ -1,7 +1,7 @@
 <?php View::flash(); ?>
 <div class="w3-container">
    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
-   <h2> <?="<b>$asignatura</b> -- <b>$grado [°$grado->id]</b>"?> </h2>
+   <h2> <?="<b>$RegAsignatura</b> -- <b>$RegGrado [°$RegGrado->id]</b>"?> </h2>
    <?php
       $Tabs = new OdaTabs();
       foreach ($data as $periodo => $regs_periodo) {

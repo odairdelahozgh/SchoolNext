@@ -32,7 +32,7 @@ class Estudiante extends LiteRecord
 
   
   //==============
-  public function getList($estado=null, $orden='a1,a2,n') {
+  public function getList(mixed $estado=null, string $orden='a1,a2,n'): array {
     $orden = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
@@ -72,7 +72,7 @@ class Estudiante extends LiteRecord
   
 
   //==============
-  public function getListActivos($orden='a1,a2,n') {
+  public function getListActivos(string $orden='a1,a2,n'): array {
     $orden = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
@@ -100,7 +100,7 @@ class Estudiante extends LiteRecord
   
   
   //==============
-  public function getListInactivos($orden='a1,a2,n') {
+  public function getListInactivos(string $orden='a1,a2,n'): array {
     $orden = str_replace(
       array('n', 'a1', 'a2'),
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
@@ -126,7 +126,7 @@ class Estudiante extends LiteRecord
   
 
   //=============
-  public function getListPorProfesor($user_id) {
+  public function getListPorProfesor(int $user_id): array {
     $salones = '';
     $CargaProfe = (new CargaProfesor)->getSalonesCarga($user_id);
     foreach ($CargaProfe as $key => $carga) {
@@ -142,27 +142,29 @@ class Estudiante extends LiteRecord
 
   
     //=========
-    public function getSalonesCambiar($modulo) {
+    public function getSalonesCambiar(string $modulo): string {
       $lnk_cambio = '';
       if ($this->is_active) {
+        //35=>'10-B',
+        //23=>'01-C', ,29=>'02-C' 30=>'03-C' 32=>'04-C' 33=>'05-C', 
+        //11=>'PK-B' 13=>'KD-B' 22=>'KD-C', 14=>'TN-B'
           $salonesSig = array(
               0 => array(),
-              1 => array(1=>'01-A',2=>'01-B',23=>'01-C',  3=>'02-A',4=>'02-B',29=>'02-C'),
-              2 => array(3=>'02-A',4=>'02-B',29=>'02-C',  5=>'03-A',6=>'03-B',30=>'03-C'),
-              3 => array(5=>'03-A',6=>'03-B',30=>'03-C',  7=>'04-A',24=>'04-B',32=>'04-C'),
-              4 => array(7=>'04-A',24=>'04-B',32=>'04-C', 8=>'05-A',26=>'05-B',33=>'05-C'),
-              5 => array(8=>'05-A',26=>'05-B',33=>'05-C', 21=>'06-A',25=>'06-B'),
+              1 => array(1=>'01-A',2=>'01-B',  3=>'02-A',4=>'02-B'),
+              2 => array(3=>'02-A',4=>'02-B',  5=>'03-A',6=>'03-B'),
+              3 => array(5=>'03-A',6=>'03-B',  7=>'04-A',24=>'04-B'),
+              4 => array(7=>'04-A',24=>'04-B', 8=>'05-A',26=>'05-B'),
+              5 => array(8=>'05-A',26=>'05-B', 21=>'06-A',25=>'06-B'),
               6 => array(21=>'06-A',25=>'06-B', 20=>'07-A',28=>'07-B'),
               7 => array(20=>'07-A',28=>'07-B', 19=>'08-A',31=>'08-B'),
               8 => array(19=>'08-A',31=>'08-B', 18=>'09-A',34=>'09-B'),
-              9 => array(18=>'09-A',34=>'09-B', 17=>'10-A',35=>'10-B'),
-              10 => array(17=>'10-A',35=>'10-B', 16=>'11-A',36=>'11-B'),
-              11 => array(16=>
-              '11-A',36=>'11-B'),
-              12 => array(15=>'PV-A', 10=>'PK-A',11=>'PK-B'),
-              13 => array(10=>'PK-A',11=>'PK-B', 12=>'KD-A',13=>'KD-B',22=>'KD-C'),
-              14 => array(12=>'KD-A',13=>'KD-B',22=>'KD-C', 9=>'TN-A',14=>'TN-B'),
-              15 => array(9=>'TN-A',14=>'TN-B', 1=>'01-A',2=>'01-B',23=>'01-C'),
+              9 => array(18=>'09-A',34=>'09-B', 17=>'10-A'),
+              10 => array(17=>'10-A', 16=>'11-A',36=>'11-B'),
+              11 => array(16=>'11-A',36=>'11-B'),
+              12 => array(15=>'PV-A', 10=>'PK-A'),
+              13 => array(10=>'PK-A', 12=>'KD-A'),
+              14 => array(12=>'KD-A', 9=>'TN-A'),
+              15 => array(9=>'TN-A',  1=>'01-A',2=>'01-B'),
           );
 
           if ( array_key_exists($this->grado_mat, $salonesSig) ) {
@@ -175,7 +177,7 @@ class Estudiante extends LiteRecord
       return $lnk_cambio;
   }
 
-  public function setCambiarSalon($salon_id, $cambiar_en_notas=false) {
+  public function setCambiarSalon(int $salon_id, bool $cambiar_en_notas=false): bool {
       $salon = (new Salon)->get((int) $salon_id);
       if ($salon) {
           // Cambia el salón en la tabla de ESTUDIANTES
@@ -198,19 +200,25 @@ class Estudiante extends LiteRecord
   }
   
   
-  public function setActualizarPago($estudiante_id) {
-    $Estud = (new Estudiante)->get((int)$estudiante_id);
-    $Estud->mes_pagado = 6;
-    $Estud->save();
-    return true;
+  public function setActualizarPago(int $estudiante_id): bool {
+    $RegEstud = (new Estudiante)->get((int)$estudiante_id);
+    if ($RegEstud) {
+      $RegEstud->mes_pagado = 6;
+      $RegEstud->save();
+      return true;
+    }
+    return false;
   } // END-setActualizarPago
     
   
-  public function setActivar($estudiante_id) {
-    $Estud = (new Estudiante)->get((int)$estudiante_id);
-    $Estud->is_active = 1;
-    $Estud->save();
-    
+  public function setActivar(int $estudiante_id): bool {
+    $RegEstud = (new Estudiante)->get((int)$estudiante_id);
+    if ($RegEstud) {
+      $RegEstud->is_active = 1;
+      $RegEstud->save();
+      return true;
+    }
+    return false;
   } // END-setActivar
   
   

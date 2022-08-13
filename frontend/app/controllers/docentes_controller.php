@@ -28,23 +28,23 @@ class DocentesController extends AppController
   }
 
   //=============
-  public function registros_gen() {
-    $this->page_action = 'Mis Registros - Observaciones Generales';
+  public function registros_observaciones() {
+    $this->page_action = 'Registros de Observaciones';
     $this->breadcrumb  = $this->bc('Observaciones Generales');
     
     $this->resumen = (new RegistrosGen)->getRegistrosProfesorResumen(Session::get('id'));
     $this->data = (new RegistrosGen)->getRegistrosProfesor(Session::get('id'));
     $this->tot_regs = count($this->data);
     
-    View::select('registros_gen/index');
+    View::select('registros_observaciones/list');
   }
   
   public function indicadores($asignatura_id, $grado_id) {
     $this->page_action = 'Indicadores de Logro';
     $this->breadcrumb  = $this->bc('Carga;Indicadores');
 
-    $this->asignatura = (new Asignatura)->get((int)$asignatura_id);
-    $this->grado = (new Grado)->get((int)$grado_id);
+    $this->RegAsignatura = (new Asignatura)->get((int)$asignatura_id);
+    $this->RegGrado = (new Grado)->get((int)$grado_id);
 
     $indicadores = (new Indicador)->getIndicadores((int)$asignatura_id, (int)$grado_id);
     $arrIndic = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );

@@ -16,8 +16,9 @@ class OdaTable {
    
    public function __construct(
       private string|array $_attrs='id="myTable" class="w3-table w3-responsive w3-bordered"',
-      private string $_theme = 'dark'
+      private string $_theme = '',
    ) {
+      $this->_theme = Session::get('theme') ?? 'dark';
    }
 
    /**
@@ -82,7 +83,9 @@ class OdaTable {
       $this->_tbody_cont +=1;
       $t = substr($this->_theme, 0, 1);
       if (!$attrs) {
-         $attrs = ($this->_tbody_cont%2==0) ?  "class=\"item w3-theme-{$t}1\"" :  "class=\"item w3-theme-{$t}4\"" ;
+         $par   = ($t=='d')?'d1':'l4';
+         $impar = ($t=='d')?'d4':'l1';
+         $attrs = ($this->_tbody_cont%2==0) ?  "class=\"item w3-theme-$par\"" :  "class=\"item w3-theme-$impar\"" ;
       }
       $this->_tbody.= "<tr $attrs>";
       foreach ($data as $key => $td) {

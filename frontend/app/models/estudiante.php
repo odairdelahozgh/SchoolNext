@@ -177,7 +177,8 @@ class Estudiante extends LiteRecord
       return $lnk_cambio;
   }
 
-  public function setCambiarSalon(int $salon_id, bool $cambiar_en_notas=false): bool {
+  public function setCambiarSalon(int $salon_id, bool $cambiar_en_notas=true): bool {
+      $estud_id = $this->id;
       $salon = (new Salon)->get((int) $salon_id);
       if ($salon) {
           // Cambia el salón en la tabla de ESTUDIANTES
@@ -185,14 +186,38 @@ class Estudiante extends LiteRecord
           $this->grado_mat = $salon->grado_id;
           $this->save();
           // Lo debe cambiar de salón en la tabla NOTAS también.
-          $RegNotaEstud = (new Nota);
+          $RegNotaEstud = (new Nota)->Filter("WHERE estudiante_id=?", [$estud_id]);
+          $RegRegistrosGenEstud = (new RegistrosGen)->Filter("WHERE estudiante_id=?", [$estud_id]);
+          $RegRegistrosDesempEstud = (new RegistrosDesemp)->Filter("WHERE estudiante_id=?", [$estud_id]);
+          
           if ($cambiar_en_notas) {
-            $RegNotaEstud->Filter("WHERE estudiante_id=?", array($this->id));
+            $cnt = 0;
             foreach ($RegNotaEstud as $nota) {
               $nota->salon_id = $salon->id;
               $nota->grado_id = $salon->grado_id;
               $nota->save();
+              $cnt += 1;
             }
+            OdaLog::debug("RegNotaEstud: $cnt", 'setCambiarSalon');
+            
+            $cnt = 0;
+            foreach ($RegRegistrosGenEstud as $regGen) {
+              $regGen->salon_id = $salon->id;
+              $regGen->grado_id = $salon->grado_id;
+              $regGen->save();
+              $cnt += 1;
+            }
+            OdaLog::debug("RegRegistrosGenEstud: $cnt", 'setCambiarSalon');
+
+            $cnt = 0;
+            foreach ($RegRegistrosDesempEstud as $regDesemp) {
+              $regDesemp->salon_id = $salon->id;
+              $regDesemp->grado_id = $salon->grado_id;
+              $regDesemp->save();
+              $cnt += 1;
+            }
+            OdaLog::debug("RegRegistrosDesempEstud: $cnt", 'setCambiarSalon');
+
           }
           return true;
       }

@@ -10,29 +10,23 @@
             <input class="w3-input w3-border" style="width:30%;" oninput="w3.filterHTML('#myTable', '.item', this.value)"  placeholder="Filtro..">
          </div>
    </div>
-   <span class="w3-small"><?= 'Total Grupos Asignados: '.count($data); ?></span><br/>
-
-   <table id="myTable" class="w3-table w3-striped w3-responsive w3-hoverable">
-      <thead>
-         <tr>
-            <th onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(1)')">°Salon</th>
-            <th onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(2)')">°Asignatura</th>
-            <th>Indicadores</th>
-            <th>Notas</th>
-         </tr>
-      </thead>
-      <tbody>      
-         <?php foreach($data as $key => $carga) : ?>
-            <?php $t1=($themei=='d'?'d1':'l1'); ?>
-            <?php $t2=($themei=='d'?'d2':'l3'); ?>
-            <tr class="item w3-theme-<?=((($key%2)==0) ? $t1:$t2);?> ">
-              <td> <?=$carga->salon?> <?=($user_id==1)?"[$carga->salon_id]":'';?> </td>
-              <td> <?=OdaUtils::sanearString($carga->asignatura)?> <?=($user_id==1)?"[$carga->asignatura_id]":'';?></td>
-              <td><?=_Tag::link("docentes/indicadores/$carga->asignatura_id/$carga->grado_id", 'Indicadores');?></td>
-              <td><?=_Tag::link("docentes/notas/$carga->asignatura_id/$carga->salon_id", 'Notas');?></td>
-            </tr>
-         <?php endforeach ?>
-      </tbody>
-   </table>
+   
+   <?php
+      $tabla = new OdaTable();
+      $tabla->setHead(
+         arr_head: '°Salon, °Asignatura, Indicadores, Notas', 
+         attrs2:   array("onclick=\"w3.sortHTML('#myTable','.item', 'td:nth-child(1)')\"",
+                        "onclick=\"w3.sortHTML('#myTable','.item', 'td:nth-child(2)')\"",
+         )
+      );
+      foreach($data as $key => $carga) {
+         $d1 = $carga->salon . ' ' .(($user_id==1) ? "[$carga->salon_id]" :'');
+         $d2 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');
+         $d3 = _Tag::link("docentes/indicadores/$carga->asignatura_id/$carga->grado_id", 'Indicadores');
+         $d4 = _Tag::link("docentes/notas/$carga->asignatura_id/$carga->salon_id", 'Notas');
+         $tabla->setBody( data: [$d1, $d2, $d3, $d4] );
+      }
+      echo $tabla;
+   ?>
 
 </div>

@@ -28,13 +28,13 @@ class SecretariaController extends AppController
     
     public function actualizarPago($estudiante_id) {
       (new Estudiante)->setActualizarPago((int)$estudiante_id);
-      Redirect::toAction('estud_list_activos');
+      Redirect::toAction('listadoEstudActivos');
     } // END-actualizarPago
     
     
     public function activarEstudiante($estudiante_id) {
       (new Estudiante)->setActivar((int)$estudiante_id);
-      Redirect::toAction('/listadoEstudInactivos');
+      Redirect::toAction('listadoEstudInactivos');
     } // END-activarEstudiante
     
 

@@ -9,14 +9,15 @@
 class OdaTable {
    private string $_thead  = '';
    private string $_tbody  = '';
-   private int $_tbody_cont = 0;
+   private int    $_tbody_cont = 0;
    private string $_tfoot  = '';
    private string $_tcaption = '';
    private string $_tcaption_attrs = 'class="w3-left-align w3-bottombar w3-border-blue"';
    
    public function __construct(
-      private string|array $_attrs='id="myTable" class="w3-table w3-responsive w3-bordered"',
+      private string|array $_attrs='id="myTable" class="w3-table w3-responsive w3-striped w3-bordered"',
       private string $_theme = '',
+      private array $_searchCol = [1],
    ) {
       $this->_theme = Session::get('theme') ?? 'dark';
    }
@@ -24,7 +25,7 @@ class OdaTable {
    /**
     * Muestra la tabla
     */
-   public function __toString() {
+   public function __toString() {  
       return "<div class=\"w3-container\">"
                ."<table $this->_attrs>
                      $this->_tcaption
@@ -75,7 +76,7 @@ class OdaTable {
    public function setBody(
       string|array $data, 
       string|array $attrs  = '', 
-      string|array $attrs2 = array()
+      string|array $attrs2 = [],
    )
    {
       $data  = self::strToArray($data);
@@ -89,11 +90,29 @@ class OdaTable {
       }
       $this->_tbody.= "<tr $attrs>";
       foreach ($data as $key => $td) {
-         $atr2 = (array_key_exists($key, $attrs2)) ? $attrs2[$key] : '' ;
+         $atr2 = '';
+         if ($attrs2) {
+            $atr2 = (array_key_exists($key, $attrs2)) ? $attrs2[$key] : '' ;
+         }
+
+         if (array_search($key, $this->_searchCol)) {
+            if (str_contains($atr2, 'class')) {
+               $atr2 = str_replace('class="', 'class="searchTdata ', $atr2);
+            } else {
+               $atr2 .= ' class="searchTdata" ';
+            }
+         }
+         
          $this->_tbody.= "<td $atr2>".trim($td).'</td>';
+         //$this->_tbody.= $this->setColumnData($td);
       }
       $this->_tbody.= '</tr>';
       return $this;
+   }
+
+   private function setColumnData(string $tdata, string $attr='') {
+      //$this->_searchCol
+      return "<td $attr>".trim($tdata).'</td>';
    }
 
    /**

@@ -1,32 +1,28 @@
-<?php View::flash(); ?>
-
 <div class="w3-container">
-
+   <?= View::flash(); ?>
    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+</div>
 
-   <div class="w3-row w3-section">
-      <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-search"></i></div>
-      <div class="w3-rest">
-            <input class="w3-input w3-border" style="width:30%;" oninput="w3.filterHTML('#myTable', '.item', this.value)"  placeholder="Filtro..">
-         </div>
-   </div>
-   
-   <?php
+<div class="w3-container">   
+<?php
+   if ($tot_regs==0) {
+      Flash::valid('<h3>Atención!</h3><p>No hay registros para mostrar.</p>');
+   } else {
+      echo OdaForm::inputSearch();
       $tabla = new OdaTable();
-      $tabla->setHead(
-         arr_head: '°Salon, °Asignatura, Indicadores, Notas', 
-         attrs2:   array("onclick=\"w3.sortHTML('#myTable','.item', 'td:nth-child(1)')\"",
-                        "onclick=\"w3.sortHTML('#myTable','.item', 'td:nth-child(2)')\"",
-         )
-      );
+      $tabla->setHead( arr_head: '°Salon, °Asignatura, Indicadores, Notas' );
+      $tabla->setCaption(caption:'Carga Asignada');
       foreach($data as $key => $carga) {
          $d1 = $carga->salon . ' ' .(($user_id==1) ? "[$carga->salon_id]" :'');
          $d2 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');
          $d3 = _Tag::link("docentes/indicadores/$carga->asignatura_id/$carga->grado_id", 'Indicadores');
          $d4 = _Tag::link("docentes/notas/$carga->asignatura_id/$carga->salon_id", 'Notas');
-         $tabla->setBody( data: [$d1, $d2, $d3, $d4] );
+         $tabla->setBody( data: [$d1, $d2, $d3, $d4], attrs2:['class="searchTdata"','class="searchTdata"']);
       }
       echo $tabla;
+   }
    ?>
 
 </div>
+
+<?= Tag::js("table_filter"); ?>

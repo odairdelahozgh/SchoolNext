@@ -31,3 +31,4 @@ frontend/app/temp
 sonar-project.properties
 composer.lock
 KumbiaPHP/
+*.xlsx

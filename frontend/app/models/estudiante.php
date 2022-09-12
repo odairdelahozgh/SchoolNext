@@ -17,10 +17,9 @@ class Estudiante extends LiteRecord
 {
   use EstudianteTDefa, EstudianteTProps,  EstudianteTLinksOlds;
 
-  protected static $table = 'sweb_estudiantes';
-
   public function __construct() {
     parent::__construct();
+    self::$table = Config::get('tablas.estudiantes');
     self::$default_foto_estud        = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-round" style="width:100%;max-width:80 px">';
     self::$default_foto_estud_circle = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-circle w3-bar-item" style="width:100%;max-width:80 px">';
     self::$_defaults     = $this->getTDefaults();
@@ -30,7 +29,14 @@ class Estudiante extends LiteRecord
     self::$_attribs      = $this->getTAttribs();
   }
 
-  
+  const LIM_PAGO_PERIODOS = [
+    1 => 4,
+    2 => 6,
+    3 => 8,
+    4 => 11,
+    5 => 11,
+  ];
+
   //==============
   public function getList(mixed $estado=null, string $orden='a1,a2,n'): array {
     $orden = str_replace(
@@ -45,7 +51,6 @@ class Estudiante extends LiteRecord
       array('e.nombres', 'e.apellido1', 'e.apellido2'),
       $nombre_estud
     );
-
     
     $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre AS salon " ;
     $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
@@ -53,15 +58,15 @@ class Estudiante extends LiteRecord
     if (is_null($estado)) { // todos
       $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
       FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
-      LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
+      LEFT JOIN ".Config::get('tablas.salones')." AS s ON e.salon_id=s.id
+      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
       ORDER BY $orden";
       return $this::all($DQL);
     } else {
       $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
       FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
-      LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
+      LEFT JOIN ".Config::get('tablas.salones')." AS s ON e.salon_id=s.id
+      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
       WHERE e.is_active=?
       ORDER BY $orden";
       
@@ -90,8 +95,8 @@ class Estudiante extends LiteRecord
     $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
     $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
       FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.salon')." AS s ON e.salon_id=s.id
-      LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
+      LEFT JOIN ".Config::get('tablas.salones')." AS s ON e.salon_id=s.id
+      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
       WHERE e.is_active=1
       ORDER BY $orden";
     
@@ -117,7 +122,7 @@ class Estudiante extends LiteRecord
     $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
     $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $grado
       FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.grado')." AS g ON e.grado_mat=g.id
+      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
       WHERE e.is_active=0
       ORDER BY $orden";
     
@@ -135,7 +140,7 @@ class Estudiante extends LiteRecord
     $salones = substr($salones,0,-1);
     $DQL = "SELECT e.*, s.nombre as salon
             FROM ".self::$table." as e
-            LEFT JOIN ".Config::get('tablas.salon')." as s ON e.salon_id=s.id
+            LEFT JOIN ".Config::get('tablas.salones')." as s ON e.salon_id=s.id
             WHERE s.id IN($salones)";
     return $this->data = $this::all($DQL);
   } // END-
@@ -228,7 +233,8 @@ class Estudiante extends LiteRecord
   public function setActualizarPago(int $estudiante_id): bool {
     $RegEstud = (new Estudiante)->get((int)$estudiante_id);
     if ($RegEstud) {
-      $RegEstud->mes_pagado = 6;
+      $periodo_actual = (int)Config::get('academico.periodo_actual');
+      $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[$periodo_actual];
       $RegEstud->save();
       return true;
     }

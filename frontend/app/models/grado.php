@@ -13,14 +13,15 @@
 class Grado extends LiteRecord
 {
   use GradoT;
-  protected static $table = 'sweb_grados';
 
   public function __construct() {
+    parent::__construct();
     self::$_defaults     = $this->getTDefaults();
     self::$_labels       = $this->getTLabels();
     self::$_placeholders = $this->getTPlaceholders();
     self::$_helps        = $this->getTHelps();
     self::$_attribs      = $this->getTAttribs();
+    self::$table = Config::get('tablas.grados');
   }
 
   //==============

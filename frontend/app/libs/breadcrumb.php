@@ -120,7 +120,7 @@ class Breadcrumb
      *
      * @return void
      */
-    final static private function _isset()
+    static private function _isset()
     {
         if(!isset($_SESSION['KUMBIA_SESSION'][APP_PATH][self::$namespace]))
         {
@@ -363,7 +363,8 @@ class Breadcrumb
             }
             elseif(!empty($crumb['title']))
             {
-                $html[] = "<li><a href='javascript: void(0)'>{$crumb['title']}</a></li>";
+                //$html[] = "<li><a href='javascript: void(0)'>{$crumb['title']}</a></li>";
+                $html[] = "<li><a href='/'>{$crumb['title']}</a></li>";
             }
         }while(next($this->_path));
         self::reset();
@@ -373,7 +374,8 @@ class Breadcrumb
         }
         else
         {
-            return "<ul class='{$this->attrs['class_ul']}'>" . implode("<li class='{$this->attrs['class_separator']}'><a href='javascript: void(0)'>{$this->attrs['separator']}</a></li>", $html) . '</ul>';
+            //return "<ul class='{$this->attrs['class_ul']}'>" . implode("<li class='{$this->attrs['class_separator']}'><a href='javascript: void(0)'>{$this->attrs['separator']}</a></li>", $html) . '</ul>';
+            return "<ul class='{$this->attrs['class_ul']}'>" . implode("<li class='{$this->attrs['class_separator']}'><a href='/'>{$this->attrs['separator']}</a></li>", $html) . '</ul>';
         }
     }
 

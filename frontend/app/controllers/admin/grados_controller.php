@@ -14,7 +14,7 @@ class GradosController extends AppController
 
     public function list() {
         $this->page_action = 'Lista de Grados';
-        $this->breadcrumb  = $this->bc('Grados');
+        $this->breadcrumb->addCrumb(title:'Grados');
         $this->data = (new Grado)->getListSeccion();
         $this->tot_regs = count($this->data);
     }

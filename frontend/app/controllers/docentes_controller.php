@@ -14,15 +14,15 @@ class DocentesController extends AppController
   //=============
   public function carga() {
     $this->page_action = 'Carga Acad&eacute;mica';
-    $this->breadcrumb  = $this->bc('Carga');
     $this->data = (new CargaProfesor)->getCarga($this->user_id);
+    $this->breadcrumb->addCrumb(key: 1, title:'Carga', url:Router::get('module') . '/' . Router::get('controller'));
     $this->tot_regs = count($this->data);
   }
 
   //=============
   public function direccion_grupo() {
     $this->page_action = 'Direcci&oacute;n de Grupo';
-    $this->breadcrumb  = $this->bc('Dirección');
+    $this->breadcrumb->addCrumb(title:'Dirección', url:'');
 
     View::select('direccion_grupo/index');
   }
@@ -30,8 +30,9 @@ class DocentesController extends AppController
   //=============
   public function registros_observaciones() {
     $this->page_action = 'Registros de Observaciones';
-    $this->breadcrumb  = $this->bc('Observaciones Generales');
+    $this->breadcrumb->addCrumb(title:'Observaciones Generales', url:'');
     
+
     $this->resumen = (new RegistrosGen)->getRegistrosProfesorResumen(Session::get('id'));
     $this->data = (new RegistrosGen)->getRegistrosProfesor(Session::get('id'));
     $this->tot_regs = count($this->data);
@@ -41,7 +42,7 @@ class DocentesController extends AppController
   
   public function indicadores($asignatura_id, $grado_id) {
     $this->page_action = 'Indicadores de Logro';
-    $this->breadcrumb  = $this->bc('Carga;Indicadores');
+    $this->breadcrumb->addCrumb(title:'Carga', url:'docentes/carga');
 
     $this->RegAsignatura = (new Asignatura)->get((int)$asignatura_id);
     $this->RegGrado = (new Grado)->get((int)$grado_id);
@@ -57,7 +58,7 @@ class DocentesController extends AppController
   
   public function notas($asignatura_id, $salon_id) {
     $this->page_action = 'Notas del Sal&oacute;n';
-    $this->breadcrumb  = $this->bc('Carga;Notas');
+    $this->breadcrumb->addCrumb(key:1, title:'Carga', url:'docentes/carga');
     
     $this->Asignatura = (new Asignatura)->get((int)$asignatura_id);
     $this->Salon = (new Salon)->get((int)$salon_id);

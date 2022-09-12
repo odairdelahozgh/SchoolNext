@@ -1,0 +1,6 @@
+{
+    "require": {
+        "respect/validation": "^2.2",
+        "spatie/menu": "^3.0"
+    }
+}

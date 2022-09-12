@@ -6,7 +6,11 @@
   * https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
 class SecretariaController extends AppController
-{
+{    
+    protected function before_filter() {
+      $this->theme = Session::get('theme');
+    }
+
     public function index() {
       $this->page_action = 'M&oacute;dulo Secretar&iacute;a';
     }
@@ -14,7 +18,7 @@ class SecretariaController extends AppController
     public function listadoEstudActivos() {
       $this->page_action = 'Estudiantes Activos';
       $this->data = (new Estudiante)->getListActivos();
-      $this->theme = Session::get('theme');
+      //$this->theme = Session::get('theme');
       View::select('estudiantes/estud_list_activos');
     } // END-listadoEstudActivos
     
@@ -22,7 +26,7 @@ class SecretariaController extends AppController
       $this->page_action = 'Estudiantes Inactivos';
       $this->data = (new Estudiante)->getListInactivos();
       $this->num_regs = Count($this->data);
-      $this->theme = Session::get('theme');
+      //$this->theme = Session::get('theme');
       View::select('estudiantes/estud_list_inactivos');
     } // END-listadoEstudInactivos
     

@@ -1,7 +1,9 @@
 <div class="w3-container">
-   <?= View::flash(); ?>
-   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
-   <?php require 'list_header.phtml'; ?>
-   <?php require 'list_body.phtml'; ?>
-   <?php require 'list_footer.phtml'; ?>
+   <?php
+      echo View::flash();
+      echo View::Encab($controller_name, $page_action, $breadcrumb);
+      require 'list_header.phtml';
+      require 'list_body.phtml';
+      require 'list_footer.phtml'; 
+   ?>
 </div>

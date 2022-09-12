@@ -24,49 +24,21 @@ abstract class AppController extends Controller
 {
     public $page_action = '';
     public $page_title  = 'Título Página';
-    public $breadcrumb  = 'Inicio';
+    public $breadcrumb;
 
     public $theme       = 'dark';
     public $themei      = 'd';
     public $user_id     = 0;
-
-    /**
-     * Crea el BreadCrumb
-     *
-     * @example <?= _Icons::solid('flag', 'w3-small'); ?>
-     *
-     * @param string|null $icon: nombre del ícono solid
-     * @param string|null $size: tamaño w3-tiny. w3-small, w3-large, w3-xlarge, w3-xxlarge, w3-xxxlarge, w3-jumbo]
-     * 
-     * @return string
-     *
-     */
-    protected function bc($param=null) {
-        if (is_null($param)) {
-            return 'Inicio';
-        }
-        
-        $ARuta = explode(';',$param);
-        $breadcrumb = _Tag::linkBC('', 'Inicio');
-        if (count($ARuta)==1) {
-            return $breadcrumb.'&nbsp;'._Icons::solid('angles-right', "w3-small").'&nbsp;'.$ARuta[0];
-        }
-        
-        if (count($ARuta)==2) {
-            return $breadcrumb
-                   .'&nbsp;'._Tag::linkBC(strtolower($ARuta[0]), $ARuta[0])
-                   .'&nbsp;'._Icons::solid('angles-right', "w3-small").'&nbsp;'.$ARuta[1];
-        }
-
-    }
-
 
     final protected function initialize() {
         if (!Session::get('usuario_logged')) {
             Redirect::to("auth/login");
             return false;
         }
-        $this->breadcrumb = $this->bc();
+        $this->breadcrumb = new Breadcrumb();
+        $this->breadcrumb->class_ul = 'breadcrumb';
+        //$this->breadcrumb->addCrumb(0, '&#127968;');
+        $this->breadcrumb->addCrumb(0, '&#127968;', '');
         $this->user_id = Session::get('id');
         //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
         $this->id_instit = Config::get('institucion.id_name');

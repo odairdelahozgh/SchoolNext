@@ -96,13 +96,23 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 
 
     /**
-     * Eliminar registro por uuid.
+     * Eliminar registro por 'uuid'.
      * @param  string    $uuid valor para clave primaria uuid
      * @return bool
      */
-    public static function deleteUUID($uuid): bool {
+    public static function deleteUUID(string $uuid): bool {
         $source  = static::getSource();
         return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
+    }
+
+    /**
+     * Eliminar registro por 'id'.
+     * @param  int   $id valor para clave primaria id
+     * @return bool
+     */
+    public static function deleteID(int $id): bool {
+        $source  = static::getSource();
+        return static::query("DELETE FROM $source WHERE id = ?", [$id])->rowCount() > 0;
     }
 
     /**
@@ -118,6 +128,19 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
         return static::query($sql, [$uuid])->fetch();
     }
  
+    /**
+     * Buscar por PK ID.
+     *
+     * @param  int       $id valor para clave primaria
+     * @param  string    $fields campos que se desean obtener separados por coma
+     * 
+     * @return self|false
+     */
+    public static function get_id(int $id, string $fields = '*') {
+        $sql = "SELECT $fields FROM ".static::getSource().' WHERE id = ?';
+        return static::query($sql, [$id])->fetch();
+    }
+
     public static function valor_moneda($valor){
         return '$'.number_format($valor);
     }

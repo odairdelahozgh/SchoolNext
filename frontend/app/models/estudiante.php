@@ -32,7 +32,7 @@ class Estudiante extends LiteRecord
   const LIM_PAGO_PERIODOS = [
     1 => 4,
     2 => 6,
-    3 => 8,
+    3 => 9,
     4 => 11,
     5 => 11,
   ];

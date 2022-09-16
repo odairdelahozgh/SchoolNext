@@ -20,7 +20,7 @@ trait EstudianteTProps {
         $periodo = Config::get('academico.periodo_actual');
         if ($periodo==1 and $this->mes_pagado>=4) { return true; }
         if ($periodo==2 and $this->mes_pagado>=6) { return true; }
-        if ($periodo==3 and $this->mes_pagado>=8) { return true; }
+        if ($periodo==3 and $this->mes_pagado>=9) { return true; }
         if ($periodo==4 and $this->mes_pagado>=11 and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
         if ($periodo==5 and $this->mes_pagado>=11 and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
         return false;

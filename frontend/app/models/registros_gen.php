@@ -28,7 +28,7 @@ class RegistrosGen extends LiteRecord
       return 'no foto_acudiente';
     }
     $filename = 'registros_generales/'.(($this->created_at) ? date('Y',strtotime($this->created_at)) : date('Y')).'/'.$this->foto_acudiente;
-    return _Tag::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
+    return OdaTags::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
   } // END-getFotoAcudiente
   
   // ===========
@@ -37,7 +37,7 @@ class RegistrosGen extends LiteRecord
       return 'no foto_director';
     }
     $filename = 'registros_generales/'.(($this->created_at) ? date('Y',strtotime($this->created_at)) : date('Y')).'/'.$this->foto_director;
-    return _Tag::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
+    return OdaTags::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
   } // END-getFotoDirector
 
 

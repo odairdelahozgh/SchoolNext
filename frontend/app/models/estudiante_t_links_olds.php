@@ -12,7 +12,7 @@ trait EstudianteTLinksOlds {
             $href="$url/+/coordinacion/GenerarBoletines?salon_id=$salon_id&amp;periodo=$i&amp;estudiante_id=$estud_id&amp;ver_nota=1\"";
             $txt="P$i";
             $attrs="class=\"w3-btn w3-round w3-padding-small w3-red\" target=\"_blank\" title=\"Descargar Boletín : Periodo $i\"";
-            $btns .= _Tag::linkExterno($href, $txt, $attrs).'&ensp;';
+            $btns .= OdaTags::linkExterno($href, $txt, $attrs).'&ensp;';
         }
         return '<div class="w3-show-inline-block"><div class="w3-bar">'.$btns.'</div></div>';
     }

@@ -26,11 +26,11 @@
     </div>
     <div class="w3-auto">
       <?='['.Session::get('id').'] '.Session::get('username').'&nbsp;&nbsp;';?> 
-      <?=_Tag::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
+      <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
       <br/>
-        <span class="w3-hover-text-<?=$theme?>"><?=_Tag::linkIcon('', 'envelope').'&nbsp;'; ?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=_Tag::linkIcon('', 'user-gear').'&nbsp;';?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=_Tag::linkIcon('', 'gear');?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'envelope').'&nbsp;'; ?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'user-gear').'&nbsp;';?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'gear');?></span>
     </div>
     <h5 class="w3-small">
       <br>Ejecutado en <?=round((microtime(1) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2);?> ms
@@ -46,13 +46,13 @@
     onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
     
     <menu class="w3-padding">
-      <?= _Tag::linkBarItem('', 'INICIO') ?>
+      <?= OdaTags::linkBarItem('', 'INICIO') ?>
       <div class="w3-bar-block">
         <?php $modulo = Session::get('modulo'); ?>
         <?php View::partial("$modulo/$modulo"."_menu") ?>
       </div>
       <br><br>
-      <?= _Tag::link('index/cambiarTheme', (($theme=='dark') ? 'Modo Claro' : 'Modo Oscuro'), 'class="w3-btn w3-theme"' ) ?>
+      <?= OdaTags::link('index/cambiarTheme', (($theme=='dark') ? 'Modo Claro' : 'Modo Oscuro'), 'class="w3-btn w3-theme"' ) ?>
     </menu>
 
     

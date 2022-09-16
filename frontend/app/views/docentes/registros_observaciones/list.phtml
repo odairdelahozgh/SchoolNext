@@ -22,7 +22,7 @@
                     ."<button onclick=\"document.getElementById('$reg->id').style.display='block'\" class=\"w3-btn w3-theme\">ver mas</button>",
                   );
                require 'list_modal.phtml';
-               $tabla->setBody(data: $data_row, attrs2:['','','','class="searchTdata"']);
+               $tabla->setBody(data: $data_row, attrs2:['','','','class="searchTdata"','class="searchTdata"']);
             } //END-FOR
             echo $tabla;
             require('listFooter.phtml');

@@ -12,7 +12,7 @@
 
             foreach ($regs_periodo as $key => $nota) {
               
-              $foto = _Tag::img("upload/estudiantes/$nota->estudiante_id.png",$nota->estudiante_id,
+              $foto = OdaTags::img("upload/estudiantes/$nota->estudiante_id.png",$nota->estudiante_id,
                            "class=\"w3-round\" style=\"width:100%;max-width:80px\"", 'sin foto');
               $nom_estud = '<b>'.strtoupper(OdaUtils::nombrePersona($nota->estudiante)).'</b></br>'
                            .$nota->verNota();

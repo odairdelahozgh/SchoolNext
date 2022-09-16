@@ -35,15 +35,14 @@ class CoordinadorController extends AppController
    * @param int $id (requerido)
    * @param int $salon_id (requerido)
    */
-  public function cambiar_salon_estudiante($estudiante_id, $salon_id, $audit = true) {
-    $estud = (new Estudiante)->get((int)$estudiante_id);
-    $cambiar_notas = true;
-    if ( $estud->setCambiarSalon((int)$salon_id, $cambiar_notas) ) {
-      OdaFlash::valid("Operaci&oacute;n exitosa [Cambiar sal&oacute;n a $estud]", $audit);
+  public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {
+    $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [(int)$estudiante_id]);
+    if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_en_notas) ) {
+      OdaFlash::valid("Operaci&oacute;n exitosa [Cambiar sal&oacute;n a $Estud]", true);
     } else {
-      OdaFlash::error("Fall&oacute; Operaci&oacute;n [Cambiar sal&oacute;n a $estud]", $audit);
+      OdaFlash::error("Fall&oacute; Operaci&oacute;n [Cambiar sal&oacute;n a $Estud]", true);
     }
-    return Redirect::to('coordinador/????');//pendiente la redirección..
+    return Redirect::to('coordinador/index');//pendiente la redirección..
   }
 
   

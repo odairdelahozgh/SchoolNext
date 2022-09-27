@@ -7,13 +7,13 @@
   */
 class NotaHist extends LiteRecord
 {
-  protected static $table = 'sweb_notas';
+  protected static $table = 'sweb_notas_historia';
   protected static $tbl_estud = '';
   protected static $tbl_asign = '';
   
   //====================
   public function __construct(
-    public int $annio
+
     ) {
     self::$tbl_estud = Config::get('tablas.estud');
     self::$tbl_asign = Config::get('tablas.asign');
@@ -77,6 +77,14 @@ class NotaHist extends LiteRecord
     );
   } //END-getNotasPeriodoSalonAsignatura
 
-
+  //====================
+  public static function getVistaTotalAnniosPeriodosSalones() {
+    $aResult = [];
+    $registros = static::query("SELECT * FROM vista_total_annios_periodos_salones_historico", [])->fetchAll();
+    foreach ($registros as $reg) {
+      $aResult[$reg->annio][$reg->periodo_id][$reg->salon_id] = "$reg->salon;$reg->total_registros";
+    }
+    return $aResult;
+  }
 
 }

@@ -5,6 +5,7 @@
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category Helper.
  * @source   frontend\app\extensions\helpers\oda_tabs.php
+ * @example  echo tag::js("tabs_h", true);
  */
 class OdaTabs {
    private $_tab_cnt = 0;

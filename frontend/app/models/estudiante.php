@@ -183,6 +183,10 @@ class Estudiante extends LiteRecord
   }
 
   public function setCambiarSalon(int $salon_id, bool $cambiar_en_notas=true): bool {
+
+      // CREAR PROCEDIMIENTO PARA ACTUALIZAR EL NUMERO DE ESTUDIANTES POR SALÓN
+      // ACTUALIZANDO VARIABLE DE LA TABLA SALONES.
+      
       $estud_id = $this->id;
       $salon = (new Salon)->get((int) $salon_id);
       if ($salon) {

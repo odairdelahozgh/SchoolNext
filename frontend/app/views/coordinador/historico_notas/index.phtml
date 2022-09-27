@@ -1,0 +1,33 @@
+<div class="w3-panel">
+    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+    <?php View::flash(); ?>
+    <?php 
+        //echo OdaUtils::ver_array($RegistrosHist);
+        $tabsAnnios = new OdaTabs();
+        $ArrAnnios=[];
+        foreach ($RegistrosHist as $annio => $regAnnios) {
+            $info_periodos = '';
+            $tabsPeriodos = new OdaTabs();
+            foreach ($regAnnios as $periodo => $regPeriodos) {
+                $contenido = '';
+                foreach ($regPeriodos as $salon_id => $nomsalon_total) {
+                    $Valor = explode(";",$nomsalon_total);
+                    //echo "Año: $annio - Periodo: $periodo - Salon_id: $Valor[0] [$salon_id]  :: $Valor[1] <br>";
+                    $url = "https://windsortemp.schoolnext.space/index.php/+/notasHistoria/GenerarBoletinesHis?annio={$annio}&periodo={$periodo}&salon_id=$salon_id";
+                    $contenido .= OdaTags::linkExterno($url, "$annio - P$periodo : $Valor[0]", "w3-button").'<br>';
+                }
+                $tabsPeriodos->addTab($annio.$periodo, "$annio P".$periodo, $contenido);
+            }
+            $ArrAnnios[$annio]=$tabsPeriodos;
+            //$tabsAnnios->addTab($annio, $annio, $tabsPeriodos);
+        }
+        //echo $tabsAnnios;
+
+        foreach ($ArrAnnios as $key => $value) {
+            echo $key.'<br>'.$value;
+        }
+    ?>
+</div>
+
+
+<?= tag::js("tabs_h", true);?>

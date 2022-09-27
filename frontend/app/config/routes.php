@@ -42,6 +42,7 @@ return [
         
         '/coord-consoli-notas'   => 'coordinador/consolidado_notas',
         '/coord-registros'       => 'coordinador/gestion_registros',
+        '/coord-historicos'      => 'coordinador/historico_notas',
         
         '/secre-estud-list-activos'   => 'secretaria/listadoEstudActivos',
         '/secre-estud-edit-activos'   => 'secretaria/editarEstudActivos',

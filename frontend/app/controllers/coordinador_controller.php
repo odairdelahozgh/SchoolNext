@@ -23,9 +23,20 @@ class CoordinadorController extends AppController
 
     // ===============
     public function consolidado_notas() {
-      $this->page_action = 'Consolidado Notas';
+      $this->page_action = 'Consolidado de Notas';
     }
-    
+
+    // ===============
+    public function historico_notas() {
+      $this->page_action = 'Hist&oacute;rico de Notas';
+      $annio_ini = Config::get('institucion.annio_inicial');
+      $annio_fin = Config::get('academico.annio_actual')-1;
+      $cont = $annio_fin - $annio_ini + 1;
+      $this->aAnnios = array_combine(range(1,$cont), range($annio_ini, $annio_fin));
+      $this->RegistrosHist = (new NotaHist() )->getVistaTotalAnniosPeriodosSalones();
+      
+      View::select('historico_notas/index');
+    }    
     
   // ==============================
   // MÉTODOS ADICIONALES

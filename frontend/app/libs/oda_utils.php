@@ -1,4 +1,7 @@
 <?php
+
+use LDAP\Result;
+
 /**
  * Clase con diversas utilidades
  * ::camelcase($str, $lower = false)
@@ -16,10 +19,17 @@
 
 class OdaUtils extends Util {
     
-    const MESES = [
+    const GENERO = [
         'M' => 'Masculino',
         'F' => 'Femenino',
     ];
+    
+    const MESES = [
+        1 => 'Enero',
+        2 => 'Febrero',
+    ];
+    
+
     /**
      * Obtiene el nombre del mes (valor numérico)
      */
@@ -41,7 +51,22 @@ class OdaUtils extends Util {
         };
     } // END-nombreMes
 
-    
+
+    public static function ver_array(array $var) {
+        return '<pre>' .print_r($var).'</pre>';
+    }
+
+    /**
+     * Obtiene el nombre del Género
+     */
+    public static function nombreGenero(string $abrev=''): string {
+        return match((string)$abrev) {
+            'M'  => 'Masculino',
+            'F'  => 'Femenino',
+            default => 'Género no existe',
+        };
+    } // END-nombreGenero
+
     /**
      * Genera una cadena de caracteres aleatrorios.
      */

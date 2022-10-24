@@ -38,4 +38,10 @@ class Ejemplo extends LiteRecord
 
     public function __toString() { return $this->nombre; }
 
+    
+	public function paginateCustomers(int $page = 1, int $perPage = 50): Paginator
+	{
+		$sql = 'SELECT * FROM ' . self::getSource() . ' WHERE status = ?';
+		return self::paginateQuery($sql, $page, $perPage, [1]);
+	}
 }

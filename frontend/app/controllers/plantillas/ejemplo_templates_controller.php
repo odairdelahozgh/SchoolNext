@@ -6,7 +6,7 @@ class TemplatesController extends AppController
     const ALLOW = ['csv', 'xml', 'json'];
 
     public function index() {
-        $this->data = Usuarios::all();
+        $this->data = Usuario::all();
     }
 
     public function get($template) {
@@ -14,6 +14,6 @@ class TemplatesController extends AppController
             throw new KumbiaException('');
         }
         View::select(null, $template);
-        $this->data = Usuarios::all();
+        $this->data = Usuario::all();
     }
 }

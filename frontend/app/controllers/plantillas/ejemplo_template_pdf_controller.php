@@ -14,7 +14,7 @@ class TemplatesExamplesController extends AppController
         $this->fileName = 'user-list';
         //Modifica el título del documento PDF en la cabecera
         $this->title = 'User List';
-        $this->data = User::all();
+        $this->data = Usuario::all();
         $this->download = false;
     }
 }

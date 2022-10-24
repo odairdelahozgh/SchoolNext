@@ -7,6 +7,9 @@
   */
 class Nota extends LiteRecord
 {
+  use NotaTDefa, NotaTProps,  NotaTLinksOlds;
+
+
   protected static $table = 'sweb_notas';
   protected static $tbl_estud = '';
   protected static $tbl_asign = '';
@@ -15,11 +18,6 @@ class Nota extends LiteRecord
   public function __construct() {
     self::$tbl_estud = Config::get('tablas.estud');
     self::$tbl_asign = Config::get('tablas.asign');
-  }
-
-  //====================
-  public function __toString() { 
-    return $this->id; 
   }
 
   //====================
@@ -33,22 +31,24 @@ class Nota extends LiteRecord
   }
 
   //====================
-  public function getfoto() { 
-    return IMG_UPLOAD_PATH.'/estudiantes/'.$this->id.'.png'; 
-  }
-
-  //====================
-  public function getIsActiveF() { 
-    return (($this->is_active) ? '<i class="bi-check-circle-fill">' : '<i class="bi-x">'); 
-  }
-
-  //====================
   public function getList() {
     return (new Nota)->all();
   }
 
   //====================
-  public function getNotasSalonAsignatura($salon_id, $asignatura_id, $annio=null) {
+  public function getNotasSalon(int $salon_id) {
+    return (new Nota)->all(
+      "SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
+      FROM ".self::$table." as n
+      LEFT JOIN ".self::$tbl_estud." AS e ON n.estudiante_id = e.id
+      WHERE n.salon_id=? 
+      ORDER BY n.periodo_id, e.apellido1, e.apellido2, e.nombres",  array($salon_id)
+    );
+  } //END-getNotasSalonAsignatura
+
+
+  //====================
+  public function getNotasSalonAsignatura(int $salon_id, int $asignatura_id, $annio=null) {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
 
     return (new Nota)->all(
@@ -76,5 +76,14 @@ class Nota extends LiteRecord
   } //END-getNotasPeriodoSalonAsignatura
 
 
+  //====================
+  public static function getVistaNotasTodasExportar(int $salon_id) {
+    $aResult = [];
+    $registros = static::query("SELECT * FROM vista_notas_todas_exportar WHERE salon_id = ?", [$salon_id])->fetchAll();
+    foreach ($registros as $reg) {
+      $aResult["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
+    }
+    return $aResult;
+  } //END-getVistaNotasTodasExportar
 
 }

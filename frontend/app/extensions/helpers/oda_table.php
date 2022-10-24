@@ -7,35 +7,36 @@
  * @source   frontend\app\extensions\helpers\oda_table.php
  */
 class OdaTable {
-   private string $_thead  = '';
-   private string $_tbody  = '';
-   private int    $_tbody_cont = 0;
-   private string $_tfoot  = '';
-   private string $_tcaption = '';
-   private string $_tcaption_attrs = 'class="w3-left-align w3-bottombar w3-border-blue"';
+   private string $tHead    = '';
+   private string $tBody    = '';
+   private string $tFooter  = '';
+   private string $tCaption = '';
+   private int    $body_counter = 0;
    
    public function __construct(
       private string|array $_attrs='id="myTable" class="w3-table w3-responsive w3-striped w3-bordered"',
-      private string $_theme = '',
-      private array $_searchCol = [1],
+      private string $theme = '',
+      private array $searchCol = [1],
+      private bool $showTotalRegs = false,
    ) {
-      $this->_theme = Session::get('theme') ?? 'dark';
+      $this->theme = Session::get('theme') ?? 'dark';
    }
 
    /**
     * Muestra la tabla
     */
-   public function __toString() {  
+   public function __toString() { 
+      $total_regs = ($this->showTotalRegs) ? "<h5>Total Registros: $this->body_counter</h5>" : '' ;
       return "<div class=\"w3-container\">"
                ."<table $this->_attrs>
-                     $this->_tcaption
-                     $this->_thead
+                     $this->tCaption
+                     $this->tHead
                      <tbody id=\"searchBody\">
-                        $this->_tbody
+                        $this->tBody
                      </tbody>
-                     $this->_tfoot
+                     $this->tFooter
                   </table>
-                  <h5>Total Registros: $this->_tbody_cont</h5>
+                  $total_regs
              </div>";
    }
    
@@ -54,14 +55,13 @@ class OdaTable {
       array $attrs2          = array()
    )
    {
-      $arr_head = self::strToArray($arr_head);
       $attrs = self::getAttrs($attrs);
       $head = '';
-      foreach ($arr_head as $key => $th) {
+      foreach (self::strToArray($arr_head) as $key => $th) {
          $atr2 = (array_key_exists($key, $attrs2)) ? $attrs2[$key] : '' ;
-         $head .= "<th $atr2>".strtoupper(trim($th))."</th>";
+         $head .= "<th $atr2>".trim($th)."</th>";
       }
-      $this->_thead = "<thead $attrs><tr>".$head.'</tr></thead>';
+      $this->tHead = "<tHead $attrs><tr>".$head.'</tr></tHead>';
       return $this;
    }
    
@@ -81,21 +81,21 @@ class OdaTable {
    {
       $data  = self::strToArray($data);
       $attrs = self::getAttrs($attrs);
-      $this->_tbody_cont +=1;
-      $t = substr($this->_theme, 0, 1);
+      $this->body_counter +=1;
+      $t = substr($this->theme, 0, 1);
       if (!$attrs) {
          $par   = ($t=='d')?'d1':'l4';
          $impar = ($t=='d')?'d4':'l1';
-         $attrs = ($this->_tbody_cont%2==0) ?  "class=\"item w3-theme-$par\"" :  "class=\"item w3-theme-$impar\"" ;
+         $attrs = ($this->body_counter%2==0) ?  "class=\"item w3-theme-$par\"" :  "class=\"item w3-theme-$impar\"" ;
       }
-      $this->_tbody.= "<tr $attrs>";
+      $this->tBody.= "<tr $attrs>";
       foreach ($data as $key => $td) {
          $atr2 = '';
          if ($attrs2) {
             $atr2 = (array_key_exists($key, $attrs2)) ? $attrs2[$key] : '' ;
          }
 
-         if (array_search($key, $this->_searchCol)) {
+         if (array_search($key, $this->searchCol)) {
             if (str_contains($atr2, 'class')) {
                $atr2 = str_replace('class="', 'class="searchTdata ', $atr2);
             } else {
@@ -103,15 +103,15 @@ class OdaTable {
             }
          }
          
-         $this->_tbody.= "<td $atr2>".trim($td).'</td>';
-         //$this->_tbody.= $this->setColumnData($td);
+         $this->tBody.= "<td $atr2>".trim($td).'</td>';
+         //$this->tBody.= $this->setColumnData($td);
       }
-      $this->_tbody.= '</tr>';
+      $this->tBody.= '</tr>';
       return $this;
    }
 
    private function setColumnData(string $tdata, string $attr='') {
-      //$this->_searchCol
+      //$this->searchCol
       return "<td $attr>".trim($tdata).'</td>';
    }
 
@@ -125,13 +125,11 @@ class OdaTable {
     */
    public function setFoot(string|array $arr_foot, string|array $attrs = '')
    {
-      $arr_foot = self::strToArray($arr_foot);
-      $attrs = self::getAttrs($attrs);
       $foot = '';
-      foreach ($arr_foot as $td) {
+      foreach (self::strToArray($arr_foot) as $td) {
          $foot .= "<td>".trim($td)."</td>";
       }
-      $this->_tfoot = '<tfoot><tr>'.$foot.'</tr></tfoot>';
+      $this->tFooter = '<tfoot '.self::getAttrs($attrs).'><tr>'.$foot.'</tr></tfoot>';
       return $this;
    }
 
@@ -141,12 +139,10 @@ class OdaTable {
     */
    public function setCaption(
       string $caption, 
-      string|array $attrs=''
+      string|array $attrs='class="w3-left-align w3-bottombar w3-border-blue"'
    )
    {
-      $attrs = self::getAttrs($attrs);
-      $attrs = ($attrs) ? $attrs : $this->_tcaption_attrs ;
-      $this->_tcaption = "<caption $attrs><h2>".strtoupper($caption).'</h2></caption>';
+      $this->tCaption = '<caption '.self::getAttrs($attrs).'><h3>'.$caption.'</h3></caption>';
       return $this;
    } // END-setCaption
 

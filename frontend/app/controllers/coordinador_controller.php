@@ -5,11 +5,13 @@
   */
 class CoordinadorController extends AppController
 {
-    //public $theme="w3-theme-purple";
     
-    // ===============
     protected function before_filter() {
-    }
+      // Si es AJAX enviar solo el view
+      if (Input::isAjax()) {
+          View::template(null);
+      }
+  }
 
     // ===============
     public function index() {
@@ -22,17 +24,24 @@ class CoordinadorController extends AppController
     }
 
     // ===============
-    public function consolidado_notas() {
+    //public function consolidado_notas() {
+    public function consolidado() {
       $this->page_action = 'Consolidado de Notas';
+      $this->RegSalones = (new Salon())->getListActivos();
+      View::select('consolidado/index');
+    }
+
+    // ===============
+    public function notas_salon_json(int $salon_id) {
+      View::template(null);
+      //View::select(null);
+      $notas = (new Nota())->getNotasSalon($salon_id);
+      return json_encode($notas);
     }
 
     // ===============
     public function historico_notas() {
       $this->page_action = 'Hist&oacute;rico de Notas';
-      $annio_ini = Config::get('institucion.annio_inicial');
-      $annio_fin = Config::get('academico.annio_actual')-1;
-      $cont = $annio_fin - $annio_ini + 1;
-      $this->aAnnios = array_combine(range(1,$cont), range($annio_ini, $annio_fin));
       $this->RegistrosHist = (new NotaHist() )->getVistaTotalAnniosPeriodosSalones();
       
       View::select('historico_notas/index');

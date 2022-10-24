@@ -1,0 +1,24 @@
+<div class="w3-panel">
+    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+    <?= View::flash(); ?>
+</div>
+
+<div class="w3-panel">
+    <div  class="w3-bar">
+        <?php 
+        foreach ($RegSalones as $key => $salon) {
+            echo "<div onclick=\"traer_data($salon->id)\" class=\"w3-bar-item\">$salon</div>" ;
+        }
+        ?>
+    </div>
+    
+    <h2 id="salon"></h2>
+    <div id="resultados">
+    </div>
+
+
+</div>
+  <!-- BEGIN BASE JS -->
+  <?php
+  echo Tag::js('coordinador/consolidado_notas_fetch', false);
+  ?>  

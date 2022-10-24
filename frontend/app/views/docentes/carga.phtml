@@ -15,6 +15,7 @@
       foreach($data as $key => $carga) {
          $d1 = $carga->salon . ' ' .(($user_id==1) ? "[$carga->salon_id]" :'');
          $d2 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');
+         $d2 .= (($user_id==1) ? "<br> [$carga->profesor]" :'');
          $d3 = OdaTags::link("docentes/indicadores/$carga->asignatura_id/$carga->grado_id", 'Indicadores');
          $d4 = OdaTags::link("docentes/notas/$carga->asignatura_id/$carga->salon_id", 'Notas');
          $tabla->setBody( data: [$d1, $d2, $d3, $d4], attrs2:['class="searchTdata"','class="searchTdata"']);

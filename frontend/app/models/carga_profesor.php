@@ -20,12 +20,15 @@ class CargaProfesor extends LiteRecord
     // =============
     public function getCarga($user_id) {
         $DQL = "SELECT sap.*, s.grado_id, 
-                    s.nombre as salon, a.nombre as asignatura, 
+                    s.nombre as salon, 
+                    a.nombre as asignatura, 
+                    CONCAT(u.nombres, ' ', u.apellido1, ' ', u.apellido2) as profesor,
                     s.tot_estudiantes as tot_estud
                    FROM ".self::$table." as sap
                         LEFT JOIN ".Config::get('tablas.salon')." as s ON sap.salon_id=s.id  
                         LEFT JOIN ".Config::get('tablas.asign')." as a ON sap.asignatura_id=a.id
                         LEFT JOIN ".Config::get('tablas.grado')." as g ON s.grado_id=g.id
+                        LEFT JOIN ".Config::get('tablas.user')."  as u ON sap.user_id=u.id
                    WHERE s.is_active=1";
         if ($user_id<>1) {
             $DQL .= " AND sap.user_id=$user_id";

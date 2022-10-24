@@ -40,7 +40,8 @@ return [
         '/docen-indicadores'     => 'docentes/indicadores',
         '/indicadores'           => 'docentes/indicadores',
         
-        '/coord-consoli-notas'   => 'coordinador/consolidado_notas',
+        //'/coord-consoli-notas'   => 'coordinador/consolidado_notas',
+        '/coord-consoli-notas'   => 'coordinador/consolidado',
         '/coord-registros'       => 'coordinador/gestion_registros',
         '/coord-historicos'      => 'coordinador/historico_notas',
         

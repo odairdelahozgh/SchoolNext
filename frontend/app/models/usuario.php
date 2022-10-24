@@ -8,7 +8,8 @@
 
 class Usuario extends LiteRecord
 {
-  use UsuarioT;
+  use UsuarioTraitDefa;
+  
   protected static $table = 'dm_user';
   
   public function __construct() {

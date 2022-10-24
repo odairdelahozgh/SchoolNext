@@ -14,11 +14,12 @@ N.definitiva AS definitiva,
 N.plan_apoyo AS plan_apoyo,
 N.nota_final AS nota_final,
 IF(N.nota_final<0, "Error Nota Final <0", IF(N.nota_final<60, "Bajo", IF(N.nota_final<70, "Basico", IF(N.nota_final<80, "Basico +", IF(N.nota_final<90, "Alto", IF(N.nota_final<95, "Alto +", IF(N.nota_final<=100, "Superior", "Error Nota Final >100")))))))
-AS Desempeno
+AS desempeno
 
 from ((((sweb_notas N left join sweb_asignaturas A on(N.asignatura_id = A.id)) 
 left join sweb_estudiantes E on(N.estudiante_id = E.id)) 
 left join sweb_salones S on(N.salon_id = S.id)) 
 left join sweb_grados G on(N.grado_id = G.id)) 
 
-order by N.periodo_id,N.grado_id,N.salon_id,E.nombres,E.apellido1,E.apellido2,A.nombre
+ORDER BY 
+S.position,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.abrev

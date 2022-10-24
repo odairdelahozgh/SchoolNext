@@ -2,19 +2,19 @@
 
 trait EstudianteTDefa {
 
-    
-  public $before_delete = 'no_borrar_activos';
-  public function no_borrar_activos() {
-    if($this->is_active==1) {
-      OdaFlash::warning('No se puede borrar un registro activo');
-      return 'cancel';
-    }
-  } // END-
+    public $before_delete = 'no_borrar_activos';
 
-  //=============
-  public function after_delete() { 
-    OdaFlash::valid('Se borró el registro'); 
-  } // END-
+    public function no_borrar_activos() {
+        if($this->is_active==1) {
+        OdaFlash::warning('No se puede borrar un registro activo');
+        return 'cancel';
+        }
+    } // END-
+
+    //=============
+    public function after_delete() { 
+        OdaFlash::valid('Se borró el registro'); 
+    } // END-
 
 
     public function _beforeCreate() {

@@ -80,7 +80,7 @@ class NotaHist extends LiteRecord
   //====================
   public static function getVistaTotalAnniosPeriodosSalones() {
     $aResult = [];
-    $registros = static::query("SELECT * FROM vista_total_annios_periodos_salones_historico", [])->fetchAll();
+    $registros = static::query("SELECT * FROM vista_total_annios_periodos_salones_historico order by annio desc", [])->fetchAll();
     foreach ($registros as $reg) {
       $aResult[$reg->annio][$reg->periodo_id][$reg->salon_id] = "$reg->salon;$reg->total_registros";
     }

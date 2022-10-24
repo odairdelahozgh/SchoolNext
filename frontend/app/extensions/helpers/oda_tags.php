@@ -92,4 +92,9 @@ class OdaTags {
          </meter>
       </label>";
    }
+
+   public static function tooltip(string $text, string $tip){
+      return '<span class="w3-tooltip">'.$text.'<span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">'.$tip.'</span></span>';
+   }
+
 } // END-_Tag

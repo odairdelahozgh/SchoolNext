@@ -24,7 +24,7 @@ const PRODUCTION = false;
 define('APP_PATH', dirname(__DIR__).'/app/');
 define('CORE_PATH', dirname(dirname(APP_PATH)).'/core/');
 define('PUBLIC_PATH', substr($_SERVER['SCRIPT_NAME'], 0, -9)); // - index.php string[9]
-const ABS_PUBLIC_PATH = 'C:\xampp\htdocs\schoolnext\frontend\public';
+const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public';
 // END - DESARROLLO LOCAL
 // =======================
 

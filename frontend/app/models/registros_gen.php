@@ -64,4 +64,22 @@ class RegistrosGen extends LiteRecord
     return $this::all($DQL);
   } // END-getResumen
 
+  
+  // =============
+  public function getRegistrosAnnio(int $annio) {
+    $annio_actual = Config::get('academico.annio_actual');
+    $sufijo = ($annio!=$annio_actual) ? '_'.$annio : '' ;
+
+    $DQL = "SELECT rg.*, CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante,
+            s.nombre as salon, CONCAT(u.nombres,' ',u.apellido1,' ',u.apellido2) as creador
+            FROM ".self::$table.$sufijo." AS rg
+            LEFT JOIN ".Config::get('tablas.estud') ." as e ON rg.estudiante_id = e.id
+            LEFT JOIN ".Config::get('tablas.salon') ." as s ON rg.salon_id      = s.id
+            LEFT JOIN ".Config::get('tablas.user')  ." as u ON rg.created_by    = u.id
+            WHERE annio = $annio
+            ORDER BY s.position,estudiante,rg.periodo_id";
+    return $this::all($DQL);
+  } // END-getRegistrosAnnio
+    
+
 } // END-CLASS-RegistrosGen

@@ -78,9 +78,26 @@ class NotaHist extends LiteRecord
   } //END-getNotasPeriodoSalonAsignatura
 
   //====================
-  public static function getVistaTotalAnniosPeriodosSalones() {
+  public static function getVistaTotalAnniosPeriodosSalones() { // ojo :: pendiente eliminar
     $aResult = [];
     $registros = static::query("SELECT * FROM vista_total_annios_periodos_salones_historico order by annio desc", [])->fetchAll();
+    foreach ($registros as $reg) {
+      $aResult[$reg->annio][$reg->periodo_id][$reg->salon_id] = "$reg->salon;$reg->total_registros";
+    }
+    return $aResult;
+  }
+
+  
+  //====================
+  public static function getTotalAnniosPeriodosSalones() {
+    $aResult = [];
+    $sql = "SELECT H.annio, H.periodo_id, H.salon_id, S.nombre AS salon,
+    count(0) AS total_registros 
+    FROM (sweb_notas_historia H LEFT JOIN sweb_salones S ON ((H.salon_id = S.id))) 
+    GROUP BY H.annio,H.periodo_id,H.salon_id 
+    ORDER BY H.annio DESC,H.periodo_id, S.position";
+
+    $registros = static::query($sql)->fetchAll();
     foreach ($registros as $reg) {
       $aResult[$reg->annio][$reg->periodo_id][$reg->salon_id] = "$reg->salon;$reg->total_registros";
     }

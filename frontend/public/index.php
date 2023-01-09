@@ -5,13 +5,28 @@ const APP_CHARSET = 'UTF-8';
 
 /*
 // =======================
-// SERVIDOR
+// SERVIDOR - Bluehost Odair
 const PRODUCTION = true;
 //error_reporting(E_ALL ^ E_STRICT);ini_set('display_errors', 'On');
 const APP_PATH        = '/home2/dwsjrnmy/_windsor_schoolnext_private/frontend/app/';
 const CORE_PATH       = '/home2/dwsjrnmy/_windsor_schoolnext_private/core/';
 const PUBLIC_PATH     = 'https://windsor.schoolnext.space/';
 const ABS_PUBLIC_PATH = '/home2/dwsjrnmy/public_html/windsor_schoolnext_public';
+// END - SERVIDOR
+// =======================
+*/
+
+/*
+// =======================
+// SERVIDOR - Windsor - Rafa
+const PRODUCTION = true;
+//error_reporting(E_ALL ^ E_STRICT);ini_set('display_errors', 'On');
+const APP_ROOT_PRIVATE = '/home/windsor1/schoolnext_private/';
+const APP_PATH         = APP_ROOT_PRIVATE.'default/app/';
+const CORE_PATH        = APP_ROOT_PRIVATE.'core/';
+const VENDOR_PATH      = APP_ROOT_PRIVATE.'vendor/';
+const PUBLIC_PATH     = 'https://schoolnext.windsorschool.edu.co/';
+const ABS_PUBLIC_PATH = '/home/windsor1/schoolnext.windsorschool.edu.co/';
 // END - SERVIDOR
 // =======================
 */

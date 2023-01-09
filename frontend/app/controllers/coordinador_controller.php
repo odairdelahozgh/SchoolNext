@@ -21,6 +21,8 @@ class CoordinadorController extends AppController
     // ===============
     public function gestion_registros() {
       $this->page_action = 'Gesti&oacute;n Registros';
+      $this->annios = range((int)Config::get('academico.annio_actual'), 2021, -1);
+      View::select('registros/index');
     }
 
     // ===============
@@ -42,8 +44,7 @@ class CoordinadorController extends AppController
     // ===============
     public function historico_notas() {
       $this->page_action = 'Hist&oacute;rico de Notas';
-      $this->RegistrosHist = (new NotaHist() )->getVistaTotalAnniosPeriodosSalones();
-      
+      $this->RegistrosHist = (new NotaHist() )->getTotalAnniosPeriodosSalones();
       View::select('historico_notas/index');
     }    
     

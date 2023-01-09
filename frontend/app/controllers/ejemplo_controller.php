@@ -4,6 +4,8 @@
   * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
+  
+
 class EjemploController extends AppController
 {
    //public $theme="w3-theme-red";
@@ -55,4 +57,21 @@ class EjemploController extends AppController
          $this->page_title = 'Dialog Ejemplo';
          View::template('test');
       }
+
+      
+     
+      public function pdf() {
+         $this->page_title = 'Dialog Ejemplo';
+         $pdf = new OdaPdf();
+         //$pdf = new OdaPdf('P','mm','A4');
+         $pdf->AddPage();
+         $pdf->SetFont('Arial','B',16);
+         $pdf->Cell(40,10,'Hola, Mundo!');
+         $pdf->Output();
+         //Redirect::toAction('login');
+         //return;
+         
+      }
+
+
 }

@@ -1,0 +1,20 @@
+<div class="w3-panel">
+    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+    <?= View::flash(); ?>
+</div>
+
+<div class="w3-panel">
+    <div  class="w3-bar">
+        <?php 
+        foreach ($annios as $key => $annio) {
+            echo "<div onclick=\"traer_data($annio)\" class=\"w3-button w3-bar-item\">$annio</div>" ;
+        }
+        ?>
+    </div>
+    
+    <div id="resultados">
+    </div>
+</div>
+
+<?= tag::js("registros/reg_observ_fetch", false) ?>
+<?= tag::js("acordeon", false) ?>

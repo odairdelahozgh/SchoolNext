@@ -21,5 +21,7 @@ left join sweb_estudiantes E on(N.estudiante_id = E.id))
 left join sweb_salones S on(N.salon_id = S.id)) 
 left join sweb_grados G on(N.grado_id = G.id)) 
 
+WHERE (N.asignatura_id <> 30) and (N.grado_id<=11) 
+
 ORDER BY 
 S.position,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.abrev

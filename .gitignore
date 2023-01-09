@@ -4,7 +4,8 @@ frontend/public/img/download
 frontend/public/files/upload
 frontend/public/files/download
 frontend/app/temp
-
+core13/*
+core20/*
 # Mac filesystem dust
 .DS_Store
 

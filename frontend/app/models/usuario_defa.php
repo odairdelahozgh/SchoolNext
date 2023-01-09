@@ -1,6 +1,6 @@
 <?php
 
-trait UsuarioTraitDefa {
+trait UsuarioDefa {
 
     // En la nueva versión se eliminarán estpa dos campos: matricula_palabras y pension_palabras
     public function _beforeCreate() { // Antes de Crear el nuevo registro

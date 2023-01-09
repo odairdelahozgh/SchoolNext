@@ -8,7 +8,7 @@
 
 class Usuario extends LiteRecord
 {
-  use UsuarioTraitDefa;
+  use UsuarioDefa;
   
   protected static $table = 'dm_user';
   

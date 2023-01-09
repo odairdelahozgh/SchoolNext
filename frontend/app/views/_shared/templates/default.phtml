@@ -14,18 +14,16 @@
   
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <style> html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif} </style>
-
-  <link rel="stylesheet" type="text/css" href="css/datatables/datatables.min.css"/>
  
   
 </head>
 
 <body class=<?="w3-theme-$theme"?> >
-  <?php View::partial('header',null, array('theme'=>$theme, 'themei'=>$themei )) ?>
-  <?php View::partial('aside',null, array('theme'=>$theme, 'themei'=>$themei )) ?>
+  <?php View::partial('header','', array('theme'=>$theme, 'themei'=>$themei )) ?>
+  <?php View::partial('aside','', array('theme'=>$theme, 'themei'=>$themei )) ?>
   <div class="w3-main" style="margin-left:250px;margin-top:43px;">
     <?php View::content() ?>
-    <?php View::partial('footer',null, array('theme'=>$theme, 'themei'=>$themei )) ?>
+    <?php View::partial('footer','', array('theme'=>$theme, 'themei'=>$themei )) ?>
   </div>
   
   
@@ -47,8 +45,11 @@
     }
     </script>
 
-<?php echo Tag::js('jquery/jquery+kumbiaphp.min', false); ?>
-<script type="text/javascript" src="css/datatables/datatables.min.js"></script>
+<?php
+  /*echo Tag::js('jquery/jquery+kumbiaphp.min', false); 
+    <script type="text/javascript" src="css/datatables/datatables.min.js"></script>
+  */
+?>
 
 </body>
 

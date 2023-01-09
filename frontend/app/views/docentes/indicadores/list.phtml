@@ -6,7 +6,7 @@
       $Tabs = new OdaTabs();
       foreach ($data as $periodo => $regs_periodo) {
          $tabla = new OdaTable();
-         $lnk_button_new = OdaTags::linkButton('docentes/indicadores/edit/edit', "Nuevo P$periodo").'<br>';
+         $lnk_button_new = OdaTags::linkButton('docentes/indicadores/edit/edit', "Crear Nuevo Indicador P$periodo").'<br>';
          foreach ($regs_periodo as $key => $indic) {
             $cod = '<u>'.$indic->codigo.' '.$indic->valorativo.'</u><br>';
             $datos=array($cod.$indic->concepto);

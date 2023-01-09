@@ -44,7 +44,7 @@ class NotasController extends RestController
    }
 
    public function get_notas_salon(int $salon_id) {
-      $this->data = (new Nota())->getVistaNotasTodasExportar($salon_id);
+      $this->data = (new Nota())->getNotasConsolidado($salon_id);
    }
 
 }

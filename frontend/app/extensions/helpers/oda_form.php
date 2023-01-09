@@ -74,7 +74,7 @@ class OdaForm extends Form {
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
-   public function addInput(int $columna=1, string $tipo, string $field, $attr='', $inline=false) {
+   public function addInput(int $columna=1, string $tipo='input', string $field='', $attr='', $inline=false) {
       $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = $this->_fname.'.'.trim($field);
       $label      = $this->getLabel($field, $inline);
@@ -260,7 +260,11 @@ class OdaForm extends Form {
     * @example echo _Form::inputSerach();
     */
    public static function inputSearch(string $id='inputSearch', string $placeholder="Filtrar") {
-     $input = self::input('search', $id, "oninput=\"myFunctionFilter()\" class=\"w3-input w3-border\"  placeholder=\"$placeholder..\"");
+     $input = self::input(
+         type: 'search', 
+         field: $id, 
+         attrs: "oninput=\"myFunctionFilter()\" class=\"w3-input w3-border\"  placeholder=\"$placeholder..\""
+      );
      $ico = _Icons::solid('search', 'w3-xxlarge');
      return  
        "<div class=\"w3-bar\">

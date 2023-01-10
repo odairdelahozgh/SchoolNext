@@ -3,12 +3,6 @@
  * @see Controller nuevo controller
  */
 require_once CORE_PATH . 'kumbia/controller.php';
-// ODAIR
-const APP_NAME= "SchoolNEXT>>";
-const FILE_UPLOAD_PATH   = PUBLIC_PATH.'files/upload/';
-const FILE_DOWNLOAD_PATH = PUBLIC_PATH.'files/download/';
-const IMG_UPLOAD_PATH   = PUBLIC_PATH.'img/upload/';
-const IMG_DOWNLOAD_PATH = PUBLIC_PATH.'img/download/';
 
 /**
  * Controlador principal que heredan los controladores
@@ -29,6 +23,7 @@ abstract class AppController extends Controller
     public $theme       = 'dark';
     public $themei      = 'd';
     public $user_id     = 0;
+    public $id_instit   = '';
 
     final protected function initialize() {
         if (!Session::get('usuario_logged')) {

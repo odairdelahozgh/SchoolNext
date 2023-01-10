@@ -28,7 +28,7 @@ return [
         ],
     'production' => [
         'host'     => 'localhost', //  ip o nombre del host de la base de datos
-        'username' => 'dwsjrnmy_windsor', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
+        'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
         'password' => 'p#1pp#P0qGg;', //  clave del usuario de la base de datos
         'name'     => 'dwsjrnmy_windsor', // nombre de la base de datos
         'type'     => 'mysql', // tipo de motor de base de datos (mysql, pgsql o sqlite)

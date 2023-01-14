@@ -20,7 +20,7 @@ class Periodo extends LiteRecord
   
   //=============
   public function getPeriodoActual($periodo=null) {
-    $pk = (!is_null($periodo)) ? $periodo : Config::get('academico.periodo_actual');
+    $pk = (!is_null($periodo)) ? $periodo : Config::get('config.academic.periodo_actual');
     return $this->get($pk);
   } //END-getPeriodoActual
   

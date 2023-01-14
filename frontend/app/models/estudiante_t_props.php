@@ -17,7 +17,7 @@ trait EstudianteTProps {
     }
     public function getIsActiveF() { return (($this->is_active) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small') ); }
     public function isPazYSalvo() {
-        $periodo = Config::get('academico.periodo_actual');
+        $periodo = Config::get('config.academic.periodo_actual');
         if ($periodo==1 and $this->mes_pagado>=4) { return true; }
         if ($periodo==2 and $this->mes_pagado>=6) { return true; }
         if ($periodo==3 and $this->mes_pagado>=9) { return true; }
@@ -26,7 +26,7 @@ trait EstudianteTProps {
         return false;
     }
     public function isPazYSalvoIco() { return ($this->isPazYSalvo()) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small'); }
-    public function getCuentaInstit() { return ($this->email_instit) ? $this->email_instit.'@'.Config::get('institucion.dominio').' '.$this->clave_instit : ''; }
+    public function getCuentaInstit() { return ($this->email_instit) ? $this->email_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit : ''; }
     
     public function getFoto($max_width=80) { return OdaTags::img("upload/estudiantes/$this->id.png",$this->id, "class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud); }
     public function getFotoCircle($max_width=80) { return OdaTags::img("upload/estudiantes/$this->id.png",$this->id, "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud_circle); }

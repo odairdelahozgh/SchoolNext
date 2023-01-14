@@ -64,7 +64,7 @@ class DocentesController extends AppController
     $this->Salon = (new Salon)->get((int)$salon_id);
 
     // limitar el numero de periodos
-    $periodo_actual = (int)Config::get('academico.periodo_actual');
+    $periodo_actual = (int)Config::get('config.academic.periodo_actual');
     $arr_periodos = range(1, $periodo_actual);
     $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos((int)$salon_id,(int)$asignatura_id, $arr_periodos);
     

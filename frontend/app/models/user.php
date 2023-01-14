@@ -121,8 +121,8 @@ class User extends ActiveRecord
         
         Session::set('ip', OdaUtils::getIp() );
         $estePeriodo = (new Periodo)->getPeriodoActual();
-        Session::set('annio',        (int)Config::get('academico.annio_actual'));
-        Session::set('periodo',      (int)Config::get('academico.periodo_actual'));
+        Session::set('annio',        (int)Config::get('config.academic.annio_actual'));
+        Session::set('periodo',      (int)Config::get('config.academic.periodo_actual'));
         Session::set('fecha_inicio', $estePeriodo->fecha_inicio);
         Session::set('fecha_fin',    $estePeriodo->fecha_fin);
         Session::set('f_ini_notas',  $estePeriodo->f_ini_notas);

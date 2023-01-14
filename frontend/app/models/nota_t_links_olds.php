@@ -6,7 +6,7 @@ trait NotaTLinksOlds {
         $estud_id = $this->id;
         $salon_id = $this->salon_id;
         $url = Config::get('old.url_schoolweb');
-        $periodo_actual = Config::get('academico.periodo_actual');
+        $periodo_actual = Config::get('config.academic.periodo_actual');
         $btns = '';
         for ($i=1; $i<=$periodo_actual; $i++) { 
             $href="$url/+/coordinacion/GenerarBoletines?salon_id=$salon_id&amp;periodo=$i&amp;estudiante_id=$estud_id&amp;ver_nota=1\"";

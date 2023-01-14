@@ -36,7 +36,7 @@ abstract class AppController extends Controller
         $this->breadcrumb->addCrumb(0, '&#127968;', '');
         $this->user_id = Session::get('id');
         //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
-        $this->id_instit = Config::get('institucion.id_name');
+        $this->id_instit = Config::get('config.institution.id_name');
         $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
         $this->themei = substr($this->theme,0,1);
     }

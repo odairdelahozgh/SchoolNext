@@ -237,7 +237,7 @@ class Estudiante extends LiteRecord
   public function setActualizarPago(int $estudiante_id): bool {
     $RegEstud = (new Estudiante)->get((int)$estudiante_id);
     if ($RegEstud) {
-      $periodo_actual = (int)Config::get('academico.periodo_actual');
+      $periodo_actual = (int)Config::get('config.academic.periodo_actual');
       $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[$periodo_actual];
       $RegEstud->save();
       return true;

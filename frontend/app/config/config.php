@@ -3,6 +3,9 @@
  * KumbiaPHP Web Framework
  * Parámetros de configuracion de la aplicacion
  */
+
+$year = date('Y');
+
 return [
     'application' => [
         'production' => false,
@@ -16,5 +19,43 @@ return [
         'namespace_auth' => 'default',  // espacio de nombres por defecto para Auth
         'breadcrumb' => true, // activa breadcrumb
         'routes' => '1',  // descomentar para activar routes en routes.php
+    ],
+    'academic' => [
+      'annio_inicial'  => 2006,
+      'annio_actual'   => 2022,
+      'periodo_actual' => 4,
+    ],
+    'construxzion' => [
+      'name'      => 'ConstruxZion Soft CO',
+      'ceo'       => 'Odair De La Hoz Rojas',
+      'email'     => 'odairdelahoz@gmail.com',
+      'twitter'   => 'https://twitter.com/construxzion',
+      'copy'      => "Copyright © $year",
+      'copy_text' => "Todos los Derechos Reservados",
+      'telefono'  => '+573017153066',
+      'whatsapp'  => '+573017153066',
+      'email'     => 'admin@windsorschool.edu.co',
+    ],
+    'institution' => [
+      'nombre'          => 'Windsor School',
+      'razon_social'    => 'Windsor Group SAS',
+      'id_name'         => 'windsor',
+      'direccion'       => 'Calle 9A #5-22 Barrio Novalito',
+      'telefono_fijo'   => '6055897997',
+      'telefono_movil'  => '3173704197',
+      'email'           => 'windsorschoolvalledupar@gmail.com',
+      'rector'          => 'Miriam Casadiego Ríos',
+      'rector_cc'       => '57401865',
+      'rep_legal'       => 'Yani Calderón Sarmiento',
+      'rep_legal_cc'    => '',
+      'secretaria'      => 'Yuleinis Manjarres Gil',
+      'secretaria_cc'   => '1065579951',
+      'contador'        => 'Mary Monachello',
+      'contador_cc'     => '',
+      'cod_dane'        => '320001068151',
+      'resolucion'      => '293, Nov 4 de 2011',
+      'dominio'         => 'windsorschool.edu.co',
+      'logo'            => 'ws_logo.png',
+      'logo_resolucion' => 'ws_logo.png',
     ],
 ];

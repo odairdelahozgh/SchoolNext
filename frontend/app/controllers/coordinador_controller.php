@@ -21,7 +21,7 @@ class CoordinadorController extends AppController
     // ===============
     public function gestion_registros() {
       $this->page_action = 'Gesti&oacute;n Registros';
-      $this->annios = range((int)Config::get('academico.annio_actual'), 2021, -1);
+      $this->annios = range((int)Config::get('config.academic.annio_actual'), 2021, -1);
       View::select('registros/index');
     }
 

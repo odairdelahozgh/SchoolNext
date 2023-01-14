@@ -67,7 +67,7 @@ class RegistrosGen extends LiteRecord
   
   // =============
   public function getRegistrosAnnio(int $annio) {
-    $annio_actual = Config::get('academico.annio_actual');
+    $annio_actual = Config::get('config.academic.annio_actual');
     $sufijo = ($annio!=$annio_actual) ? '_'.$annio : '' ;
 
     $DQL = "SELECT rg.*, CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante,

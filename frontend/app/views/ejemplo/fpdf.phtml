@@ -1,0 +1,9 @@
+<?php
+  $pdf = new OdaPdf('P','mm','A4');
+    $pdf->AliasNbPages();
+    $pdf->AddPage();
+    $pdf->SetFont('Arial','B',20);
+    $pdf->SetXY(0,20);
+    $pdf->Cell(209,18,$data,0,0,'C');
+    $pdf->Output();
+?>

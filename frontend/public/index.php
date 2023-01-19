@@ -37,7 +37,7 @@ const ABS_PUBLIC_PATH = '/home/windsor1/schoolnext.windsorschool.edu.co/';
 
 // =======================
 // DESARROLLO LOCAL
-const PRODUCTION = false;
+const PRODUCTION = true;
 //error_reporting(E_ALL ^ E_STRICT);ini_set('display_errors', 'On');
 define('APP_PATH', dirname(__DIR__).'/app/');
 define('CORE_PATH', dirname(dirname(APP_PATH)).'/core/');

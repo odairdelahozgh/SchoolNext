@@ -57,25 +57,8 @@ class EjemploController extends AppController
          $this->page_title = 'Dialog Ejemplo';
          View::template('test');
       }
-
-      
      
       public function pdf() {
-        
-         $this->page_title = 'Dialog Ejemplo';
-         //$pdf = new FPDF('P','mm','A4');
-         $pdf = new OdaPdf('P','mm','A4');
-         $pdf->AddPage();
-         $pdf->SetFont('Arial','B',16);
-         $pdf->Cell(40,10,'Hola, Mundo!');
-         $pdf->Output();
-         //Redirect::to('');
-         //return;
-      }
-
-
-     
-      public function fpdf() {
         View::template(NULL);
         $this->data = 'Hola Mundo';
       }

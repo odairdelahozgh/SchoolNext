@@ -20,10 +20,15 @@
  * @package    Core
  */
 
- 
-require(VENDOR_PATH.'/fpdf/fpdf.php');
-
-class OdaPdf extends fpdf
+class OdaPdf extends Fpdf
 {
-
-} // END-CLASS-OdaPdf
+    public function __construct(
+        $orientation = 'P',
+        $unit = 'mm',
+        $size = 'letter'
+    ) {
+        parent::__construct( $orientation, $unit, $size );
+        // ...
+    }
+}
+// END-CLASS-OdaPdf

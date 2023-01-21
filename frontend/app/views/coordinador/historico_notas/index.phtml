@@ -5,7 +5,7 @@
         //echo OdaUtils::ver_array($RegistrosHist);
         $tabsAnnios = new OdaTabs();
         $ArrAnnios=[];
-        foreach ($RegistrosHist as $annio => $regAnnios) {
+        foreach ($data as $annio => $regAnnios) {
             $info_periodos = '';
             $tabsPeriodos = new OdaTabs();
             foreach ($regAnnios as $periodo => $regPeriodos) {

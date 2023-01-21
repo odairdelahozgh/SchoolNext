@@ -29,7 +29,7 @@ class CoordinadorController extends AppController
     //public function consolidado_notas() {
     public function consolidado() {
       $this->page_action = 'Consolidado de Notas';
-      $this->RegSalones = (new Salon())->getListActivos();
+      $this->data = (new Salon())->getListActivos();
       View::select('consolidado/index');
     }
 

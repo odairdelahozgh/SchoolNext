@@ -27,28 +27,25 @@
             
         <div class="w3-padding w3-row">
               <br/><b>¿Necesita ayuda para ingresar?</b><br/>
-              <a title="Escríbenos" href="whatsapp://send?phone=<?=$soporte_telefono?>&amp;text=Requiero+soporte+técnico">
+              <a title="Escríbenos" href="whatsapp://send?phone=<?= Config::get('config.construxzion.telefono')?>&amp;text=Requiero+soporte+técnico">
                 <?= _Icons::brands('whatsapp', 'w3-xxlarge')?> </a>
-                
-                <a title="Llámanos" href="tel:<?=$soporte_whatsapp?>">
+                <a title="Llámanos" href="tel:<?=Config::get('config.construxzion.whatsapp')?>">
                   <?= _Icons::solid('square-phone', 'w3-xxlarge')?> </a>
                   
-                  <a title="Envianos un email" href="mailto:<?=$soporte_email?>">
+                  <a title="Envianos un email" href="mailto:<?=Config::get('config.construxzion.email')?>">
                     <?= _Icons::solid('envelope', 'w3-xxlarge')?></a>
                     <br/>
                     <span>
-                      <?= $copy_right ?><br/>
-                      <?= $copy_text ?><br/>
-                      <a href="<?=$sw_house_twitter?>" target="_blank"><?=$sw_house_name?></a> 
+                      <?= Config::get('config.construxzion.copy') ?><br/>
+                      <?= Config::get('config.construxzion.copy_text') ?><br/>
+                      <a href="<?=Config::get('config.construxzion.twitter')?>" target="_blank"><?=Config::get('config.construxzion.name')?></a> 
                     </span>
         </div>
     </div>
 
-
   </div>
 
 </div>
-
 
 <script>
   window.onload = function() {

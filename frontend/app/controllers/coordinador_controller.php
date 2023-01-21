@@ -44,10 +44,10 @@ class CoordinadorController extends AppController
     // ===============
     public function historico_notas() {
       $this->page_action = 'Hist&oacute;rico de Notas';
-      $this->RegistrosHist = (new NotaHist() )->getTotalAnniosPeriodosSalones();
+      $this->data = (new NotaHist() )->getTotalAnniosPeriodosSalones();
       View::select('historico_notas/index');
-    }    
-    
+    }
+
   // ==============================
   // MÉTODOS ADICIONALES
   // ==============================

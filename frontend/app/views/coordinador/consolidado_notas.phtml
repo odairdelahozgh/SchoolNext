@@ -4,8 +4,8 @@
     <?php 
         //echo OdaUtils::ver_array($Registros);
         $arrInfoSalon=[];
-        $tot_salones = Count($RegSalones);
-        foreach ($RegSalones as $salon => $RegEstudiantes) {
+        $tot_salones = Count($data);
+        foreach ($data as $salon => $RegEstudiantes) {
             list($salon_nombre, $salon_id) = explode(";",$salon);
             $tot_estudiantes = Count($RegEstudiantes);
             

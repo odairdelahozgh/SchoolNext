@@ -64,7 +64,7 @@ class SecretariaController extends AppController
 
 
   /**
-   * Cambiar de salón a un estudiante
+   * Cambiar de salon a un estudiante
    * @param int $estudiante_id (requerido)
    * @param int $salon_id (requerido)
    * @param int $audit (requerido)
@@ -78,5 +78,16 @@ class SecretariaController extends AppController
     }
     return Redirect::to('/secre-estud-list-activos');
   }
+
+
+  /**
+   * Index a Historico notas
+   */
+  public function historico_notas() {
+    $this->page_action = 'Hist&oacute;rico de Notas';
+    $this->data = (new NotaHist() )->getTotalAnniosPeriodosSalones();
+    View::select('historico_notas/index');
+  }
+
 
 } // END CLASS

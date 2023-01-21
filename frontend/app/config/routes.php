@@ -28,15 +28,11 @@ return [
 
         '/docen-carga-academica' => 'docentes/carga',
         '/carga'                 => 'docentes/carga',
-        
         '/docen-reg-observaciones' => 'docentes/registros_observaciones',
-
         '/docen-dir-grupo'       => 'docentes/direccion_grupo',
         '/dirreccion-grupo'      => 'docentes/direccion_grupo',
-        
         '/docen-notas'           => 'docentes/notas',
         '/notas'                 => 'docentes/notas',
-        
         '/docen-indicadores'     => 'docentes/indicadores',
         '/indicadores'           => 'docentes/indicadores',
         
@@ -48,5 +44,6 @@ return [
         '/secre-estud-list-activos'   => 'secretaria/listadoEstudActivos',
         '/secre-estud-edit-activos'   => 'secretaria/editarEstudActivos',
         '/secre-estud-list-inactivos' => 'secretaria/listadoEstudInactivos',
+        '/secre-historico-notas'      => 'secretaria/historico_notas',
         ],
 ];

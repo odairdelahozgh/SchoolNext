@@ -54,7 +54,13 @@ $url = $_SERVER['PATH_INFO'] ?? '/';  // OJO ::::: ORIG_PATH_INFO en hosting de 
 const APP_NAME= "SchoolNEXT>>";
 const FILE_UPLOAD_PATH   = PUBLIC_PATH.'files/upload/';
 const FILE_DOWNLOAD_PATH = PUBLIC_PATH.'files/download/';
-const IMG_UPLOAD_PATH   = PUBLIC_PATH.'img/upload/';
-const IMG_DOWNLOAD_PATH = PUBLIC_PATH.'img/download/';
+const IMG_UPLOAD_PATH    = PUBLIC_PATH.'img/upload/';
+const IMG_DOWNLOAD_PATH  = PUBLIC_PATH.'img/download/';
+
+const SCHOOLWEB_URL_PROD  = 'https://windsortemp.schoolnext.space/';
+const SCHOOLNEXT_URL_PROD = 'https://windsor.schoolnext.space/';
+
+const SCHOOLWEB_URL_TEST  = 'https://schoolweb.windsorschool.edu.co/';
+const SCHOOLNEXT_URL_TEST = 'https://schoolnext.windsorschool.edu.co/';
 
 require CORE_PATH.'kumbia/bootstrap.php'; //bootstrap del core

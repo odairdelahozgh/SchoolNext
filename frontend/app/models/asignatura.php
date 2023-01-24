@@ -48,9 +48,4 @@ class Asignatura extends LiteRecord
   } // END-getListTodos
     
   
-  //=============
-  public function getIsActiveF() {
-    return (($this->is_active) ? '<i class="bi-check-circle-fill">' : '<i class="bi-x">');
-  } // END-getIsActiveF
-
 }

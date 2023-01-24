@@ -18,7 +18,7 @@
                 <?php foreach ($data as $key1 => $item) : ?>
                     <?php $row_type = ($key1%2==0 ) ? 'class="item w3-theme-d1"' : 'class="item w3-theme-d3"' ; ?>
                     <tr <?= $row_type?> >
-                            <td><?= $item->is_active_f() ?></td>
+                            <td><?= $item->getIsActiveF() ?></td>
                             <td><?= $item->id ?></td>
                             <td><?= $item->username ?></td>
                             <td><?= $item->documento ?></td>

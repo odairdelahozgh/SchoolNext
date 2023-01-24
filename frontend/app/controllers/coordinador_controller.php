@@ -48,20 +48,18 @@ class CoordinadorController extends AppController
       View::select('historico_notas/index');
     }
 
-  // ==============================
-  // MÉTODOS ADICIONALES
-  // ==============================
   /**
    * Cambiar de salón a un estudiante
-   * @param int $id (requerido)
-   * @param int $salon_id (requerido)
    */
   public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {
-    $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [(int)$estudiante_id]);
+    $this->page_action = 'Cambiar de Salón a Estudiante';
+
+    $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [$estudiante_id]);
+    
     if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_en_notas) ) {
-      OdaFlash::valid("Operaci&oacute;n exitosa [Cambiar sal&oacute;n a $Estud]", true);
+      OdaFlash::valid("$this->page_action: $Estud]", true);
     } else {
-      OdaFlash::error("Fall&oacute; Operaci&oacute;n [Cambiar sal&oacute;n a $Estud]", true);
+      OdaFlash::error("$this->page_action: $Estud]", true);
     }
     return Redirect::to('coordinador/index');//pendiente la redirección..
   }

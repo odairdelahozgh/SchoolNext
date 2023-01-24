@@ -7,7 +7,7 @@
  * @source   frontend\app\extensions\helpers\oda_form.php
  */
 class OdaForm extends Form {
-   private $version = '2002.07.04';
+   private $version = '2023.01.23';
    private $_style = ' class="w3-input w3-border" ';
    private $_modelo = '';
    private $_fname   = '';
@@ -121,7 +121,7 @@ class OdaForm extends Form {
       $label = $this->getLabel($field);
       $help  = $this->getHelp($field);
       $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-      $value = ($value) ?: 0;
+      $value = ($value) ? 1 : 0 ;
       $is_checked = ($value) ? true : false ;
 
       $check = Form::check($fieldname, $value, $attr, $is_checked).'<br>'.$help;

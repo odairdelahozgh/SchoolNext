@@ -20,11 +20,6 @@ class NotaHist extends LiteRecord
   }
 
   //====================
-  public function __toString() { 
-    return $this->id; 
-  }
-
-  //====================
   public function verNota() {
     $color = (new Rango)::getColorRango($this->nota_final);
     $rango = (new Rango)::getRango($this->nota_final);
@@ -37,11 +32,6 @@ class NotaHist extends LiteRecord
   //====================
   public function getfoto() { 
     return IMG_UPLOAD_PATH.'/estudiantes/'.$this->id.'.png'; 
-  }
-
-  //====================
-  public function getIsActiveF() { 
-    return (($this->is_active) ? '<i class="bi-check-circle-fill">' : '<i class="bi-x">'); 
   }
 
   //====================

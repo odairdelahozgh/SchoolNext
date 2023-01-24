@@ -1,0 +1,37 @@
+<div class="w3-panel">
+  <?php 
+  $tot_regs = count($data);
+  require('listHeader.phtml');
+/*
+id, is_active, nombre, grado_id, director_id, codirector_id, position, tot_estudiantes,
+print_state1, print_state2, print_state3, print_state4, print_state5, is_ready_print, print_state, 
+created_by, created_at, updated_by, updated_at
+*/
+
+  $tabla = new OdaTable();
+  $tabla->setHead(array('Acciones', 'Sal&oacute;n', 'Id', 'Estado', 'Grado', 'Director', 'Codirector', 'Orden', 'Actualizaci&oacute;n'));
+  foreach ($data as $key => $salon) {
+    
+    $lnkEditar = OdaTags::linkIcon("admin/salones/edit/$salon->id/", 'square-pen', 'title="Editar Registro"' );
+    $lnkBorrar = Js::link("admin/salones/del/$salon->uuid", _Icons::solid('trash-can'), "Atención: ¿Quiere eliminar: Salón $salon?", 'title="Eliminar Registro"');
+
+    $arrBody = array( 
+      $lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar, 
+      $salon->nombre, 
+      $salon->id, 
+      $salon->getIsActiveF(true), 
+      $salon->grado, 
+      $salon->director, 
+      $salon->codirector, 
+      $salon->position, 
+      $salon->updated_at, 
+      );
+    $tabla->setBody($arrBody);
+  }
+  echo $tabla;
+  
+  require('listFooter.phtml');
+
+  ?>
+</div>
+<?php Tag::js('jquery/jquery+kumbiaphp.min', false);?>

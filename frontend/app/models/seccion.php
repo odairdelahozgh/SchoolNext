@@ -15,7 +15,7 @@ class Seccion extends LiteRecord
 
 
     /**
-     * Retrona lista de Secciones, limitando por estado y los campos a $select.
+     * Devuelve lista de Secciones, limitando por estado y los campos a $select.
      * @return array
      * @example echo (new Seccion)->getList();
      * @example echo (new Seccion)->getLists(1, 'id, nombre');
@@ -34,7 +34,7 @@ class Seccion extends LiteRecord
 
   
   /**
-   * Retrona lista de Secciones activas, limitando los campos a $select.
+   * Devuelve lista de Secciones activas, limitando los campos a $select.
    * @return array
    * @example echo (new Seccion)->getListActivos();
    * @example echo (new Seccion)->getListActivos('id, nombre');
@@ -44,7 +44,7 @@ class Seccion extends LiteRecord
   }
 
   /**
-   * Retrona lista de Secciones activas, limitando los campos a $select.
+   * Devuelve lista de Secciones activas, limitando los campos a $select.
    * @return array
    * @example echo (new Seccion)->getListActivos();
    * @example echo (new Seccion)->getListActivos('id, nombre');

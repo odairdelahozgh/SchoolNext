@@ -1,11 +1,8 @@
 vendor
-frontend/public/img/upload
-frontend/public/img/download
-frontend/public/files/upload
-frontend/public/files/download
-frontend/app/temp
-frontend/app/libs/fpdf/doc/*
-frontend/app/libs/fpdf/tutorial/*
+frontend/public/img/*
+frontend/public/files/*
+frontend/app/temp/*
+frontend/app/libs/fpdf/*
 core13/*
 core20/*
 # Mac filesystem dust
@@ -42,10 +39,6 @@ Sin título 2.png
 Sin título.png
 agregar-registro-observaciones-todos-los-profesores.png
 desktop.ini
-core.zip
-frontend/app.zip
-vendor.zip
-frontend/app/help.zip
 
-frontend/app/libs/fpdf/FAQ.htm
-frontend/app/libs/fpdf/changelog.htm
+frontend/app/libs/fpdf/*
+frontend/public/index.php

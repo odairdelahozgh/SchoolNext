@@ -5,15 +5,31 @@
   * @category App
   * @package Models 
   * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
-  *  campos: id, uuid, is_active, orden, nombre, abrev, seccion_id, 
+  */
+  
+ /*  CALLBACKS:
+  _beforeCreate, _afterCreate, _beforeUpdate, _afterUpdate, _beforeSave, _afterSave */
+  
+  // crear registro:               ->create(array $data = []): bool {}
+  // actualizar registro:          ->update(array $data = []): bool {}
+  // Guardar registro:             ->save(array $data = []): bool {}
+  // Eliminar registro por pk:     ::delete($pk): bool
+  //
+  // Buscar por clave pk:                 ::get($pk, $fields = '*') $fields: campos separados por coma
+  // Todos los registros:                 ::all(string $sql = '', array $values = []): array {}
+  // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
+  // Filtra las consultas                 ::filter(string $sql, array $values = []): array
+
+  /* id, uuid, is_active, orden, nombre, abrev, seccion_id, 
   *  proximo_grado, salon_default, 
   *  valor_matricula, matricula_palabras, valor_pension, pension_palabras, proximo_salon, 
   *  created_by, updated_by, created_at, updated_at
   */
+
 class Grado extends LiteRecord
 {
-  use GradoT;
-
+  use TraitUuid, GradoTraitCallBacks, GradoTraitDefa, GradoTraitProps;
+  
   public function __construct() {
     parent::__construct();
     self::$_defaults     = $this->getTDefaults();
@@ -41,10 +57,7 @@ class Grado extends LiteRecord
 
 
     /**
-     * Retrona lista de Secciones, limitando por estado y los campos a $select.
-     * @return array
-     * @example echo (new Seccion)->getList();
-     * @example echo (new Seccion)->getLists(1, 'id, nombre');
+     * Devuelve lista, limitando por estado y los campos a $select.
      */
     public function getList($estado=null, $select='*') {
       $DQL = "SELECT $select FROM ".self::$table;
@@ -60,17 +73,14 @@ class Grado extends LiteRecord
 
   
   /**
-   * Retrona lista de Secciones activas, limitando los campos a $select.
-   * @return array
-   * @example echo (new Seccion)->getListActivos();
-   * @example echo (new Seccion)->getListActivos('id, nombre');
+   * Devuelve lista de Secciones activas, limitando los campos a $select.
    */
   public function getListActivos(string $select='*'): array {
       return $this->getList(1, $select);
   }
 
   /**
-   * Retrona lista de Secciones Inactivas, limitando los campos a $select.
+   * Devuelve lista de Secciones Inactivas, limitando los campos a $select.
    * @return array
    * @example echo (new Seccion)->getListActivos();
    * @example echo (new Seccion)->getListActivos('id, nombre');

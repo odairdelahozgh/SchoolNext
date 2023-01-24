@@ -16,10 +16,6 @@
 class ApiEstudiante extends LiteRecord
 {
   protected static $table = 'sweb_estudiantes'; 
-  const IS_ACTIVE = [
-    0 => 'Inactivo',
-    1 => 'Activo'
-  ];
   
   //=============
   public function before_delete() {
@@ -28,18 +24,7 @@ class ApiEstudiante extends LiteRecord
       return 'cancel';
     }
   } // END-
-
-  //=============
-  public function after_delete() { 
-    // ?? Flash::valid('Se borró el registro'); 
-  } // END-
-  
-  //=============
-  public function before_create() { 
-    $this->is_active = 1; 
-  } // END-
-
-  
+    
   //==============
   private function getList() {
     return "SELECT e.*, s.nombre as salon

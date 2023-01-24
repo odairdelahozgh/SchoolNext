@@ -9,11 +9,6 @@
 class Indicador extends LiteRecord
 {
     protected static $table = 'sweb_indicadores';
-
-    const IS_ACTIVE = [
-        0 => 'Inactivo',
-        1 => 'Activo'
-    ];
     
     const IS_visible = [
         0 => 'No visible',
@@ -21,11 +16,12 @@ class Indicador extends LiteRecord
     ];
 
     //=========
-    public function getIndicadores($asignatura, $grado) {
+    public function getIndicadores(int $asignatura_id, int $grado_id, int $annio) {
+      // $annio--- para los históricos
       $DQL = " SELECT * FROM " . self::$table
            . " WHERE asignatura_id=? AND grado_id=? "
            . " ORDER BY annio, periodo_id, codigo ";
-      return (new Indicador)->all($DQL, array($asignatura, $grado));
+      return (new Indicador)->all($DQL, array($asignatura_id, $grado_id));
     } // END-getList
 
     
@@ -39,8 +35,4 @@ class Indicador extends LiteRecord
        return $this->id.': ' .$this->nombre;
     } // END-toString
 
-    //=========
-    public function getIsActiveF() {
-        return (($this->is_active) ? '<i class="bi-check-circle-fill">' : '<i class="bi-x">');
-    } // END-getIsActiveF
 }

@@ -6,6 +6,20 @@
   * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
   */
 
+  /*  CALLBACKS:
+  _beforeCreate, _afterCreate, _beforeUpdate, _afterUpdate, _beforeSave, _afterSave */
+  
+  // crear registro:               ->create(array $data = []): bool {}
+  // actualizar registro:          ->update(array $data = []): bool {}
+  // Guardar registro:             ->save(array $data = []): bool {}
+  // Eliminar registro por pk:     ::delete($pk): bool
+  //
+  // Buscar por clave pk:                 ::get($pk, $fields = '*') $fields: campos separados por coma
+  // Todos los registros:                 ::all(string $sql = '', array $values = []): array {}
+  // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
+  // Filtra las consultas                 ::filter(string $sql, array $values = []): array
+
+  
 /* id, is_active, documento, contabilidad_id, mes_pagado, nombres, apellido1, apellido2, 
    salon_id, is_deudor, photo, fecha_nac, direccion, barrio, telefono1, telefono2, email, 
    created_at, updated_at, created_by, updated_by, tipo_dcto, sexo, grado_mat, numero_mat, 
@@ -15,8 +29,8 @@
  */
 class Estudiante extends LiteRecord
 {
-  use EstudianteTDefa, EstudianteTProps,  EstudianteTLinksOlds;
-
+  use TraitUuid, EstudianteTDefa, EstudianteTProps,  EstudianteTLinksOlds;
+  
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.estudiantes');
@@ -36,7 +50,7 @@ class Estudiante extends LiteRecord
     4 => 11,
     5 => 11,
   ];
-
+  
   //==============
   public function getList(mixed $estado=null, string $orden='a1,a2,n'): array {
     $orden = str_replace(
@@ -183,18 +197,16 @@ class Estudiante extends LiteRecord
   }
 
   public function setCambiarSalon(int $salon_id, bool $cambiar_en_notas=true): bool {
-
-      // CREAR PROCEDIMIENTO PARA ACTUALIZAR EL NUMERO DE ESTUDIANTES POR SALÓN
-      // ACTUALIZANDO VARIABLE DE LA TABLA SALONES.
-      
       $estud_id = $this->id;
-      $salon = (new Salon)->get((int) $salon_id);
-      if ($salon) {
+      $RegSalon = (new Salon)->get($salon_id);
+      if ($RegSalon) {
           // Cambia el salón en la tabla de ESTUDIANTES
-          $this->salon_id  = $salon->id;
-          $this->grado_mat = $salon->grado_id;
+          $this->salon_id  = $RegSalon->id;
+          $this->grado_mat = $RegSalon->grado_id;
           $this->save();
           // Lo debe cambiar de salón en la tabla NOTAS también.
+          //OdaLog::debug("RegNotaEstud: $cnt", 'setCambiarSalon');
+
           $RegNotaEstud = (new Nota)->Filter("WHERE estudiante_id=?", [$estud_id]);
           $RegRegistrosGenEstud = (new RegistrosGen)->Filter("WHERE estudiante_id=?", [$estud_id]);
           $RegRegistrosDesempEstud = (new RegistrosDesemp)->Filter("WHERE estudiante_id=?", [$estud_id]);
@@ -202,30 +214,30 @@ class Estudiante extends LiteRecord
           if ($cambiar_en_notas) {
             $cnt = 0;
             foreach ($RegNotaEstud as $nota) {
-              $nota->salon_id = $salon->id;
-              $nota->grado_id = $salon->grado_id;
+              $nota->salon_id = $RegSalon->id;
+              $nota->grado_id = $RegSalon->grado_id;
               $nota->save();
               $cnt += 1;
             }
-            OdaLog::debug("RegNotaEstud: $cnt", 'setCambiarSalon');
+            //OdaLog::debug(msg: "Mensaje", name_log:'nombre_log'); // custom, debug, warning, error, alert, critical, notice, info, emergence
             
             $cnt = 0;
             foreach ($RegRegistrosGenEstud as $regGen) {
-              $regGen->salon_id = $salon->id;
-              $regGen->grado_id = $salon->grado_id;
+              $regGen->salon_id = $RegSalon->id;
+              $regGen->grado_id = $RegSalon->grado_id;
               $regGen->save();
               $cnt += 1;
             }
-            OdaLog::debug("RegRegistrosGenEstud: $cnt", 'setCambiarSalon');
+            //OdaLog::debug("RegRegistrosGenEstud: $cnt", 'setCambiarSalon');
 
             $cnt = 0;
             foreach ($RegRegistrosDesempEstud as $regDesemp) {
-              $regDesemp->salon_id = $salon->id;
-              $regDesemp->grado_id = $salon->grado_id;
+              $regDesemp->salon_id = $RegSalon->id;
+              $regDesemp->grado_id = $RegSalon->grado_id;
               $regDesemp->save();
               $cnt += 1;
             }
-            OdaLog::debug("RegRegistrosDesempEstud: $cnt", 'setCambiarSalon');
+            //OdaLog::debug("RegRegistrosDesempEstud: $cnt", 'setCambiarSalon');
 
           }
           return true;
@@ -235,7 +247,7 @@ class Estudiante extends LiteRecord
   
   
   public function setActualizarPago(int $estudiante_id): bool {
-    $RegEstud = (new Estudiante)->get((int)$estudiante_id);
+    $RegEstud = (new Estudiante)->get($estudiante_id);
     if ($RegEstud) {
       $periodo_actual = (int)Config::get('config.academic.periodo_actual');
       $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[$periodo_actual];
@@ -243,19 +255,7 @@ class Estudiante extends LiteRecord
       return true;
     }
     return false;
-  } // END-setActualizarPago
-    
-  
-  public function setActivar(int $estudiante_id): bool {
-    $RegEstud = (new Estudiante)->get((int)$estudiante_id);
-    if ($RegEstud) {
-      $RegEstud->is_active = 1;
-      $RegEstud->save();
-      return true;
-    }
-    return false;
-  } // END-setActivar
-  
+  } // END-setActualizarPago 
   
 
 }

@@ -100,10 +100,6 @@ class User extends ActiveRecord
             $orden);
     }
 
-    //=========
-    public function getIsActiveF() {
-        return (($this->is_active) ? '<i class="bi-check-circle-fill">' : '<i class="bi-x">');
-    }
 
     /**
      * Iniciar sesion

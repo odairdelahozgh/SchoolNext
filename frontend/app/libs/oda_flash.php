@@ -127,7 +127,7 @@ class OdaFlash {
      * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
     public static function error($msg, $audit=FALSE) {
-        self::set('danger',$msg, $audit);          
+        self::set('danger','Fall&oacute; Operaci&oacute;n: '.$msg, $audit);          
     }
 
     /**
@@ -137,7 +137,7 @@ class OdaFlash {
      * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
     public static function warning($msg, $audit=FALSE) {
-        self::set('warning',$msg, $audit);
+        self::set('warning','Atención: '.$msg, $audit);
     }
 
     /**
@@ -157,7 +157,7 @@ class OdaFlash {
      * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
     public static function valid($msg, $audit=FALSE) {
-        self::set('success',$msg, $audit);
+        self::set('success','Operaci&oacute;n exitosa: '.$msg, $audit);
     }    
     
 }

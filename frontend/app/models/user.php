@@ -34,14 +34,14 @@ class User extends ActiveRecord
     }
 
     /**
-      * Retorna TODOS los registros del modelo Salon sin paginación
+      * Devuelve TODOS los registros del modelo Salon sin paginación
       */
     public function getList() {
         return (new User)->find();
     }
 
    /**
-      * Retorna TODOS los registros del modelo Usuario para ser paginados
+      * Devuelve TODOS los registros del modelo Usuario para ser paginados
       * @param int $page  [requerido] página a visualizar
       * @param int $ppage [opcional] por defecto 20 por página
       */
@@ -50,7 +50,7 @@ class User extends ActiveRecord
     }
 
    /**
-      * Retorna los registros ACTIVOS del modelo Salon para ser paginados
+      * Devuelve los registros ACTIVOS del modelo Salon para ser paginados
       * @param int $page  [requerido] página a visualizar
       * @param int $ppage [opcional] por defecto 20 por página
       */
@@ -59,7 +59,7 @@ class User extends ActiveRecord
     }
 
    /**
-      * Retorna los registros INACTIVOS del modelo Salon para ser paginados
+      * Devuelve los registros INACTIVOS del modelo Salon para ser paginados
       * @param int $page  [requerido] página a visualizar
       * @param int $ppage [opcional] por defecto 20 por página
       */

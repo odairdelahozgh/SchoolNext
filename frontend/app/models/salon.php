@@ -49,10 +49,10 @@ class Salon extends LiteRecord
       ";
 
     if (!is_null($estado)) {
-      $DQL .= " WHERE (is_active=?) ORDER BY position ";
+      $DQL .= " WHERE (s.is_active=?) ORDER BY s.position ";
       return $this::all($DQL, array((int)$estado));
     }
-    $DQL .= " ORDER BY position ";
+    $DQL .= " ORDER BY s.position ";
     return $this::all($DQL);
   } // END-getList
 

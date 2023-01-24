@@ -16,7 +16,7 @@ class Indicador extends LiteRecord
     ];
 
     //=========
-    public function getIndicadores(int $asignatura_id, int $grado_id, int $annio) {
+    public function getIndicadores(int $asignatura_id, int $grado_id) {
       // $annio--- para los históricos
       $DQL = " SELECT * FROM " . self::$table
            . " WHERE asignatura_id=? AND grado_id=? "

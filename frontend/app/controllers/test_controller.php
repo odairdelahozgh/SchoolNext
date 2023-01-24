@@ -6,11 +6,8 @@
   */
 class TestController extends AppController
 {
-
-    // VARIABLES DEL CONTROLADOR
-    // ==========================
-    // $this->module_name, $this->controller_name, $this->parameters, $this->action_name
-    // $this->limit_params, $scaffold, $data
+    // $this->module_name, $this->controller_name, $this->action_name, 
+    // $this->parameters, $this->limit_params, $this->scaffold, $this->data
     
     public function index() {
       $this->page_title = 'Inicio';

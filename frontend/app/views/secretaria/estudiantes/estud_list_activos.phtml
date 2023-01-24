@@ -15,7 +15,7 @@
       );
       foreach($data as $key => $Estud) {
          $col1 = $Estud->salon .'<br/>' 
-                .$Estud->is_active_f() .'<br/>'
+                .$Estud->getIsActiveF() .'<br/>'
                 .$Estud->getFoto() .'<br/>' 
                 .$Estud->documento .'<br/>';
          $lnk_act_pago = '';
@@ -23,7 +23,7 @@
             $lnk_act_pago = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
          }
          
-         $nombre = ((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : 'ERROR en nombre') ;
+         $nombre = $Estud; //((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : 'ERROR en nombre') ;
          $col2 = 'Grado: '.$Estud->grado.'<br/>'
                  .Html::linkAction("estud_edit_activos/$Estud->id/", $nombre.'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"").'<br/>'
                  .$Estud->getCuentaInstit().'<br/>'

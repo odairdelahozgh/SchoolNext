@@ -1,7 +1,8 @@
 <div class="w3-panel">
   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
   <?= View::flash(); ?>
-  <div class="w3-row w3-section">      
+  <div class="w3-row w3-section">
+    
       <?php
       echo OdaForm::inputSearch();
       $tabla = new OdaTable(theme: $theme);
@@ -9,7 +10,7 @@
          attrs2:   ['style="width:10%;"','style="width:90%;"'],
       );
       foreach($data as $key => $Estud) {
-         $col1 = $Estud->is_active_f() .'<br/>'
+         $col1 = $Estud->getIsActiveF() .'<br/>'
                 .$Estud->getFoto() .'<br/>'
                 .Html::linkAction("activarEstudiante/$Estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"').'<br/>';
          

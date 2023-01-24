@@ -1,4 +1,4 @@
 # SchoolNext >>
- SchoolNext :: Aplicación web para escuelas en Colombia
+ SchoolNext :: School Web Aplication for colombia
  
- Creado con KumbiaPHP
+ Supported by KumbiaPHP

@@ -5,7 +5,7 @@
     
       <?php
       echo OdaForm::inputSearch();
-      $tabla = new OdaTable(theme: $theme);
+      $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(
          attrs2:   ['style="width:10%;"','style="width:90%;"'],
       );

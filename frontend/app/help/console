@@ -1,10 +1,10 @@
 https://github.com/KumbiaPHP/Documentation/blob/master/es/console.md
 
-C:\EasyPHP-Devserver-17\eds-binaries\php\php8015vs16x86x221101003420\php ../../core/console/kumbia.php [ consola ] [ comando ] [ arg ] [ \--arg_nom ] =valor
+php ../../core/console/kumbia.php [ consola ] [ comando ] [ arg ] [ \--arg_nom ] =valor
 
-C:\EasyPHP-Devserver-17\eds-binaries\php\php8015vs16x86x221101003420\php ../../core/console/kumbia.php model create venta_vehiculo
-C:\EasyPHP-Devserver-17\eds-binaries\php\php8015vs16x86x221101003420\php ../../core/console/kumbia.php model delete venta_vehiculo
+php ../../core/console/kumbia.php model create venta_vehiculo
+php ../../core/console/kumbia.php model delete venta_vehiculo
 
-C:\EasyPHP-Devserver-17\eds-binaries\php\php8015vs16x86x221101003420\php ../../core/console/kumbia.php controller create venta_vehiculo
-C:\EasyPHP-Devserver-17\eds-binaries\php\php8015vs16x86x221101003420\php ../../core/console/kumbia.php controller delete venta_vehiculo
+php ../../core/console/kumbia.php controller create venta_vehiculo
+php ../../core/console/kumbia.php controller delete venta_vehiculo
 

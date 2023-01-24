@@ -59,8 +59,8 @@ class OdaUtils extends Util {
     /**
      * Obtiene el nombre del Género
      */
-    public static function nombreGenero(string $abrev=''): string {
-        return match((string)$abrev) {
+    public static function nombreGenero(string $abrev): string {
+        return match($abrev) {
             'M'  => 'Masculino',
             'F'  => 'Femenino',
             default => 'Género no existe',
@@ -73,11 +73,11 @@ class OdaUtils extends Util {
     public static function randomString($length = 8) {
         $values = 'abcdefghijklmnopqrstuvwxyz0123456789';
         $len_values = strlen($values)-1;
-        $val = '';
+        $strRand = '';
         for ( $i = 0; $i < $length; $i++ ) {
-        $val .= $values[rand( 0, $len_values )];
+          $strRand .= $values[rand( 0, $len_values )];
         }
-        return $val;
+        return $strRand;
     } // END-randomString
 
     /**
@@ -112,6 +112,15 @@ class OdaUtils extends Util {
         return ucwords(mb_strtolower(OdaUtils::sanearString($string), 'UTF-8'));
     } // END-nombrePersona
 
+    static function functionNames(string $string): string {
+      $arr = str_split(str_replace('_', '', $string));
+      $new_string = '';
+      foreach ($arr as $letra) {
+        $new_string .= (($letra==strtoupper($letra)) ? ' '.$letra : $letra);
+      }
+      return self::nombrePersona($new_string);
+    } // END-nombrePersona
+  
   /***
    * Retorna una cadena limpia de caracteres no deseados
    */

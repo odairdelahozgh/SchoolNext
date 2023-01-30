@@ -6,8 +6,7 @@
   <h1>Crear Grado</h1>
   <div class="w3-row">
     <?php
-          $Modelo = new Grado();
-          $myForm = new OdaForm($Modelo, 'admin/grados/create');
+          $myForm = new OdaForm(new Grado(), 'admin/grados/create');
           $myForm->setColumnas(2);
           $myForm->setAtrib('id="form_new"');
 

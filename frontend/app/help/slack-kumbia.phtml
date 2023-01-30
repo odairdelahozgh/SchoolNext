@@ -1,0 +1,76 @@
+====================================================================================
+
+// Modelo MESES:
+    public function listar($orden = "ASC")
+    {
+        return $this->find("order: id $orden");
+    }
+// Vista con el campo MESES:
+          <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Seleccionar todas las liquidaciones para cargar al sistema">
+            <label>Estado inicial:</label>
+            <?php echo Form::dbSelect("liquidaciones_periodos.meses_id", "mes", array('meses', 'listar', 'ASC'), "Seleccione el mes del periodo a crear", 'class="form-control"', 1); ?>
+          </div>
+
+====================================================================================
+
+REST Client for Visual Studio Code
+https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+====================================================================================
+
+self::filter('WHERE country = ? ORDER BY city', $country);
+
+====================================================================================
+
+ACL Configurado a Traves de un Archivo ini
+https://wiki.kumbiaphp.com/ACL_Configurado_a_Traves_de_un_Archivo_ini
+
+====================================================================================
+
+<label>Tipo
+    <?= Form::select('reservas.tipo_habitacion', Habitaciones::TIPO) ?>
+</label>
+
+<?= Habitaciones::TIPO[$habitaciones->tipo] ?>
+
+<label>Tipo
+    <?= Form::select('habitaciones.tipo', Habitaciones::TIPO) ?>
+</label>
+
+class Habitaciones extends LiteRecord // o ActiveRecord segun usen
+{
+    const TIPO = [
+        1 => 'Apartamento',
+        2 => "Estudio"
+    ];
+}
+
+return [
+    'phone_types' => [
+        'CELL' => "Cellular",
+        'HOME' => "Home",
+        'WORK' => "Work",
+    ]
+];
+
+<label>Tipo
+    <?= Form::select('habitaciones.finca_id', Config::get('enums.phone_types')) ?>
+</label>
+
+<label>Tipo
+    <?= Form::select('reservas.tipo_id', Habitaciones::tiposSelect()) ?>
+</label>
+
+<?= Form::text('habitaciones.tipo', Habitaciones::TIPO, 'required pattern="'.implode('|', Habitaciones::TIPO).'"') ?>
+
+<label>Pax
+   <?= Form::select('reservas.pax', range(0, 4)) ?>
+</label>
+
+====================================================================================
+
+====================================================================================
+
+====================================================================================
+
+====================================================================================

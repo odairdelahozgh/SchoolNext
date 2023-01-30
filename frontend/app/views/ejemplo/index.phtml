@@ -1,110 +1,17 @@
-<?= View::Encab($controller_name, $page_action); ?>
+<?= View::Encab($controller_name, $page_action, ''); ?>
 <?php View::flash(); ?>
 
-<!-- Simple modal dialog containing a form -->
-<dialog id="favDialog">
-  <form method="dialog">
-    <p><label>Favorite animal:
-      <select>
-        <option value="default">Choose...</option>
-        <option>Brine shrimp</option>
-        <option>Red panda</option>
-        <option>Spider monkey</option>
-      </select>
-    </label></p>
-    <div>
-      <button value="cancel">Cancel</button>
-      <button id="confirmBtn" value="default">Confirm</button>
-    </div>
-  </form>
-</dialog>
-<p>
-  <button id="updateDetails">Update details</button>
-</p>
-<output></output>
 
+<?php 
+  echo 'camel case: '. OdaUtils::camelcase('camel case').'<br>';
+  echo 'camel_case: '. OdaUtils::camelcase('camel_case').'<br>';
+  echo 'Camel Case: '. OdaUtils::camelcase('Camel Case').'<br>';
+  echo 'Camel Case: '. OdaUtils::camelcase('Camel_Case').'<br>';
+  echo '<hr>';
+  echo 'small case: '. OdaUtils::smallcase('small case').'<br>';
+  echo 'small_case: '. OdaUtils::smallcase('small_case').'<br>';
+  echo 'Small Case: '. OdaUtils::smallcase('Small Case').'<br>';
+  echo 'Small_Case: '. OdaUtils::smallcase('Small_Case').'<br>';
+ 
+?>
 
-<hr/>
-<label>Tipo
-  <?= Form::select('ejemplo.tipo', $ejemplo::TIPO) ?>
-</label>
-<?= $ejemplo::TIPO[1] ?>
-<?= $ejemplo::TIPO[2] ?>
-
-<hr/>
-<label>Nivel
-  <?= Form::select('reservas.nivel', range(0,4)) ?>
-</label>
-
-<hr/>
-
-<form>
-  <label for="name">Enter username (upper and lowercase letters): </label>
-  <input type="text" name="name" id="name" required pattern="[A-Za-z]+">
-  <button>Submit</button>
-</form>
-
-
-
-<hr/>
-<hr/>
-
-<div id='calendar'></div>
-<button onclick="document.getElementById('evento').style.display='block'" class="w3-btn w3-black">Open Modal</button>
-
-<div id="evento" class="w3-modal">
-    <div class="w3-modal-content w3-card-4">
-      <header class="w3-container w3-teal"> 
-        <span onclick="document.getElementById('evento').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-        <h2>Header</h2>
-      </header>
-      <div class="w3-container">
-        <p>Some text. Some text. Some text.</p>
-        <p>Some text. Some text. Some text.</p>
-      </div>
-      <_Tag class="w3-container w3-teal">
-        <p>_Tag</p>
-      </_Tag>
-    </div>
-  </div>
-</div>
-
-<script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          
-          locale: "es",
-          
-          initialView: 'dayGridMonth',
-          headerToolbar:{
-            left: "prev,next today",
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,listWeek'
-          },
-
-          dateClic:function(info){
-            $("#evento").modal("show");
-          },
-
-        });
-        calendar.render();
-      });
-</script>
-
-<script>
-const nameInput = document.querySelector('input');
-
-nameInput.addEventListener('input', () => {
-  nameInput.setCustomValidity('');
-  nameInput.checkValidity();
-});
-
-nameInput.addEventListener('invalid', () => {
-  if(nameInput.value === '') {
-    nameInput.setCustomValidity('Enter your username!');
-  } else {
-    nameInput.setCustomValidity('Usernames can only contain upper and lowercase letters. Try again!');
-  }
-});
-</script>

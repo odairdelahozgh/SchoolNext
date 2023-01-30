@@ -4,8 +4,23 @@
   * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
+
+require_once APP_PATH . '../vendor/autoload.php';
+use Mpdf\Mpdf;
+
 class DocentesController extends AppController
 {
+
+  public function example1() {
+    //Importante: Sin vista y sin tamplate 
+    View::select(null, null);
+    //Crea una instancia de la clase y le pasa el directorio default/app/temp/ 
+    $mpdf = new Mpdf(['tempDir' => APP_PATH . '/temp']);
+    //Escribe algo de contenido HTML: 
+    $mpdf->WriteHTML('¡Hola KumbiaPHP!');
+    //Envía un archivo PDF directamente al navegador 
+    $mpdf->Output(); 
+  }
 
   /**
    * Método Index
@@ -16,22 +31,18 @@ class DocentesController extends AppController
     
 
   /**
-   * Método Carga
+   * $data: Carga Académica de Profesor
    */
   public function carga() {
     $this->page_action = 'Carga Acad&eacute;mica';
-    $this->data = (new CargaProfesor)->getCarga($this->user_id);
-    //$this->breadcrumb->addCrumb(key: 1, title:'Carga', url:Router::get('module') . '/' . Router::get('controller'));
-    $this->tot_regs = count($this->data);
+    $this->data = (new SalAsigProf)->getCarga($this->user_id);
   }//END-carga
 
   /**
-   * Método Dirección de Grupo
+   * Método Dirección de Grupo|
    */
   public function direccion_grupo() {
     $this->page_action = 'Direcci&oacute;n de Grupo';
-    //$this->breadcrumb->addCrumb(title:'Dirección', url:'');
-
     View::select('direccion_grupo/index');
   }//END-direccion_grupo
 
@@ -40,38 +51,37 @@ class DocentesController extends AppController
    */
   public function registros_observaciones() {
     $this->page_action = 'Registros de Observaciones';
-    //$this->breadcrumb->addCrumb(title:'Observaciones Generales', url:'');
-    
-    $this->resumen = (new RegistrosGen)->getRegistrosProfesorResumen(Session::get('id'));
+    $resumen = (new RegistrosGen)->getRegistrosProfesorResumen(Session::get('id'));
+    $this->arrData = ['resumen' => $resumen];
     $this->data = (new RegistrosGen)->getRegistrosProfesor(Session::get('id'));
-    $this->tot_regs = count($this->data);
-    
     View::select('registros_observaciones/list');
   }//END-registros_observaciones
   
   /**
    * indicadores/list
    */
-  public function indicadores(int $asignatura_id, int $grado_id) {
+  public function listIndicadores(int $grado_id, int $asignatura_id) {
     $this->page_action = 'Indicadores de Logro';
-    //$this->breadcrumb->addCrumb(title:'Carga', url:'docentes/carga');
 
-    $this->RegAsignatura = (new Asignatura)->get($asignatura_id);
-    $this->RegGrado = (new Grado)->get($grado_id);
+    $RegGrado = (new Grado)->get($grado_id);
+    $RegAsignatura = (new Asignatura)->get($asignatura_id);
+    $this->arrData = ['grado' => $RegGrado, 'asignatura' => $RegAsignatura];
 
-    $indicadores = (new Indicador)->getIndicadores($asignatura_id, $grado_id);
+    /* 
+    $indicadores = (new Indicador)->getListIndicadores($asignatura_id, $grado_id);
     $arrIndic = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
     foreach ($indicadores as $indic) {
       array_push($arrIndic[$indic->periodo_id], $indic);
     }
-    $this->data = $arrIndic;
+    $this->data = $arrIndic; 
+    */
     View::select('indicadores/list');
   }//END-indicadores
 
   /**
    * notas/list
    */
-  public function notas(int $asignatura_id, int $salon_id) {
+  public function listNotas(int $asignatura_id, int $salon_id) {
     $this->page_action = 'Notas del Sal&oacute;n';
     //$this->breadcrumb->addCrumb(key:1, title:'Carga', url:'docentes/carga');
     

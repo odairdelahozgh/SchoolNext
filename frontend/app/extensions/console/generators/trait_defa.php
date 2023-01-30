@@ -1,5 +1,7 @@
 trait <?=$class?>TraitDefa {
 
+  //protected static $order_by_default = 'nombre ASC'; // default: id ASC
+
   public function getTLabels() {
     return array(
       'is_active'    => 'Está Activo? ',

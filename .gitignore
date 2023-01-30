@@ -43,3 +43,4 @@ desktop.ini
 frontend/app/libs/fpdf/*
 frontend/public/index.php
 frontend/app/help/info.txt
+*.zip

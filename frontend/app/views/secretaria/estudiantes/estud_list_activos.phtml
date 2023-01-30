@@ -14,7 +14,7 @@
          attrs2:   ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
       );
       foreach($data as $key => $Estud) {
-         $col1 = $Estud->salon .'<br/>' 
+         $col1 = $Estud->salon_nombre .'<br/>' 
                 .$Estud->getIsActiveF() .'<br/>'
                 .$Estud->getFoto() .'<br/>' 
                 .$Estud->documento .'<br/>';
@@ -24,7 +24,7 @@
          }
          
          $nombre = $Estud; //((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : 'ERROR en nombre') ;
-         $col2 = 'Grado: '.$Estud->grado.'<br/>'
+         $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>'
                  .Html::linkAction("estud_edit_activos/$Estud->id/", $nombre.'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"").'<br/>'
                  .$Estud->getCuentaInstit().'<br/>'
                  .$Estud->getCodigo().'<br/>'

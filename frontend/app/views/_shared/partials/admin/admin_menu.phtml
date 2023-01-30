@@ -1,85 +1,84 @@
-   <details class="w3-padding">
+<details class="w3-padding">
       <summary> <u>Docentes</u> </summary>
       <?= OdaTags::linkBarItem('docentes/index', 'Index') ?>
       <?php View::partial("docentes/docentes_menu") ?>
-   </details>
+</details>
    
-   <details class="w3-padding">
-      <summary> <u>Coordinación</u> </summary>
-      <?= OdaTags::linkBarItem('coordinador/index', 'Index') ?>
-      <?php View::partial("coordinador/coordinador_menu") ?>
-   </details>
+<details class="w3-padding">
+  <summary> <u>Coordinación</u> </summary>
+  <?= OdaTags::linkBarItem('coordinador/index', 'Index') ?>
+  <?php View::partial("coordinador/coordinador_menu") ?>
+</details>
 
-   <details class="w3-padding">
-      <summary> <u>Contabilidad</u> </summary>
-      <?= OdaTags::linkBarItem('contabilidad/index', 'Index') ?>
-      <?php View::partial("contabilidad/contabilidad_menu") ?>
-   </details>
+<details class="w3-padding">
+  <summary> <u>Contabilidad</u> </summary>
+  <?= OdaTags::linkBarItem('contabilidad/index', 'Index') ?>
+  <?php View::partial("contabilidad/contabilidad_menu") ?>
+</details>
 
-   <details class="w3-padding">
-      <summary> <u>Secretaria</u> </summary>
-      <?= OdaTags::linkBarItem('secretaria/index', 'Index') ?>
-      <?php View::partial("secretaria/secretaria_menu") ?>
-   </details>
+<details class="w3-padding">
+  <summary> <u>Secretaria</u> </summary>
+  <?= OdaTags::linkBarItem('secretaria/index', 'Index') ?>
+  <?php View::partial("secretaria/secretaria_menu") ?>
+</details>
 
-   <details class="w3-padding">
-      <summary> <u>Sicologia</u> </summary>
-      <?= OdaTags::linkBarItem('sicologia/index', 'Index') ?>
-      <?php View::partial("sicologia/sicologia_menu") ?>
-   </details>
+<details class="w3-padding">
+  <summary> <u>Sicologia</u> </summary>
+  <?= OdaTags::linkBarItem('sicologia/index', 'Index') ?>
+  <?php View::partial("sicologia/sicologia_menu") ?>
+</details>
 
-   <details class="w3-padding">
+<details class="w3-padding">
       <summary> <u>Padres</u> </summary>
       <?= OdaTags::linkBarItem('padres/index', 'Index') ?>
       <?php View::partial("padres/padres_menu") ?>
-   </details>
+</details>
 
-   <details class="w3-padding">
-      <summary> <u>Enfermeria</u> </summary>
-      <?= OdaTags::linkBarItem('enfermeria/index', 'Index') ?>
-      <?php View::partial("enfermeria/enfermeria_menu") ?>
-   </details>
+<details class="w3-padding">
+  <summary> <u>Enfermeria</u> </summary>
+  <?= OdaTags::linkBarItem('enfermeria/index', 'Index') ?>
+  <?php View::partial("enfermeria/enfermeria_menu") ?>
+</details>
 
-   <details class="w3-padding">
-      <summary><u>CONFIGURACIÓN</u></summary>
-         
-         <details class="w3-padding">
-            <summary><u>Tablas</u></summary>
-            <?= OdaTags::linkBarItem('', 'Secciones', '') ?>
-            <?= OdaTags::linkBarItem('', 'Areas', '') ?>
-            <?= OdaTags::linkBarItem('admin/grados', 'Grados', '') ?>
-            <?= OdaTags::linkBarItem('admin/salones', 'Salones', '') ?>
-         </details>
-         
-         <details class="w3-padding">
-            <summary><u>Usuarios</u></summary>
-            <?= OdaTags::linkBarItem('', 'Padres', '') ?>
-            <?= OdaTags::linkBarItem('', 'Docentes', '') ?>
-            <?= OdaTags::linkBarItem('', 'Administrativos', '') ?>
-         </details>
-         
-         <details class="w3-padding">
-            <summary><u>Configuraciones</u></summary>
-            <?= OdaTags::linkBarItem('', 'Períodos Académicos', '') ?>
-            <?= OdaTags::linkBarItem('', 'Asignar Cargas', '') ?>
-         </details>
 
-      </details>
-      
-      
-   <details class="w3-padding">
-      <summary><u>Ayudas</u></summary>
-      <?= OdaTags::linkBarItem('pages/kumbia/status', 'Status Kumbia', '') ?>
-      <?= OdaTags::linkBarItem('pages/status_app', 'Check General', '') ?>
-      <?= OdaTags::linkBarItem('pages/ayuda', 'Ayuda del Sistema', '') ?>
-      <?= OdaTags::linkBarItem('pages/colores', 'Colores W3', '') ?>         
-      <?= OdaTags::linkBarItem('pages/iconos', 'Íconos FA', '') ?>         
-   </details>
-      
-   <details class="w3-padding">
-      <summary><u>Pruebas de Código</u></summary>
-      <?= OdaTags::linkBarItem('ejemplo', 'Index', '') ?>
-      <?= OdaTags::linkBarItem('ejemplo/excel', 'Excel', '') ?>
-      <?= OdaTags::linkBarItem('ejemplo/validaciones', 'Validaciones Forms', '') ?>
-      <?= OdaTags::linkBarItem('ejemplo/archivos', 'Archivos', '') ?>
-   </details>
+
+
+
+<details class="w3-padding">
+  <summary><u>Admin Tablas</u></summary>
+  <?= OdaTags::linkBarItem('', 'Secciones', '') ?>
+  <?= OdaTags::linkBarItem('', 'Areas', '') ?>
+  <?= OdaTags::linkBarItem('admin/grados', 'Grados', '') ?>
+  <?= OdaTags::linkBarItem('admin/salones', 'Salones', '') ?>
+</details>
+
+
+<details class="w3-padding">
+  <summary><u>Ayuda</u></summary>
+  <details class="w3-padding">
+    <summary><u>Tools</u></summary>
+    <?= OdaTags::linkBarItem('pages/tools/colores', 'Colores W3', '') ?>
+    <?= OdaTags::linkBarItem('pages/tools/iconos', 'Íconos FA', '') ?>
+  </details>
+
+  <details class="w3-padding">
+    <summary><u>Ejemplos de Uso</u></summary>
+    <?= OdaTags::linkBarItem('pages/ejemplos/archivos', 'Archivos', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/validar.backend', 'Validar Backend', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/datalists', 'Data Lists', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/dialogs', 'Dialogs', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/dql', 'DQL', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/excel', 'Excel', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/pdf', 'PDF', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/tabs', 'Tabs', '') ?>
+    <?= OdaTags::linkBarItem('pages/ejemplos/js_validations', 'Validaciones Forms', '') ?>
+  </details>
+</details>
+
+
+
+<details class="w3-padding">
+  <summary><u>Config del Sistema</u></summary>
+  <?= OdaTags::linkBarItem('pages/status_app', 'Check General', '') ?>
+  <?= OdaTags::linkBarItem('pages/check', 'Check PhpInfo', '') ?>
+</details>

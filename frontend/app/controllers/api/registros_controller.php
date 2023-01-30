@@ -1,6 +1,6 @@
 <?php
 /**
-  * Controlador ESTUDIANTES  
+  * Controlador API REGISTROS  
   * @category API
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   * @author odairdelahoz@gmail.com
@@ -11,19 +11,19 @@ class RegistrosController extends RestController
 
    /**
     * Obtiene todos los registros de estudiantes
-    * @link http://username:password@schoolnext.local.com/api/estudiantes/all
+    * @link /api/registros/all
     */
    public function get_all() {
-      //$this->data = (new Nota())->all();
+      $this->data = (new RegistrosGen)->all();
    }
 
    /**
     * Devuelve el estudiante buscado por UUID
-    * @link http://username:password@schoolnext.local.com/api/estudiantes/singleuuid/3b22fefc7f6afa79c54f
+    * @link /api/registros/singleuuid/3b22fefc7f6afa79c54f
     */
    public function get_singleuuid(string $uuid) {
       /*
-      $record = (new Nota())->get_uuid($uuid);
+      $record = (new Nota())->getByUUID($uuid);
       if (isset($record)) {
          $this->data = $record;
       } else {
@@ -34,11 +34,11 @@ class RegistrosController extends RestController
 
    /**
     * Devuelve el estudiante buscado por ID
-    * @link http://username:password@schoolnext.local.com/api/estudiantes/singleid/775
+    * @link /api/registros/singleid/775
     */
     public function get_singleid(int $id) {
       /*
-      $record = (new Nota())->get_id($id);
+      $record = (new Nota())->getById($id);
       if (isset($record)) {
          $this->data = $record;
       } else {
@@ -50,10 +50,10 @@ class RegistrosController extends RestController
    
    /**
     * Devuelve el estudiante buscado por ID
-    * @link http://username:password@schoolnext.com/api/registros/annio/2021
+    * @link /api/registros/reg_observ_annio/2021
     */
    public function get_reg_observ_annio(int $annio) {
-      $registros = (new RegistrosGen())->getRegistrosAnnio($annio);
+      $registros = (new RegistrosGen)->getRegistrosAnnio($annio);
       foreach ($registros as $reg) {
          $this->data["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id] = $reg;
       }

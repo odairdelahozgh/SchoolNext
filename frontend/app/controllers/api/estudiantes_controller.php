@@ -1,28 +1,28 @@
 <?php
 /**
-  * Controlador ESTUDIANTES  
+  * Controlador API ESTUDIANTES  
   * @category API
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   * @author odairdelahoz@gmail.com
-  * 
+  * @example http://username:password@URL/api/estudiantes/all
   */
 class EstudiantesController extends RestController
 {
 
    /**
     * Obtiene todos los registros de estudiantes
-    * @link http://username:password@schoolnext.local.com/api/estudiantes/all
+    * @link ../api/estudiantes/all
     */
    public function get_all() {
-      $this->data = (new ApiEstudiante())->all();
+      $this->data = (new Estudiante)->getListActivos();
    }
 
    /**
     * Devuelve el estudiante buscado por UUID
-    * @link http://username:password@schoolnext.local.com/api/estudiantes/singleuuid/3b22fefc7f6afa79c54f
+    * @link ../api/estudiantes/singleuuid/3b22fefc7f6afa79c54f
     */
    public function get_singleuuid(string $uuid) {
-      $record = (new ApiEstudiante())->get_uuid($uuid);
+      $record = (new Estudiante)->getByUUID($uuid);
       if (isset($record)) {
          $this->data = $record;
       } else {
@@ -32,10 +32,10 @@ class EstudiantesController extends RestController
 
    /**
     * Devuelve el estudiante buscado por ID
-    * @link http://username:password@schoolnext.local.com/api/estudiantes/singleid/775
+    * @link ../api/estudiantes/singleid/775
     */
     public function get_singleid(int $id) {
-      $record = (new ApiEstudiante())->get_id($id);
+      $record = (new Estudiante)->getById($id);
       if (isset($record)) {
          $this->data = $record;
       } else {

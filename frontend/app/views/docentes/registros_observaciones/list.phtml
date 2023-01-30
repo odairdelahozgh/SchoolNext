@@ -6,7 +6,7 @@
 <div class="w3-container w3-row">   
    <div class="w3-threequarter">
       <?php
-         if ($tot_regs==0) {
+         if (count($data)==0) {
             Flash::valid('<h3>Atención!</h3><p>No hay registros para mostrar.</p>');
          } else {
             require('listHeader.phtml');

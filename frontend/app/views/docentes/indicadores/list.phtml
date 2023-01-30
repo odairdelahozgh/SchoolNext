@@ -1,21 +1,29 @@
-<?php View::flash(); ?>
+<?php
+  View::partial(partial: 'header_views', params: ['controller'=>$controller_name, 'page'=>$page_action] );
+
+  $RegAsignatura = $arrData['asignatura'];
+  $RegGrado = $arrData['grado'];
+
+  $buttons = [];
+  for ($i=1; $i<=5; $i++) { 
+    $buttons[$i] = ['caption'=>"Periodo $i", 'action'=>"traer_data($i,$RegGrado->id,$RegAsignatura->id)"];
+  }
+  $botones = OdaTags::buttonBars($buttons);
+  $model = new Indicador;
+  $myForm = new OdaForm($model, 'admin/indicadores/create_ajax');
+          $myForm->setAtrib('id="form_new"');
+          $myForm->addInput(1,'number','codigo');
+          $myForm->addInput(1,'text','concepto');
+          $myForm->addSelect(1,'valorativo', $model::$valorativos);
+          $myForm->addHiddens('annio, periodo_id, grado_id, asignatura_id, is_active, is_visible, created_by, updated_by, created_at, updated_at');
+  echo  "<div id=\"formulario\" style=\"display: none;\">$myForm</div>";
+?>
+
 <div class="w3-container">
-   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
-   <h2> <?="<b>$RegAsignatura</b> -- <b>$RegGrado [°$RegGrado->id]</b>"?> </h2>
-   <?php
-      $Tabs = new OdaTabs();
-      foreach ($data as $periodo => $regs_periodo) {
-         $tabla = new OdaTable(showTotalRegs: true);
-         $lnk_button_new = OdaTags::linkButton('docentes/indicadores/edit/edit', "Crear Nuevo Indicador P$periodo").'<br>';
-         foreach ($regs_periodo as $key => $indic) {
-            $cod = '<u>'.$indic->codigo.' '.$indic->valorativo.'</u><br>';
-            $datos=array($cod.$indic->concepto);
-            $tabla->setBody($datos);
-         }
-         $Tabs->addTab("p$periodo", "Periodo $periodo", $lnk_button_new.$tabla);
-      }
-      echo $Tabs;
-   ?>
+  <h2> <?="Grado $RegGrado->nombre: $RegAsignatura"?> </h2>
+  <div class=""><?= $botones ?></div>
+  <div id="capa_datos"></div>
 </div>
 
-<?= tag::js("tabs_h", true);?>
+
+<?= Tag::js("docentes/indicadores_periodo_grado_asignatura", false); ?>

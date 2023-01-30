@@ -5,19 +5,22 @@
 
 <div class="w3-container">   
 <?php
+  $tot_regs = count($data);
    if ($tot_regs==0) {
       Flash::valid('<h3>Atención!</h3><p>No hay registros para mostrar.</p>');
    } else {
       echo OdaForm::inputSearch();
-      $tabla = new OdaTable();
+      $tabla = new OdaTable(showTotalRegs: true);
       $tabla->setHead( arr_head: '°Salon, °Asignatura, Indicadores, Notas' );
       $tabla->setCaption(caption:'Carga Asignada');
       foreach($data as $key => $carga) {
          $d1 = $carga->salon . ' ' .(($user_id==1) ? "[$carga->salon_id]" :'');
          $d2 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');
+
          $d2 .= (($user_id==1) ? "<br> [$carga->profesor]" :'');
-         $d3 = OdaTags::link("docentes/indicadores/$carga->asignatura_id/$carga->grado_id", 'Indicadores');
-         $d4 = OdaTags::link("docentes/notas/$carga->asignatura_id/$carga->salon_id", 'Notas');
+         $d3 = OdaTags::link("docentes/listIndicadores/$carga->grado_id/$carga->asignatura_id", 'Indicadores');
+         
+         $d4 = OdaTags::link("docentes/listNotas/$carga->asignatura_id/$carga->salon_id", 'Notas');
          $tabla->setBody( data: [$d1, $d2, $d3, $d4], attrs2:['class="searchTdata"','class="searchTdata"']);
       }
       echo $tabla;

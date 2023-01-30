@@ -1,14 +1,12 @@
 <?php
 /**
-  * Modelo Estudiante  
-  * @category App
-  * @package Models 
-  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
-  */
+ * Modelo Estudiante 
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category App
+ * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ */
 
-  /*  CALLBACKS:
-  _beforeCreate, _afterCreate, _beforeUpdate, _afterUpdate, _beforeSave, _afterSave */
-  
+ /*
   // crear registro:               ->create(array $data = []): bool {}
   // actualizar registro:          ->update(array $data = []): bool {}
   // Guardar registro:             ->save(array $data = []): bool {}
@@ -18,39 +16,67 @@
   // Todos los registros:                 ::all(string $sql = '', array $values = []): array {}
   // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
   // Filtra las consultas                 ::filter(string $sql, array $values = []): array
+*/
 
-  
-/* id, is_active, documento, contabilidad_id, mes_pagado, nombres, apellido1, apellido2, 
-   salon_id, is_deudor, photo, fecha_nac, direccion, barrio, telefono1, telefono2, email, 
-   created_at, updated_at, created_by, updated_by, tipo_dcto, sexo, grado_mat, numero_mat, 
-   ape1ape1, retiro, fecha_ret, is_debe_preicfes, is_debe_almuerzos, is_habilitar_mat, 
-   annio_promovido, mat_bajo_p1, mat_bajo_p2, mat_bajo_p3, mat_bajo_p4, 
-   email_instit, clave_instit
- */
 class Estudiante extends LiteRecord
 {
-  use TraitUuid, EstudianteTDefa, EstudianteTProps,  EstudianteTLinksOlds;
+  use TraitUuid, EstudianteTraitCallBacks, EstudianteTraitDefa, EstudianteTraitProps,  EstudianteTraitLinksOlds;
+
+  // OdaLog::debug(msg: "Mensaje", name_log:'nombre_log'); // debug, warning, error, alert, critical, notice, info, emergence
   
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.estudiantes');
-    self::$default_foto_estud        = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-round" style="width:100%;max-width:80 px">';
-    self::$default_foto_estud_circle = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-circle w3-bar-item" style="width:100%;max-width:80 px">';
     self::$_defaults     = $this->getTDefaults();
     self::$_labels       = $this->getTLabels();
     self::$_placeholders = $this->getTPlaceholders();
     self::$_helps        = $this->getTHelps();
     self::$_attribs      = $this->getTAttribs();
+    self::$default_foto_estud        = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-round" style="width:100%;max-width:80 px">';
+    self::$default_foto_estud_circle = '<img src="/img/upload/estudiantes/user.png" alt="" class="w3-circle w3-bar-item" style="width:100%;max-width:80 px">';
+    self::$class_name = __CLASS__;
+    self::$order_by_default = 't.apellido1, t.apellido1, t.nombres';
   }
 
-  const LIM_PAGO_PERIODOS = [
-    1 => 4,
-    2 => 6,
-    3 => 9,
-    4 => 11,
-    5 => 11,
-  ];
+  const LIM_PAGO_PERIODOS = [ 1 => 4, 2 => 6, 3 => 9, 4 => 11, 5 => 11 ];
   
+   
+  /**
+   * Devuelve lista de todos los Registros.
+   */
+  public function getListEstudiantes(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
+    $orden = str_replace(
+      array('n', 'a1', 'a2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
+      $orden
+    );
+
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
+    $nombre_estud = str_replace(
+      array('n', 'a1', 'a2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
+      $nombre_estud
+    );
+
+    $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon_nombre " : " s.nombre AS salon_nombre " ;
+    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado_nombre " : " g.nombre  AS grado_nombre " ;
+
+    $DQL = (new OdaDql)
+        ->select('t.*, '.$nombre_estud.' as estudiante_nombre')
+        ->addSelect("$salon, $grado")
+        ->from(from_class: self::$class_name)
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id')
+        ->orderBy(self::$order_by_default);
+
+    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+    if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
+
+    return $DQL->execute();
+  } // END-getList
+
+  
+  /*
   //==============
   public function getList(mixed $estado=null, string $orden='a1,a2,n'): array {
     $orden = str_replace(
@@ -143,8 +169,12 @@ class Estudiante extends LiteRecord
     return $this::all($DQL);
   } // END-getList
   
+   
+   */
 
-  //=============
+  /**
+   * 
+   */
   public function getListPorProfesor(int $user_id): array {
     $salones = '';
     $CargaProfe = (new CargaProfesor)->getSalonesCarga($user_id);
@@ -160,7 +190,9 @@ class Estudiante extends LiteRecord
   } // END-
 
   
-    //=========
+    /**
+     * 
+     */
     public function getSalonesCambiar(string $modulo): string {
       $lnk_cambio = '';
       if ($this->is_active) {
@@ -196,6 +228,9 @@ class Estudiante extends LiteRecord
       return $lnk_cambio;
   }
 
+  /**
+   * CAMBIA DE SALÓN UN ESTUDIANTE
+   */
   public function setCambiarSalon(int $salon_id, bool $cambiar_en_notas=true): bool {
       $estud_id = $this->id;
       $RegSalon = (new Salon)->get($salon_id);
@@ -245,7 +280,9 @@ class Estudiante extends LiteRecord
       return false;
   }
   
-  
+  /**
+   * 
+   */
   public function setActualizarPago(int $estudiante_id): bool {
     $RegEstud = (new Estudiante)->get($estudiante_id);
     if ($RegEstud) {
@@ -256,6 +293,7 @@ class Estudiante extends LiteRecord
     }
     return false;
   } // END-setActualizarPago 
-  
+ 
 
-}
+
+}//END-Estudiante

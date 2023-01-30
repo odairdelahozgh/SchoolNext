@@ -1,61 +1,26 @@
 <?php
 /**
- * Modelo Nota 
- * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
- * @category App
- * @package  Models https://github.com/KumbiaPHP/ActiveRecord
- */
-
- /* 
-  // crear registro:               ->create(array $data = []): bool {}
-  // actualizar registro:          ->update(array $data = []): bool {}
-  // Guardar registro:             ->save(array $data = []): bool {}
-  // Eliminar registro por pk:     ::delete($pk): bool
-  //
-  // Buscar por clave pk:                 ::get($pk, $fields = '*') $fields: campos separados por coma
-  // Todos los registros:                 ::all(string $sql = '', array $values = []): array {}
-  // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
-  // Filtra las consultas                 ::filter(string $sql, array $values = []): array
-    
-  setActivar, setDesactivar
-  getById, deleteById, getList, getListActivos, getListInactivos
-  getByUUID, deleteByUUID, setUUID_All_ojo
-
-  Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
-  OdaLog::debug(msg: "Mensaje", name_log:'nombre_log');
-  
-  id, uuid, annio, periodo_id, grado_id, salon_id, asignatura_id, estudiante_id, asignatura, estudiante, email_envios, asi_num_envios, 
-  definitiva, plan_apoyo, nota_final, profesor_id, 
-  i01, i02, i03, i04, i05, i06, i07, i08, i09, i10, i11, i12, i13, i14, i15, i16, i17, i18, i19, i20, 
-  
-  asi_desempeno, asi_activ_profe, asi_activ_estud, asi_fecha_entrega, is_asi_validar_ok, 
-  asi_calificacion, is_asi_ok_dirgrupo, is_asi_ok_coord, asi_link_externo1, asi_link_externo2, 
-  i21, i22, i23, i24, i25, i26, i27, i28, i29, i30, 
-  paf_link_externo1, paf_link_externo2, 
-  paf_temas, paf_acciones, paf_activ_estud, paf_activ_profe, paf_fecha_entrega, 
-
-  is_paf_ok_coord, is_paf_validar_ok, is_paf_ok_dirgrupo, paf_num_envios, 
-  i31, i32, i33, i34, i35, i36, i37, i38, i39, i40, 
-  ausencias, inthoraria, created_at, updated_at, created_by, updated_by
-
-*/
-
+  * Modelo Nota  
+  * @category App
+  * @package Models 
+  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
+  */
 class Nota extends LiteRecord
 {
-  use TraitUuid, NotaTraitCallBacks, NotaTraitDefa, NotaTraitProps,  NotaTraitLinksOlds;  
-  public function __construct() {
-    parent::__construct();
-    self::$table = Config::get('tablas.nota');
-    self::$_defaults     = $this->getTDefaults();
-    self::$_labels       = $this->getTLabels();
-    self::$_placeholders = $this->getTPlaceholders();
-    self::$_helps        = $this->getTHelps();
-    self::$_attribs      = $this->getTAttribs();
-    self::$class_name = __CLASS__;
-    self::$order_by_default = 't.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id';
-  } //END-
+  use NotaTDefa, NotaTProps,  NotaTLinksOlds;
 
+
+  protected static $table = 'sweb_notas';
+  protected static $tbl_estud = '';
+  protected static $tbl_asign = '';
   
+  //====================
+  public function __construct() { // mejorar
+    self::$tbl_estud = Config::get('tablas.estudiantes');
+    self::$tbl_asign = Config::get('tablas.asignaturas');
+    //self::$order_by_default = 'nombre ASC';
+  }
+
   //====================
   public function verNota() {
     $color = (new Rango)::getColorRango($this->nota_final);
@@ -70,7 +35,7 @@ class Nota extends LiteRecord
   public function getNotasSalon(int $salon_id) {
     return (new Nota)->all(
       "SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
-      FROM sweb_notas as n
+      FROM ".self::$table." as n
       LEFT JOIN ".self::$tbl_estud." AS e ON n.estudiante_id = e.id
       WHERE n.salon_id=? 
       ORDER BY n.periodo_id, e.apellido1, e.apellido2, e.nombres",  array($salon_id)
@@ -85,7 +50,7 @@ class Nota extends LiteRecord
     return (new Nota)->all(
       "SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
       FROM $tbl_notas as n
-      LEFT JOIN sweb_estudiantes AS e ON n.estudiante_id = e.id
+      LEFT JOIN ".self::$tbl_estud." AS e ON n.estudiante_id = e.id
       WHERE n.salon_id=? AND n.asignatura_id=?
       ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
       array((int)$salon_id, (int)$asignatura_id)
@@ -99,7 +64,7 @@ class Nota extends LiteRecord
     return (new Nota)->all(
       "SELECT n.*, concat(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
       FROM $tbl_notas as n
-      LEFT JOIN sweb_estudiantes AS e ON n.estudiante_id = e.id
+      LEFT JOIN ".self::$tbl_estud." AS e ON n.estudiante_id = e.id
       WHERE n.periodo_id IN($str_p) AND n.salon_id=? AND n.asignatura_id=?
       ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
       array((int)$salon_id, (int)$asignatura_id)
@@ -149,6 +114,4 @@ class Nota extends LiteRecord
   } //END-getVistaNotasTodasExportar
 
 
-
-
-} //END-CLASS
+}

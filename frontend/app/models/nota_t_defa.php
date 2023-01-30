@@ -1,8 +1,7 @@
 <?php
 
 trait NotaTDefa {
-
-    
+  
   public $before_delete = 'no_borrar_activos';
   public function no_borrar_activos() {
     if($this->is_active==1) {

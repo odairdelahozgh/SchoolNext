@@ -5,19 +5,25 @@
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
+
+ /* 
+  // crear registro:               ->create(array $data = []): bool {}
+  // actualizar registro:          ->update(array $data = []): bool {}
+  // Guardar registro:             ->save(array $data = []): bool {}
+  // Eliminar registro por pk:     ::delete($pk): bool
+  //
+  // Buscar por clave pk:                 ::get($pk, $fields = '*') $fields: campos separados por coma
+  // Todos los registros:                 ::all(string $sql = '', array $values = []): array {}
+  // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
+  // Filtra las consultas                 ::filter(string $sql, array $values = []): array
+  
+*/
+
 class EjemploBase extends LiteRecord
 {
   use TraitUuid, EjemploBaseTraitCallBacks, EjemploBaseTraitDefa, EjemploBaseTraitProps,  EjemploBaseTraitLinksOlds;
-  
-  // Para debuguear
-  // OdaLog::debug(msg: "Mensaje", name_log:'nombre_log'); // debug, warning, error, alert, critical, notice, info, emergence
-  // OdaLog::debug(type: "nombre_typo", msg: "Mensaje", name_log:'nombre_log');
-  
-  // OdaUtils
-  // [Util] camelcase, smallcase, underscore, dash, humanize, getParams, encomillar
-  // ver_array, nombreMes, nombreGenero, randomString, truncate, nombrePersona
-  // sanearString, getIp, isLocalhost, resaltar, getSlug, orderArray, pluralize
-  // getNumeroALetras
+  // Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
+  // OdaLog::debug(msg: "Mensaje", name_log:'nombre_log'); 
   
   public function __construct() {
     parent::__construct();
@@ -27,6 +33,8 @@ class EjemploBase extends LiteRecord
     self::$_placeholders = $this->getTPlaceholders();
     self::$_helps        = $this->getTHelps();
     self::$_attribs      = $this->getTAttribs();
+    self::$class_name = __CLASS__;
+    self::$order_by_default = 'nombre ASC';
   }
 
   /**

@@ -7,9 +7,7 @@
   * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
   */
   
- /*  CALLBACKS:
-  _beforeCreate, _afterCreate, _beforeUpdate, _afterUpdate, _beforeSave, _afterSave */
-  
+ /*
   // crear registro:               ->create(array $data = []): bool {}
   // actualizar registro:          ->update(array $data = []): bool {}
   // Guardar registro:             ->save(array $data = []): bool {}
@@ -37,14 +35,16 @@ class Grado extends LiteRecord
     self::$_placeholders = $this->getTPlaceholders();
     self::$_helps        = $this->getTHelps();
     self::$_attribs      = $this->getTAttribs();
-    self::$table = Config::get('tablas.grados');
+    self::$table         = Config::get('tablas.grados');
+    self::$class_name = __CLASS__;
+    self::$order_by_default = 't.is_active DESC, t.orden';
   }
 
   //==============
   public function getListSeccion($estado=null) {
     $DQL = "SELECT g.*, s.nombre AS seccion
             FROM ".self::$table." AS g
-            LEFT JOIN ".Config::get('tablas.seccion')." AS s ON g.seccion_id=s.id";
+            LEFT JOIN ".Config::get('tablas.secciones')." AS s ON g.seccion_id=s.id";
     
     if (!is_null($estado)) {
       $DQL .= " WHERE (g.is_active=?) ORDER BY g.orden";
@@ -55,38 +55,22 @@ class Grado extends LiteRecord
     return $this::all($DQL);
   } // END-getList
 
-
-    /**
-     * Devuelve lista, limitando por estado y los campos a $select.
-     */
-    public function getList($estado=null, $select='*') {
-      $DQL = "SELECT $select FROM ".self::$table;
-      
-      if (!is_null($estado)) {
-      $DQL .= " WHERE (is_active=?) ORDER BY nombre ";
-      return $this::all($DQL, array((int)$estado));
-      }
-
-      $DQL .= " ORDER BY nombre";
-      return $this::all($DQL);
-  } // END-getList
-
-  
   /**
-   * Devuelve lista de Secciones activas, limitando los campos a $select.
+   * Devuelve lista de todos los Registros.
    */
-  public function getListActivos(string $select='*'): array {
-      return $this->getList(1, $select);
+  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
+    $DQL = new OdaDql;
+    $DQL->select($select)
+        ->addSelect('s.nombre AS seccion')
+        ->from(from_class: 'Grado')
+        ->leftJoin('seccion', 's')
+        ->orderBy(self::$order_by_default);
+    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+    if (!is_null($estado))   { $DQL->where('t.is_active=?'); }
+    
+    return $DQL->execute(true);
   }
 
-  /**
-   * Devuelve lista de Secciones Inactivas, limitando los campos a $select.
-   * @return array
-   * @example echo (new Seccion)->getListActivos();
-   * @example echo (new Seccion)->getListActivos('id, nombre');
-   */
-  public function getListInactivos(string $select='*'): array {
-      return $this->getList(0, $select);
-  } 
-  
+
+
 }

@@ -1,6 +1,6 @@
 <?php
 trait GradoTraitDefa {
-
+  
   public function getTLabels() {
     return array(
       'is_active'          => 'Está Activo? ',

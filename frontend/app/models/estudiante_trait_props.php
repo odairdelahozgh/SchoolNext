@@ -1,6 +1,6 @@
 <?php
+trait EstudianteTraitProps {
 
-trait EstudianteTProps {
   protected static $default_foto_estud = '';
   protected static $default_foto_estud_circle = '';
 
@@ -28,7 +28,12 @@ trait EstudianteTProps {
   public function isPazYSalvoIco() { return ($this->isPazYSalvo()) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small'); }
   public function getCuentaInstit() { return ($this->email_instit) ? $this->email_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit : ''; }
   
-  public function getFoto($max_width=80) { return OdaTags::img("upload/estudiantes/$this->id.png",$this->id, "class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud); }
+  public function getFoto($max_width=80) { 
+    return OdaTags::img(src: "upload/estudiantes/$this->id.png", alt: $this->id, 
+      attrs: "class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"", 
+      err_message: self::$default_foto_estud);
+  }
+
   public function getFotoCircle($max_width=80) { return OdaTags::img("upload/estudiantes/$this->id.png",$this->id, "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud_circle); }
 
-}
+} //END-TraitProps

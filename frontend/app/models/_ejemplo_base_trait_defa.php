@@ -1,9 +1,9 @@
 <?php
 trait EjemploBaseTraitDefa {
 
- public function getTLabels() {
-  return 
-   array(
+  public function getTLabels() {
+    return 
+      array(
     'is_active'    => 'Está Activo? ',
     'created_at'   => 'Creado el: ',
     'created_by'   => 'Creado por: ',

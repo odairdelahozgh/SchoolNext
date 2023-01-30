@@ -1,6 +1,6 @@
 <?php
 trait SalonTraitDefa {
-
+  
   public function getTLabels() {
     return array(
       'is_active'         => 'Está Activo? ',

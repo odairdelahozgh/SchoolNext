@@ -5,7 +5,7 @@ trait TraitUuid {
   /**
    * UUID Generator Optimized
    */
-  public function UUIDReal(int $lenght=20):string {
+  private function UUIDReal(int $lenght=20):string {
     if ($lenght <= parent::$lim_tam_campo_uuid) {
       if (function_exists("random_bytes")) {
         $bytes = random_bytes(ceil($lenght / 2));
@@ -22,22 +22,29 @@ trait TraitUuid {
   
   
   /**
-   * Devuelve un Registro por UUID.
+   * Devuelve un Registro por su UUID.
    */
-  public static function get_uuid(string $uuid, string $fields = '*') {
+  public static function getByUUID(string $uuid, string $fields = '*') {
     $sql = "SELECT $fields FROM ".static::getSource().' WHERE uuid = ?';
     return static::query($sql, [$uuid])->fetch();
   }
+
+/*   public static function get_uuid(string $uuid, string $fields = '*') {
+    return self::get_uuid($uuid, $fields); // BORRAR ...se mantiene por compatiblidad.
+  } */
   
 
   /**
-   * Elimina un registro por UUID.
+   * Elimina un registro por su UUID.
    */
-  public static function deleteUUID(string $uuid): bool {
+  public static function deleteByUUID(string $uuid): bool {
     $source  = static::getSource();
     return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
   } //END-deleteUUID
-  
+
+/*   public static function deleteUUID(string $uuid): bool {
+    return self::deleteByUUID($uuid); // BORRAR ...se mantiene por compatiblidad.
+  } */
 
   
   /**

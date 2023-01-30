@@ -46,9 +46,9 @@ class RegistrosGen extends LiteRecord
     $DQL = "SELECT rg.*, CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante,
             s.nombre as salon, CONCAT(u.nombres,' ',u.apellido1,' ',u.apellido2) as creador
             FROM ".self::$table." AS rg
-            LEFT JOIN ".Config::get('tablas.estud') ." as e ON rg.estudiante_id = e.id
-            LEFT JOIN ".Config::get('tablas.salon') ." as s ON rg.salon_id      = s.id
-            LEFT JOIN ".Config::get('tablas.user')  ." as u ON rg.created_by    = u.id
+            LEFT JOIN ".Config::get('tablas.estudiantes') ." as e ON rg.estudiante_id = e.id
+            LEFT JOIN ".Config::get('tablas.salones') ." as s ON rg.salon_id      = s.id
+            LEFT JOIN ".Config::get('tablas.usuarios')  ." as u ON rg.created_by    = u.id
             WHERE rg.created_by=$user_id
             ORDER BY rg.fecha desc";
     return $this::all($DQL);
@@ -58,7 +58,7 @@ class RegistrosGen extends LiteRecord
   public function getRegistrosProfesorResumen($user_id) {
     $DQL = "SELECT s.nombre AS salon, COUNT(*) AS tot_reg
             FROM ".self::$table." AS rg
-            LEFT JOIN ".Config::get('tablas.salon')." as s ON rg.salon_id=s.id
+            LEFT JOIN ".Config::get('tablas.salones')." as s ON rg.salon_id=s.id
             WHERE rg.created_by=$user_id
             GROUP BY rg.salon_id;";
     return $this::all($DQL);
@@ -73,9 +73,9 @@ class RegistrosGen extends LiteRecord
     $DQL = "SELECT rg.*, CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante,
             s.nombre as salon, CONCAT(u.nombres,' ',u.apellido1,' ',u.apellido2) as creador
             FROM ".self::$table.$sufijo." AS rg
-            LEFT JOIN ".Config::get('tablas.estud') ." as e ON rg.estudiante_id = e.id
-            LEFT JOIN ".Config::get('tablas.salon') ." as s ON rg.salon_id      = s.id
-            LEFT JOIN ".Config::get('tablas.user')  ." as u ON rg.created_by    = u.id
+            LEFT JOIN ".Config::get('tablas.estudiantes') ." as e ON rg.estudiante_id = e.id
+            LEFT JOIN ".Config::get('tablas.salones') ." as s ON rg.salon_id      = s.id
+            LEFT JOIN ".Config::get('tablas.usuarios')  ." as u ON rg.created_by    = u.id
             WHERE annio = $annio
             ORDER BY s.position,estudiante,rg.periodo_id";
     return $this::all($DQL);

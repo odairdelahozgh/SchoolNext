@@ -7,15 +7,7 @@ class CargaProfesor extends LiteRecord
 {
     protected static $table = 'sweb_salon_asignat_profesor';
     
-    //protected function initialize() { }
-
-    public function before_create() { }
     public function __toString() { return $this->id; }
-    
-    // =============
-    public function getList() {
-        return $this->data = $this::all();
-    }
 
     // =============
     public function getCarga($user_id) {
@@ -25,10 +17,10 @@ class CargaProfesor extends LiteRecord
                     CONCAT(u.nombres, ' ', u.apellido1, ' ', u.apellido2) as profesor,
                     s.tot_estudiantes as tot_estud
                    FROM ".self::$table." as sap
-                        LEFT JOIN ".Config::get('tablas.salon')." as s ON sap.salon_id=s.id  
-                        LEFT JOIN ".Config::get('tablas.asign')." as a ON sap.asignatura_id=a.id
-                        LEFT JOIN ".Config::get('tablas.grado')." as g ON s.grado_id=g.id
-                        LEFT JOIN ".Config::get('tablas.user')."  as u ON sap.user_id=u.id
+                        LEFT JOIN ".Config::get('tablas.salones')." as s ON sap.salon_id=s.id  
+                        LEFT JOIN ".Config::get('tablas.asignaturas')." as a ON sap.asignatura_id=a.id
+                        LEFT JOIN ".Config::get('tablas.grados')." as g ON s.grado_id=g.id
+                        LEFT JOIN ".Config::get('tablas.usuarios')."  as u ON sap.user_id=u.id
                    WHERE s.is_active=1";
         if ($user_id<>1) {
             $DQL .= " AND sap.user_id=$user_id";
@@ -39,7 +31,7 @@ class CargaProfesor extends LiteRecord
 
     // =============
     public function getSalonesCarga($user_id) {
-        $DQL = "SELECT salon_id FROM ".Config::get('tablas.sap');
+        $DQL = "SELECT salon_id FROM ".Config::get('tablas.salon_asignat_profe');
         if ($user_id<>1) {
             $DQL .= " WHERE user_id=$user_id ";
         }
@@ -48,7 +40,7 @@ class CargaProfesor extends LiteRecord
 
     // =============
     public function getByPk($pk, $fields='*') {
-        return $this->data = $this::get($pk, $fields = '*');
+        return $this::get($pk, $fields = '*');
     }
 
     // =============

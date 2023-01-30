@@ -15,8 +15,8 @@ class NotaHist extends LiteRecord
   public function __construct(
 
     ) {
-    self::$tbl_estud = Config::get('tablas.estud');
-    self::$tbl_asign = Config::get('tablas.asign');
+    self::$tbl_estud = Config::get('tablas.estudiantes');
+    self::$tbl_asign = Config::get('tablas.asignaturas');
   }
 
   //====================
@@ -34,10 +34,6 @@ class NotaHist extends LiteRecord
     return IMG_UPLOAD_PATH.'/estudiantes/'.$this->id.'.png'; 
   }
 
-  //====================
-  public function getList() {
-    return (new Nota)->all();
-  }
 
   //====================
   public function getNotasSalonAsignatura($salon_id, $asignatura_id, $annio=null) {

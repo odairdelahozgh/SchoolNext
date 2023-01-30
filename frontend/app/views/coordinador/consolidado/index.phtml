@@ -7,7 +7,7 @@
     <div  class="w3-bar">
         <?php 
         foreach ($data as $key => $salon) {
-            echo "<div onclick=\"traer_data($salon->id)\" class=\"w3-bar-item\">$salon</div>" ;
+            echo "<div id=\"salon-$salon->id\" onclick=\"traer_data($salon->id)\" class=\"w3-bar-item\">$salon</div>" ;
         }
         ?>
     </div>

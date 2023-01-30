@@ -16,6 +16,8 @@ require_once CORE_PATH . 'kumbia/controller.php';
  */
 abstract class AppController extends Controller
 {
+    public array $arrData = [];
+
     public $page_action = '';
     public $page_module = '';
     public $page_title  = 'Título Página';

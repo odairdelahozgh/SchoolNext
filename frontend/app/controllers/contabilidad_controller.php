@@ -1,22 +1,11 @@
 <?php
 /**
-  * Controlador Contabilidad  * @category App
+  * Controlador Contabilidad  
+  * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
 class ContabilidadController extends AppController
 {
-    //public $theme="w3-theme-deep-purple";
-    // FILTROS de AppControler: Initialize --> BeforeFilter --> AfterFilter --> Finalize.
-    // =======================
-    // Útiles para comprobaciones a nivel de aplicación:
-    // [verificar el módulo que se esta intentando acceder, sesiones de usuarios, etc. 
-    // Igualmente se puede usar para proteger nuestro controlador de información inadecuada.
-    
-    /**
-     * Filtro Initialize: Se llama antes de ejecutar el controlador
-     * @return false|void
-     */
-    // protected function initialize() { }
     
     /**
      * Método que se ejecuta antes de cualquier acción
@@ -25,23 +14,6 @@ class ContabilidadController extends AppController
       $this->page_action = 'M&oacute;dulo Contabilidad';
     }
     
-    /**
-    * AfterFilter
-    * @return false|void
-    */
-    // protected function after_filter() { }
-    
-    /**
-     * Filtro Finalize: Se llama después de ejecutar el controlador
-     * @return false|void
-     */
-    // protected function finalize() { }
-
-    // VARIABLES DEL CONTROLADOR
-    // ==========================
-    // $this->module_name, $this->controller_name, $this->parameters, $this->action_name
-    // $this->limit_params, $scaffold, $data
-    
        
     /**
       * Index Básico
@@ -49,6 +21,28 @@ class ContabilidadController extends AppController
     public function index() {
       $this->page_title = 'Inicio Contabilidad';
     }    
+    
+
+    public function listadoEstudActivos() {
+      $this->page_action = 'Listado de Estudiantes Activos';
+      $this->data = (new Estudiante)->getListEstudiantes(estado:1);
+      View::select('estudiantes/estudiantes_list');
+    } // END-listadoEstudActivos
+
+    
+    /**
+     * Actualizar Mes Pagado de un Estudiante
+     */
+    public function actualizarPago(int $estudiante_id) {
+      $this->page_action = 'Actualizar Mes Pagado Estudiante';
+      $Estud = (new Estudiante)->get($estudiante_id);
+      if ($Estud->setActualizarPago($estudiante_id)) {
+        OdaFlash::valid(msg: "$this->page_action: $Estud");
+      } else {
+        OdaFlash::error(msg: "$this->page_action: $Estud", audit: true);
+      }
+      Redirect::toAction('listadoEstudActivos');
+    } // END-actualizarPago
     
 
 } // END CLASS

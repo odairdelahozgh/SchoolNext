@@ -12,7 +12,6 @@
     let btn_add = '<div class="w3-padding">'
                     + '<button id="btn_new_id" class="w3-btn w3-green" onclick="show_new_form()">btn_new_caption</button>'
                  +'</div>';
-    //let btn_add = '<button id="btn_new_id" class="w3-btn w3-green" onclick="show_new_form()" ></button>';
     let output = '';
     let cont = 1;
     let cod_id = '';

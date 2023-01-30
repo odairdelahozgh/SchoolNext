@@ -57,9 +57,5 @@ function traer_data(id) {
     .catch(
         error => console.log(error)
     );
-    
-/*     $(document).ready( function () {
-        $('.w3-table').DataTable();
-    } ); */
 
 }

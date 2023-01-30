@@ -14,8 +14,7 @@ class GradosController extends AppController
 
   public function list() {
     $this->page_action = 'Lista de Grados';
-    //$this->breadcrumb->addCrumb(title:'Grados');
-    $this->data = (new Grado)->getListSeccion();
+    $this->data = (new Grado)->getList();
   }
   
   
@@ -90,7 +89,7 @@ class GradosController extends AppController
       if ( $Grado->create(Input::post('grados'))) {
         OdaFlash::valid('Operación exitosa :: Crear Registro');
         Input::delete();
-        return Redirect::to(); // al index del controller
+        return Redirect::to(''); // al index del controller
       }
       OdaFlash::error('Falló Operación :: Crear Registro');
     }
@@ -126,8 +125,8 @@ class GradosController extends AppController
    */
   public function del(string $uuid) {
     $this->page_action = 'Eliminar Registro';
-    $Grado = (new Grado)->get_uuid($uuid);
-    if ($Grado::deleteID($Grado->id)) {
+    $Grado = (new Grado)->getByUUID($uuid);
+    if ($Grado::deleteById($Grado->id)) {
       OdaFlash::valid("$this->page_action: $Grado");
     } else {
       OdaFlash::error("$this->page_action: $Grado");

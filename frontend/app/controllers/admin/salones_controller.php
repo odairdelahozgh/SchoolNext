@@ -10,8 +10,9 @@ class SalonesController extends AppController
 
   public function index() {
     Redirect::toAction('list');
+    
   }
-
+  
   public function list() {
     $this->page_action = 'Lista de Salones';
     //$this->breadcrumb->addCrumb(title: 'Salones');
@@ -23,17 +24,12 @@ class SalonesController extends AppController
    */
   public function create() {
     $this->page_action = 'CREAR Registro';
-    $Grado = new Grado();
-    $this->grados  = (new Grado)->getListActivos('id, nombre');
+    
+    $salon = new Salon();
+    //$this->salones  = (new Salon)->getListActivos();
 
-    if (Input::hasPost('grados')) {
-/*       $validador = new Validate(Input::post('grados.nombre'), $this->reglas() );
-      if (!$validador->exec()) {
-        $validador->flash();
-        //OdaFlash::error('Falló Operación VALIDAR :: Crear Registro');
-        return false;
-      } */
-      if ( $Grado->create(Input::post('grados'))) {
+    if (Input::hasPost('salones')) {
+      if ( $Salon->create(Input::post('salones'))) {
         OdaFlash::valid('Operación exitosa :: Crear Registro');
         Input::delete();
         return Redirect::to(); // al index del controller
@@ -72,8 +68,8 @@ class SalonesController extends AppController
    */
   public function del(string $uuid) {
     $this->page_action = 'Eliminar Registro';
-    $Grado = (new Grado)->get_uuid($uuid);
-    if ($Grado::deleteID($Grado->id)) {
+    $Grado = (new Grado)->getByUUID($uuid);
+    if ($Grado::deleteById($Grado->id)) {
       OdaFlash::valid("$this->page_action: $Grado");
     } else {
       OdaFlash::error("$this->page_action: $Grado");

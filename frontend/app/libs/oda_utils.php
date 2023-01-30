@@ -294,6 +294,14 @@ class OdaUtils extends Util {
         return $cadena[strlen($cadena)-1] == 's' ? $cadena: $cadena.'s'; // debe mejorar
     } // END-pluralize
 
+    
+    /**
+     * Devuelve el singular de un texto
+     */
+    public static function singularize(string $cadena): string {
+      return $cadena[strlen($cadena)-1] == 's' ? substr($cadena, 0, strlen($cadena)-1): $cadena; // debe mejorar
+    } // END-pluralize
+
 
     /**
      * Escribe en letras un monto numerico

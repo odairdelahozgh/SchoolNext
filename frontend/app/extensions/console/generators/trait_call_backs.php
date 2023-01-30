@@ -5,7 +5,7 @@ trait <?=$class?>TraitCallBacks {
    */
   public function _beforeCreate() { 
     parent::_beforeCreate();
-    //$this->uuid = $this->UUIDReal(); // OJO:: ACTIVARLO si usa UUID
+    $this->uuid = $this->UUIDReal(); // OJO:: ACTIVARLO si usa UUID
   }
 
   /**
@@ -20,7 +20,7 @@ trait <?=$class?>TraitCallBacks {
    */
   public function _beforeUpdate() {
     parent::_beforeUpdate();
-    //if (strlen($this->uuid)==0) { $this->uuid = $this->UUIDReal(); } // OJO:: ACTIVARLO si usa UUID
+    if (strlen($this->uuid)==0) { $this->uuid = $this->UUIDReal(); } // OJO:: ACTIVARLO si usa UUID
   }
 
   /**

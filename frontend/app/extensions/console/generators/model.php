@@ -20,6 +20,79 @@
   setActivar, setDesactivar
   getById, deleteById, getList, getListActivos, getListInactivos
   getByUUID, deleteByUUID, setUUID_All_ojo
+
+  
+  /**
+   * Filtra registro(s) de la base de datos
+   */
+  public function filtrar(int $id){
+    $filas = EjemploBase::all(); // obtener todos los registros como array
+    $filas = EjemploBase::all("SELECT * FROM self::$table WHERE fecha_contrato >= ?", [$fecha]); // obtener array de algunos registros según sql
+    $filas = EjemploBase::filter("WHERE nombre LIKE ?", [$nombreEjemploBase]); // obtener algunos registros como array según el filtro 
+    echo $filas[0]->id;
+        
+    $fila = EjemploBase::get($id); // obtener un registro por su clave primaria
+    $fila = EjemploBase::first("SELECT * FROM self::$table WHERE nombre = :nombre", [":nombre" => $nombreEjemploBase]); //obtener registro según sql
+    echo $fila->id;
+  }
+
+  /**
+   * Crea un registro de la base de datos
+   */
+  public function createRegistro() {
+    // #1: 
+    $Objeto = new EjemploBase();
+    $Objeto->create([
+        'nombre' => 'Edgard Baptista',
+        'cargo' => 'Contador',
+        'fecha_contrato' => date('Y-m-d'),
+        'activo' => 1
+    ]); //Devuelve True o False
+
+    // #2: prefiera este método por su simplicidad. 
+    // save ejecuta el método create cuando falta la clave primaria y  el de actualización cuando existe
+    $Objeto = new EjemploBase();
+    $Objeto->save([
+        'nombre' => 'Edgard Baptista',
+        'cargo' => 'Contador',
+        'fecha_contrato' => date('Y-m-d'),
+        'activo' => 1
+    ]); //Devuelve True o False
+
+    // #3: Metdo abreviado
+    $Objeto = new EjemploBase([
+        'nombre' => 'Edgard Baptista',
+        'cargo' => 'Contador',
+        'fecha_contrato' => date('Y-m-d'),
+        'activo' => 1
+    ]);
+    $Objeto->save(); //Devuelve True o False
+  }
+
+  /**
+   * Edita un registro de la base de datos
+   */
+  public function editRegistro(int $id) {
+    $Objeto = EjemploBase::get($id);
+    $Objeto->update([
+        'nombre' => 'Edgard Baptista',
+        'activo' => 0
+    ]); //Devuelve True o False
+    
+    // alternativa #2
+    $Objeto->save([
+        'nombre' => 'Edgard Baptista',
+        'activo' => 0
+    ]); //Devuelve True o False
+  }
+
+  /**
+   * Elimina un registro de la base de datos
+   */
+  public function deleteRegistro(int $id) {
+    EjemploBase::delete($id); 
+  }
+
 */
 
 class <?=$class?> extends LiteRecord

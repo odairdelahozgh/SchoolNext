@@ -49,7 +49,7 @@ class RegistrosController extends RestController
 
    
    /**
-    * Devuelve el estudiante buscado por ID
+    * Devuelve 
     * @link /api/registros/reg_observ_annio/2021
     */
    public function get_reg_observ_annio(int $annio) {

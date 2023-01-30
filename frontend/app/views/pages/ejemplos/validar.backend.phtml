@@ -1,0 +1,14 @@
+<?php
+require_once VENDOR_PATH.'autoload.php';
+use Respect\Validation\Validator as validar;
+
+
+//Respect Validation
+// https://respect-validation.readthedocs.io/en/latest/
+// tutorial: https://www.sitepoint.com/validating-your-data-with-respect-validation/
+
+echo '<h1>Respect Validation</h1>';
+$number = 123;
+echo validar::numericVal()->validate($number); // true
+
+?>

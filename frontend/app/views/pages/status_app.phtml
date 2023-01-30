@@ -1,78 +1,111 @@
+<div class="w3-container">
+   <?= View::flash(); ?>
+   <?= View::Encab($controller_name, 'Utilidades de Kumbia', ''); ?>
+</div>
+
+<?php 
+  $good = '<span class="w3-text-green">'._Icons::solid('face-smile').'</span>';
+  $bad  = '<span class="w3-text-red">'._Icons::solid('face-frown').'</span>';
+  $mode = PRODUCTION ? 'Producciónn' : 'Desarrollo';
+  if (!$timezone = date_default_timezone_get()) {
+    $timezone = 'No se ha especificado un Timezone.';
+  }
+?>
 
 <div class="w3-container">
-   <h1>Ip Actual: <?= OdaUtils::getIp(); ?></h1>
-   
-   <table class="w3-table-responsive w3-striped w3-bordered w3-hoverable ">
-      <caption><h2>Frameworks</h2></caption>
-      <thead>
-         <tr>
-            <td></td>
-            <td></td>
-         </tr> 
-      </thead>
 
-      <tbody>
-         <tr> <?=OdaTags::multiTags('td',array('KumbiaPHP', KUMBIA_VERSION)); ?> </tr>
-         <tr> <?=OdaTags::multiTags('td',array('W3 CSS', '4.15 Dec 2020')); ?> </tr>
-         <tr> <?=OdaTags::multiTags('td',array('W3 JS', '1.04 April 2019')); ?> </tr>
-      </tbody>
-   </table>
+  <div class="w3-row">
+    <div class="w3-half">
+      <?php
+        $tabla = new OdaTable(theme: 'dark');
+        $tabla->setCaption('General');
+        $tabla->setHead(['Ip Actual', OdaUtils::getIp()]);
+        $tabla->setBody(['Modo', $mode]);
+        $tabla->setBody(['Zona Horaria', $timezone]);
+        $tabla->setBody([]);
+        echo $tabla;
+      ?>
+    </div>
+    
+    <div class="w3-half">
+    <?php
+        $tabla = new OdaTable(theme: 'dark');
+        $tabla->setCaption('Frameworks');
+        $tabla->setHead(['Framework','Version']);
+        $tabla->setBody(['KumbiaPHP', KUMBIA_VERSION]);
+        $tabla->setBody(['W3 CSS', '4.15 Dec 2020']);
+        $tabla->setBody(['W3 JS', '1.04 April 2019']);
+        echo $tabla;
+    ?>
+    </div>
 
+  </div>
 
-   <table class="w3-table-responsive w3-striped w3-bordered w3-hoverable ">
-      <caption><h2>Configuración de PHP</h2></caption>
-      <thead class="w3-theme-d5">
-         <tr>
-            <td>Config</td>
-            <td>Obligatorio</td>
-            <td>Servidor</td>
-            <td>Diagnóstico</td>
-         </tr> 
-      </thead>
+  <hr>
 
-      <tbody>
-         <tr> <?= OdaTags::multiTags('td',array('php version', '7.4.1', phpversion(), (version_compare(PHP_VERSION, '7.4.1') >= 0 ? 'OK': 'CUIDADO') )); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('memory limit', '128M', ini_get('memory_limit'), '??')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('magic quotes gpc', '??', (ini_get('magic_quotes_gpc')?'ON':'OFF'), '??')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('Subir Archivos: Tamaño Máximo', '??', ini_get('upload_max_filesize'), '??')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('post: Tamaño Máximo', '??', ini_get('post_max_size'), '??')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('register globals', '??', (ini_get('register_globals')?'ON':'OFF'), '??')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('session auto_start', '??', (ini_get('session.auto_start')?'ON':'OFF'), '??')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('utf8_decode()', '??', (function_exists('utf8_decode')?'ON':'OFF'), '??')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('exec()', '??', (ini_get('exec')?'ON':'OFF'), '??')); ?> </tr>
-      </tbody>
-   </table>
+  <div class="w3-row">
 
-   <table class="w3-table-responsive w3-striped w3-bordered w3-hoverable ">
-   <caption><h2>Extensiones PHP</h2></caption>
-      <thead class="w3-theme-d5">
-         <tr>
-            <td>Extension</td>
-            <td>Obligatorio</td>
-            <td>Servidor</td>
-            <td>Diagnóstico</td>
-         </tr> 
-      </thead>
+    <div class="w3-half">
+      <?php
+        $tabla = new OdaTable(theme: 'dark');
+        $tabla->setCaption('Configuración de PHP');
+        $tabla->setHead(['Config','Obligatorio','Servidor','Diagnóstico']);
 
-      <tbody>
-         <tr> <?= OdaTags::multiTags('td',array('pdo_mysql', 'SI', (extension_loaded('pdo_mysql')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('json', 'SI', (extension_loaded('json') ? phpversion('json') : 'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('gd', 'SI', (extension_loaded('gd')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('date', 'SI', (extension_loaded('date')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('ctype', 'SI', (extension_loaded('ctype')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('dom', 'SI', (extension_loaded('dom')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('iconv', 'SI', (extension_loaded('iconv')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('pcre', 'SI', (extension_loaded('pcre')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('reflection', 'SI', (extension_loaded('reflection')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('session', 'SI', (extension_loaded('session')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('apc', 'NO', (extension_loaded('apc')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('bitset', 'NO', (extension_loaded('bitset')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('simplexml', 'SI', (extension_loaded('SimpleXML')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('mbstring', 'SI', (extension_loaded('mbstring')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('curl', 'SI', (extension_loaded('curl')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('xml', 'SI', (extension_loaded('xml')?'ON':'OFF'), '')); ?> </tr>
-         <tr> <?= OdaTags::multiTags('td',array('xsl', 'SI', (extension_loaded('xsl')?'ON':'OFF'), '')); ?> </tr>
-      </tbody>
-   </table>
+        $ver_compare = version_compare(PHP_VERSION, '7.4.1') >= 0;
+        $tabla->setBody(['php version', '>=7.4.1', phpversion(), ($ver_compare ? $good : $bad)]);
+        
+        
+        $tabla->setBody(['magic quotes gpc', '??', (ini_get('magic_quotes_gpc')?'ON':'OFF'), '??']);
+        
+        $upload_max_filesize = (int)(substr(ini_get('upload_max_filesize'), 0, strlen(ini_get('upload_max_filesize'))-1));
+        $tabla->setBody(['upload_max_filesize:<br> Tamaño Máximo de Archivo', '', ini_get('upload_max_filesize'), '']);
+        
+        // post_max_size > upload_max_filesize
+        $post_max_size = (int)(substr(ini_get('post_max_size'), 0, strlen(ini_get('post_max_size'))-1));
+        $diag = ($post_max_size >= $upload_max_filesize) ? $good : $bad ;
+        $tabla->setBody(['post_max_size:<br> Máximo datos de publicación. <br> Default=8M', '>=upload_max_filesize<br>'."[>=$upload_max_filesize]", ini_get('post_max_size'), $diag]);
+        
+        // memory_limit >= post_max_size
+        $memory_limit = (int)(substr(ini_get('memory_limit'), 0, strlen(ini_get('memory_limit'))-1));
+        $tabla->setBody(['memory limit', '>=post_max_size<br>'."[>=$post_max_size]", ini_get('memory_limit'), (($post_max_size<=$memory_limit) ? $good : $bad) ]);
 
+        $tabla->setBody(['register globals', '??', (ini_get('register_globals')?'ON':'OFF'), '??']);
+        $tabla->setBody(['session auto_start', '??', (ini_get('session.auto_start')?'ON':'OFF'), '??']);
+        $tabla->setBody(['utf8_decode()', '??', (function_exists('utf8_decode')?'ON':'OFF'), '??']);
+        $tabla->setBody(['exec()', '??', (ini_get('exec')?'ON':'OFF'), '??']);
+        echo $tabla;
+      ?>
+    </div>
+    <div class="w3-half">
+      <?php 
+        $tabla = new OdaTable(theme: 'dark');
+        $tabla->setCaption('Extensiones PHP');
+        $tabla->setHead(['Extension','Obligatorio','Servidor','Diagnóstico']);
+
+        $diag = (extension_loaded('pdo_mysql')) ? $good : $bad;
+        $tabla->setBody(['pdo_mysql', 'SI', (extension_loaded('pdo_mysql')?'ON':'OFF'), $diag]);
+        
+        $diag = (extension_loaded('json')) ? $good : $bad;
+        $tabla->setBody(['json', 'SI', (extension_loaded('json') ? phpversion('json') : 'OFF'), $diag]);
+
+        $tabla->setBody(['gd', 'SI', (extension_loaded('gd')?'ON':'OFF'), '']);
+        $tabla->setBody(['mbstring', 'SI', (extension_loaded('mbstring')?'ON':'OFF'), '']);
+        $tabla->setBody(['curl', 'SI', (extension_loaded('curl')?'ON':'OFF'), '']);
+        $tabla->setBody(['ctype', 'SI', (extension_loaded('ctype')?'ON':'OFF'), '']);
+        $tabla->setBody(['session', 'SI', (extension_loaded('session')?'ON':'OFF'), '']);
+        $tabla->setBody(['apc', 'NO', (extension_loaded('apc')?'ON':'OFF'), '']);
+        $tabla->setBody(['date', 'SI', (extension_loaded('date')?'ON':'OFF'), '']);
+        $tabla->setBody(['dom', 'SI', (extension_loaded('dom')?'ON':'OFF'), '']);
+        $tabla->setBody(['iconv', 'SI', (extension_loaded('iconv')?'ON':'OFF'), '']);
+        $tabla->setBody(['pcre', 'SI', (extension_loaded('pcre')?'ON':'OFF'), '']);
+        $tabla->setBody(['reflection', 'SI', (extension_loaded('reflection')?'ON':'OFF'), '']);
+        $tabla->setBody(['bitset', 'NO', (extension_loaded('bitset')?'ON':'OFF'), '']);
+        $tabla->setBody(['simplexml', 'SI', (extension_loaded('SimpleXML')?'ON':'OFF'), '']);
+        $tabla->setBody(['xml', 'SI', (extension_loaded('xml')?'ON':'OFF'), '']);
+        $tabla->setBody(['xsl', '', (extension_loaded('xsl')?'ON':'OFF'), '']);
+        echo $tabla;
+      ?>
+    </div>
+
+  </div>
 </div>

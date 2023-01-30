@@ -1,0 +1,23 @@
+<div class="w3-container">
+   <?= View::flash(); ?>
+   <?= View::Encab($controller_name, 'Utilidades de Kumbia', ''); ?>
+</div>
+
+<div class="w3-container">
+  <?php
+  $arrClassNames = [
+    'OdaDql', 'OdaFile', 'OdaFlash', 'OdaLog', 'OdaPdf', 'OdaUtils', // libs/odair
+    'OdaAjax', 'OdaJs', 'OdaTable', 'OdaTabs', 'OdaTags',  // helpers Odair
+    'FileUtil', 'Fpdf', 'I18n'];  // Core
+  $arrClass2 = ['OdaForm', 'OdaMpdf', 'Filter', 'SimpleAcl', 'Auth2Odair', 'Validations'];
+
+  foreach ($arrClassNames as $class_name) {
+    echo "<h1>$class_name</h1>";
+    $métodos_clase = get_class_methods(new $class_name());
+    foreach ($métodos_clase as $key => $nombre_método) {
+        echo ($key+1).".  $class_name::$nombre_método()<br>";
+    }
+  }
+  
+  ?>
+</div>

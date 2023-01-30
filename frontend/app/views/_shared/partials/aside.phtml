@@ -30,7 +30,8 @@
       <br/>
         <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'envelope').'&nbsp;'; ?></span>
         <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'user-gear').'&nbsp;';?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'gear');?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'gear').'&nbsp;';?></span>
+        
     </div>
     <h5 class="w3-small">
       <br>Ejecutado en <?=round((microtime(1) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 0);?> ms
@@ -44,7 +45,6 @@
   <div class="w3-bar-block w3-row">
     <a href="/" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" 
     onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
-    
     <menu class="w3-padding">
       <?= OdaTags::linkBarItem('', 'INICIO') ?>
       <div class="w3-bar-block">
@@ -53,17 +53,17 @@
       </div>
       <br><br>
       <?= OdaTags::link('index/cambiarTheme', (($theme=='dark') ? 'Modo Claro' : 'Modo Oscuro'), 'class="w3-btn w3-theme"' ) ?>
+      <br><br>
     </menu>
-
-    
   </div>
+
 
 </nav>
 
 
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large w3-animate-opacity" 
-onclick="w3_close()" 
-style="cursor:pointer" 
-title="cerrar menú lateral" id="myOverlay">
+  onclick="w3_close()" 
+  style="cursor:pointer" 
+  title="cerrar menú lateral" id="myOverlay">
 </div>

@@ -81,6 +81,21 @@ class OdaTags {
       foreach ($array as $item) { $list .= "<li>$item</li>".PHP_EOL; }
       return "$list</$type>".PHP_EOL;
    }
+ 
+  /**
+   * dlist: DEscription Lists
+   * @source https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting
+   */
+  public static function dlist(array $arr_description, array|string $attrs = 'class="w3-ul w3-card-4 w3-hoverable"') {
+    if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
+    $type = 'dl';
+
+    $list = "<$type $attrs>".PHP_EOL;
+    foreach ($arr_description as $term => $definition) { 
+      $list .= "<dt>$term</dt><dd>$definition</dd>".PHP_EOL; 
+    }
+    return "$list</>".PHP_EOL;
+  }
 
    public static function meter($nivel, $titulo='', $rango=array(33,66,80)){
       return "<label>$titulo:
@@ -90,11 +105,34 @@ class OdaTags {
                value=\"$nivel\">
             $nivel/100
          </meter>
-      </label>";
+      </label>".PHP_EOL;
    }
 
    public static function tooltip(string $text, string $tip){
       return '<span class="w3-tooltip">'.$text.'<span style="position:absolute;left:0;bottom:18px" class="w3-text w3-tag">'.$tip.'</span></span>';
+   }
+
+   public static function quarter($titulo, $valor, $link=null, $icon=null) {
+    return "<div class=\"w3-quarter w3-padding w3-center\">
+                <div class=\"w3-card w3-container w3-round-large w3-theme-l3 w3-hover-theme\">
+                  <header class=\"w3-container\">
+                    <h4 class=\"w3-left\">$titulo</h>
+                  </header>
+                    <p class=\"w3-left\">$icon</p>
+                    <h3 class=\"w3-right w3-xxxlarge\">$valor</h3>
+                  <footer class=\"w3-container\">
+                    <h5 class=\"w3-\">$link</h5>
+                  </footer>
+                </div>
+            </div>";
+   }
+
+   public static function buttonBars(array $arrButtons=[]) {
+    $btns = '';
+    foreach ($arrButtons as $key => $button) {
+      $btns .= "<button id=\"btn1\" class=\"w3-button w3-theme\" onclick=\"".$button['action']."\">".$button['caption']."</button>";
+    }
+    return "<div class=\"w3-bar\">$btns</div>";
    }
 
 } // END-_Tag

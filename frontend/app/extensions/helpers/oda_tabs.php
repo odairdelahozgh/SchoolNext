@@ -1,6 +1,6 @@
 <?php
 /**
- * OdaTable: Helper para crear TABS Odair.
+ * OdaTabs: Helper para crear TABS Odair.
  * 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category Helper.

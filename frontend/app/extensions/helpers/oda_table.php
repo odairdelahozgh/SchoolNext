@@ -27,8 +27,8 @@ class OdaTable {
     */
    public function __toString() { 
       $total_regs = ($this->showTotalRegs) ? "<h5>Total Registros: $this->body_counter</h5>" : '' ;
-      return "<div class=\"w3-container\">"
-               ."<table $this->_attrs>
+      return "<div class=\"w3-container\"> $total_regs
+               <table $this->_attrs>
                      $this->tCaption
                      $this->tHead
                      <tbody id=\"searchBody\">
@@ -36,7 +36,6 @@ class OdaTable {
                      </tbody>
                      $this->tFooter
                   </table>
-                  $total_regs
              </div>";
    }
    
@@ -159,9 +158,9 @@ class OdaTable {
    /**
     * Convierte un string separado por comas en un array.
     */
-   public static function strToArray(string|array $params):array {
+   public static function strToArray(string|array $params, string $separator=','):array {
       if (!is_string($params)) { return (array) $params; }
-      return explode(',', $params);
+      return explode($separator, $params);
    } // END-strToArray
 
    /**

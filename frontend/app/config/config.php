@@ -40,22 +40,31 @@ return [
       'nombre'          => 'Windsor School',
       'razon_social'    => 'Windsor Group SAS',
       'id_name'         => 'windsor',
-      'direccion'       => 'Calle 9A #5-22 Barrio Novalito',
-      'telefono_fijo'   => '6055897997',
-      'telefono_movil'  => '3173704197',
-      'email'           => 'windsorschoolvalledupar@gmail.com',
-      'rector'          => 'Miriam Casadiego Ríos',
-      'rector_cc'       => '57401865',
-      'rep_legal'       => 'Yani Calderón Sarmiento',
-      'rep_legal_cc'    => '',
-      'secretaria'      => 'Yuleinis Manjarres Gil',
-      'secretaria_cc'   => '1065579951',
-      'contador'        => 'Mary Monachello',
-      'contador_cc'     => '',
       'cod_dane'        => '320001068151',
       'resolucion'      => '293, Nov 4 de 2011',
-      'dominio'         => 'windsorschool.edu.co',
+
+      'slogan'          => 'Brilliant minds for a challenging world',
+      'campania'        => 'No esperemos que el mundo cambie. Primero hagámoslo nosotros.',
       'logo'            => 'ws_logo.png',
       'logo_resolucion' => 'ws_logo.png',
+      
+      'direccion'       => 'Calle 9A #5-22 Barrio Novalito',
+      'telefono_fijo'   => '605 589 7997',
+      'telefono_movil'  => '(+57) 317 370 4197',
+      'email'           => 'windsorschoolvalledupar@gmail.com',
+      'dominio'         => 'windsorschool.edu.co',
+      
+      'rector'          => 'Miriam Casadiego Ríos',
+      'rector_cc'       => '57401865',
+      
+      'rep_legal'       => 'Yani Calderón Sarmiento',
+      'rep_legal_cc'    => '',
+      
+      'secretaria'      => 'Yuleinis Manjarres Gil',
+      'secretaria_cc'   => '1065579951',
+      
+      'contador'        => 'Mary Monachello',
+      'contador_cc'     => '',
+      
     ],
 ];

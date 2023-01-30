@@ -7,7 +7,7 @@
     <div  class="w3-bar">
         <?php 
         foreach ($annios as $key => $annio) {
-            echo "<div onclick=\"traer_data($annio)\" class=\"w3-button w3-bar-item\">$annio</div>" ;
+            echo "<div  id=\"$annio\"  onclick=\"traer_data($annio)\" class=\"w3-button w3-bar-item\">$annio</div>" ;
         }
         ?>
     </div>
@@ -16,5 +16,5 @@
     </div>
 </div>
 
-<?= tag::js("registros/reg_observ_fetch", false) ?>
+<?= tag::js("registros/observaciones_generales", false) ?>
 <?= tag::js("acordeon", false) ?>

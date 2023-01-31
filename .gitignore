@@ -1,10 +1,16 @@
-vendor
+*.xlsx
+*.zip
 frontend/public/img/*
 frontend/public/files/*
-frontend/app/temp/*
+frontend/public/index.php
+
 frontend/app/libs/fpdf/*
+frontend/app/help/*
+frontend/app/temp/*
+
 core13/*
 core20/*
+
 # Mac filesystem dust
 .DS_Store
 
@@ -29,18 +35,4 @@ core20/*
 .sonar
 .scannerwork
 sonar-project.properties
-composer.lock
-KumbiaPHP/
-*.xlsx
-historial-registros-director-de-grupo.png
-reg-coord-obs-academico.png
-reg-coord-obs-generales.png
-Sin título 2.png
-Sin título.png
-agregar-registro-observaciones-todos-los-profesores.png
 desktop.ini
-
-frontend/app/libs/fpdf/*
-frontend/public/index.php
-frontend/app/help/info.txt
-*.zip

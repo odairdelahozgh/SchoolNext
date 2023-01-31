@@ -11,7 +11,8 @@
    } else {
       echo OdaForm::inputSearch();
       $tabla = new OdaTable(showTotalRegs: true);
-      $tabla->setHead( arr_head: '°Salon, °Asignatura, Indicadores, Notas' );
+      $srch = '<i class="fa-solid fa-search w3-small"></i>';
+      $tabla->setHead( arr_head: "$srch Salon, $srch Asignatura, Indicadores, Notas");
       $tabla->setCaption(caption:'Carga Asignada');
       foreach($data as $key => $carga) {
         $d1 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');

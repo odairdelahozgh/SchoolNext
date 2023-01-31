@@ -95,25 +95,11 @@ class IndicadoresController extends AppController
     $this->Modelo = $Indicador->get($id);
   }
 
-  /**
-   * Eliminar un registro
-   */
-  public function del(int $id) {
-    $this->page_action = 'Eliminar Registro';
-    $Indicador = (new Indicador)->getById($id);
-    if ($Indicador::deleteById($Indicador->id)) {
-      OdaFlash::valid("$this->page_action: $Indicador");
-    } else {
-      OdaFlash::error("$this->page_action: $Indicador");
-    }
-    return Redirect::to();
-  }
-
   
   /**
    * Eliminar un registro
    */
-  public function delUUID(string $uuid) {
+  public function delUUID(string $uuid, string $redirect='') {
     $this->page_action = 'Eliminar Registro';
     $Indicador = (new Indicador)->getByUUID($uuid);
     if ($Indicador::deleteById($Indicador->id)) {
@@ -121,7 +107,18 @@ class IndicadoresController extends AppController
     } else {
       OdaFlash::error("$this->page_action: $Indicador");
     }
-    return Redirect::to();
+    return Redirect::to("$redirect");
+  }
+
+  public function delID(string $id, string $redirect='') {
+    $this->page_action = 'Eliminar Registro';
+    $Indicador = (new Indicador)->getById($id);
+    if ($Indicador::deleteById($id)) {
+      OdaFlash::valid("$this->page_action: $Indicador");
+    } else {
+      OdaFlash::error("$this->page_action: $Indicador");
+    }
+    return Redirect::to("$redirect");
   }
 
 

@@ -38,7 +38,11 @@ class OdaDql {
       }
       return (new $this->_from)->all($this->render(), $this->_params);
     } catch (Exception $e) {
-      OdaLog::debug(msg: 'Excepción capturada: <br>'.$this->render() );
+      
+      OdaLog::debug(msg: 'Excepción capturada: ');
+      OdaLog::debug(msg: $this->render() );
+      OdaLog::debug(msg: 'RECUERDA: tabla principal = t');
+
       echo 'Excepción capturada: ',  $e->getMessage(), "\n";
     }
   } 
@@ -121,7 +125,7 @@ class OdaDql {
    * @example $qb->where('u.firstName = ?1 AND u.surname = ?2')
    */
   public function where(string $where) {
-    $this->_where = "$where";
+    $this->_where = $where;
     return $this;
   }
 
@@ -130,7 +134,7 @@ class OdaDql {
    * @example - $qb->andWhere($qb->expr()->orX($qb->expr()->lte('u.age', 40), 'u.numChild = 0'))
    */
   public function andWhere(string $where) {
-    $this->_where = "($this->_where) AND ($where)";
+    $this->_where = ($this->_where) ? "($this->_where) AND ($where)" : $where;
     return $this;
   }
 
@@ -139,7 +143,7 @@ class OdaDql {
    * @example - $qb->orWhere($qb->expr()->between('u.id', 1, 10));
    */
   public function orWhere(string $where) {
-    $this->_where = "($this->_where) OR ($where)";
+    $this->_where = ($this->_where) ? "($this->_where) OR ($where)" : $where;
     return $this;
   }
 
@@ -156,8 +160,8 @@ class OdaDql {
   /**
    * @example  $qb->addOrderBy('u.firstName')
    */
-  public function addOrderBy(string $sort){
-    $this->_order_by .= ", $sort ";
+  public function addOrderBy(string $sort) {
+    $this->_order_by = ($this->_order_by) ? "$this->_order_by, $sort" : $sort;
     // Default $order = 'ASC'
     return $this;
   } 

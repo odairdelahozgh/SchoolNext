@@ -4,10 +4,7 @@ class User extends ActiveRecord
 {
     protected $source = 'dm_user';
       
-    const IS_ACTIVE = [
-        0 => 'Inactivo',
-        1 => 'Activo'
-      ];
+    const IS_ACTIVE = [ 0 => 'Inactivo', 1 => 'Activo' ];
     
     public $before_delete = 'no_borrar_activos';
     public function no_borrar_activos() {
@@ -124,18 +121,21 @@ class User extends ActiveRecord
         Session::set('f_ini_notas',  $estePeriodo->f_ini_notas);
         Session::set('f_fin_notas',  $estePeriodo->f_fin_notas);
         Session::set('f_open_day',   $estePeriodo->f_open_day);
+        Session::set('es_director',  false);
         
-        if($auth->identify()) return true;
+        if ($auth->identify()) { 
+          Session::set('es_director',  (new Salon)->isDirector( (int)Session::get('id') ) );
+          return true; 
+        }
 
-        if ($auth->getError()) {
-            OdaFlash::error($auth->getError());
+        if ($auth->getError()) { 
+          OdaFlash::error($auth->getError()); 
         }
         return false;
     }
 
     /**
-     * Terminar sesion
-     * 
+     * User | logout() : Terminar sesion
      */
     public function logout() {
         $auth = Auth2Odair::factory('model'); // Obtiene el adaptador
@@ -144,13 +144,17 @@ class User extends ActiveRecord
     }
 
     /**
-     * Verifica si el usuario esta autenticado
-     * 
-     * @return boolean
+     * User | logged() : Verifica si el usuario esta autenticado
      */
-    public function logged() {
+    public function logged(): bool {
         return Auth2Odair::factory('model')->isValid();
     }
 
+    /**
+     * User | isLogged() : Verifica si el usuario esta autenticado
+     */
+    public function isLogged(): bool {
+      return Auth2Odair::factory('model')->isValid();
+    }
 
 }

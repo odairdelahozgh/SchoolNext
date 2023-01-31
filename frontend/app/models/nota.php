@@ -17,9 +17,9 @@
   // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
   // Filtra las consultas                 ::filter(string $sql, array $values = []): array
     
-  setActivar, setDesactivar
-  getById, deleteById, getList, getListActivos, getListInactivos
-  getByUUID, deleteByUUID, setUUID_All_ojo
+  setActivar(), setDesactivar()
+  getById(), deleteById(), getList(), getListActivos(), getListInactivos()
+  getByUUID(), deleteByUUID(), setUUID_All_ojo()
 
   Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
   OdaLog::debug(msg: "Mensaje", name_log:'nombre_log');

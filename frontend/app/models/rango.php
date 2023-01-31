@@ -6,8 +6,10 @@
   * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
   */
 
-// id, nombre, lim_inf, lim_sup, color_rango, color_texto, color_backg, 
-// created_by, updated_by, created_at, updated_at
+/*
+ nombre, lim_inf, lim_sup, color_rango, color_texto, color_backg, 
+ id, created_by, updated_by, created_at, updated_at
+*/
 class Rango extends LiteRecord
 {
   protected static $table = 'sweb_ejemplo';
@@ -62,14 +64,14 @@ class Rango extends LiteRecord
     }
   } //END-getColorRango
 
-  // public function create(array $data = []): bool {}
-  // public function update(array $data = []): bool {}
-  // public function save(array $data = []): bool {}
+  // public function create(array $data = []): bool
+  // public function update(array $data = []): bool
+  // public function save(array $data = []): bool
   // public static function delete($pk): bool
   // 
-  // public static function get($pk, $fields = '*') $fields: campos separados por coma
-  // public static function all(string $sql = '', array $values = []): array {}
-  // public static function first(string $sql, array $values = [])//: static in php 8
+  // public static function get($pk, $fields = '*')
+  // public static function all(string $sql = '', array $values = []): array
+  // public static function first(string $sql, array $values = []): static
   // public static function filter(string $sql, array $values = []): array
 
 }

@@ -76,4 +76,15 @@ class Salon extends LiteRecord
     
     return $DQL->execute();
   }
+
+
+   /**
+   * Saber si un profesor es director de grupo o no.
+   * ¿ y si es director o codirector de varios salones ?
+   */
+  public function isDirector(int $user_id): bool { 
+    return (false !== ( (new Salon)::first('Select t.id from sweb_salones as t where t.director_id=? or t.codirector_id=?', [$user_id, $user_id]) ) );
+  } //END-isDirector
+
+
 }

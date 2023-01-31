@@ -36,4 +36,25 @@ trait EstudianteTraitProps {
 
   public function getFotoCircle($max_width=80) { return OdaTags::img("upload/estudiantes/$this->id.png",$this->id, "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud_circle); }
 
+   public function isNuevo() {
+    // oj corregir
+    return ( (substr($this->created_at, 0,10)>='2022-11-01' ) ? true : false) ;
+  }
+
+  public function isNuevoIco() {
+    return ( $this->isNuevo() ? '<span class="w3-text-red">NEW</span>' : '' );
+  }
+ 
+  public function getPagoPension() {
+    return 'Pago Pensión: '.OdaUtils::nombreMes((int)$this->mes_pagado).' de '.$this->annio_pagado;
+  }
+
+  public function getDebePreicfes() {
+    return 'Debe Preicfes: '.(($this->is_debe_preicfes) ? 'SI' : 'NO');
+  }
+
+  public function getDebeAlmuerzos() {
+    return 'Debe Almuerzos: '.(($this->is_debe_almuerzos) ? 'SI' : 'NO');
+  }
+
 } //END-TraitProps

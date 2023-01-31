@@ -1,7 +1,15 @@
+<?php
+  $links_docente = OdaTags::linkBarItem('docen-carga-academica', 'Mi Carga', 'people-line')
+  .OdaTags::linkBarItem('docen-reg-observaciones', 'Observaciones', 'address-card');
+
+  if ( Session::get('es_director') ) {
+    $links_docente .= OdaTags::linkBarItem('docen-dir-grupo', 'Mi Grupo', 'clipboard');
+  }
+  
+?>
+
 <div class="w3-bar-block">
-   <?= OdaTags::linkBarItem('docen-carga-academica', 'Mi Carga', 'people-line') ?>
-   <?= OdaTags::linkBarItem('docen-reg-observaciones', 'Observaciones', 'address-card') ?>
-   <?= OdaTags::linkBarItem('docen-dir-grupo', 'Mi Grupo', 'clipboard') ?>
+   <?= $links_docente ?>
 </div>
 
 <?php if(Session::get('roll')=='coordinadores'): ?>

@@ -7,11 +7,12 @@
    <div class="w3-threequarter">
       <?php
          if (count($data)==0) {
-            Flash::valid('<h3>Atención!</h3><p>No hay registros para mostrar.</p>');
+            Flash::valid('<h3>Atenci&oacute;n!</h3><p>No hay registros para mostrar.</p>');
          } else {
             require('listHeader.phtml');
             $tabla = new OdaTable();
-            $tabla->setHead('ID, Periodo, Fecha, Estudiante, Asunto');
+            $srch = '<i class="fa-solid fa-search w3-small"></i>';
+            $tabla->setHead("ID, Periodo, Fecha, $srch Estudiante, $srch Asunto");
             foreach($data as $key => $reg) {
                $data_row = array(
                   $reg->id,

@@ -33,11 +33,7 @@ class Rango extends LiteRecord
   public function __construct() {
     //self::$aRangos = array();
   }
-  
-  const IS_ACTIVE = [
-        0 => 'Inactivo',
-        1 => 'Activo'
-  ];
+
   
   public function __toString() { return $this->nombre; }
   
@@ -63,15 +59,5 @@ class Rango extends LiteRecord
       return 'w3-aqua w3-border-theme';
     }
   } //END-getColorRango
-
-  // public function create(array $data = []): bool
-  // public function update(array $data = []): bool
-  // public function save(array $data = []): bool
-  // public static function delete($pk): bool
-  // 
-  // public static function get($pk, $fields = '*')
-  // public static function all(string $sql = '', array $values = []): array
-  // public static function first(string $sql, array $values = []): static
-  // public static function filter(string $sql, array $values = []): array
 
 }

@@ -9,21 +9,19 @@
     $buttons[$i] = ['caption'=>"Periodo $i", 'action'=>"traer_data($i,$RegGrado->id,$RegAsignatura->id)"];
   }
   $botones = OdaTags::buttonBars($buttons);
-  $model = new Indicador;
-  $myForm = new OdaForm($model, 'admin/indicadores/create_ajax');
-          $myForm->setAtrib('id="form_new"');
-          $myForm->addInput(1,'number','codigo');
-          $myForm->addInput(1,'text','concepto');
-          $myForm->addSelect(1,'valorativo', $model::$valorativos);
-          $myForm->addHiddens('annio, periodo_id, grado_id, asignatura_id, is_active, is_visible, created_by, updated_by, created_at, updated_at');
-  echo  "<div id=\"formulario\" style=\"display: none;\">$myForm</div>";
 ?>
 
+
 <div class="w3-container">
-  <h2> <?="Grado $RegGrado->nombre: $RegAsignatura"?> </h2>
-  <div class=""><?= $botones ?></div>
-  <div id="capa_datos"></div>
+  <h2> <?="Grado $RegGrado->nombre: $RegAsignatura->nombre"?> </h2>
+
+  <?php echo require('listForm.phtml'); ?>
+
+  <div id="lista_indicadores" class="">
+    <div id="botones"><?= $botones ?></div>
+    <div id="capa_datos"></div>
+  </div>
 </div>
 
 
-<?= Tag::js("docentes/indicadores_periodo_grado_asignatura", false); ?>
+<?= Tag::js("docentes/indicadores_list", false); ?>

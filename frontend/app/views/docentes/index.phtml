@@ -1,9 +1,14 @@
 <div class="w3-panel">
-    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
-    <?= View::flash(); ?>
-    
-    <div class="w3-row">
+  <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+  <?= View::flash(); ?>
+  
+  <div class="w3-row">
+    <div class="w3-container w3-green w3-mobile">
+      <h3 style="text-shadow:1px 1px 0 #444"><i class="fa-solid fa-recycle w3-large"></i> <?= Config::get('config.institution.campania') ?></h3>
+    </div>
+  </div>
 
+  <div class="w3-row">
     <?php for ($i=1; $i<=4 ; $i++): ?>
       <div class="w3-quarter w3-padding w3-center">
          <div class="w3-card w3-container w3-round-large w3-theme-l3 w3-hover-theme">
@@ -18,6 +23,6 @@
          </div>
       </div>
    <?php endfor; ?>
+  </div>
 
-</div>
 </div>

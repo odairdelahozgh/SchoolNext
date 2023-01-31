@@ -1,9 +1,5 @@
 <?php
-/*
-id, is_active, nombre, grado_id, director_id, codirector_id, position, tot_estudiantes,
-print_state1, print_state2, print_state3, print_state4, print_state5, is_ready_print, print_state, 
-created_by, created_at, updated_by, updated_at
-*/
+
 trait SalonTraitProps {
 
   /*

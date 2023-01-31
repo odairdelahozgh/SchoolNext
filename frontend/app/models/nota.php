@@ -7,16 +7,16 @@
  */
 
  /* 
-  // crear registro:               ->create(array $data = []): bool {}
-  // actualizar registro:          ->update(array $data = []): bool {}
-  // Guardar registro:             ->save(array $data = []): bool {}
-  // Eliminar registro por pk:     ::delete($pk): bool
+  // ->create(array $data = []): bool {}
+  // ->update(array $data = []): bool {}
+  // ->save(array $data = []): bool {}
+  // ::delete($pk): bool
   //
-  // Buscar por clave pk:                 ::get($pk, $fields = '*') $fields: campos separados por coma
-  // Todos los registros:                 ::all(string $sql = '', array $values = []): array {}
-  // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
-  // Filtra las consultas                 ::filter(string $sql, array $values = []): array
-    
+  // ::get($pk, $fields = '*')
+  // ::all(string $sql = '', array $values = []): array
+  // ::first(string $sql, array $values = []): static
+  // ::filter(string $sql, array $values = []): array
+
   setActivar(), setDesactivar()
   getById(), deleteById(), getList(), getListActivos(), getListInactivos()
   getByUUID(), deleteByUUID(), setUUID_All_ojo()

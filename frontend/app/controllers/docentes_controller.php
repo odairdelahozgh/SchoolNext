@@ -38,6 +38,16 @@ class DocentesController extends AppController
     $this->data = (new SalAsigProf)->getCarga($this->user_id);
   }//END-carga
 
+  
+  /**
+   * $data: ASIGNAR Carga Académica de Profesor
+   */
+  public function asignar_carga() {
+    $this->page_action = 'Asignar Carga Acad&eacute;mica';
+    $this->data = (new SalAsigProf)->getCarga($this->user_id);
+  }//END-carga
+
+
   /**
    * Método Dirección de Grupo|
    */

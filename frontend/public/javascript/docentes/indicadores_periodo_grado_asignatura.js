@@ -42,7 +42,7 @@
       document.getElementById("indicadors_grado_id").value = grado_id;
       document.getElementById("indicadors_asignatura_id").value = asignatura_id;
       document.getElementById("indicadors_is_visible").value = 1;
-      document.getElementById("form_new").action='/edsa-schoolnext/admin/indicadores/create_ajax/'+grado_id+'/'+asignatura_id;
+      document.getElementById("form_new").action='/admin/indicadores/create_ajax';
       //document.getElementById('btn1').click();
     })
     .catch(

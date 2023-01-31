@@ -6,7 +6,7 @@
   if ( Session::get('es_director') ) {
     $links_docente .= OdaTags::linkBarItem('docen-dir-grupo', 'Mi Grupo', 'clipboard');
   }
-  
+  $links_docente .= OdaTags::linkBarItem('docen-asignar-carga', 'Asignar Carga', 'gear');
 ?>
 
 <div class="w3-bar-block">

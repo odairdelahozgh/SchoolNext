@@ -48,7 +48,7 @@ fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
                   output += '<tr><td>'+periodo+'</td>'; 
                   for (let asignatura in datos[salon][estudiante][periodo]) {  
                       nota = datos[salon][estudiante][periodo][asignatura];
-                      var arrNotas = datos[salon][estudiante][periodo][asignatura].split(";"); //definitiva;planapoyo;final;desempe�0�9o
+                      var arrNotas = datos[salon][estudiante][periodo][asignatura].split(";"); //definitiva;planapoyo;final;desempeno
                       output += '<td>' + arrNotas[2] + '</td>';
                   }
 
@@ -56,10 +56,11 @@ fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
               }
           }
       }
-      let salida = plantilla_tabla.replace('TEXTCAPTION', output);
-      console.log(salida);
-      document.querySelector('#salon').innerHTML = caption;
-      document.querySelector('#resultados').innerHTML = salida;
+      
+      plantilla_tabla = plantilla_tabla.replace('TEXTBODY', output);
+      plantilla_tabla = plantilla_tabla.replace('TEXTCAPTION', caption);
+      //console.log(plantilla_tabla);
+      document.querySelector('#resultados').innerHTML = plantilla_tabla;
   })
   .catch(
       error => console.log(error)

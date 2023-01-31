@@ -25,6 +25,10 @@
   Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
   OdaLog::debug(msg: "Mensaje", name_log:'nombre_log');
 
+  id, is_active, nombre, grado_id, director_id, codirector_id, position, tot_estudiantes,
+  print_state1, print_state2, print_state3, print_state4, print_state5, is_ready_print, print_state, 
+  created_by, created_at, updated_by, updated_at
+
 */
 
 class Salon extends LiteRecord
@@ -39,7 +43,7 @@ class Salon extends LiteRecord
     self::$_helps    = $this->getTHelps();
     self::$_attribs  = $this->getTAttribs();
     self::$class_name = __CLASS__;
-    self::$order_by_default = 't.is_active DESC, t.nombre';
+    self::$order_by_default = 't.position';
   }
 
   /**
@@ -64,17 +68,22 @@ class Salon extends LiteRecord
 
   public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
     $DQL = new OdaDql();
-    $DQL->select("s.*, g.nombre AS grado")
+    $DQL->select("t.*, g.nombre AS grado")
         ->concat(concat: ['ud.nombres', 'ud.apellido1', 'ud.apellido2'], alias:'director')
         ->concat(concat: ['uc.nombres', 'uc.apellido1', 'uc.apellido2'], alias:'codirector')
-        ->from(from_class:'Salon', alias:'s')
+        ->from(from_class:'Salon')
         ->leftJoin('grado', alias:'g', condition:'grado_id')
         ->leftJoin('usuario', alias:'ud', condition:'director_id')
-        ->leftJoin('usuario', alias:'uc', condition:'codirector_id');
-    if (!is_null($estado)) { $DQL->where("s.is_active=$estado"); }
-    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+        ->leftJoin('usuario', alias:'uc', condition:'codirector_id')
+        ->orderBy(self::$order_by_default);
+
+    if (!is_null($estado)) { $DQL->andWhere("t.is_active=$estado"); }
+
+    if (!is_null($order_by)) { 
+      $DQL->orderBy($order_by); 
+    }
     
-    return $DQL->execute();
+    return $DQL->execute(true);
   }
 
 

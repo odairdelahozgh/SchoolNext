@@ -1,6 +1,6 @@
 <div class="w3-container">
    <?= View::flash(); ?>
-   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+   <?= View::Encab($controller_name, $page_action, ''); ?>
 </div>
 
 <div class="w3-row">
@@ -12,14 +12,16 @@
         Flash::valid('<h3>Atención!</h3><p>No hay registros para mostrar.</p>');
     } else {
         echo OdaForm::inputSearch();
-        $tabla = new OdaTable();
-        $tabla->setHead( arr_head: '°Salon, °Asignatura, °Profesor' );
+        $tabla = new OdaTable(showTotalRegs: true);
+        $srch = '<i class="fa-solid fa-search w3-small"></i>';
+        $tabla->setHead( arr_head: "x, $srch Salon, $srch Asignatura, $srch Profesor");
         $tabla->setCaption(caption:'Carga Total Asignada');
         foreach($data as $key => $carga) {
+          $d0 = OdaTags::linkIcon("admin/cargas/delID/$carga->id/docen-asignar-carga", 'trash-can');
           $d1 = "[$carga->user_id] ".OdaUtils::sanearString($carga->profesor);
           $d2 = "[$carga->asignatura_id] ".OdaUtils::sanearString($carga->asignatura);
           $d3 = "[$carga->salon_id] $carga->salon";
-          $tabla->setBody( data: [$d1, $d2, $d3], attrs2:['class="searchTdata"','class="searchTdata"','class="searchTdata"']);
+          $tabla->setBody( data: [$d0, $d1, $d2, $d3], attrs2:[null, 'class="searchTdata"','class="searchTdata"','class="searchTdata"']);
         }
         echo $tabla;
     }
@@ -30,7 +32,13 @@
     <h2>Agregar Carga</h2>
     
     <div id="result">
-      <?= OdaForm::number('profe_sel', '', 1) ?>
+      <?php if (1==$user_id) {
+        echo OdaForm::number('profe_sel', '', $arrData[0]);
+      } else {
+        echo OdaForm::hidden('profe_sel', '', $arrData[0]);
+      } 
+      
+      ?>
       <div id="asignatura_sel"></div>
       <div id="salon_sel"></div>
     </div>
@@ -48,16 +56,15 @@
 </div>
 
 
+
 <?= Tag::js("table_filter"); ?>
 
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     console.clear();
-    //document.getElementById('result').style.display="none";
     document.getElementById('materias').style.display="none";
     document.getElementById('salones').style.display="none";
-
   });
 
   function traer_materias() {
@@ -66,7 +73,7 @@
     w3.show('#materias');
 
     let ruta = document.getElementById('public_path').innerHTML.trim()+'api/asignaturas/all';
-    let plantilla = "<ul class=\"w3-ul w3-border\"> <li><h2>Materias</h2> </li>ITEMS</div>";
+    let plantilla = "<div class=\" w3-border\"> <h2>Materias</h2> ITEMS</div>";
     let output = '';
     
     fetch(ruta)
@@ -75,7 +82,7 @@
       .then(datos => {
           console.log(datos);
           for (let materia in datos) {  
-            output = output + "<li> <button id=\""+datos[materia].id+"\" class=\"w3-btn w3-blue\" onclick=\"traer_salones("+datos[materia].id+")\">"+datos[materia].nombre+"</button> </li>";
+            output = output + "<button id=\""+datos[materia].id+"\" class=\"w3-button w3-padding-small w3-green w3-hover-purple\" onclick=\"traer_salones("+datos[materia].id+")\">"+datos[materia].nombre+"</button>";
           }
           plantilla = plantilla.replace('ITEMS', output);
           document.querySelector('#result_materias').innerHTML = plantilla;
@@ -92,14 +99,14 @@
     document.getElementById('asignatura_sel').innerHTML = asignatura_sel;
 
     let ruta = document.getElementById('public_path').innerHTML.trim()+'api/salones/all';
-    let plantilla = "<ul class=\"w3-ul w3-border\"> <li><h2>Salones</h2> </li>ITEMS</div>";
+    let plantilla = "<div class=\"w3-border\"> <h2>Salones</h2> ITEMS</div>";
     let output = '';
     fetch(ruta)
       .then((res) => res.json())
       .then(datos => {
           console.log(datos);
           for (let salon in datos) {  
-            output = output + "<li> <button id=\""+datos[salon].id+"\" class=\"w3-btn w3-blue\" onclick=\"asignar_carga("+datos[salon].id+")\">"+datos[salon].nombre+"</button> </li>";
+            output = output + "<button id=\""+datos[salon].id+"\" class=\"w3-button w3-padding-small w3-blue w3-hover-red\" onclick=\"asignar_carga("+datos[salon].id+")\">"+datos[salon].nombre+"</button>";
           }
           plantilla = plantilla.replace('ITEMS', output);
           document.querySelector('#result_salones').innerHTML = plantilla;
@@ -119,7 +126,7 @@
     fetch(ruta)
       .then((res) => res.json())
       .then(datos => {
-        location.reload()
+        location.reload();
       })
       .catch(
           error => console.log(error)

@@ -55,7 +55,8 @@ class SalAsigProf extends LiteRecord
       ->leftJoin('asignatura', 'a')
       ->leftJoin('usuario', 'u', condition:'t.user_id')
       ->where('s.is_active=1')
-      ->orderBy('s.position, a.nombre');
+      ->orderBy('profesor, asignatura, salon');
+
     if ($user_id<>1) {
         $DQL->andWhere('t.user_id=?');
         $DQL->setParams([$user_id]);

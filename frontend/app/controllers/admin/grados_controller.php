@@ -97,8 +97,6 @@ class GradosController extends AppController
    
   /**
    * Edita un Registro
-   *
-   * @param int $id (requerido)
    */
   public function edit($id=0) {
     $this->page_action = 'Editar Registro';

@@ -44,7 +44,14 @@ class DocentesController extends AppController
    */
   public function asignar_carga() {
     $this->page_action = 'Asignar Carga Acad&eacute;mica';
-    $this->data = (new SalAsigProf)->getCarga($this->user_id);
+    $usuario = $this->user_id;
+
+    if (1==$usuario) { // admin
+      $sap = (new SalAsigProf)::first("SELECT sap.user_id as ultimo_user_id FROM ".Config::get('tablas.salon_asignat_profe')." AS sap WHERE sap.id =(SELECT MAX(sapm.id) as max  FROM ".Config::get('tablas.salon_asignat_profe')." AS sapm)");
+      $usuario = $sap->ultimo_user_id;
+    }
+    $this->data = (new SalAsigProf)->getCarga($this->user_id); // siempre la carga del usuario logeado
+    $this->arrData[0] = $usuario;
   }//END-carga
 
 

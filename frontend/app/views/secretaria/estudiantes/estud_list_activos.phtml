@@ -24,13 +24,19 @@
          }
          
          $nombre = $Estud; //((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : 'ERROR en nombre') ;
-         $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>'
-                 .Html::linkAction("estud_edit_activos/$Estud->id/", $nombre.'  '._Icons::solid('pen-to-square', 'w3-large'), "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"").'<br/>'
+         $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>'.$nombre.$Estud->isNuevoIco().'<br>'
+                 /*.Html::linkAction(
+                    "estud_edit_activos/$Estud->id/", 
+                    $nombre.'  '
+                    ._Icons::solid('pen-to-square', 'w3-large'), 
+                    "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"")
+                    */
                  .$Estud->getCuentaInstit().'<br/>'
                  .$Estud->getCodigo().'<br/>'
-                 .'Mes Pagado: '.$Estud->mes_pagado.'<br/>'
+                 .$Estud->getPagoPension().'<br/>'
                  .$lnk_act_pago.'<br/>'
                  .$Estud->linkOld_BoletinPeriodo();
+
          $col3 = $Estud->getSalonesCambiar('secretaria');
          $data=[$col1, $col2, $col3];
          $tabla->setBody(

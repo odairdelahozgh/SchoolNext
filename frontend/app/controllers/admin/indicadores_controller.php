@@ -14,7 +14,6 @@ class IndicadoresController extends AppController
   
   public function list() {
     $this->page_action = 'Lista de Indicadores';
-    //$this->breadcrumb->addCrumb(title: 'Indicadores');
     $this->data = (new Indicador)->getList();
   }
 
@@ -27,7 +26,7 @@ class IndicadoresController extends AppController
     
     //$this->indicadores  = (new Indicador)->getListActivos();
     if (Input::hasPost('indicadors')) {
-/*       $validador = new Validate(Input::post('indicadores.nombre'), $this->reglas() );
+/*       $validador = new Validate(Input::post('indicadors.nombre'), $this->reglas() );
       if (!$validador->exec()) {
         $validador->flash();
         //OdaFlash::error('Falló Operación VALIDAR :: Crear Registro');
@@ -44,32 +43,45 @@ class IndicadoresController extends AppController
    
   
   /**
-   * Crea un Registro
+   * Crea un Registro con AJAX
    */
-  public function create_ajax($grado, $asignatura) {
-    View::select(null, null);
-    $this->page_action = 'CREAR Registro';
-    $Indicador = new Indicador();
-    if (Input::hasPost('indicadors')) {
-      if ( $Indicador->create(Input::post('indicadors'))) {
-        OdaFlash::valid('Operación exitosa :: Crear Registro');
-        //$grado = Input::get('grado_id');
-        //$asignatura = Input::get('asignatura_id');
-        Input::delete();
-        //return Redirect::to("docentes/listIndicadores/$grado/$asignatura");
+  public function create_ajax() {
+    $emailValidator = \Respect\Validation\Validator::email();
+    /*
+        try{
+           $emailValidator->assert($request->get('email'));
+       }
+       catch(\Respect\Validation\Exceptions\NestedValidationExceptionInterface $ex){
+           $errors = $ex->getMainMessage();
+           // redirect with errors
+       }
+ */
+    try {
+      View::select(null, null);
+      $this->page_action = 'CREAR Registro';
+      $Indicador = new Indicador();
+      if (Input::hasPost('indicadors')) {
+        if ( $Indicador->create(Input::post('indicadors'))) {
+          OdaFlash::valid($this->page_action);
+          $grado = Input::post('indicadors.grado_id');
+          $asignatura = Input::post('indicadors.asignatura_id');
+          Input::delete();
+          return Redirect::to("docentes/listIndicadores/$grado/$asignatura");
+        }
+        OdaFlash::error($this->page_action);
       }
-      OdaFlash::error('Falló Operación :: Crear Registro');
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
     }
-    return 0;
-  }
+  } //END-create_ajax()
+
+
 
 
   /**
    * Edita un Registro
-   *
-   * @param int $id (requerido)
    */
-  public function edit($id=0) {
+  public function edit(int $id) {
     $this->page_action = 'Editar Registro';
     $Indicador = new Indicador();    
     if (Input::hasPost('indicadores')) {
@@ -80,15 +92,28 @@ class IndicadoresController extends AppController
       OdaFlash::error('Editar Registro');
       return; // Redirect::to('?');
     }
-    $this->Modelo = $Indicador->get((int) $id);
+    $this->Modelo = $Indicador->get($id);
   }
 
   /**
    * Eliminar un registro
-   *
-   * @param int $uuid (requerido)
    */
-  public function del(string $uuid) {
+  public function del(int $id) {
+    $this->page_action = 'Eliminar Registro';
+    $Indicador = (new Indicador)->getById($id);
+    if ($Indicador::deleteById($Indicador->id)) {
+      OdaFlash::valid("$this->page_action: $Indicador");
+    } else {
+      OdaFlash::error("$this->page_action: $Indicador");
+    }
+    return Redirect::to();
+  }
+
+  
+  /**
+   * Eliminar un registro
+   */
+  public function delUUID(string $uuid) {
     $this->page_action = 'Eliminar Registro';
     $Indicador = (new Indicador)->getByUUID($uuid);
     if ($Indicador::deleteById($Indicador->id)) {
@@ -98,5 +123,6 @@ class IndicadoresController extends AppController
     }
     return Redirect::to();
   }
+
 
 } // END CLASS

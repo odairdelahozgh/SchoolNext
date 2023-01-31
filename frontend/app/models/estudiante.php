@@ -50,7 +50,6 @@ class Estudiante extends LiteRecord
       array('t.nombres', 't.apellido1', 't.apellido2'),
       $orden
     );
-
     $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
@@ -60,7 +59,6 @@ class Estudiante extends LiteRecord
 
     $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon_nombre " : " s.nombre AS salon_nombre " ;
     $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado_nombre " : " g.nombre  AS grado_nombre " ;
-
     $DQL = (new OdaDql)
         ->select('t.*, '.$nombre_estud.' as estudiante_nombre, de.*')
         ->addSelect("$salon, $grado")

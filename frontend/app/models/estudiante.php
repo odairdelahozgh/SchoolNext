@@ -62,17 +62,33 @@ class Estudiante extends LiteRecord
     $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado_nombre " : " g.nombre  AS grado_nombre " ;
 
     $DQL = (new OdaDql)
-        ->select('t.*, '.$nombre_estud.' as estudiante_nombre')
+        ->select('t.*, '.$nombre_estud.' as estudiante_nombre, de.*')
         ->addSelect("$salon, $grado")
         ->from(from_class: self::$class_name)
+        ->leftJoin('datosestud', 'de')
         ->leftJoin('salon', 's')
         ->leftJoin('grado', 'g', 's.grado_id')
         ->orderBy(self::$order_by_default);
 
     if (!is_null($order_by)) { $DQL->orderBy($order_by); }
     if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
+    
+    // NO EJECUTAR AHORA
+    //return $DQL->execute();
 
-    return $DQL->execute();
+    // OTRA OPCIÓN
+    $sql = "SELECT t.*, de.*, 
+    CONCAT(t.apellido1, ' ', t.apellido2, ' ', t.nombres) as estudiante_nombre, 
+    CONCAT('[',s.id,'] ',s.nombre) AS salon_nombre ,  
+    CONCAT('[',g.id,'] ',g.nombre) AS grado_nombre  
+    
+    FROM sweb_estudiantes AS t 
+    LEFT JOIN sweb_datosestud AS de ON t.id=de.estudiante_id   
+    LEFT JOIN sweb_salones AS s ON t.salon_id=s.id   
+    LEFT JOIN sweb_grados AS g ON s.grado_id=g.id  
+    
+    WHERE t.is_active=?  ORDER BY t.apellido1, t.apellido1, t.nombres";
+    return $this::all($sql, [(int)$estado]);
   } // END-getList
 
   

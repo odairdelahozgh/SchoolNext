@@ -1,5 +1,6 @@
 <?php
-  $links_docente = OdaTags::linkBarItem('docen-carga-academica', 'Mi Carga', 'people-line')
+  $links_docente = 
+   OdaTags::linkBarItem('docen-carga-academica', 'Mi Carga', 'people-line')
   .OdaTags::linkBarItem('docen-reg-observaciones', 'Observaciones', 'address-card');
 
   if ( Session::get('es_director') ) {

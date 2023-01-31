@@ -139,7 +139,7 @@ class ModelAuth extends Auth2Odair
             Session::set($field, $user->$field, $this->_sessionNamespace);
         }
         Session::set($this->_key, TRUE);
-        self::log('('.__METHOD__.') Login Correcto: '.$username);
+        //self::log('('.__METHOD__.') Login Correcto: '.$username);
         return TRUE;
 
     } // END function _check

@@ -75,6 +75,16 @@ class DocentesController extends AppController
   }//END-registros_observaciones
   
   /**
+   * registros_observaciones/list
+   */
+  public function nuevo_registro_observaciones() {
+    $this->page_action = 'Crear Nuevo Registros de Observaciones';
+    $this->arrData = [];
+    $this->data = (new Estudiante)->getListEstudiantes(estado: 1);
+    View::select('registros_observaciones/nuevo_registro');
+  }//END-registros_observaciones
+
+  /**
    * indicadores/list
    */
   public function listIndicadores(int $grado_id, int $asignatura_id) {
@@ -94,6 +104,7 @@ class DocentesController extends AppController
     */
     View::select('indicadores/list');
   }//END-indicadores
+
 
   /**
    * notas/list
@@ -117,6 +128,28 @@ class DocentesController extends AppController
     }
     $this->data = $arrNotas;
     View::select('notas/list');
+  }//END-notas
+
+
+  /**
+   * notas/notasCalificar
+   */
+  public function notasCalificar(int $periodo, int $salon_id, int $asignatura_id) {
+    $this->page_action = 'Calificar Notas del Sal&oacute;n';
+
+    $this->Asignatura = (new Asignatura)->get($asignatura_id);
+    $this->Salon = (new Salon)->get($salon_id);
+    
+    $annio_actual   = (int)Config::get('config.academic.annio_actual');
+    $periodo_actual = (int)Config::get('config.academic.periodo_actual');
+    
+    $this->arrData = [
+      'annio_actual'   => $annio_actual,
+      'periodo_actual' => $periodo_actual,
+    ];
+
+    $this->data = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_actual]);
+    View::select('notas/calificar/index');
   }//END-notas
 
 

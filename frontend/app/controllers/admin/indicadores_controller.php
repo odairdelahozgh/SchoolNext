@@ -23,19 +23,11 @@ class IndicadoresController extends AppController
   public function create() {
     $this->page_action = 'CREAR Registro';
     $Indicador = new Indicador();
-    
-    //$this->indicadores  = (new Indicador)->getListActivos();
     if (Input::hasPost('indicadors')) {
-/*       $validador = new Validate(Input::post('indicadors.nombre'), $this->reglas() );
-      if (!$validador->exec()) {
-        $validador->flash();
-        //OdaFlash::error('Falló Operación VALIDAR :: Crear Registro');
-        return false;
-      } */
       if ( $Indicador->create(Input::post('indicadors'))) {
         OdaFlash::valid('Operación exitosa :: Crear Registro');
         Input::delete();
-        return Redirect::to(); // al index del controller
+        return Redirect::to();
       }
       OdaFlash::error('Falló Operación :: Crear Registro');
     }
@@ -46,16 +38,6 @@ class IndicadoresController extends AppController
    * Crea un Registro con AJAX
    */
   public function create_ajax() {
-    $emailValidator = \Respect\Validation\Validator::email();
-    /*
-        try{
-           $emailValidator->assert($request->get('email'));
-       }
-       catch(\Respect\Validation\Exceptions\NestedValidationExceptionInterface $ex){
-           $errors = $ex->getMainMessage();
-           // redirect with errors
-       }
- */
     try {
       View::select(null, null);
       $this->page_action = 'CREAR Registro';
@@ -74,8 +56,6 @@ class IndicadoresController extends AppController
       OdaLog::error($th);
     }
   } //END-create_ajax()
-
-
 
 
   /**
@@ -107,6 +87,7 @@ class IndicadoresController extends AppController
     } else {
       OdaFlash::error("$this->page_action: $Indicador");
     }
+    $redirect = str_replace('.','/', $redirect);
     return Redirect::to("$redirect");
   }
 
@@ -118,6 +99,7 @@ class IndicadoresController extends AppController
     } else {
       OdaFlash::error("$this->page_action: $Indicador");
     }
+    $redirect = str_replace('.','/', $redirect);
     return Redirect::to("$redirect");
   }
 

@@ -29,8 +29,8 @@ trait EstudianteTraitProps {
   public function getCuentaInstit() { return ($this->email_instit) ? $this->email_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit : ''; }
   
   public function getFoto($max_width=80) { 
-    return OdaTags::img(src: "upload/estudiantes/$this->id.png", alt: $this->id, 
-      attrs: "class=\"w3-round\" style=\"width:100%;max-width:$max_width px\"", 
+    return OdaTags::img(src: "upload/estudiantes/$this->id.png/", alt: $this->id, 
+      attrs: "class=\"w3-round\" style=\"width:100%;max-width:".$max_width."px\"", 
       err_message: self::$default_foto_estud);
   }
 

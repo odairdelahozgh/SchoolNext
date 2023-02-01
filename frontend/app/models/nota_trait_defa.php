@@ -1,7 +1,8 @@
 <?php
 trait NotaTraitDefa {
 
-  //protected static $order_by_default = 'nombre ASC'; // default: id ASC
+  //definitiva, plan_apoyo, nota_final
+  //i01, i02, i03, i04, i05, i06, i07, i08, i09, i10
 
   public function getTLabels() {
     return array(

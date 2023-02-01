@@ -33,11 +33,12 @@ class OdaForm extends Form {
     * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
     * @source  frontend\app\extensions\helpers\oda_form.php
     */
-   public function __construct(object $modelo, string $action, string $method = self::METHOD['POST']) {
+   public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1) {
       $this->_modelo   = $modelo;
       $this->_fname    = strtolower(OdaUtils::pluralize($modelo::class));
       $this->_faction  = $action;
       $this->_fmethod  = $method;
+      $this->_ffields  = ($cols=1) ? array(1=>' ') : array(1=>' ', 2=>' ');
    } // END-__construct
 
    public function __toString(): string {
@@ -62,7 +63,13 @@ class OdaForm extends Form {
       return $form;
    } // END-__toString
    
-   
+
+   public function getFields($nombre): string {
+    return self::getHiddens() . self::createFieldset($this->_ffields[1], $nombre, ' style="width:90%" ');
+ } // END-__toString
+ 
+
+ 
    /**
     * Retorna un campos Input dependiendo del "tipo".
     * @param integer           $columna:  Columna en la que se muestrará el elemento.
@@ -83,6 +90,29 @@ class OdaForm extends Form {
 
       $campo_input = $this::input($tipo, $fieldname, $attr, $value);
       $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label><br>";
+   } // END-addInput
+
+ 
+   /**
+    * Retorna un campos Input dependiendo del "tipo".
+    * @param integer           $columna:  Columna en la que se muestrará el elemento.
+    * @param string            $tipo:     Tipo de input (text, number, etc).
+    * @param string            $field:    Nombre del campo en la tabla.
+    * @param string|Integer    $value:    Valor por defecto.
+    * @param string/array      $attr:     atributos html.
+    * @return string
+    * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
+    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
+    */
+    public function addInput2(int $columna=1, string $tipo='input', string $field='', $attr='', $inline=true) {
+      $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+      $fieldname  = $this->_fname.'.'.trim($field);
+      $label      = $this->getLabel($field, $inline);
+      $help       = $this->getHelp($field);
+      $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+
+      $campo_input = $this::input($tipo, $fieldname, $attr, $value);
+      $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<label>$label" .$campo_input."</label>";
    } // END-addInput
 
    
@@ -170,7 +200,7 @@ class OdaForm extends Form {
    }
 
    /**
-    * Establece el número de columnas que tendrá el formuario.
+    * Lo declara como formulario de edición.
     * @param int $max_cols: número de columnas del formulario.
     * @return void
     * @example echo $myForm->setColumnas(2);

@@ -25,8 +25,8 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   protected static $session_username = '';
   protected static $lim_tam_campo_uuid = 36;
   protected static $tam_campo_uuid = 30;
-  protected static string $order_by_default = 't.id ASC';
-  protected static string $class_name = '';
+  protected static $order_by_default = 't.id ASC';
+  protected static $class_name = '';
   
   const SEXO = ['M'=>'Masculino', 'F'=>'Femenino'];
   const IS_ACTIVE = [0 =>'Inactivo', 1=>'Activo'];

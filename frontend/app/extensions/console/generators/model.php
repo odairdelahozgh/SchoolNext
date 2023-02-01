@@ -20,12 +20,12 @@
   // setActivar, setDesactivar
   // getById, deleteById, getList, getListActivos, getListInactivos
   // getByUUID, deleteByUUID, setUUID_All_ojo
-
+*/
   
   /**
    * Filtra registro(s) de la base de datos
    */
-  public function filtrar(int $id){
+  public function filtrar(int $id) {
     $filas = EjemploBase::all(); // obtener todos los registros como array
     $filas = EjemploBase::all("SELECT * FROM self::$table WHERE fecha_contrato >= ?", [$fecha]); // obtener array de algunos registros según sql
     $filas = EjemploBase::filter("WHERE nombre LIKE ?", [$nombreEjemploBase]); // obtener algunos registros como array según el filtro 

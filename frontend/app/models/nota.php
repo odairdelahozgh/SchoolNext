@@ -93,16 +93,21 @@ class Nota extends LiteRecord
   } //END-getNotasSalonAsignatura
 
   //====================
-  public static function getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $periodos=array(), $annio=null) {
+  public static function getNotasSalonAsignaturaPeriodos(int $salon_id, int $asignatura_id, array $periodos=[], $annio=null) {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $str_p = implode(',', $periodos);
+
     return (new Nota)->all(
-      "SELECT n.*, concat(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
-      FROM $tbl_notas as n
-      LEFT JOIN sweb_estudiantes AS e ON n.estudiante_id = e.id
-      WHERE n.periodo_id IN($str_p) AND n.salon_id=? AND n.asignatura_id=?
-      ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
-      array((int)$salon_id, (int)$asignatura_id)
+      "SELECT t.*, concat(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante_nombre,
+      s.nombre as salon_nombre, a.nombre as asignatura_nombre
+      FROM $tbl_notas as t
+      LEFT JOIN sweb_estudiantes AS e ON t.estudiante_id = e.id
+      LEFT JOIN sweb_salones AS s     ON t.estudiante_id = s.id
+      LEFT JOIN sweb_asignaturas AS a ON t.estudiante_id = a.id
+
+      WHERE t.periodo_id IN($str_p) AND t.salon_id=? AND t.asignatura_id=?
+      ORDER BY t.annio, t.periodo_id, s.nombre, e.apellido1, e.apellido2, e.nombres",
+      array($salon_id, $asignatura_id)
     );
   } //END-getNotasPeriodoSalonAsignatura
 

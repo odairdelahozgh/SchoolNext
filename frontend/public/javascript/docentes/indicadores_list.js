@@ -69,3 +69,8 @@
     w3.hide('#lista_indicadores');
     w3.show('#formulario');
   }
+
+  function cancelar() {
+    w3.show('#lista_indicadores');
+    w3.hide('#formulario');
+  }

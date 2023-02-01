@@ -57,7 +57,7 @@ class OdaForm extends Form {
       $form .= self::open($this->_faction, $this->_fmethod, $this->_fattrs);
       $form .= self::getHiddens();
       $form .= self::createTag('div', $data_sets, 'class="w3-row"');
-      $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar');
+      $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar', 'onclick="cancelar()"');
       $form .= self::close();
       return $form;
    } // END-__toString

@@ -11,7 +11,8 @@
       );
       foreach($data as $key => $Estud) {
          $col1 = $Estud->getIsActiveF() .'<br/>'
-                .$Estud->getFoto() .'<br/>'
+                .OdaTags::img("upload/estudiantes/$Estud->estudiante_id.png",$Estud->estudiante_id,
+                "class=\"w3-round\" style=\"width:100%;max-width:80px\"", "$Estud->estudiante_id [sin foto]") .'<br/>'
                 .Html::linkAction("activarEstudiante/$Estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"').'<br/>';
          
          $col2 = ((!is_null($Estud->estudiante_nombre)) ? strtoupper($Estud->estudiante_nombre) : '').'<br/>'

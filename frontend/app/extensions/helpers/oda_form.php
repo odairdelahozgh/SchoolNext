@@ -15,7 +15,7 @@ class OdaForm extends Form {
    private $_fmethod = '';
    private $_fattrs = '';
    private $_fhiddens = '';
-   private $_ffields = array(1=>' ');
+   private $_ffields = array(1=>' ', 2=>' ');
    private $_isEdit = false;
    
    const METHOD = [

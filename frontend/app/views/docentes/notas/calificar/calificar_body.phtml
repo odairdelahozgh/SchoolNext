@@ -1,0 +1,16 @@
+<div class="w3-margin-top">
+
+   <?php
+      $result = '';
+      $tabla = new OdaTable();
+      foreach ($data as $reg_nota) {
+            $registro = require('calificarForm.phtml');
+            $registro = $registro;//"<fieldset>$registro</fieldset>";
+            $tabla->setBody($registro);
+      }
+      echo $tabla;
+   ?>
+
+</div>
+
+<?= tag::js("tabs_h");?>

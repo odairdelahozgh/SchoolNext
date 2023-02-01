@@ -7,8 +7,16 @@
          if (isset($regs_periodo[0])) {
             $tabbuttons .= "<button class=\"w3-bar-item w3-mobile w3-button tablink w3-theme-action\" 
                               onclick=\"openTab(event,'p$periodo')\">Periodo $periodo</button>";
+            
+            $btn_calificar = OdaTags::linkButton(
+              action: "docentes/notasCalificar/$periodo/$Salon->id/$Asignatura->id", 
+              text: 'Calificar', 
+              icon: '', 
+              attrs: 'class="w3-button w3-green w3-round-large"'
+            );            
+            
             $tabla = new OdaTable();
-            $tabla->setCaption('PERIODO '.$periodo);
+            $tabla->setCaption("<span>PERIODO $periodo</span> <span>$btn_calificar</span>");
 
             foreach ($regs_periodo as $key => $nota) {
               $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre))
@@ -33,6 +41,7 @@
               $attr = "id=\"$nota->id-3\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
               $tabla->setBody($fila3, $attr, $attr2);
             }
+            
             $display = ($periodo!=1) ? "style=\"display:none\"" : '' ;
             $result .= "<div id=\"p$periodo\" class=\"tab w3-card-4 w3-padding\" $display >";
             $result .= $tabla;

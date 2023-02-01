@@ -1,0 +1,41 @@
+<?php
+  $model = new Nota;
+  $myForm = new OdaForm($model, 'admin/notas/save');
+  
+  $arr_campos = [
+    'definitiva' => 'text',
+    'plan_apoyo' => 'text',  
+    'nota_final' => '',
+    'i01' => 'text', 
+    'i02' => 'text', 
+    'i03' => 'text', 
+    'i04' => 'text', 
+    'i05' => 'text', 
+    'i06' => 'text', 
+    'i07' => 'text', 
+    'i08' => 'text', 
+    'i09' => 'text', 
+    'i10' => 'text',
+  ];
+
+  foreach ($arr_campos as $key => $campo) {
+    $myForm->addInput2(tipo: 'text', field: $key, inline:true);
+  }
+  return $myForm->getFields($reg_nota->estudiante_nombre);
+ 
+  
+  /*
+  
+  $myForm->addHiddens('id, uuid, annio, periodo_id, grado_id, salon_id, asignatura_id, estudiante_id, 
+  i11, i12, i13, i14, i15, i16, i17, i18, i19, i20, 
+  i21, i22, i23, i24, i25, i26, i27, i28, i29, i30,
+  i31, i32, i33, i34, i35, i36, i37, i38, i39, i40, 
+  asi_desempeno, asi_activ_profe, asi_activ_estud, asi_fecha_entrega, is_asi_validar_ok, 
+  asi_calificacion, is_asi_ok_dirgrupo, is_asi_ok_coord, asi_link_externo1, asi_link_externo2, 
+  paf_link_externo1, paf_link_externo2, profesor_id, 
+  paf_temas, paf_acciones, paf_activ_estud, paf_activ_profe, paf_fecha_entrega, 
+  is_paf_ok_coord, is_paf_validar_ok, is_paf_ok_dirgrupo, paf_num_envios, 
+  ausencias, inthoraria, created_at, updated_at, created_by, updated_by');
+  */
+
+?>

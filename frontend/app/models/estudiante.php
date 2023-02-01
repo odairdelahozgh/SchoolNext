@@ -59,23 +59,24 @@ class Estudiante extends LiteRecord
 
     $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon_nombre " : " s.nombre AS salon_nombre " ;
     $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado_nombre " : " g.nombre  AS grado_nombre " ;
+    
     $DQL = (new OdaDql)
-        ->select('t.*, '.$nombre_estud.' as estudiante_nombre, de.*')
+        ->select('t.*, g.grado_id, '.$nombre_estud.' as estudiante_nombre, de.*')
         ->addSelect("$salon, $grado")
         ->from(from_class: self::$class_name)
         ->leftJoin('datosestud', 'de')
         ->leftJoin('salon', 's')
         ->leftJoin('grado', 'g', 's.grado_id')
         ->orderBy(self::$order_by_default);
-
+        
     if (!is_null($order_by)) { $DQL->orderBy($order_by); }
     if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
     
-    // NO EJECUTAR AHORA
+    // NO EJECUTAR AHORA !!!!
     //return $DQL->execute();
 
     // OTRA OPCIÓN
-    $sql = "SELECT t.*, de.*, 
+    $sql = "SELECT t.*, de.*, g.id as grado_id,
     CONCAT(t.apellido1, ' ', t.apellido2, ' ', t.nombres) as estudiante_nombre, 
     CONCAT('[',s.id,'] ',s.nombre) AS salon_nombre ,  
     CONCAT('[',g.id,'] ',g.nombre) AS grado_nombre  

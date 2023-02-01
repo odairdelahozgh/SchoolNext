@@ -50,15 +50,16 @@ class Indicador extends LiteRecord
   public static $valorativos = ['Fortaleza'=>'Fortaleza', 'Debilidad'=>'Debilidad', 'Recomendación'=>'Recomendación'];
   
   /**
-   * 
+   * Regresa Lista de indicadores filtrada
    */
   public function getListIndicadores(int $periodo_id, int $grado_id, int $asignatura_id) {
     $DQL = new OdaDql();
     $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
         ->where('t.is_active=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
-        ->from(from_class:__CLASS__)
+        ->from(__CLASS__)
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
+        ->orderBy(self::$order_by_default)
         ->setParams([$periodo_id, $grado_id, $asignatura_id]);
     return $DQL->execute();
   } // END-getIndicadores

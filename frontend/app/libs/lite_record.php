@@ -111,10 +111,6 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     return static::query("DELETE FROM $source WHERE id = ?", [$id])->rowCount() > 0;
   } // END-deleteID
   
-/*   public static function deleteID(int $id): bool {
-    return self::deleteById($id); // BORRAR ...se mantiene por compatiblidad.
-  } // END-deleteID */
-  
   /**|
    * Buscar por ID.
    * @return self|false
@@ -123,11 +119,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     $sql = "SELECT $fields FROM ".static::getSource().' WHERE id = ?';
     return static::query($sql, [$id])->fetch();
   } // END-get_id
-  
-/*   public static function get_id(int $id, string $fields = '*') {
-    return self::getById($id); // BORRAR ...se mantiene por compatiblidad.
-  } // END-get_id */
-    
+      
   /**
    * Devuelve lista de todos los Registros.
    */

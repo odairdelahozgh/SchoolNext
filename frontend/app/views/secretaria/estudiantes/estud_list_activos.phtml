@@ -16,7 +16,8 @@
       foreach($data as $key => $Estud) {
          $col1 = $Estud->salon_nombre .'<br/>' 
                 .$Estud->getIsActiveF() .'<br/>'
-                .$Estud->getFoto() .'<br/>' 
+                .OdaTags::img("upload/estudiantes/$Estud->estudiante_id.png",$Estud->estudiante_id,
+                  "class=\"w3-round\" style=\"width:100%;max-width:80px\"", "$Estud->estudiante_id [sin foto]") .'<br/>'
                 .$Estud->documento .'<br/>';
          $lnk_act_pago = '';
          if(!$Estud->isPazYSalvo()) {

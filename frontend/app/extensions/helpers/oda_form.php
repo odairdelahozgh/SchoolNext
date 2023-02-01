@@ -7,7 +7,7 @@
  * @source   frontend\app\extensions\helpers\oda_form.php
  */
 class OdaForm extends Form {
-   private $version = '2023.01.23';
+   private $version = '2023.02.01';
    private $_style = ' class="w3-input w3-border" ';
    private $_modelo = '';
    private $_fname   = '';
@@ -57,7 +57,7 @@ class OdaForm extends Form {
       $form .= self::open($this->_faction, $this->_fmethod, $this->_fattrs);
       $form .= self::getHiddens();
       $form .= self::createTag('div', $data_sets, 'class="w3-row"');
-      $form .= '<br>' .$this->submit('Guardar');
+      $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar');
       $form .= self::close();
       return $form;
    } // END-__toString

@@ -45,7 +45,8 @@ class RegistrosGen extends LiteRecord
     self::$class_name = __CLASS__;
     self::$order_by_default = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
   } //END-__construct
-
+  
+  public static $periodos = [1=>'Periodo 1', 2=>'Periodo 2', 3=>'Periodo 3', 4=>'Periodo 4'];
 
   // ===========
   public function getFecha($date_format="d-M-Y") {

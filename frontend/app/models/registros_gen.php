@@ -1,21 +1,52 @@
 <?php
-
 /**
-  * Modelo de Ejemplo  
-  * @category App
-  * @package Models 
-  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
-  */
+ * Modelo RegistrosGen * 
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category App
+ * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ */
 
-  /*
-  id, estudiante_id, annio, periodo_id, grado_id, salon_id, fecha, asunto, 
-  acudiente, foto_acudiente, director, foto_director,
+ /* 
+  // ->create(array $data = []): bool {}
+  // ->update(array $data = []): bool {}
+  // ->save(array $data = []): bool {}
+  // ::delete($pk): bool
+  //
+  // ::get($pk, $fields = '*')
+  // ::all(string $sql = '', array $values = []): array
+  // ::first(string $sql, array $values = []): static
+  // ::filter(string $sql, array $values = []): array
+
+  // setActivar, setDesactivar
+  // getById, deleteById, getList, getListActivos, getListInactivos
+  // getByUUID, deleteByUUID, setUUID_All_ojo
+
+  id, uuid, estudiante_id, annio, periodo_id, grado_id, salon_id, 
+  fecha, asunto, acudiente, foto_acudiente, director, foto_director, 
   created_at, updated_at, created_by, updated_by
-  */
+
+*/
+
 class RegistrosGen extends LiteRecord
 {
-  protected static $table = 'sweb_estudiantes_reg_observ_gen';
+  use TraitUuid, RegistrosGenTraitCallBacks, RegistrosGenTraitDefa, RegistrosGenTraitProps,  RegistrosGenTraitLinksOlds;
   
+  // Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
+  // OdaLog::debug(msg: "Mensaje", name_log:'nombre_log'); 
+  
+  public function __construct() {
+    parent::__construct();
+    self::$table = Config::get('tablas.estud_reg_obs_gen');
+    self::$_defaults     = $this->getTDefaults();
+    self::$_labels       = $this->getTLabels();
+    self::$_placeholders = $this->getTPlaceholders();
+    self::$_helps        = $this->getTHelps();
+    self::$_attribs      = $this->getTAttribs();
+    self::$class_name = __CLASS__;
+    self::$order_by_default = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
+  } //END-__construct
+
+
   // ===========
   public function getFecha($date_format="d-M-Y") {
     return date($date_format, strtotime($this->fecha));
@@ -82,4 +113,4 @@ class RegistrosGen extends LiteRecord
   } // END-getRegistrosAnnio
     
 
-} // END-CLASS-RegistrosGen
+} //END-CLASS

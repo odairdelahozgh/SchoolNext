@@ -11,13 +11,11 @@
             $tabla->setCaption('PERIODO '.$periodo);
 
             foreach ($regs_periodo as $key => $nota) {
-              
-              $foto = OdaTags::img("upload/estudiantes/$nota->estudiante_id.png",$nota->estudiante_id,
-                           "class=\"w3-round\" style=\"width:100%;max-width:80px\"", 'sin foto');
-              $nom_estud = '<b>'.strtoupper(OdaUtils::nombrePersona($nota->estudiante)).'</b></br>'
-                           .$nota->verNota();
+              $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre))
+                           ." [$nota->salon_nombre] [$nota->asignatura_nombre]"
+                           .'</br>'.$nota->verNota();
                            
-              $fila1=array($foto, $nom_estud);
+              $fila1=array($nota->getFoto(), $nom_estud);
               $t1=($themei=='d'?'d1':'l1');      $t2=($themei=='d'?'d2':'l3');
               $attr = "id=\"$nota->id-1\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
               $attr2 = array('class="w3-center" rowspan="3"' , 'colspan="10"');

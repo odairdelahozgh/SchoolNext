@@ -7,7 +7,7 @@ foreach ($data->execute() as $key => $reg) {
   echo $key.''.$reg[$key];
   //echo OdaUtils::ver_array($reg);
   $tabla->setHead(['id','nombre','activo'])
-  ->setBody([$reg->id, $reg->nombre, $reg->is_active ]);
+  ->addRow([$reg->id, $reg->nombre, $reg->is_active ]);
 }
 echo $tabla;
 

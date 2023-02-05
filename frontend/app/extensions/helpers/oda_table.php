@@ -7,12 +7,13 @@
  * @source   frontend\app\extensions\helpers\oda_table.php
  */
 class OdaTable {
-   private string $tHead    = '';
-   private string $tBody    = '';
-   private string $tFooter  = '';
-   private string $tCaption = '';
+   private string $tableHead    = '';
+   private string $tableRows    = '';
+   private string $tableFooter  = '';
+   private string $tableCaption = '';
    private int    $body_counter = 0;
-   
+   const ICO_SEARCH_SMALL = '<i class="fa-solid fa-search w3-small"></i>';
+
    public function __construct(
       private string|array $_attrs='id="myTable" class="w3-table w3-responsive w3-striped w3-bordered"',
       private string $theme = '',
@@ -29,12 +30,12 @@ class OdaTable {
       $total_regs = ($this->showTotalRegs) ? "<h5>Total Registros: $this->body_counter</h5>" : '' ;
       return "<div class=\"w3-container\"> $total_regs
                <table $this->_attrs>
-                     $this->tCaption
-                     $this->tHead
+                     $this->tableCaption
+                     $this->tableHead
                      <tbody id=\"searchBody\">
-                        $this->tBody
+                        $this->tableRows
                      </tbody>
-                     $this->tFooter
+                     $this->tableFooter
                   </table>
              </div>";
    }
@@ -42,44 +43,55 @@ class OdaTable {
    /**
     * Formatea el encabezado de la Tabla.
     *
-    * @example echo $tabla->setHead(
-         arr_head: ['Actions', 'Estudiante', 'Cambiar Salon'], 
+    * @example echo $tabla->setableHead(
+         data_head: ['Actions', 'Estudiante', 'Cambiar Salon'], 
          attrs:    'class="w3-theme"', 
-         attrs2:   ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
+         attrs_th:   ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
       );
     */
    public function setHead(
-      string|array $arr_head = '', 
+      string|array $data_head = '', 
       string|array $attrs    = 'class="w3-theme"', 
-      array $attrs2          = array()
+      array        $arr_attrs_th = array()
    )
    {
+      $data_head = str_replace('*', self::ICO_SEARCH_SMALL, $data_head) ;
       $attrs = self::getAttrs($attrs);
-      $head = '';
-      foreach (self::strToArray($arr_head) as $key => $th) {
-         $atr2 = (array_key_exists($key, $attrs2)) ? $attrs2[$key] : '' ;
-         $head .= "<th $atr2>".trim($th)."</th>";
+
+      $col_head = '';
+      foreach (self::strToArray($data_head) as $key => $th) {
+        $att_th = (array_key_exists($key, $arr_attrs_th)) ? $arr_attrs_th[$key] : '' ;
+        $col_head .= "<th $att_th>".trim($th)."</th>";
       }
-      $this->tHead = "<tHead $attrs><tr>".$head.'</tr></tHead>';
+      $this->tableHead = "<tHead $attrs><tr>".$col_head.'</tr></tHead>';
       return $this;
    }
    
    /**
-    * Añade una fila al Body de la Tabla.
+    * @deprecated Obsoleta usar addRow()
+    */
+   public function setBody( string|array $data, string|array $attrs  = '', string|array $attrs_td = []) {
+      $this->addRow($data, $attrs, $attrs_td); /// borarla pronto
+   }
+
+   
+   /**
+    * Añade una fila (row) al Body de la Tabla.
     *
-    * @example echo $tabla->setBody(
+    * @example echo $tabla->addRow(
             data: $data, 
-            attrs2: ['class="searchTdata w3-center"', 'class="searchTdata"']
+            attrs_td: ['class="searchTdata w3-center"', 'class="searchTdata"']
          );
     */
-   public function setBody(
+    public function addRow (
       string|array $data, 
       string|array $attrs  = '', 
-      string|array $attrs2 = [],
+      string|array $attrs_td = [],
    )
    {
-      $data  = self::strToArray($data);
+      $arr_data  = self::strToArray($data);
       $attrs = self::getAttrs($attrs);
+
       $this->body_counter +=1;
       $t = substr($this->theme, 0, 1);
       if (!$attrs) {
@@ -87,11 +99,11 @@ class OdaTable {
          $impar = ($t=='d')?'d4':'l1';
          $attrs = ($this->body_counter%2==0) ?  "class=\"item w3-theme-$par\"" :  "class=\"item w3-theme-$impar\"" ;
       }
-      $this->tBody.= "<tr $attrs>";
-      foreach ($data as $key => $td) {
+      $this->tableRows.= "<tr $attrs>";
+      foreach ($arr_data as $key => $td) {
          $atr2 = '';
-         if ($attrs2) {
-            $atr2 = (array_key_exists($key, $attrs2)) ? $attrs2[$key] : '' ;
+         if ($attrs_td) {
+            $atr2 = (array_key_exists($key, $attrs_td)) ? $attrs_td[$key] : '' ;
          }
 
          if (array_search($key, $this->searchCol)) {
@@ -102,12 +114,12 @@ class OdaTable {
             }
          }
          
-         $this->tBody.= "<td $atr2>".trim($td).'</td>';
-         //$this->tBody.= $this->setColumnData($td);
+         $this->tableRows.= "<td $atr2>".trim($td).'</td>';
       }
-      $this->tBody.= '</tr>';
+      $this->tableRows.= '</tr>';
       return $this;
    }
+
 
    private function setColumnData(string $tdata, string $attr='') {
       //$this->searchCol
@@ -128,7 +140,7 @@ class OdaTable {
       foreach (self::strToArray($arr_foot) as $td) {
          $foot .= "<td>".trim($td)."</td>";
       }
-      $this->tFooter = '<tfoot '.self::getAttrs($attrs).'><tr>'.$foot.'</tr></tfoot>';
+      $this->tableFooter = '<tfoot '.self::getAttrs($attrs).'><tr>'.$foot.'</tr></tfoot>';
       return $this;
    }
 
@@ -141,7 +153,7 @@ class OdaTable {
       string|array $attrs='class="w3-left-align w3-bottombar w3-border-blue"'
    )
    {
-      $this->tCaption = '<caption '.self::getAttrs($attrs).'><h3>'.$caption.'</h3></caption>';
+      $this->tableCaption = '<caption '.self::getAttrs($attrs).'><h3>'.$caption.'</h3></caption>';
       return $this;
    } // END-setCaption
 

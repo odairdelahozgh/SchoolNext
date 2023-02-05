@@ -20,9 +20,9 @@
         $tabla = new OdaTable(theme: 'dark');
         $tabla->setCaption('General');
         $tabla->setHead(['Ip Actual', OdaUtils::getIp()]);
-        $tabla->setBody(['Modo', $mode]);
-        $tabla->setBody(['Zona Horaria', $timezone]);
-        $tabla->setBody([]);
+        $tabla->addRow(['Modo', $mode]);
+        $tabla->addRow(['Zona Horaria', $timezone]);
+        $tabla->addRow([]);
         echo $tabla;
       ?>
     </div>
@@ -32,9 +32,9 @@
         $tabla = new OdaTable(theme: 'dark');
         $tabla->setCaption('Frameworks');
         $tabla->setHead(['Framework','Version']);
-        $tabla->setBody(['KumbiaPHP', KUMBIA_VERSION]);
-        $tabla->setBody(['W3 CSS', '4.15 Dec 2020']);
-        $tabla->setBody(['W3 JS', '1.04 April 2019']);
+        $tabla->addRow(['KumbiaPHP', KUMBIA_VERSION]);
+        $tabla->addRow(['W3 CSS', '4.15 Dec 2020']);
+        $tabla->addRow(['W3 JS', '1.04 April 2019']);
         echo $tabla;
     ?>
     </div>
@@ -52,27 +52,27 @@
         $tabla->setHead(['Config','Obligatorio','Servidor','Diagnóstico']);
 
         $ver_compare = version_compare(PHP_VERSION, '7.4.1') >= 0;
-        $tabla->setBody(['php version', '>=7.4.1', phpversion(), ($ver_compare ? $good : $bad)]);
+        $tabla->addRow(['php version', '>=7.4.1', phpversion(), ($ver_compare ? $good : $bad)]);
         
         
-        $tabla->setBody(['magic quotes gpc', '??', (ini_get('magic_quotes_gpc')?'ON':'OFF'), '??']);
+        $tabla->addRow(['magic quotes gpc', '??', (ini_get('magic_quotes_gpc')?'ON':'OFF'), '??']);
         
         $upload_max_filesize = (int)(substr(ini_get('upload_max_filesize'), 0, strlen(ini_get('upload_max_filesize'))-1));
-        $tabla->setBody(['upload_max_filesize:<br> Tamaño Máximo de Archivo', '', ini_get('upload_max_filesize'), '']);
+        $tabla->addRow(['upload_max_filesize:<br> Tamaño Máximo de Archivo', '', ini_get('upload_max_filesize'), '']);
         
         // post_max_size > upload_max_filesize
         $post_max_size = (int)(substr(ini_get('post_max_size'), 0, strlen(ini_get('post_max_size'))-1));
         $diag = ($post_max_size >= $upload_max_filesize) ? $good : $bad ;
-        $tabla->setBody(['post_max_size:<br> Máximo datos de publicación. <br> Default=8M', '>=upload_max_filesize<br>'."[>=$upload_max_filesize]", ini_get('post_max_size'), $diag]);
+        $tabla->addRow(['post_max_size:<br> Máximo datos de publicación. <br> Default=8M', '>=upload_max_filesize<br>'."[>=$upload_max_filesize]", ini_get('post_max_size'), $diag]);
         
         // memory_limit >= post_max_size
         $memory_limit = (int)(substr(ini_get('memory_limit'), 0, strlen(ini_get('memory_limit'))-1));
-        $tabla->setBody(['memory limit', '>=post_max_size<br>'."[>=$post_max_size]", ini_get('memory_limit'), (($post_max_size<=$memory_limit) ? $good : $bad) ]);
+        $tabla->addRow(['memory limit', '>=post_max_size<br>'."[>=$post_max_size]", ini_get('memory_limit'), (($post_max_size<=$memory_limit) ? $good : $bad) ]);
 
-        $tabla->setBody(['register globals', '??', (ini_get('register_globals')?'ON':'OFF'), '??']);
-        $tabla->setBody(['session auto_start', '??', (ini_get('session.auto_start')?'ON':'OFF'), '??']);
-        $tabla->setBody(['utf8_decode()', '??', (function_exists('utf8_decode')?'ON':'OFF'), '??']);
-        $tabla->setBody(['exec()', '??', (ini_get('exec')?'ON':'OFF'), '??']);
+        $tabla->addRow(['register globals', '??', (ini_get('register_globals')?'ON':'OFF'), '??']);
+        $tabla->addRow(['session auto_start', '??', (ini_get('session.auto_start')?'ON':'OFF'), '??']);
+        $tabla->addRow(['utf8_decode()', '??', (function_exists('utf8_decode')?'ON':'OFF'), '??']);
+        $tabla->addRow(['exec()', '??', (ini_get('exec')?'ON':'OFF'), '??']);
         echo $tabla;
       ?>
     </div>
@@ -83,26 +83,26 @@
         $tabla->setHead(['Extension','Obligatorio','Servidor','Diagnóstico']);
 
         $diag = (extension_loaded('pdo_mysql')) ? $good : $bad;
-        $tabla->setBody(['pdo_mysql', 'SI', (extension_loaded('pdo_mysql')?'ON':'OFF'), $diag]);
+        $tabla->addRow(['pdo_mysql', 'SI', (extension_loaded('pdo_mysql')?'ON':'OFF'), $diag]);
         
         $diag = (extension_loaded('json')) ? $good : $bad;
-        $tabla->setBody(['json', 'SI', (extension_loaded('json') ? phpversion('json') : 'OFF'), $diag]);
+        $tabla->addRow(['json', 'SI', (extension_loaded('json') ? phpversion('json') : 'OFF'), $diag]);
 
-        $tabla->setBody(['gd', 'SI', (extension_loaded('gd')?'ON':'OFF'), '']);
-        $tabla->setBody(['mbstring', 'SI', (extension_loaded('mbstring')?'ON':'OFF'), '']);
-        $tabla->setBody(['curl', 'SI', (extension_loaded('curl')?'ON':'OFF'), '']);
-        $tabla->setBody(['ctype', 'SI', (extension_loaded('ctype')?'ON':'OFF'), '']);
-        $tabla->setBody(['session', 'SI', (extension_loaded('session')?'ON':'OFF'), '']);
-        $tabla->setBody(['apc', 'NO', (extension_loaded('apc')?'ON':'OFF'), '']);
-        $tabla->setBody(['date', 'SI', (extension_loaded('date')?'ON':'OFF'), '']);
-        $tabla->setBody(['dom', 'SI', (extension_loaded('dom')?'ON':'OFF'), '']);
-        $tabla->setBody(['iconv', 'SI', (extension_loaded('iconv')?'ON':'OFF'), '']);
-        $tabla->setBody(['pcre', 'SI', (extension_loaded('pcre')?'ON':'OFF'), '']);
-        $tabla->setBody(['reflection', 'SI', (extension_loaded('reflection')?'ON':'OFF'), '']);
-        $tabla->setBody(['bitset', 'NO', (extension_loaded('bitset')?'ON':'OFF'), '']);
-        $tabla->setBody(['simplexml', 'SI', (extension_loaded('SimpleXML')?'ON':'OFF'), '']);
-        $tabla->setBody(['xml', 'SI', (extension_loaded('xml')?'ON':'OFF'), '']);
-        $tabla->setBody(['xsl', '', (extension_loaded('xsl')?'ON':'OFF'), '']);
+        $tabla->addRow(['gd', 'SI', (extension_loaded('gd')?'ON':'OFF'), '']);
+        $tabla->addRow(['mbstring', 'SI', (extension_loaded('mbstring')?'ON':'OFF'), '']);
+        $tabla->addRow(['curl', 'SI', (extension_loaded('curl')?'ON':'OFF'), '']);
+        $tabla->addRow(['ctype', 'SI', (extension_loaded('ctype')?'ON':'OFF'), '']);
+        $tabla->addRow(['session', 'SI', (extension_loaded('session')?'ON':'OFF'), '']);
+        $tabla->addRow(['apc', 'NO', (extension_loaded('apc')?'ON':'OFF'), '']);
+        $tabla->addRow(['date', 'SI', (extension_loaded('date')?'ON':'OFF'), '']);
+        $tabla->addRow(['dom', 'SI', (extension_loaded('dom')?'ON':'OFF'), '']);
+        $tabla->addRow(['iconv', 'SI', (extension_loaded('iconv')?'ON':'OFF'), '']);
+        $tabla->addRow(['pcre', 'SI', (extension_loaded('pcre')?'ON':'OFF'), '']);
+        $tabla->addRow(['reflection', 'SI', (extension_loaded('reflection')?'ON':'OFF'), '']);
+        $tabla->addRow(['bitset', 'NO', (extension_loaded('bitset')?'ON':'OFF'), '']);
+        $tabla->addRow(['simplexml', 'SI', (extension_loaded('SimpleXML')?'ON':'OFF'), '']);
+        $tabla->addRow(['xml', 'SI', (extension_loaded('xml')?'ON':'OFF'), '']);
+        $tabla->addRow(['xsl', '', (extension_loaded('xsl')?'ON':'OFF'), '']);
         echo $tabla;
       ?>
     </div>

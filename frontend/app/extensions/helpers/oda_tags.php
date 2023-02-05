@@ -135,4 +135,4 @@ class OdaTags {
     return "<div class=\"w3-bar\">$btns</div>";
    }
 
-} // END-_Tag
+} // END-OdaTag

@@ -41,17 +41,6 @@ CREATE TABLE snxt_plantilla (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Índices para tablas volcadas
---
-INSERT INTO snxt_plantilla (id, nombre, uuid, is_active, orden, created_at, updated_at, created_by, updated_by) VALUES
-(1, 'nombre 1', NULL, 1, 1, '2030-01-01 12:00:00', '2030-01-01 12:00:00', 1, 1),
-(2, 'nombre 2', NULL, 0, 2, '2030-01-01 12:00:00', '2030-01-01 12:00:00', 1, 1),
-(3, 'nombre 3', NULL, 1, 3, '2030-01-01 12:00:00', '2030-01-01 12:00:00', 1, 1),
-(4, 'nombre 4', NULL, 0, 4, '2030-01-01 12:00:00', '2030-01-01 12:00:00', 1, 1),
-(5, 'nombre 5', NULL, 1, 5, '2030-01-01 12:00:00', '2030-01-01 12:00:00', 1, 1);
-
-
---
 -- Indices de la tabla plantilla
 --
 ALTER TABLE snxt_plantilla

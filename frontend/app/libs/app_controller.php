@@ -17,6 +17,8 @@ require_once CORE_PATH . 'kumbia/controller.php';
 abstract class AppController extends Controller
 {
     public array $arrData = [];
+    //public array $Modelo = [];
+    public array $fieldsToShow = [];
 
     public $page_action = '';
     public $page_module = '';

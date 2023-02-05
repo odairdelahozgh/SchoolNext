@@ -3,21 +3,75 @@
    <?= View::Encab($controller_name, 'Utilidades de Kumbia', ''); ?>
 </div>
 
-<div class="w3-container">
-  <?php
-  $arrClassNames = [
-    'OdaDql', 'OdaFile', 'OdaFlash', 'OdaLog', 'OdaPdf', 'OdaUtils', // libs/odair
-    'OdaAjax', 'OdaJs', 'OdaTable', 'OdaTabs', 'OdaTags',  // helpers Odair
-    'FileUtil', 'Fpdf', 'I18n'];  // Core
-  $arrClass2 = ['OdaForm', 'OdaMpdf', 'Filter', 'SimpleAcl', 'Auth2Odair', 'Validations'];
 
-  foreach ($arrClassNames as $class_name) {
-    echo "<h1>$class_name</h1>";
-    $métodos_clase = get_class_methods(new $class_name());
-    foreach ($métodos_clase as $key => $nombre_método) {
-        echo ($key+1).".  $class_name::$nombre_método()<br>";
+<div class="w3-container">
+<?php
+  
+  $tabla = new OdaTable(searchCol: [1,2], showTotalRegs: true);
+  $tabla->setHead(data_head: ['Clase', 'M&eacute;todos'], arr_attrs_th: ['style="width:50%"', 'style="width:50%"']);
+  
+  $tabla->setCaption(caption:'CONSTANTES');
+  $arrConstantes = [
+    'PRODUCTION'            => ((PRODUCTION) ? 'SI' : 'NO: DESARROLLO'), 
+    'PUBLIC_PATH'           => PUBLIC_PATH, 
+    '[PATH_INFO] server'    => $_SERVER['PATH_INFO'],
+    'ABS_PUBLIC_PATH'   => ABS_PUBLIC_PATH,
+    'CORE_PATH'   => CORE_PATH,
+    'APP_NAME'   => APP_NAME,
+    'FILE_UPLOAD_PATH'   => FILE_UPLOAD_PATH,
+    'FILE_DOWNLOAD_PATH'   => FILE_DOWNLOAD_PATH,
+    'IMG_UPLOAD_PATH'   => IMG_UPLOAD_PATH,
+    'IMG_DOWNLOAD_PATH'   => IMG_DOWNLOAD_PATH,
+    'SCHOOLWEB_PUBLIC_PATH'   => SCHOOLWEB_PUBLIC_PATH,
+  ];
+
+  foreach ($arrConstantes as $key => $K) {
+    $tabla->addRow(data:[$key, "<strong class=\"w3-white w3-text-red\">&nbsp&nbsp $K &nbsp&nbsp</strong>"]);
+  }
+
+  $arrClassNames = [
+    ['OdaUtils', 'OdaFile', 'FileUtil'],      
+    ['OdaAjax', 'OdaJs', 'OdaTags'], 
+    ['OdaLog', 'OdaFlash', 'Html'],           
+    ['OdaDql', 'OdaTable', 'OdaTabs'],
+    ['OdaPdfm', 'OdaPdf', 'OdaExcel'],        
+    ['Breadcrumb', 'I18n', 'Css'],
+    ['ModelForm', '', ''],                    
+    ['KumbiaRouter', 'KumbiaRest', 'KumbiaView'], 
+    ['KumbiaException', 'Router', 'Console'], 
+    ['SimpleAcl', 'Acl2', 'Auth2Odair'],
+    ['Filter', 'Input', 'Redirect'],          
+    ['Rest', 'Session', 'Upload'],
+    ['Validate', 'Validations', ''],
+    //['', '', ''],
+  ];
+
+  echo '<div class="w3-row">';
+  echo OdaForm::inputSearch('inputSearch');
+
+  foreach ($arrClassNames as $fila) {    
+    $Columnas = [];
+    foreach ($fila as $key => $class_name) { // las tres clases en cada fila
+      $methods = '';
+      if ($class_name) {
+         try {
+          $metodos_clase = get_class_methods(new $class_name());
+          foreach ($metodos_clase as $key => $nombre_metodo) {
+            $methods .= ($key+1).".  $class_name::$nombre_metodo()<br>";
+            $tabla->addRow([$class_name,"<strong class=\"w3-white w3-text-red\">&nbsp&nbsp$nombre_metodo()&nbsp&nbsp</strong>"], attrs_td:['class="searchTdata"', 'class="searchTdata"']);
+          }  
+        } catch (\Throwable $th) {
+          $tabla->addRow([$class_name,"Error: no es posible cargar los métodos de esta clase. $th "]);
+          $methods .= "Error en $class_name $th"; //throw $th;
+        }
+        $Columnas[$key] = "<h3>$class_name</h3> <br> $methods";
+      } else {
+        $Columnas[($key+1).$class_name] = "<hr>";
+      }  
     }
   }
-  
-  ?>
+  echo $tabla;
+?>
 </div>
+
+<?=Tag::js("table_filter", false);?>

@@ -10,7 +10,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `plantilla_relaciones` (
   `tabla1_id` bigint(20) NOT NULL,
   `tabla2_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 ALTER TABLE `plantilla_relaciones`
   ADD PRIMARY KEY (`tabla1_id`,`tabla2_id`);

@@ -1,70 +1,50 @@
 <?php
 /**
- * Modelo Nota 
+ * Modelo Nota * 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
 
  /* 
-  // ->create(array $data = []): bool {}
-  // ->update(array $data = []): bool {}
-  // ->save(array $data = []): bool {}
-  // ::delete($pk): bool
-  //
-  // ::get($pk, $fields = '*')
-  // ::all(string $sql = '', array $values = []): array
-  // ::first(string $sql, array $values = []): static
-  // ::filter(string $sql, array $values = []): array
-
-  setActivar(), setDesactivar()
-  getById(), deleteById(), getList(), getListActivos(), getListInactivos()
-  getByUUID(), deleteByUUID(), setUUID_All_ojo()
-
-  Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
-  OdaLog::debug(msg: "Mensaje", name_log:'nombre_log');
-  
-  id, uuid, annio, periodo_id, grado_id, salon_id, asignatura_id, estudiante_id, asignatura, estudiante, email_envios, asi_num_envios, 
-  definitiva, plan_apoyo, nota_final, profesor_id, 
-  i01, i02, i03, i04, i05, i06, i07, i08, i09, i10, i11, i12, i13, i14, i15, i16, i17, i18, i19, i20, 
-  
-  asi_desempeno, asi_activ_profe, asi_activ_estud, asi_fecha_entrega, is_asi_validar_ok, 
-  asi_calificacion, is_asi_ok_dirgrupo, is_asi_ok_coord, asi_link_externo1, asi_link_externo2, 
-  i21, i22, i23, i24, i25, i26, i27, i28, i29, i30, 
-  paf_link_externo1, paf_link_externo2, 
-  paf_temas, paf_acciones, paf_activ_estud, paf_activ_profe, paf_fecha_entrega, 
-
-  is_paf_ok_coord, is_paf_validar_ok, is_paf_ok_dirgrupo, paf_num_envios, 
-  i31, i32, i33, i34, i35, i36, i37, i38, i39, i40, 
-  ausencias, inthoraria, created_at, updated_at, created_by, updated_by
-
+  'id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 
+  QUITAR A FUTURO :: 'asignatura', 'estudiante', 'email_envios', 'asi_num_envios', 
+  'definitiva', 'plan_apoyo', 'nota_final', 'profesor_id', 
+  'i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10', 
+  'i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20', 
+  'i21', 'i22', 'i23', 'i24', 'i25', 'i26', 'i27', 'i28', 'i29', 'i30', 
+  'i31', 'i32', 'i33', 'i34', 'i35', 'i36', 'i37', 'i38', 'i39', 'i40', 
+  'asi_desempeno', 'asi_activ_profe', 'asi_activ_estud', 'asi_fecha_entrega', 
+  'asi_link_externo1', 'asi_link_externo2', 'paf_link_externo1', 'paf_link_externo2', 
+  'paf_temas', 'paf_acciones', 'paf_activ_estud', 'paf_activ_profe', 'paf_fecha_entrega', 
+  'is_paf_ok_coord', 'is_paf_validar_ok', 'is_paf_ok_dirgrupo', 'paf_num_envios', 
+  'ausencias', 'inthoraria', 'created_at', 'updated_at', 'created_by', 'updated_by'
+  'is_asi_validar_ok', 'asi_calificacion', 'is_asi_ok_dirgrupo', 'is_asi_ok_coord', 
 */
+  
+class Nota extends LiteRecord {
 
-class Nota extends LiteRecord
-{
-  use TraitUuid, NotaTraitCallBacks, NotaTraitDefa, NotaTraitProps,  NotaTraitLinksOlds;  
+  use NotaTraitSetUp;
+
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.nota');
-    self::$_defaults     = $this->getTDefaults();
-    self::$_labels       = $this->getTLabels();
-    self::$_placeholders = $this->getTPlaceholders();
-    self::$_helps        = $this->getTHelps();
-    self::$_attribs      = $this->getTAttribs();
-    self::$class_name = __CLASS__;
-    self::$order_by_default = 't.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id';
-  } //END-
+    $this->setUp();
+  } //END-__construct
 
-  
-  //====================
-  public function verNota() {
-    $color = (new Rango)::getColorRango($this->nota_final);
-    $rango = (new Rango)::getRango($this->nota_final);
-    $plan_apoyo = ($this->definitiva<60) ? 'Definitiva: '.$this->definitiva.' => Plan de Apoyo: '.$this->plan_apoyo : '' ;
-    return "<span class=\"w3-tag w3-round $color\">
-              $this->nota_final $rango
-            </span> $plan_apoyo ";
+  public function __toString() {
+    return $this->annio.'-'.$this->periodo_id.'-'.$this->salon_id.'-'.$this->asignatura_id.'-'.$this->estudiante_id.'-'.$this->definitiva;
   }
+
+  public function cambiarSalonEstudiante(int $salon_id, int $estudiante_id) {
+    try {
+      $RegSalon = (new Salon)->first("SELECT id, grado_id FROM ".Config::get('tablas.salones')." WHERE id=?", [$salon_id]);
+      $this::query("UPDATE ".Config::get('tablas.nota')." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$salon_id, $RegSalon->grado_id, $estudiante_id])->rowCount() > 0;
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
+    }
+  } //END-cambiarSalonEstudiante
+
 
   //====================
   public function getNotasSalon(int $salon_id) {
@@ -152,8 +132,6 @@ class Nota extends LiteRecord
     }
     return $aResult;
   } //END-getVistaNotasTodasExportar
-
-
 
 
 } //END-CLASS

@@ -4,7 +4,7 @@
  * 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category Helper.
- * @source   frontend\app\extensions\helpers\oda_form.php
+ * @source   frontend\app\extensions\helpers\odaodaform.php
  */
 class OdaForm extends Form {
    private $version = '2023.02.01';
@@ -17,7 +17,10 @@ class OdaForm extends Form {
    private $_fhiddens = '';
    private $_ffields = array(1=>' ', 2=>' ');
    private $_isEdit = false;
-   
+
+   const ICO_SEARCH = '<i class="fa-solid fa-search w3-large"></i>';
+   const ICO_SEARCH_SMALL = '<i class="fa-solid fa-search w3-small"></i>';
+
    const METHOD = [
       'POST' => 'post',
       'GET'  => "get",
@@ -31,7 +34,7 @@ class OdaForm extends Form {
     * @param string/array  $attr: atributos html.
     * @return void
     * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
-    * @source  frontend\app\extensions\helpers\oda_form.php
+    * @source  frontend\app\extensions\helpers\odaodaform.php
     */
    public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1) {
       $this->_modelo   = $modelo;
@@ -62,11 +65,13 @@ class OdaForm extends Form {
       $form .= self::close();
       return $form;
    } // END-__toString
-   
-
-   public function getFields($nombre): string {
-    return self::getHiddens() . self::createFieldset($this->_ffields[1], $nombre, ' style="width:90%" ');
- } // END-__toString
+  
+  /**
+   * OdaForm->getFields('legend Fieldset');
+   */
+  public function getFields($legend_fieldset): string {
+    return self::getHiddens() . self::createFieldset($this->_ffields[1], $legend_fieldset);
+  } // END-getFields
  
 
  
@@ -89,7 +94,7 @@ class OdaForm extends Form {
       $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
 
       $campo_input = $this::input($tipo, $fieldname, $attr, $value);
-      $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label><br>";
+      $this->_ffields[$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label>";
    } // END-addInput
 
  
@@ -117,6 +122,31 @@ class OdaForm extends Form {
 
    
    /**
+    * Retorna un campos Texarea.
+    * @param integer           $columna:  Columna en la que se muestrará el elemento.
+    * @param string            $tipo:     Tipo de input (text, number, etc).
+    * @param string            $field:    Nombre del campo en la tabla.
+    * @param string|Integer    $value:    Valor por defecto.
+    * @param string/array      $attr:     atributos html.
+    * @return string
+    * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
+    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
+    */
+    public function addTextarea(int $columna=1, string $field='', $attr='', $inline=true) {
+      $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+      $fieldname  = $this->_fname.'.'.trim($field);
+      $label      = $this->getLabel($field, $inline);
+      $help       = $this->getHelp($field);
+      $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+
+      $campo_textarea = $this::textarea($fieldname, $attr, $value);
+      $this->_ffields[(int)$columna] .= "<br><label>$label" .$campo_textarea .$help ."</label>";
+   } // END-addTextarea
+
+ 
+
+
+   /**
     * Retorna un campo Select.
     * @param integer           $columna:  Columna en que se muestra.
     * @param string            $field:    Nombre del campo en la tabla.
@@ -133,7 +163,7 @@ class OdaForm extends Form {
       $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
 
       $campo_select = $this::select($fieldname, $data, $attr, $value);
-      $this->_ffields[(int)$columna] .= "<br><label> $label $campo_select $help </label><br>";
+      $this->_ffields[(int)$columna] .= "<br><label> $label $campo_select $help </label>";
    } // END-addSelect
 
    
@@ -238,19 +268,22 @@ class OdaForm extends Form {
       return (($this->_modelo->getDefault($field)) ? $this->_modelo->getDefault($field) : '') ;
    } // END-getDefault
 
+   /**
+    * 
+    */
    private function getLabel($field, $inline=false) {
-      $requerido = ($this->isRequired($field)) ? '** ' : '' ;
-      $in_line = ($inline) ? '<br>' : '' ;
-      return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : '') ;
+      $requerido = ($this->isRequired($field)) ? '<i class="fa-solid fa-bolt"></i> ' : '' ;
+      $in_line = ($inline) ? '' : '<br>' ;
+      return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
    } // END-getLabel
 
+
    private function getHelp($field) {
-      return (($this->_modelo->getHelp($field)) ? _Icons::solid('circle-info').' <small>'.$this->_modelo->getHelp($field).'</small>' : '') ;
+      return (($this->_modelo->getHelp($field)) ? '<i class="fa-solid fa-circle-info"></i> <small>'.$this->_modelo->getHelp($field).'</small>' : '') ;
    } // END-getHelp
 
    private function getPlaceholder($field) {
-      $requerido = ($this->isRequired($field)) ? 'obligatorio: ' : '' ;
-      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$requerido.$this->_modelo->getPlaceholder($field).'" ' : '') ;
+      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$this->_modelo->getPlaceholder($field).'" ' : '') ;
    } // END-getPlaceholder
 
    private function getAttrib($field) {
@@ -271,7 +304,7 @@ class OdaForm extends Form {
    /**
     * Retorna todos los campos tipo "hidden" que están en $_fhiddens.
     * @return string
-    * @example echo _Form->getHiddens();
+    * @example echo OdaForm->getHiddens();
     */
    public function getHiddens() {
       $campos = explode(',',$this->_fhiddens);
@@ -283,11 +316,12 @@ class OdaForm extends Form {
       return $result;
    } // END-getHiddens
    
+
    /**
     * Crea un Input 'Search' para filtrar dentro de una tabla de datos
     * @return string
     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search
-    * @example echo _Form::inputSerach();
+    * @example echo OdaForm::inputSerach();
     */
    public static function inputSearch(string $id='inputSearch', string $placeholder="Filtrar") {
      $input = self::input(
@@ -295,35 +329,48 @@ class OdaForm extends Form {
          field: $id, 
          attrs: "oninput=\"myFunctionFilter()\" class=\"w3-input w3-border\"  placeholder=\"$placeholder..\""
       );
-     $ico = _Icons::solid('search', 'w3-xxlarge');
      return  
        "<div class=\"w3-bar\">
-          <div class=\"w3-bar-item\">$ico</div>
+          <div class=\"w3-bar-item\">".self::ICO_SEARCH."</div>
           <div class=\"w3-bar-item\">$input</div>
         </div>";
    } // END-inputSerach
 
-   /**
-    * Crea un Input 'Range'
-    * @return string
-    * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
-    * @example echo _Form::range('r1','rango',5)
-    */
-    public static function inputRango($id,$caption,$value,$min=1,$max=10,$step=1) {
-       return 
-       "<div>
-          <input type=\"range\" id=\"$id\" name=\"$id\" 
-            min=\"$min\" max=\"$max\" value=\"$value\" step=\"$step\">
-          <label for=\"$id\">$caption</label>
-        </div>";
-    } // END-inputRango
 
+  /**
+   * Crea un Input 'Range'
+   * @return string
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
+   * @example echo OdaForm::inputRango(id: 'ir1', caption: 'Rango de Valores', value: 5, min:0, max=10, step=1)
+   */
+  public static function inputRango(string $id_name, string $caption, int $value, int $min=0, int $max=100, int $step=1) {
+    return ($min<=$value && $value<=$max) ?
+          "<div>
+              <input type=\"range\" id=\"range_$id_name\" name=\"$id_name\" min=\"$min\" max=\"$max\" value=\"$value\" step=\"$step\">
+              <label for=\"$id_name\">$caption</label>
+              <p>Value: <output id=\"out_range_$id_name\"></output></p>
+           </div>"
+           : "inputRange : valor fuera de rango" ;
+  } // END-inputRango
+
+  public static function inputRangoJs ($range_id) {
+    return 
+    "const value = document.querySelector(\"#out_range_$range_id\")
+     const input = document.querySelector(\"#range_$range_id\")
+
+     value.textContent = input.value
+
+     input.addEventListener(\"input\", (event) => {
+       value.textContent = event.target.value
+     })";
+  }
+  
 
     /**
      * Crea un fieldset
      *
      * @return string
-     * @example echo _Form->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
+     * @example echo OdaForm->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
      * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
      * */
    private static function createFieldset($content, $legend = '', $attrs = '') {

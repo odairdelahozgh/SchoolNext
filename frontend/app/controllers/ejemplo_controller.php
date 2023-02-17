@@ -23,8 +23,7 @@ class EjemploController extends AppController
 
       public function validaciones() {
          $this->page_title = 'Validaciones de Formularios';
-         
-         View::template('test');
+         //View::template('test');
       }
 
       public function excel(){
@@ -43,14 +42,5 @@ class EjemploController extends AppController
         View::template(NULL);
         $this->data = 'Hola Mundo';
       }
-
-
-    public function dql() 
-    {
-      $DQL = new OdaDql();      
-      $this->data = $DQL->select('t.id, t.nombre')
-                        ->addSelect('t.is_active')
-                        ->from('salon');
-    }
 
 }

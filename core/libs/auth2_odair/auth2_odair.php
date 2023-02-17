@@ -132,7 +132,7 @@ abstract class Auth2Odair {
      */
     public function logout() {
         Session::set($this->_key, FALSE);
-        self::log('('.__METHOD__.') LOGOUT '.Session::get('username'));
+        //self::log('('.__METHOD__.') LOGOUT '.Session::get('username'));
         session_destroy();
     }
 

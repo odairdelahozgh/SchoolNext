@@ -33,11 +33,11 @@ class OdaLog extends Logger {
     /**
      * Inicializa el Logger
      */
-    public static function initialize(string $name=''):void {
+    public static function initialize($name=''):void {
         if(empty($name)){
             self::$_logName = 'audit-' . date('Y-m-d') . '.txt';
         }
-        // '('.__METHOD__.') LOGOUT '.Session::get('username')
+        //'('.__METHOD__.') LOGOUT '.Session::get('username')
         self::$_login = Session::get('login');
         self::$_ip    = Session::get('ip');
         self::$_route = Router::get('route');

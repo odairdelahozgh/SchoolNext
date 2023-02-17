@@ -21,7 +21,7 @@
 
 class EjemploBase extends LiteRecord
 {
-  use TraitUuid, EjemploBaseTraitCallBacks, EjemploBaseTraitDefa, EjemploBaseTraitProps,  EjemploBaseTraitLinksOlds;
+  use TraitUuid, EjemploBaseTraitCallBacks, EjemploBaseTraitDefa, EjemploBaseTraitProps,  EjemploBaseTraitLinks;
   // Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
   // OdaLog::debug(msg: "Mensaje", name_log:'nombre_log'); 
   

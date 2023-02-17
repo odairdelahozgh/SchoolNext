@@ -65,7 +65,7 @@ class SecretariaController extends AppController
             OdaFlash::valid(msg: "$this->page_action: $obj_estudiante");
               return Redirect::to(); // enrutando por defecto al index del controller
           }
-          OdaFlash::error(msg: "$this->page_action: $obj_estudiante", audit: true);
+          OdaFlash::error(msg: "$this->page_action: $obj_estudiante");
           return;
       }
       // Aplicando la autocarga de objeto, para comenzar la edici&oacute;n
@@ -78,15 +78,19 @@ class SecretariaController extends AppController
    * Cambiar de salon a un estudiante: /secre-estud-list-activos
    */
   public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {
-    $this->page_action = 'Cambiar Sal&oacute;n Estudiante';
-    $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [$estudiante_id]);
-    if ( $Estud->setCambiarSalon($salon_id, $cambiar_en_notas) ) {
-      OdaFlash::valid(msg: "$this->page_action: $Estud", audit: true);
-    } else {
-      OdaFlash::error(msg: "$this->page_action: $Estud", audit: true);
+    try {
+      $this->page_action = 'Cambiar Sal&oacute;n Estudiante';
+      if ((new Estudiante)->setCambiarSalon($estudiante_id, $salon_id, $cambiar_en_notas) ) {
+        OdaFlash::valid(msg: "$this->page_action: ");
+      } else {
+        OdaFlash::error(msg: "$this->page_action: ");
+      }
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
+      echo $th;
     }
     return Redirect::to('/secre-estud-list-activos');
-  }
+  } // END-cambiar_salon_estudiante
 
 
   /**

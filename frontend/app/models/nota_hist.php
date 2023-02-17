@@ -1,23 +1,38 @@
 <?php
 /**
-  * Modelo NotaHist
-  * @category App
-  * @package Models 
-  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
-  */
-class NotaHist extends LiteRecord
-{
-  protected static $table = 'sweb_notas_historia';
+ * Modelo NotaHist 
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category App
+ * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ * 
+ * 'id', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 
+ * 'definitiva', 'plan_apoyo', 'nota_final', 
+ * 'i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10', 
+ * 'i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20', 
+ * 'i21', 'i22', 'i23', 'i24', 'i25', 'i26', 'i27', 'i28', 'i29', 'i30', 
+ * 'i31', 'i32', 'i33', 'i34', 'i35', 'i36', 'i37', 'i38', 'i39', 'i40' 
+ * 'profesor_id', 'acciones', 'desempeno', 'inthoraria', 'ausencias', 
+ * 'paf_temas', 'paf_acciones', 
+ * 'created_at', 'updated_at', 'created_by', 'updated_by', 
+ * 
+ */
+  
+class NotaHist extends LiteRecord {
+
+  use NotaHistTraitSetUp;
+
   protected static $tbl_estud = '';
   protected static $tbl_asign = '';
   
   //====================
-  public function __construct(
-
-    ) {
+  public function __construct() {
     self::$tbl_estud = Config::get('tablas.estudiantes');
     self::$tbl_asign = Config::get('tablas.asignaturas');
-  }
+    parent::__construct();
+    self::$table = Config::get('tablas.notas_hist');
+    $this->setUp();
+  } //END-__construct
+
 
   //====================
   public function verNota() {
@@ -27,12 +42,12 @@ class NotaHist extends LiteRecord
     return "<span class=\"w3-tag w3-round $color\">
               $this->nota_final $rango
             </span> $plan_apoyo ";
-  }
+  } //END-verNota
 
   //====================
   public function getfoto() { 
     return IMG_UPLOAD_PATH.'/estudiantes/'.$this->id.'.png'; 
-  }
+  } //END-getfoto
 
 
   //====================
@@ -61,7 +76,7 @@ class NotaHist extends LiteRecord
       ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
       array((int)$salon_id, (int)$asignatura_id)
     );
-  } //END-getNotasPeriodoSalonAsignatura
+  } //END-getNotasSalonAsignaturaPeriodos
 
   //====================
   public static function getVistaTotalAnniosPeriodosSalones() { // ojo :: pendiente eliminar
@@ -71,7 +86,7 @@ class NotaHist extends LiteRecord
       $aResult[$reg->annio][$reg->periodo_id][$reg->salon_id] = "$reg->salon;$reg->total_registros";
     }
     return $aResult;
-  }
+  } //END-getVistaTotalAnniosPeriodosSalones
 
   
   //====================
@@ -88,6 +103,7 @@ class NotaHist extends LiteRecord
       $aResult[$reg->annio][$reg->periodo_id][$reg->salon_id] = "$reg->salon;$reg->total_registros";
     }
     return $aResult;
-  }
+  } //END-getTotalAnniosPeriodosSalones
 
-}
+
+} //END-CLASS

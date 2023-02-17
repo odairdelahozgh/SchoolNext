@@ -1,20 +1,13 @@
 #*.Windsor2023
+
 PROFESORES NUEVOS
-Cudrys Moreno Marisol		
-22989     marisolcm     1065658933
-0655
-
-Arrieta Gomez Ana Marcela
-anaag         1065647677
-
-Lopez Cabeza Miler Andrey	
-andreylc      1065638191
-
-Granados Guerrero Paola Andrea	
-paolagg 1102348340
+22989     marisolcm     1065658933      Cudrys Moreno Marisol (0655)
+22990     milerlc       1065638191      Lopez Cabeza Miler Andrey	(0655)
+22991 anaag         1065647677    Arrieta Gomez Ana Marcela (0655)
+22992 paolagg       1102348340    Granados Guerrero Paola Andrea (0655)
 
 
-1 admin				123456789
+1         admin				    123456789
 79				admin2				  123456
 134				adriancs			  1065814755
 25				aldomg				  77011368

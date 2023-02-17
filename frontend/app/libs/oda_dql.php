@@ -2,13 +2,17 @@
 
 class OdaDql {
   private string $_select      = '';
-  private string $_from        = ''; //salones
   private string $_from_source = ''; //web_salones
-  private string $_from_alias  = ''; //s
   private string $_where       = '';
   private string $_order_by    = '';
   private array  $_joins       = [];
   private array  $_params      = [];
+
+  public function __construct(private string $_from) {
+    $this->_from_source = '';
+    $this->_from_source = $_from::getSource();
+  } // END-__construct
+
 
   public function __toString() { 
     return $this->render();
@@ -20,7 +24,7 @@ class OdaDql {
   public function render(): string {    
     return 'SELECT '
         . ((empty($this->_select) or ('*'==$this->_select)) ? 't.*' : $this->_select)
-        . (empty($this->_from) ? '<<FALTA Cláusula From>>' : " FROM $this->_from_source AS $this->_from_alias")
+        . " FROM $this->_from_source AS t"
         . implode(" ", $this->_joins)
         . (empty($this->_where) ? '' : " WHERE $this->_where ")
         . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by");
@@ -38,12 +42,12 @@ class OdaDql {
       }
       return (new $this->_from)->all($this->render(), $this->_params);
     } catch (Exception $e) {
-      
-      OdaLog::debug(msg: 'Excepción capturada: ');
-      OdaLog::debug(msg: $this->render() );
-      OdaLog::debug(msg: 'RECUERDA: tabla principal = t');
-
-      echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+      OdaLog::debug(msg: '-- Excepción Capturada --');
+      OdaLog::debug(msg: '-- SQL Generado');
+      OdaLog::debug(msg: $this->render());
+      OdaLog::debug(msg: '--Detalle del ERROR');
+      OdaLog::debug(msg: $e);
+      OdaLog::debug(msg: '-- FIN Excepción --');
     }
   } 
 
@@ -90,17 +94,6 @@ class OdaDql {
     return $this;
   }
   
-
-  /**
-   * @example $qb->from('Phonenumber', 'p')
-   * @example $qb->from('Phonenumber', 'p', 'p.id')
-   */
-  public function from(string $from_class, string $alias='t') {
-    $this->_from   = OdaUtils::camelcase(trim($from_class)); // Nombre del modelo
-    $this->_from_source = Config::get("tablas.".strtolower(OdaUtils::smallcase($this->_from)) );
-    $this->_from_alias  = $alias;
-    return $this;
-  }
   
   /**
    * @example $qb->innerJoin('u.Group', 'g', Expr\Join::WITH, $qb->expr()->eq('u.status_id', '?1'))
@@ -111,8 +104,10 @@ class OdaDql {
     $table_singular = OdaUtils::singularize(strtolower(trim($table_singular)));
     
     $join = " LEFT JOIN ". Config::get("tablas.$table_singular") ." AS $alias ";
-    if (is_null($condition)) { $condition = 't.'.$table_singular.'_id'; }
-    $join .= " ON $condition=$alias.id ";
+    if (is_null($condition)) { 
+      $condition = "t.$table_singular"."_id=$alias.id"; 
+    }
+    $join .= " ON $condition ";
     
     $this->_joins[]=$join;
     return $this;

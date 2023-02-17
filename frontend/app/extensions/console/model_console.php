@@ -63,7 +63,7 @@ class ModelConsole
     }
 
 
-    $traits_array = ['call_backs', 'defa', 'links_olds', 'props'];
+    $traits_array = ['set_up'];
 
     foreach ($traits_array as $key => $trait_name) {
       $file_trait = $file."/$model_name"."_trait_$trait_name.php";

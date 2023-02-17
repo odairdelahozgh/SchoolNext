@@ -5,8 +5,11 @@ trait EstudianteTraitProps {
   protected static $default_foto_estud_circle = '';
 
   public function __toString() { return $this->getNombreCompleto().' '.$this->getCodigo(); }
+
   public function getCodigo() { return '[Cod: '.$this->id.']'; }
+
   public function getApellidos() { return $this->apellido1.' '.$this->apellido2; }  
+  
   public function getNombreCompleto($orden='a1 a2, n') {
     return str_replace(
       array('n', 'a1', 'a2'),
@@ -17,7 +20,7 @@ trait EstudianteTraitProps {
 
   public function isPazYSalvo() {
     $periodo = Config::get('config.academic.periodo_actual');
-    /// cambiar por match expres
+    // cambiar por match expres
     if ($periodo==1 and $this->mes_pagado>=4) { return true; }
     if ($periodo==2 and $this->mes_pagado>=6) { return true; }
     if ($periodo==3 and $this->mes_pagado>=9) { return true; }

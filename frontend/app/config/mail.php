@@ -24,7 +24,7 @@ return [
          */
         'subject' => 'Formulario de la web',
         /**
-         * Cabezeras html para el mail
+         * Cabeceras html para el mail
          */
         'headers' => [
             'MIME-Version' => '1.0',

@@ -1,18 +1,26 @@
 <?php
 /**
-  * Modelo de Rango  
-  * @category App
-  * @package Models 
-  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
-  */
+ * Modelo Rango * 
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category App
+ * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ */
 
-/*
- nombre, lim_inf, lim_sup, color_rango, color_texto, color_backg, 
- id, created_by, updated_by, created_at, updated_at
+ /* 
+  'id', 'nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg', 
+  'created_by', 'updated_by', 'created_at', 'updated_at'
 */
-class Rango extends LiteRecord
-{
-  protected static $table = 'sweb_ejemplo';
+  
+class Rango extends LiteRecord {
+
+  use RangoTraitSetUp;
+
+  public function __construct() {
+    parent::__construct();
+    self::$table = Config::get('tablas.rango');
+    $this->setUp();
+  } //END-__construct
+
   protected static $aRangos = array(
     '1-59'   => 'Bajo',
     '60-69'  => 'Básico',
@@ -30,13 +38,6 @@ class Rango extends LiteRecord
     'Superior' => 'w3-green',
   );
 
-  public function __construct() {
-    //self::$aRangos = array();
-  }
-
-  
-  public function __toString() { return $this->nombre; }
-  
   //====================
   public static function getRango($valor=0) {
     if ($valor==0)  { return ''; }
@@ -60,4 +61,5 @@ class Rango extends LiteRecord
     }
   } //END-getColorRango
 
-}
+
+} //END-CLASS

@@ -11,14 +11,16 @@ class CargaController extends RestController
 
   /**
    * 
-   * @link ../api/sap/set_carga_academica
+   * @link ../api/sap/get_asignar_carga
    */
   public function get_asignar_carga(int $salon_id, int $asignatura_id, int $profesor_id) {
     try {      
+      /*
       $DQL = new OdaDql();
       $DQL->from('SalAsigProf')->where('t.salon_id=? and t.asignatura_id=?')->setParams([$salon_id, $asignatura_id]);
       $carga_a_borrar = $DQL->execute();
       foreach ($carga_a_borrar as $key => $registro) { SalAsigProf::deleteById($registro->id); }
+      */
 
       $Objeto = new SalAsigProf();
       $this->data = $Objeto->save([

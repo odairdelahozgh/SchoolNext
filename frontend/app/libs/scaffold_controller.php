@@ -8,90 +8,129 @@
  */
 abstract class ScaffoldController extends AdminController
 {
-    /** @var string Carpeta en views/_shared/scaffolds/ */
-    public string $scaffold = 'kumbia';
-    /** @var string Nombre del modelo en CamelCase */
-    public string $model = '';
+  public string $scaffold = 'schoolnext'; // en views/_shared/scaffolds/
+  public string $model = ''; //Nombre del modelo en CamelCase
 
-    /**
-     * Resultados paginados
-     * 
-     * @param int $page  Página a mostrar
-     */
-    public function index($page = 1)
-    {
-        $this->data = (new $this->model)->paginate("page: $page", 'order: id desc');
-    }
+  /**
+   * admin/.../index
+   */
+  public function index() {
+    $this->page_action = "Listado $this->controller_name" ;
+    $this->data = (new $this->nombre_modelo())->getList();
+    $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__);
+    $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__, true);
+  }//END-list
+  
+  /**
+   * admin/../create
+   */
+  public function create() {
+    $this->page_action = 'CREAR Registro';
+    $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
+    $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
+    $this->Modelo = new $this->nombre_modelo();
 
-    /**
-     * Crea un Registro
-     */
-    public function crear()
-    {
-        if (Input::hasPost($this->model)) {
-
-            $obj = new $this->model;
-            //En caso que falle la operación de guardar
-            if (!$obj->save(Input::post($this->model))) {
-                Flash::error('Falló Operación');
-                //se hacen persistente los datos en el formulario
-                $this->{$this->model} = $obj;
-                return;
-            }
-            Redirect::to();
-            return;
+    if (Input::hasPost($this->nombre_post)) {
+      if ((new $this->nombre_modelo())->validar(Input::post($this->nombre_post))) {
+        if ( (new $this->nombre_modelo())->create(Input::post($this->nombre_post))) {
+          OdaFlash::valid("$this->page_action");
+          Input::delete();
+          return Redirect::to();
         }
-        // Sólo es necesario para el autoForm
-        $this->{$this->model} = new $this->model;
+        OdaFlash::error("$this->page_action. Falló operación guardar.");
+        return Redirect::to("admin/$this->controller_name/create");
+      } else {
+        OdaFlash::error("$this->page_action. ".Session::get('error_validacion'));
+        return Redirect::to("admin/$this->controller_name/create");
+      }
     }
+  }//END-create
 
-    /**
-     * Edita un Registro
-     * 
-     * @param int $id  Idendificador del registro
-     */
-    public function editar($id)
-    {
-        View::select('crear');
+   
+  /**
+   * admin/.../edit/{id}
+   */
+  public function edit(int $id) {
+    $this->page_action = 'Editar Registro';
+    $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
+    $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
+    $this->Modelo = (new $this->nombre_modelo())::get($id);
 
-        //se verifica si se ha enviado via POST los datos
-        if (Input::hasPost($this->model)) {
-            $obj = new $this->model;
-            if (!$obj->update(Input::post($this->model))) {
-                Flash::error('Falló Operación');
-                //se hacen persistente los datos en el formulario
-                $this->{$this->model} = Input::post($this->model);
-            } else {
-                Redirect::to();
-                return;
-            }
+    if (Input::hasPost($this->nombre_post)) {
+      if ((new $this->nombre_modelo())->validar(Input::post($this->nombre_post))) {
+        if ((new $this->nombre_modelo())->update(Input::post($this->nombre_post))) { // procede a guardar
+          OdaFlash::valid("$this->page_action $id");
+          return Redirect::to(); // regresa al listado
         }
-
-        //Aplicando la autocarga de objeto, para comenzar la edición
-        $this->{$this->model} = (new $this->model)->find((int) $id);
+        OdaFlash::error("$this->page_action. Guardar.");
+        return Redirect::to("admin/$this->controller_name/edit/$id");
+      } else {
+        OdaFlash::error("$this->page_action. ".Session::get('error_validacion'));
+        return Redirect::to("admin/$this->controller_name/edit/$id");
+      }
     }
+  }//END-edit
 
-    /**
-     * Borra un Registro
-     * 
-     * @param int $id Identificador de registro
-     */
-    public function borrar($id)
-    {
-        if (!(new $this->model)->delete((int) $id)) {
-            Flash::error('Falló Operación');
-        }
-        //enrutando al index para listar los articulos
-        Redirect::to();
-    }
 
-    /**
-     * Ver un Registro
-     * 
-     * @param int $id Identificador de registro
-     */
-    public function ver($id)
-    {
-        $this->data = (new $this->model)->find_first((int) $id);
+
+  /**
+   * admin/.../editUuid/{$uuid}
+   */
+  public function editUuid(string $uuid) {
+    $this->page_action = 'Editar Registro';
+    if (Input::hasPost($this->nombre_post)) { // valida si hay datos a guardar
+      if ( (new $this->nombre_modelo())->update(Input::post($this->nombre_post)) ) { // ´procede a guardar
+        OdaFlash::valid("$this->page_action: $uuid");
+        return Redirect::to();
+      }
+      OdaFlash::error($this->page_action);
+      return; // Redirect::to();
     }
-}
+    $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
+    $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
+    $this->Modelo = (new $this->nombre_modelo())::getByUUID($uuid);
+    View::select('edit');
+  }//END-
+
+
+
+  /**
+   * admin/.../del/{id}
+   */
+  public function del(int $id, string $redirect='') {
+    $this->page_action = 'Eliminar Registro';
+    if ( (new $this->nombre_modelo())::delete($id)) {
+      OdaFlash::valid("$this->page_action: $id");
+    } else {
+      OdaFlash::error("$this->page_action: $id");
+      return;
+    }
+    $redirect = str_replace('.','/', $redirect);
+    return Redirect::to("$redirect");
+  }//END-del
+
+
+  /**
+   * admin/.../delUuid/{uuid}/{redirect}
+   */
+  public function delUuid(string $uuid, string $redirect='') {
+    $this->page_action = 'Eliminar Registro';
+    if ( (new $this->nombre_modelo())::deleteByUUID($uuid)) {
+      OdaFlash::valid("$this->page_action: $uuid");
+    } else {
+      OdaFlash::error("$this->page_action: $uuid");
+      return;
+    }
+    $redirect = str_replace('.','/', $redirect);
+    return Redirect::to("$redirect");
+  }//END-delUuid
+
+  /**
+   * admin/.../ver/{id}
+   */
+  public function ver(int $id) {
+    $this->data = (new $this->nombre_modelo())::get($id);
+  }//END-ver
+
+
+} //END-CLASS

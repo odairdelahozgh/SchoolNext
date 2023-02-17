@@ -29,7 +29,7 @@ class IndexController extends AppController
             $usr->roll = $roll_usuario;
             $usr->save();
         }
-        OdaLog::set('DEBUG', Session::get('username').' ?'.Session::get('documento').' => roll: '.$roll_usuario);
+        //OdaLog::set('DEBUG', Session::get('username').' ?'.Session::get('documento').' => roll: '.$roll_usuario);
         if ( !array_key_exists($roll_usuario, self::MODULOS) ) {
             $this->logout();
         }

@@ -19,18 +19,48 @@ use LDAP\Result;
 
 class OdaUtils extends Util {
     
-    const GENERO = [
-        'M' => 'Masculino',
-        'F' => 'Femenino',
-    ];
+  const GENERO = [
+    'M' => 'Masculino',
+    'F' => 'Femenino',
+  ];
     
-    const MESES = [
-        1 => 'Enero',
-        2 => 'Febrero',
-    ];
+  const MESES = [
+    1 => 'Enero',
+    2 => 'Febrero',
+    3 => 'Marzo',
+    4 => 'Abril',
+    5 => 'Mayo',
+    6 => 'Junio',
+    7 => 'Julio',
+    8 => 'Agosto',
+    9 => 'Septiembre',
+    10 => 'Octubre',
+    11 => 'Noviembre',
+    12 => 'Diciembre',
+  ];
     
+  const DIAS_SEMANA = [
+    1 => 'Domingo',
+    2 => 'Lunes',
+    3 => 'Martes',
+    4 => 'Miercoles',
+    5 => 'Jueves',
+    6 => 'Viernes',
+    7 => 'Sábado',
+  ];
+  
+  const IS_ACTIVE = [
+    0 => 'Activo',
+    1 => 'Inactivo',
+  ];
 
-    /**
+  const IS_VISIBLE = [
+    0 => 'Visible',
+    1 => 'Invisible',
+  ];
+    
+  
+  /**
      * Obtiene el nombre del mes (valor numérico)
      */
     public static function nombreMes(int $mes=0): string {
@@ -61,8 +91,8 @@ class OdaUtils extends Util {
      */
     public static function nombreGenero(string $abrev): string {
         return match($abrev) {
-            'M'  => 'Masculino',
-            'F'  => 'Femenino',
+            'M'  => self::GENERO['M'],
+            'F'  => self::GENERO['F'],
             default => 'Género no existe',
         };
     } // END-nombreGenero
@@ -291,7 +321,9 @@ class OdaUtils extends Util {
      * Devuelve el plural de un texto
      */
     public static function pluralize(string $cadena): string {
-        return $cadena[strlen($cadena)-1] == 's' ? $cadena: $cadena.'s'; // debe mejorar
+      if (str_ends_with($cadena, 'es')) { return $cadena; }
+      if (str_ends_with($cadena, 's'))  { return $cadena; }
+      return $cadena.'s';
     } // END-pluralize
 
     
@@ -299,7 +331,13 @@ class OdaUtils extends Util {
      * Devuelve el singular de un texto
      */
     public static function singularize(string $cadena): string {
-      return $cadena[strlen($cadena)-1] == 's' ? substr($cadena, 0, strlen($cadena)-1): $cadena; // debe mejorar
+      $excepciones = ['estudiantes'=>'estudiante'];
+      if (array_key_exists($cadena, $excepciones)) {
+        return $excepciones[$cadena];
+      }
+      if (str_ends_with($cadena, 'es')) { return substr($cadena, 0, strlen($cadena)-2); }
+      if (str_ends_with($cadena, 's'))  { return substr($cadena, 0, strlen($cadena)-1); }
+      return $cadena;
     } // END-pluralize
 
 

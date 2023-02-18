@@ -1,0 +1,16 @@
+<div class="w3-container">
+  <?php require('editHeader.phtml') ?>
+  <div class="w3-row">
+    <?php
+      $myForm = new OdaForm(modelo: $Modelo, action: "admin/$controller_name/edit/$Modelo->id");
+      $myForm->setEdit();
+      $myForm->setAtrib('id="form_edit"');
+      foreach($fieldsToShow as $field) {
+        $myForm->addInput(field: $field);
+      }
+      $myForm->addHiddens(implode(",", $fieldsToHidden));
+      echo $myForm; 
+    ?>
+  </div>
+  <?php require('editFooter.phtml') ?>
+</div>

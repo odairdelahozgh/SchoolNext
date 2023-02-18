@@ -112,6 +112,8 @@ class User extends ActiveRecord
         $auth->setAlgos('sha1');
         $auth->setKey('usuario_logged');
         
+
+        
         Session::set('ip', OdaUtils::getIp() );
         $estePeriodo = (new Periodo)->getPeriodoActual();
         Session::set('annio',        (int)Config::get('config.academic.annio_actual'));
@@ -125,6 +127,7 @@ class User extends ActiveRecord
         
         if ($auth->identify()) { 
           Session::set('es_director',  (new Salon)->isDirector( (int)Session::get('id') ) );
+          Session::set('foto', "uploads/users/".Session::get('documento').".png");
           return true; 
         }
 

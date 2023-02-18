@@ -9,13 +9,13 @@
    <?php 
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(
-         arr_head: ['Actions', 'Estudiante', 'Contabilidad'], 
-         attrs:    'class="w3-theme"', 
-         attrs2:   ['style="width:10%;"','style="width:50%;"','style="width:40%;"']
+        ['Actions', 'Estudiante', 'Contabilidad'], 
+        'class="w3-theme"', 
+        ['style="width:10%;"','style="width:50%;"','style="width:40%;"']
       );
       foreach($data as $key => $Estud) {
          $col1 = $Estud->salon_nombre .'<br/>' 
-                .$Estud->getIsActiveF() .'<br/>'
+                .$Estud->is_active_f() .'<br/>'
                 .$Estud->getFoto() .'<br/>' 
                 .$Estud->documento .'<br/>';
          
@@ -36,9 +36,9 @@
                  .(($Estud->codeudor_cc) ? "<b>Codeudor</b>: $Estud->codeudor. CC: $Estud->codeudor_cc<br>" : '')
                  ."<b>Responsable DIAN</b>: $Estud->resp_pago_ante_dian" ;
          $data=[$col1, $col2, $col3];
-         $tabla->setBody(
+         $tabla->addRow(
             data: $data, 
-            attrs2: ['class="searchTdata w3-center"', 'class="searchTdata"']
+            attrs_td: ['class="searchTdata w3-center"', 'class="searchTdata"']
          );
       }
       echo $tabla;

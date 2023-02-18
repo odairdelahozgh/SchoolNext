@@ -6,13 +6,11 @@
       <?php
       echo OdaForm::inputSearch();
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
-      $tabla->setHead(
-         attrs2:   ['style="width:10%;"','style="width:90%;"'],
-      );
+      $tabla->setHead(arr_attrs_th: ['style="width:10%;"','style="width:90%;"'] );
       foreach($data as $key => $Estud) {
-         $col1 = $Estud->getIsActiveF() .'<br/>'
-                .OdaTags::img("upload/estudiantes/$Estud->estudiante_id.png",$Estud->estudiante_id,
-                "class=\"w3-round\" style=\"width:100%;max-width:80px\"", "$Estud->estudiante_id [sin foto]") .'<br/>'
+         $col1 = $Estud->is_active_f(true) .'<br/>'
+                .OdaTags::img("upload/estudiantes/$Estud->id.png",$Estud->id,
+                "class=\"w3-round\" style=\"width:100%;max-width:80px\"", "$Estud->id [sin foto]") .'<br/>'
                 .Html::linkAction("activarEstudiante/$Estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"').'<br/>';
          
          $col2 = ((!is_null($Estud->estudiante_nombre)) ? strtoupper($Estud->estudiante_nombre) : '').'<br/>'
@@ -21,9 +19,9 @@
                 .'Doc: '.$Estud->documento.'</br>'
                 .'Retiro: '.$Estud->fecha_ret.' - Motivo: '.$Estud->retiro.'</br>';
          
-         $tabla->setBody(
+         $tabla->addRow(
             data: [$col1, $col2], 
-            attrs2: ['class="searchTdata w3-center"', 'class="searchTdata"']
+            attrs_td: ['class="searchTdata w3-center"', 'class="searchTdata"']
          );
       }
       echo $tabla;

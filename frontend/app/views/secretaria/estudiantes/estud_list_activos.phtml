@@ -7,24 +7,26 @@
    </div>
    
    <?php 
+   try {
+
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(
-         arr_head: ['Actions', 'Estudiante', 'Cambiar Salon'], 
-         attrs:    'class="w3-theme"', 
-         attrs2:   ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
+         data_head:    ['Actions', 'Estudiante', 'Cambiar Salon'], 
+         attrs:         'class="w3-theme"', 
+         arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
       );
       foreach($data as $key => $Estud) {
          $col1 = $Estud->salon_nombre .'<br/>' 
-                .$Estud->getIsActiveF() .'<br/>'
-                .OdaTags::img("upload/estudiantes/$Estud->estudiante_id.png",$Estud->estudiante_id,
-                  "class=\"w3-round\" style=\"width:100%;max-width:80px\"", "$Estud->estudiante_id [sin foto]") .'<br/>'
+                .$Estud->is_active_f(true) .'<br/>'
+                .OdaTags::img("upload/estudiantes/$Estud->id.png",$Estud->id,
+                  "class=\"w3-round\" style=\"width:100%;max-width:80px\"", "$Estud->id [sin foto]") .'<br/>'
                 .$Estud->documento .'<br/>';
          $lnk_act_pago = '';
          if(!$Estud->isPazYSalvo()) {
             $lnk_act_pago = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
          }
          
-         $nombre = $Estud; //((!is_null($Estud->nombre_estudiante)) ? strtoupper($Estud->nombre_estudiante) : 'ERROR en nombre') ;
+         $nombre = $Estud;
          $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>'.$nombre.$Estud->isNuevoIco().'<br>'
                  /*.Html::linkAction(
                     "estud_edit_activos/$Estud->id/", 
@@ -40,12 +42,19 @@
 
          $col3 = $Estud->getSalonesCambiar('secretaria');
          $data=[$col1, $col2, $col3];
-         $tabla->setBody(
+         $tabla->addRow(
             data: $data, 
-            attrs2: ['class="searchTdata w3-center"', 'class="searchTdata"']
+            attrs_td: ['class="searchTdata w3-center"', 'class="searchTdata"']
          );
       }
       echo $tabla;
+
+
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
+      echo $th;
+     }
+
    ?>   
 </div>
 

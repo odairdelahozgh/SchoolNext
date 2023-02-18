@@ -22,7 +22,7 @@
   <!-- USUARIO Y NOTIFICACIONES -->
   <div class="w3-container w3-row">
     <div class="w3-quarter">
-      <?= Html::img("ws_leon.png" ,'foto', 'class="w3-circle w3-margin-right" style="width:46px"'); ?>
+      <?= OdaTags::img(Session::get('foto'), Session::get('username'), 'class="w3-circle w3-margin-right" style="width:46px"', ''); ?>
     </div>
     <div class="w3-auto">
       <?='['.Session::get('id').'] '.Session::get('username').'&nbsp;&nbsp;';?> 

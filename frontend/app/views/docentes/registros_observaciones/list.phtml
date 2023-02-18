@@ -10,7 +10,7 @@
             Flash::valid('<h3>Atenci&oacute;n!</h3><p>No hay registros para mostrar.</p>');
          } else {
             require('listHeader.phtml');
-            $tabla = new OdaTable();
+            $tabla = new OdaTable(showTotalRegs: true);
             $tabla->setHead("ID, Periodo, Fecha, *Estudiante, *Asunto");
             foreach($data as $key => $reg) {
                $data_row = array(
@@ -18,6 +18,7 @@
                   $reg->annio .'-' .$reg->periodo_id,
                   $reg->getFecha('d M'),
                   ucwords(OdaUtils::sanearString($reg->estudiante)),
+                  $reg->foto_acudiente.'<br>'.
                   OdaUtils::truncate($reg->asunto, 120)
                     ."<button onclick=\"document.getElementById('$reg->id').style.display='block'\" class=\"w3-btn w3-theme\">ver mas</button>",
                   );
@@ -31,5 +32,3 @@
    </div>
    <div class="w3-rest"><?= require 'list_resumen.phtml'; ?></div>
 </div>
-      
-<?=Tag::js("table_filter", false);?>

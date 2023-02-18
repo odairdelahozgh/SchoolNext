@@ -18,20 +18,20 @@
 <div style="height: 200px;">
    <ul id="id01" class="w3-ul w3-card-2 w3-border w3-hoverable">
       <?php foreach($data as $key => $estud) : ?>
-         <?php $lnk_ajax2=Ajax::link("api/estudiantes/uno/$estud->id", Strings::sanear($estud->getApellidos()), 'details');?>
-         <?php $lnk_ajax1=Ajax::link("api/estudiantes/uno/$estud->id", Strings::sanear($estud->nombres), 'details');?>
+         <?php //$lnk_ajax2=Ajax::link("api/estudiantes/uno/$estud->id", OdaUtils::nombrePersona($estud->getApellidos()), 'details');?>
+         <?php $lnk_ajax1=Ajax::link("api/estudiantes/uno/$estud->id", OdaUtils::nombrePersona($estud->nombres), 'details');?>
          
          <li>
             <div class="w3-card-4">
                <header class="w3-container w3-theme-light">
                   <button onclick="w3.show('#form')">Show</button>
-                  <h4><?=$estud->getIsActiveF();?><?=Ajax::link("api/estudiantes/uno/$estud->id", Strings::sanear($estud->getNombreCompleto()), 'details');?></h4>
+                  <h4><?=$estud->is_active_f(true);?><?=Ajax::link("api/estudiantes/uno/$estud->id", OdaUtils::nombrePersona($estud), 'details');?></h4>
                </header>
                <div class="w3-container w3-cell-row">
                   <div class="w3-cell w3-mobile">
                      <span><br/>C&oacute;digo: <?=$estud->id;?></span>
                      <span><br/>Id:<?=$estud->documento;?></span>
-                     <span><br/>Sal&oacute;n : <?=$estud->salon;?></span>
+                     <span><br/>Sal&oacute;n : <?php//$estud->salon;?></span>
                   </div>
                   <div class="w3-cell w3-mobile">
                      <span><br/>Mes Pago: <?=$estud->mes_pagado;?></span>

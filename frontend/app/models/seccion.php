@@ -1,16 +1,21 @@
 <?php
-
 /**
-  * Modelo Seccion
-  * @category App
-  * @package Models 
-  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
-*/
-class Seccion extends LiteRecord
-{
-  // id, nombre, abrev, orden, is_active, color_text, color_bg
-  // created_by, updated_by, created_at, updated_at
-  protected static $table = 'sweb_secciones';
-  public function __toString() { return $this->nombre; }
-  
-}
+ * Modelo Seccion
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category App
+ * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ */
+
+class Seccion extends LiteRecord {
+
+  use SeccionTraitSetUp;
+
+  public function __construct() {
+    parent::__construct();
+    self::$table = Config::get('tablas.seccion');
+    self::$order_by_default = 't.nombre';
+    $this->setUp();
+  } //END-__construct
+
+
+} //END-CLASS

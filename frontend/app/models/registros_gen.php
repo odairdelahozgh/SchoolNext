@@ -40,7 +40,7 @@ class RegistrosGen extends LiteRecord {
 
   
   // ===========
-  public function getRegistrosProfesor($user_id) {
+  public function getRegistrosProfesor(int $user_id) {
 
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, s.nombre as salon')
@@ -48,7 +48,7 @@ class RegistrosGen extends LiteRecord {
         ->concat(concat:['u.nombres','u.apellido1','u.apellido2'], alias: 'creador')
         ->leftJoin(table_singular:'estudiante', alias:'e')
         ->leftJoin(table_singular:'salon', alias:'s')
-        ->leftJoin(table_singular:'usuario', alias:'u', condition:'t.created_by');
+        ->leftJoin(table_singular:'usuario', alias:'u', condition:'t.created_by=u.id');
     if ($user_id<>1) {
       $DQL->where("t.created_by=?");
       $DQL->setParams([$user_id]);

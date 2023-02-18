@@ -9,8 +9,8 @@
       $tabla->setHead(arr_attrs_th: ['style="width:10%;"','style="width:90%;"'] );
       foreach($data as $key => $Estud) {
          $col1 = $Estud->is_active_f(true) .'<br/>'
-                .OdaTags::img("upload/estudiantes/$Estud->id.png",$Estud->id,
-                "class=\"w3-round\" style=\"width:100%;max-width:80px\"", "$Estud->id [sin foto]") .'<br/>'
+                .OdaTags::img_estudiante($Estud->id, $Estud->sexo, $Estud->id,"class=\"w3-round\" style=\"width:100%;max-width:80px\"")  
+                .'<br/>'
                 .Html::linkAction("activarEstudiante/$Estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"').'<br/>';
          
          $col2 = ((!is_null($Estud->estudiante_nombre)) ? strtoupper($Estud->estudiante_nombre) : '').'<br/>'

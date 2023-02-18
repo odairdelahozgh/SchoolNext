@@ -70,9 +70,26 @@ class OdaTags {
       if (!file_exists(ABS_PUBLIC_PATH."/files/upload/$src")) {
          return $err_message;
       }
-        return '<img src="'.PUBLIC_PATH."files/upload/$src\" alt=\"$alt\" ".Tag::getAttrs($attrs).'/>';
+      return '<img src="'.PUBLIC_PATH."files/upload/$src\" alt=\"$alt\" ".Tag::getAttrs($attrs).'/>';
     } // END-fileimg
 
+    //====================
+    public static function img_estudiante($estudiante_id, $sexo='', $alt = '', $attrs = '') {
+      if (!file_exists(ABS_PUBLIC_PATH."/img/upload/estudiantes/$estudiante_id.png")) {
+        $file_name = 'user'.(($sexo) ? '_'.strtolower(substr($sexo,0,1)) : '');
+        return '<img src="'.PUBLIC_PATH."img/upload/estudiantes/$file_name.png\" alt=\"$alt\" ".Tag::getAttrs($attrs).'/>';
+      }
+      return '<img src="'.PUBLIC_PATH."img/upload/estudiantes/$estudiante_id.png\" alt=\"$alt\" ".Tag::getAttrs($attrs).'/>';
+    } // END-img
+
+    //====================
+    public static function img_docente($user_doc, $sexo='', $alt = '', $attrs = '') {
+      if (!file_exists(ABS_PUBLIC_PATH."/img/upload/users/$user_doc.png")) {
+        $file_name = 'user'.(($sexo) ? '_'.strtolower(substr($sexo,0,1)) : '');
+        return '<img src="'.PUBLIC_PATH."img/upload/users/$file_name.png\" alt=\"$alt\" ".Tag::getAttrs($attrs).'/>';
+      }
+      return '<img src="'.PUBLIC_PATH."img/upload/users/$user_doc.png\" alt=\"$alt\" ".Tag::getAttrs($attrs).'/>';
+    } // END-img
 
    // HELPERS PARA LISTS
    public static function list($array, $type = 'ul', $attrs = 'class="w3-ul w3-card-4 w3-hoverable"') {

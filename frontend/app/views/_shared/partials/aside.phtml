@@ -22,7 +22,7 @@
   <!-- USUARIO Y NOTIFICACIONES -->
   <div class="w3-container w3-row">
     <div class="w3-quarter">
-      <?= OdaTags::img(Session::get('foto'), Session::get('username'), 'class="w3-circle w3-margin-right" style="width:46px"', ''); ?>
+      <?= OdaTags::img_docente(Session::get('documento'), Session::get('sexo'), Session::get('id'),'class="w3-circle w3-margin-right" style="width:46px"') ?>
     </div>
     <div class="w3-auto">
       <?='['.Session::get('id').'] '.Session::get('username').'&nbsp;&nbsp;';?> 
@@ -42,13 +42,13 @@
 
 
   <!-- MENÚ DEL SISTEMA -->
+  <?php $modulo = Session::get('modulo'); ?>
   <div class="w3-bar-block w3-row">
     <a href="/" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" 
     onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
     <menu class="w3-padding">
-      <?= OdaTags::linkBarItem('', 'INICIO') ?>
+      <?= OdaTags::linkBarItem($modulo, 'INICIO') ?>
       <div class="w3-bar-block">
-        <?php $modulo = Session::get('modulo'); ?>
         <?php View::partial("$modulo/$modulo"."_menu") ?>
       </div>
       <br><br>

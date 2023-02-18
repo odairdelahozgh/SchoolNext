@@ -6,13 +6,12 @@
 <div class="w3-container w3-row">   
    <div class="w3-threequarter">
       <?php
-         if (count($data)==0) {
+         if ( isset($data) & (count($data)==0) ) {
             Flash::valid('<h3>Atenci&oacute;n!</h3><p>No hay registros para mostrar.</p>');
          } else {
             require('listHeader.phtml');
             $tabla = new OdaTable();
-            $srch = '<i class="fa-solid fa-search w3-small"></i>';
-            $tabla->setHead("ID, Periodo, Fecha, $srch Estudiante, $srch Asunto");
+            $tabla->setHead("ID, Periodo, Fecha, *Estudiante, *Asunto");
             foreach($data as $key => $reg) {
                $data_row = array(
                   $reg->id,
@@ -23,7 +22,7 @@
                     ."<button onclick=\"document.getElementById('$reg->id').style.display='block'\" class=\"w3-btn w3-theme\">ver mas</button>",
                   );
                require 'list_modal.phtml';
-               $tabla->setBody(data: $data_row, attrs2:['','','','class="searchTdata"','class="searchTdata"']);
+               $tabla->addRow(data: $data_row, attrs_td:['','','','class="searchTdata"','class="searchTdata"']);
             } //END-FOR
             echo $tabla;
             require('listFooter.phtml');

@@ -1,0 +1,27 @@
+<?php
+  View::partial(partial: 'header_views', params: ['controller'=>$controller_name, 'page'=>$page_action] );
+  
+  $RegAsignatura = $arrData['asignatura'];
+  $RegGrado = $arrData['grado'];
+
+  $buttons = [];
+  for ($i=1; $i<=5; $i++) { 
+    $buttons[$i] = ['caption'=>"Periodo $i", 'action'=>"traer_data($i,$RegGrado->id,$RegAsignatura->id)"];
+  }
+  $botones = OdaTags::buttonBars($buttons);
+?>
+
+
+<div class="w3-container">
+  <h2> <?="Grado $RegGrado->nombre: $RegAsignatura->nombre"?> </h2>
+
+  <?php echo require('listForm.phtml'); ?>
+
+  <div id="lista_indicadores" class="">
+    <div id="botones"><?= $botones ?></div>
+    <div id="capa_datos"></div>
+  </div>
+</div>
+
+
+<?= Tag::js("docentes/indicadores_list", false); ?>

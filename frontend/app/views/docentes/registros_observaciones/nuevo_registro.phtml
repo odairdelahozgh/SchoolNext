@@ -17,14 +17,13 @@
           } else {
             require('nuevoHeader.phtml');
             $tabla = new OdaTable(showTotalRegs: true);
-            $srch = '<i class="fa-solid fa-search w3-small"></i>';
-            $tabla->setHead("$srch Estudiante");
+            $tabla->setHead("*Estudiante");
             foreach($data as $key => $estudiante) {
               $data_row = array(
                 "<span class=\"w3-btn\" onclick=\"show_new_form($estudiante->id, $estudiante->grado_id, $estudiante->salon_id, $user_id)\">
                 [$estudiante->id]  $estudiante->estudiante_nombre [$estudiante->salon_nombre]</span>"
               );
-              $tabla->setBody(data: $data_row, attrs2:['class="searchTdata"']);
+              $tabla->addRow(data: $data_row, attrs_td:['class="searchTdata"']);
             }
             echo $tabla;
             require('nuevoFooter.phtml');

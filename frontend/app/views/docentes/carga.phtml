@@ -4,7 +4,7 @@
 </div>
 
 <div class="w3-row">
-  <div class="w3-container w3-half">   
+  <div class="w3-container w3-twothird">
     <?php
     $tot_regs = count($data);
     if ($tot_regs==0) {
@@ -12,23 +12,25 @@
     } else {
       echo OdaForm::inputSearch();
       $tabla = new OdaTable(showTotalRegs: true);
-      $srch = '<i class="fa-solid fa-search w3-small"></i>';
-      $tabla->setHead( arr_head: "$srch Salon, $srch Asignatura, Indicadores, Notas");
+      $tabla->setHead("*Salon, *Asignatura, Indicadores, Notas", 
+        arr_attrs_th: ['style="width:40%;"', 'style="width:30%;"', 'style="width:15%;"', 'style="width:15%;"'] );
       $tabla->setCaption(caption:'Carga Asignada');
+
       foreach($data as $key => $carga) {
         $d1 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');
         $d1 .= (($user_id==1) ? "<br> [$carga->profesor]" :'');
+
         $d2 = $carga->salon . ' ' .(($user_id==1) ? "[$carga->salon_id]" :'');
         
         $d3 = OdaTags::link("docentes/listIndicadores/$carga->grado_id/$carga->asignatura_id", 'Indicadores');
         $d4 = OdaTags::link("docentes/listNotas/$carga->asignatura_id/$carga->salon_id", 'Notas');
-        $tabla->setBody( data: [$d1, $d2, $d3, $d4], attrs2:['class="searchTdata"','class="searchTdata"']);
+        $tabla->addRow( data: [$d1, $d2, $d3, $d4], attrs_td:['class="searchTdata"','class="searchTdata"']);
       }
       echo $tabla;
     }
     ?>
   </div>
-  <div class="w3-container w3-half">
+  <div class="w3-container w3-rest">
     <?php 
       echo OdaTags::linkExterno(
         url: "https://windsortemp.schoolnext.space/index.php/+/sAP/ListasClaseProfesorPDF?user_id=22800", 

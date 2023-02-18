@@ -3,10 +3,12 @@
    <?php
       $result = '';
       $tabla = new OdaTable();
+      echo OdaForm::inputRango('r1', 'Rango Test', 4, 0, 10, 2);
+
       foreach ($data as $reg_nota) {
             $registro = require('calificarForm.phtml');
             $registro = $registro;//"<fieldset>$registro</fieldset>";
-            $tabla->setBody($registro);
+            $tabla->addRow($registro);
       }
       echo $tabla;
    ?>
@@ -14,3 +16,7 @@
 </div>
 
 <?= tag::js("tabs_h");?>
+
+<script>
+  <?= OdaForm::inputRangoJs('r1') ?>
+</script>

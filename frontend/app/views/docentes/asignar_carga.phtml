@@ -5,7 +5,7 @@
 
 <div class="w3-row">
   
-  <div class="w3-half w3-container">
+  <div class="w3-container w3-twothird">
   <?php
     $tot_regs = count($data);
     if ($tot_regs==0) {
@@ -13,22 +13,24 @@
     } else {
         echo OdaForm::inputSearch();
         $tabla = new OdaTable(showTotalRegs: true);
-        $srch = '<i class="fa-solid fa-search w3-small"></i>';
-        $tabla->setHead( arr_head: "x, $srch Salon, $srch Asignatura, $srch Profesor");
+        $tabla->setHead(
+          data_head: "x, Profesor, Asignatura, Salon",
+          arr_attrs_th: ['style="width:10%;"', 'style="width:35%;"', 'style="width:35%;"', 'style="width:20%;"'] 
+          );
         $tabla->setCaption(caption:'Carga Total Asignada');
         foreach($data as $key => $carga) {
           $d0 = OdaTags::linkIcon("admin/cargas/delID/$carga->id/docen-asignar-carga", 'trash-can');
           $d1 = "[$carga->user_id] ".OdaUtils::sanearString($carga->profesor);
           $d2 = "[$carga->asignatura_id] ".OdaUtils::sanearString($carga->asignatura);
           $d3 = "[$carga->salon_id] $carga->salon";
-          $tabla->setBody( data: [$d0, $d1, $d2, $d3], attrs2:[null, 'class="searchTdata"','class="searchTdata"','class="searchTdata"']);
+          $tabla->addRow( data: [$d0, $d1, $d2, $d3], attrs_td:[null, 'class="searchTdata"','class="searchTdata"','class="searchTdata"']);
         }
         echo $tabla;
     }
   ?>
   </div>
 
-  <div class="w3-half w3-container">
+  <div class="w3-container w3-rest">
     <h2>Agregar Carga</h2>
     
     <div id="result">

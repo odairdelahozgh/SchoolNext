@@ -12,7 +12,7 @@
     } else {
       echo OdaForm::inputSearch();
       $tabla = new OdaTable(showTotalRegs: true);
-      $tabla->setHead("*Salon, *Asignatura, Indicadores, Notas", 
+      $tabla->setHead("*Asignatura, *Salon, Indicadores, Notas", 
         arr_attrs_th: ['style="width:40%;"', 'style="width:30%;"', 'style="width:15%;"', 'style="width:15%;"'] );
       $tabla->setCaption(caption:'Carga Asignada');
 
@@ -27,7 +27,7 @@
         $tabla->addRow( data: [$d1, $d2, $d3, $d4], attrs_td:['class="searchTdata"','class="searchTdata"']);
       }
       echo $tabla;
-      Tag::js("table_filter");
+      echo Tag::js("table_filter");
     }
     ?>
   </div>

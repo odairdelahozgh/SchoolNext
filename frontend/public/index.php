@@ -59,3 +59,16 @@ const IMG_UPLOAD_PATH    = PUBLIC_PATH.'img/upload/';
 const IMG_DOWNLOAD_PATH  = PUBLIC_PATH.'img/download/';
 
 require CORE_PATH.'kumbia/bootstrap.php'; //bootstrap del core
+
+
+/*
+..public/windsorviejo_schoolnext_public    ====>  public
+..uploads/aspirantes_adjuntos         ====>  .../files/upload/aspirantes_adjuntos
+..uploads/aspirantes_adjuntos_2021    ====>  .../files/upload/aspirantes_adjuntos
+..uploads/estud_reg_des_aca_com       ====> .../files/upload/estud_reg_des_aca_com
+..uploads/estud_reg_observ_gen        ====> .../files/upload/estud_reg_observ_gen
+..uploads/matriculas_adjuntos         ====> .../files/upload/matriculas_adjuntos
+..uploads/matriculas_adjuntos_2       ====> .../files/upload/matriculas_adjuntos
+..uploads/student                     ====> .../img/upload/estudiantes [FOTOS DE LOS ESTUDIANTES]
+..uploads/dm_user                     ====> .../img/upload/users [FOTOS DE LOS PROFESORES USUARIOS DEL SISTEMA]
+*/

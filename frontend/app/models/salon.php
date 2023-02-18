@@ -1,51 +1,45 @@
 <?php
-
 /**
-  * Modelo Salon  
-  * @category App
-  * @package Models 
-  * https://github.com/KumbiaPHP/Documentation/blob/master/es/active-record.md
-  */
+ * Modelo Salon * 
+ * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
+ * @category App
+ * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ * 
+ * 
+ * 'nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position'
+ * 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 
+ * 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at', 
+ */
+  
+class Salon extends LiteRecord {
 
-  /* 
-  // crear registro:               ->create(array $data = []): bool {}
-  // actualizar registro:          ->update(array $data = []): bool {}
-  // Guardar registro:             ->save(array $data = []): bool {}
-  // Eliminar registro por pk:     ::delete($pk): bool
-  //
-  // Buscar por clave pk:                 ::get($pk, $fields = '*') $fields: campos separados por coma
-  // Todos los registros:                 ::all(string $sql = '', array $values = []): array {}
-  // Primer registro de la consulta sql:  ::first(string $sql, array $values = [])//: static in php 8
-  // Filtra las consultas                 ::filter(string $sql, array $values = []): array
-    
-  setActivar, setDesactivar
-  getById, deleteById, getList, getListActivos, getListInactivos
-  getByUUID, deleteByUUID, setUUID_All_ojo
+  use SalonTraitSetUp;
 
-  Para debuguear: debug, warning, error, alert, critical, notice, info, emergence
-  OdaLog::debug(msg: "Mensaje", name_log:'nombre_log');
-
-  id, is_active, nombre, grado_id, director_id, codirector_id, position, tot_estudiantes,
-  print_state1, print_state2, print_state3, print_state4, print_state5, is_ready_print, print_state, 
-  created_by, created_at, updated_by, updated_at
-
-*/
-
-class Salon extends LiteRecord
-{
-  use TraitUuid, GradoTraitCallBacks, GradoTraitDefa, GradoTraitProps;
   public function __construct() {
     parent::__construct();
-    self::$table = Config::get('tablas.salones');
-    self::$_defaults     = $this->getTDefaults();
-    self::$_labels   = $this->getTLabels();
-    self::$_placeholders = $this->getTPlaceholders();
-    self::$_helps    = $this->getTHelps();
-    self::$_attribs  = $this->getTAttribs();
-    self::$class_name = __CLASS__;
-    self::$order_by_default = 't.position';
-  }
+    self::$table = Config::get('tablas.salon');
+    self::$order_by_default = 't.is_active DESC, t.nombre';
+    $this->setUp();
+  } //END-__construct
 
+/*   public function getNombreDirector() { 
+    $registro = $this::first("SELECT * FROM dm_user WHERE id = :usuario", [":usuario" => $this->director_id]);
+    if (!$registro) {
+      return false;
+    }
+    return true;
+  } */
+
+  /* 
+  public function esDirector(int $user_id) { 
+    $registro = $this::first("SELECT * FROM self::$table WHERE director_id = :usuario", [":usuario" => $user_id]);
+    if (!$registro) {
+      return false;
+    }
+    return true;
+  } */
+
+  
   /**
    * Devuelve lista de Salones.
    */
@@ -67,14 +61,13 @@ class Salon extends LiteRecord
 
 
   public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
-    $DQL = new OdaDql();
-    $DQL->select("t.*, g.nombre AS grado")
-        ->concat(concat: ['ud.nombres', 'ud.apellido1', 'ud.apellido2'], alias:'director')
-        ->concat(concat: ['uc.nombres', 'uc.apellido1', 'uc.apellido2'], alias:'codirector')
-        ->from(from_class:'Salon')
-        ->leftJoin('grado', alias:'g', condition:'grado_id')
-        ->leftJoin('usuario', alias:'ud', condition:'director_id')
-        ->leftJoin('usuario', alias:'uc', condition:'codirector_id')
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select("t.*, g.nombre AS grado_nombre")
+        ->concat(concat: ['ud.nombres', 'ud.apellido1', 'ud.apellido2'], alias:'director_nombre')
+        ->concat(concat: ['uc.nombres', 'uc.apellido1', 'uc.apellido2'], alias:'codirector_nombre')
+        ->leftJoin('grado',   alias:'g')
+        ->leftJoin('usuario', alias:'ud', condition:'t.director_id = ud.id')
+        ->leftJoin('usuario', alias:'uc', condition:'t.codirector_id = uc.id')
         ->orderBy(self::$order_by_default);
 
     if (!is_null($estado)) { $DQL->andWhere("t.is_active=$estado"); }
@@ -83,7 +76,7 @@ class Salon extends LiteRecord
       $DQL->orderBy($order_by); 
     }
     
-    return $DQL->execute(true);
+    return $DQL->execute();
   }
 
 
@@ -96,4 +89,5 @@ class Salon extends LiteRecord
   } //END-isDirector
 
 
-}
+
+} //END-CLASS

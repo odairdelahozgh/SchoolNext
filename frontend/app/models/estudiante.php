@@ -21,7 +21,6 @@ class Estudiante extends LiteRecord {
 
 
   const LIM_PAGO_PERIODOS = [ 1 => 4, 2 => 6, 3 => 9, 4 => 11, 5 => 11 ];
-  
    
   /**
    * Devuelve lista de todos los Registros.
@@ -165,7 +164,7 @@ class Estudiante extends LiteRecord {
             FROM ".self::$table." as e
             LEFT JOIN ".Config::get('tablas.salones')." as s ON e.salon_id=s.id
             WHERE s.id IN($salones)";
-    return $this->data = $this::all($DQL);
+    return $this::all($DQL);
   } // END-
 
   

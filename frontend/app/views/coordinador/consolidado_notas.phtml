@@ -27,10 +27,10 @@
                             $arrNotas[] = $nota_final;
                         }
                     }
-                    $tablaEstud->setBody($arrNotas);
+                    $tablaEstud->addRow($arrNotas);
                 }
                 $tablaEstud->setCaption("$estudiante_codigo - $estudiante_nombre");
-                $tablaEstud->setHead(arr_head: $arrTitMaterias);
+                $tablaEstud->setHead($arrTitMaterias);
                 $arrInfoSalon[$salon_nombre][$estudiante_nombre]= $tablaEstud.'<hr>';
             }
         }

@@ -3,15 +3,7 @@
 
 
 <?php 
-  echo 'camel case: '. OdaUtils::camelcase('camel case').'<br>';
-  echo 'camel_case: '. OdaUtils::camelcase('camel_case').'<br>';
-  echo 'Camel Case: '. OdaUtils::camelcase('Camel Case').'<br>';
-  echo 'Camel Case: '. OdaUtils::camelcase('Camel_Case').'<br>';
-  echo '<hr>';
-  echo 'small case: '. OdaUtils::smallcase('small case').'<br>';
-  echo 'small_case: '. OdaUtils::smallcase('small_case').'<br>';
-  echo 'Small Case: '. OdaUtils::smallcase('Small Case').'<br>';
-  echo 'Small_Case: '. OdaUtils::smallcase('Small_Case').'<br>';
- 
+  $val = new OdaValid();
+  echo $val::usernameValid("123 45"); 
 ?>
 

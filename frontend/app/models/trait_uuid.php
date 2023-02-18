@@ -5,7 +5,7 @@ trait TraitUuid {
   /**
    * UUID Generator Optimized
    */
-  private function UUIDReal(int $lenght=20):string {
+  public function UUIDReal(int $lenght=20):string {
     if ($lenght <= parent::$lim_tam_campo_uuid) {
       if (function_exists("random_bytes")) {
         $bytes = random_bytes(ceil($lenght / 2));
@@ -59,4 +59,4 @@ trait TraitUuid {
   } //END-setUUID_All_ojo
   
 
-} //END-TRAIT
+} //END-TraitUuid

@@ -27,6 +27,7 @@
         $tabla->addRow( data: [$d1, $d2, $d3, $d4], attrs_td:['class="searchTdata"','class="searchTdata"']);
       }
       echo $tabla;
+      Tag::js("table_filter");
     }
     ?>
   </div>
@@ -41,4 +42,3 @@
 
 </div>
 
-<?= Tag::js("table_filter"); ?>

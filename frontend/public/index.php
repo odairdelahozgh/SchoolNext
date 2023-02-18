@@ -16,7 +16,7 @@ const PUBLIC_PATH      = 'https://windsor.schoolnext.space/';
 
 $url = $_SERVER['PATH_INFO'] ?? '/';
 
-const VENDOR_PATH      = APP_ROOT_PRIVATE.'vendor/';
+const VENDOR_PATH      = APP_ROOT_PRIVATE.'frontend/vendor/';
 const ABS_PUBLIC_PATH  = '/home2/dwsjrnmy/public_html/windsor_schoolnext_public';
 const SCHOOLWEB_PUBLIC_PATH = 'https://windsortemp.schoolnext.space/';
 */
@@ -32,7 +32,7 @@ const CORE_PATH        = APP_ROOT_PRIVATE.'core/';
 const PUBLIC_PATH     = 'https://schoolnext.windsorschool.edu.co/';
 $url = $_SERVER['ORIG_PATH_INFO'] ?? '/';
 
-const VENDOR_PATH      = APP_ROOT_PRIVATE.'vendor/';
+const VENDOR_PATH      = APP_ROOT_PRIVATE.'frontend/vendor/';
 const ABS_PUBLIC_PATH = '/home/windsor1/schoolnext.windsorschool.edu.co/';
 const SCHOOLWEB_PUBLIC_PATH = 'https://schoolweb.windsorschool.edu.co/';
 */
@@ -57,6 +57,8 @@ const FILE_UPLOAD_PATH   = PUBLIC_PATH.'files/upload/';
 const FILE_DOWNLOAD_PATH = PUBLIC_PATH.'files/download/';
 const IMG_UPLOAD_PATH    = PUBLIC_PATH.'img/upload/';
 const IMG_DOWNLOAD_PATH  = PUBLIC_PATH.'img/download/';
+
+const IMG_ESTUDIANTES_PATH  = IMG_UPLOAD_PATH.'estudiantes';
 
 require CORE_PATH.'kumbia/bootstrap.php'; //bootstrap del core
 

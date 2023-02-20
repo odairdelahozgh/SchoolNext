@@ -25,25 +25,32 @@ abstract class ScaffoldController extends AdminController
    * admin/../create
    */
   public function create() {
-    $this->page_action = 'CREAR Registro';
-    $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
-    $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
-    $this->Modelo = new $this->nombre_modelo();
+    try {
 
-    if (Input::hasPost($this->nombre_post)) {
-      if ((new $this->nombre_modelo())->validar(Input::post($this->nombre_post))) {
-        if ( (new $this->nombre_modelo())->create(Input::post($this->nombre_post))) {
-          OdaFlash::valid("$this->page_action");
-          Input::delete();
-          return Redirect::to();
+      $this->page_action = 'CREAR Registro';
+      $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
+      $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
+      $this->Modelo = new $this->nombre_modelo();
+      if (Input::hasPost($this->nombre_post)) {
+        if ((new $this->nombre_modelo())->validar(Input::post($this->nombre_post))) {
+          if ( (new $this->nombre_modelo())->create(Input::post($this->nombre_post))) {
+            OdaFlash::valid("$this->page_action");
+            Input::delete();
+            return Redirect::to();
+          }
+          OdaFlash::error("$this->page_action. Falló operación guardar.");
+          return Redirect::to("admin/$this->controller_name/create");
+        } else {
+          OdaFlash::error("$this->page_action. ".Session::get('error_validacion'));
+          return Redirect::to("admin/$this->controller_name/create");
         }
-        OdaFlash::error("$this->page_action. Falló operación guardar.");
-        return Redirect::to("admin/$this->controller_name/create");
-      } else {
-        OdaFlash::error("$this->page_action. ".Session::get('error_validacion'));
-        return Redirect::to("admin/$this->controller_name/create");
       }
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($this->page_action);
+      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
     }
+
   }//END-create
 
    
@@ -51,23 +58,30 @@ abstract class ScaffoldController extends AdminController
    * admin/.../edit/{id}
    */
   public function edit(int $id) {
-    $this->page_action = 'Editar Registro';
-    $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
-    $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
-    $this->Modelo = (new $this->nombre_modelo())::get($id);
+    try {
 
-    if (Input::hasPost($this->nombre_post)) {
-      if ((new $this->nombre_modelo())->validar(Input::post($this->nombre_post))) {
-        if ((new $this->nombre_modelo())->update(Input::post($this->nombre_post))) { // procede a guardar
-          OdaFlash::valid("$this->page_action $id");
-          return Redirect::to(); // regresa al listado
+      $this->page_action = 'Editar Registro';
+      $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
+      $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
+      $this->Modelo = (new $this->nombre_modelo())::get($id);
+
+      if (Input::hasPost($this->nombre_post)) {
+        if ((new $this->nombre_modelo())->validar(Input::post($this->nombre_post))) {
+          if ((new $this->nombre_modelo())->update(Input::post($this->nombre_post))) { // procede a guardar
+            OdaFlash::valid("$this->page_action $id");
+            return Redirect::to(); // regresa al listado
+          }
+          OdaFlash::error("$this->page_action. Guardar.");
+          return Redirect::to("admin/$this->controller_name/edit/$id");
+        } else {
+          OdaFlash::error("$this->page_action. ".Session::get('error_validacion'));
+          return Redirect::to("admin/$this->controller_name/edit/$id");
         }
-        OdaFlash::error("$this->page_action. Guardar.");
-        return Redirect::to("admin/$this->controller_name/edit/$id");
-      } else {
-        OdaFlash::error("$this->page_action. ".Session::get('error_validacion'));
-        return Redirect::to("admin/$this->controller_name/edit/$id");
       }
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($this->page_action);
+      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
     }
   }//END-edit
 
@@ -77,19 +91,26 @@ abstract class ScaffoldController extends AdminController
    * admin/.../editUuid/{$uuid}
    */
   public function editUuid(string $uuid) {
-    $this->page_action = 'Editar Registro';
-    if (Input::hasPost($this->nombre_post)) { // valida si hay datos a guardar
-      if ( (new $this->nombre_modelo())->update(Input::post($this->nombre_post)) ) { // ´procede a guardar
-        OdaFlash::valid("$this->page_action: $uuid");
-        return Redirect::to();
+    try {
+
+      $this->page_action = 'Editar Registro';
+      if (Input::hasPost($this->nombre_post)) { // valida si hay datos a guardar
+        if ( (new $this->nombre_modelo())->update(Input::post($this->nombre_post)) ) { // ´procede a guardar
+          OdaFlash::valid("$this->page_action: $uuid");
+          return Redirect::to();
+        }
+        OdaFlash::error($this->page_action);
+        return; // Redirect::to();
       }
+      $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
+      $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
+      $this->Modelo = (new $this->nombre_modelo())::getByUUID($uuid);
+      View::select('edit');
+
+    } catch (\Throwable $th) {
       OdaFlash::error($this->page_action);
-      return; // Redirect::to();
+      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
     }
-    $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
-    $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
-    $this->Modelo = (new $this->nombre_modelo())::getByUUID($uuid);
-    View::select('edit');
   }//END-
 
 
@@ -98,15 +119,22 @@ abstract class ScaffoldController extends AdminController
    * admin/.../del/{id}
    */
   public function del(int $id, string $redirect='') {
-    $this->page_action = 'Eliminar Registro';
-    if ( (new $this->nombre_modelo())::delete($id)) {
-      OdaFlash::valid("$this->page_action: $id");
-    } else {
-      OdaFlash::error("$this->page_action: $id");
-      return;
+    try {
+
+      $this->page_action = 'Eliminar Registro';
+      if ( (new $this->nombre_modelo())::delete($id)) {
+        OdaFlash::valid("$this->page_action: $id");
+      } else {
+        OdaFlash::error("$this->page_action: $id");
+        return;
+      }
+      $redirect = str_replace('.','/', $redirect);
+      return Redirect::to("$redirect");
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($this->page_action);
+      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
     }
-    $redirect = str_replace('.','/', $redirect);
-    return Redirect::to("$redirect");
   }//END-del
 
 
@@ -114,15 +142,22 @@ abstract class ScaffoldController extends AdminController
    * admin/.../delUuid/{uuid}/{redirect}
    */
   public function delUuid(string $uuid, string $redirect='') {
-    $this->page_action = 'Eliminar Registro';
-    if ( (new $this->nombre_modelo())::deleteByUUID($uuid)) {
-      OdaFlash::valid("$this->page_action: $uuid");
-    } else {
-      OdaFlash::error("$this->page_action: $uuid");
-      return;
+    try {
+
+      $this->page_action = 'Eliminar Registro';
+      if ( (new $this->nombre_modelo())::deleteByUUID($uuid)) {
+        OdaFlash::valid("$this->page_action: $uuid");
+      } else {
+        OdaFlash::error("$this->page_action: $uuid");
+        return;
+      }
+      $redirect = str_replace('.','/', $redirect);
+      return Redirect::to("$redirect");
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($this->page_action);
+      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
     }
-    $redirect = str_replace('.','/', $redirect);
-    return Redirect::to("$redirect");
   }//END-delUuid
 
   /**

@@ -18,7 +18,21 @@ use LDAP\Result;
 
 
 class OdaUtils extends Util {
-    
+  const PERIODOS = [
+    1=>'Periodo 1', 
+    2=>'Periodo 2', 
+    3=>'Periodo 3', 
+    4=>'Periodo 4'
+  ];
+
+  const PERIODOS2 = [
+    1=>'Periodo 1', 
+    2=>'Periodo 2', 
+    3=>'Periodo 3', 
+    4=>'Periodo 4',
+    5=>'Periodo 5',
+  ];
+
   const GENERO = [
     'M' => 'Masculino',
     'F' => 'Femenino',
@@ -64,7 +78,7 @@ class OdaUtils extends Util {
      * Obtiene el nombre del mes (valor numérico)
      */
     public static function nombreMes(int $mes=0): string {
-        return match((int)$mes) {
+        return match($mes) {
             1       => 'Enero',
             2       => 'Febrero',
             3       => 'Marzo',
@@ -113,14 +127,14 @@ class OdaUtils extends Util {
     /**
      * Retorna la misma cadena truncada.
      */
-    public static function truncate(
-        string $text, 
-        int $length = 30, 
-        string $truncateString = '...', 
-        bool $truncateLastspace = false
-    ): string {
+    public static function truncate($text, int $length = 30, 
+        string $truncateString = '...', bool $truncateLastspace = false): string {
         if(is_array($text)) {
             throw new KumbiaException('No puede truncar un array: '.implode(', ', $text));
+        }
+        if(is_null($text)) {
+          return '';
+          //  throw new KumbiaException('No puede truncar un valor nulo: ');
         }
         $text = (string) $text;
         if (mb_strlen($text) > $length) {

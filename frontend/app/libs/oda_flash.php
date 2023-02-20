@@ -55,16 +55,21 @@ class OdaFlash {
         }        
         //Almaceno los mensajes guardados en una variable de sesión, para mostrar los mensajes provenientes de otro request.
         Session::set('flash_message', self::$_contentMsj);
-        if($audit) {  //Verifico si el mensaje se almacena como looger (auditoria)
+        if($audit) {
             if($name=='success') {
-                //DwAudit::debug($msg);
-                OdaLog::set('INFO', $msg, '');
+              OdaLog::set('NOTICE', $msg, '');
+
+            } else if($name=='info') {
+              OdaLog::set('INFO', $msg, '');
+
+            } else if($name=='warning') {
+              OdaLog::set('WARNING', $msg, '');
+              
             } else if($name=='danger') {
-                //DwAudit::error($msg);
-                OdaLog::set('DEBUG', $msg, '');
+              OdaLog::set('ERROR', $msg, '');
+              
             } else {
-                //DwAudit::$name($msg);                
-                OdaLog::set('ERROR', $msg, '');             
+              OdaLog::set('DEBUG', $msg, '');             
             }
         }            
     }

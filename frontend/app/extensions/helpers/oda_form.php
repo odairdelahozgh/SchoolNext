@@ -17,6 +17,7 @@ class OdaForm extends Form {
    private $_fhiddens = '';
    private $_ffields = array(1=>' ', 2=>' ');
    private $_isEdit = false;
+   private $_isMultipart = false;
 
    const ICO_SEARCH = '<i class="fa-solid fa-search w3-large"></i>';
    const ICO_SEARCH_SMALL = '<i class="fa-solid fa-search w3-small"></i>';
@@ -36,12 +37,13 @@ class OdaForm extends Form {
     * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
     * @source  frontend\app\extensions\helpers\odaodaform.php
     */
-   public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1) {
+   public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1, bool $_multipart=false) {
       $this->_modelo   = $modelo;
       $this->_fname    = strtolower(OdaUtils::pluralize($modelo::class));
       $this->_faction  = $action;
       $this->_fmethod  = $method;
       $this->_ffields  = ($cols=1) ? array(1=>' ') : array(1=>' ', 2=>' ');
+      $this->_isMultipart = $_multipart;
    } // END-__construct
 
    public function __toString(): string {
@@ -57,8 +59,11 @@ class OdaForm extends Form {
          $fieldset   = self::createFieldset($this->_ffields[1], 'Registro', ' style="width:50%" ');
          $data_sets .= self::createTag('div', $fieldset, 'class="w3-col w3-container"');
       }
-
-      $form .= self::open($this->_faction, $this->_fmethod, $this->_fattrs);
+      if ($this->_isMultipart) {
+        $form .= self::openMultipart($this->_faction, $this->_fmethod, $this->_fattrs);
+      } else {
+        $form .= self::open($this->_faction, $this->_fmethod, $this->_fattrs);
+      }      
       $form .= self::getHiddens();
       $form .= self::createTag('div', $data_sets, 'class="w3-row"');
       $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar', 'onclick="cancelar()"');
@@ -140,7 +145,7 @@ class OdaForm extends Form {
       $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
 
       $campo_textarea = $this::textarea($fieldname, $attr, $value);
-      $this->_ffields[(int)$columna] .= "<br><label>$label" .$campo_textarea .$help ."</label>";
+      $this->_ffields[$columna] .= "<br><label>$label" .$campo_textarea .$help ."</label>";
    } // END-addTextarea
 
  
@@ -323,10 +328,10 @@ class OdaForm extends Form {
     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search
     * @example echo OdaForm::inputSerach();
     */
-   public static function inputSearch(string $id='inputSearch', string $placeholder="Filtrar") {
+   public static function inputSearch(string $input_search_id='inputSearch', string $table_id='mytable', string $placeholder="Filtrar") {
      $input = self::input(
          type: 'search', 
-         field: $id, 
+         field: $input_search_id, 
          attrs: "oninput=\"myFunctionFilter()\" class=\"w3-input w3-border\"  placeholder=\"$placeholder..\""
       );
      return  

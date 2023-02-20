@@ -30,6 +30,7 @@ return [
         '/docen-carga-academica'    => 'docentes/carga',
         '/carga'                    => 'docentes/carga',
         '/docen-reg-observaciones'  => 'docentes/registros_observaciones',
+        '/docen-reg-desemp-acad'    => 'docentes/registros_desemp_acad',
         '/docen-dir-grupo'          => 'docentes/direccion_grupo',
         '/dirreccion-grupo'         => 'docentes/direccion_grupo',
         '/docen-notas'              => 'docentes/listNotas',

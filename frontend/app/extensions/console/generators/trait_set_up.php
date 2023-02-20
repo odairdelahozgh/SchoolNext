@@ -47,7 +47,6 @@ trait <?=$class?>TraitSetUp {
     ];
   
     self::$_helps = [
-      'is_active'    => 'Indica si está activo el registro.',
     ];
   
     self::$_labels = [

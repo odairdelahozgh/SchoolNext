@@ -24,7 +24,7 @@ return [
   'estud_adjuntos'      => 'sweb_estudiante_adjuntos',
   'estud_adjuntos_dos'  => 'sweb_estudiante_adjuntos_dos',
   'estud_ctas_x_cobrar' => 'sweb_estud_cpc',
-  'reg_obs_gen'           => 'sweb_estudiantes_reg_observ_gen',
+  'reg_obs_gen'         => 'sweb_estudiantes_reg_observ_gen',
   'estud_reg_obs_gen'   => 'sweb_estudiantes_reg_observ_gen',
   'estud_reg_academ'    => 'sweb_estudiantes_reg_desacacom',
   'exam_admision'       => 'sweb_exam_admision_gdocs',

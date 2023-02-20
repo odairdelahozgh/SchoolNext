@@ -1,0 +1,45 @@
+<div class="w3-container">
+   <?= View::flash(); ?>
+   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+</div>
+
+<div class="w3-container w3-row">
+
+  <div id="list_estudiantes">
+    <?= require('listEstudiantes.phtml') ?>
+  </div>
+
+  <div id="form_new">
+    <?= require('newForm.phtml') ?>
+  </div>
+  
+  <div id="form_edit">
+    <?= require('editForm.phtml') ?>
+  </div>
+  
+  <div id="list_index">
+    <?php
+    if ( isset($data) & (count($data)==0) ) {
+      Flash::valid('<h3>Atenci&oacute;n!</h3><p>No hay registros para mostrar.</p>');
+    } else {
+      require('indexHeader.phtml');
+      $tabla = new OdaTable(showTotalRegs: true);
+      $tabla->setHead("Registro, *Estudiante, *Asunto");
+      foreach($data as $key => $reg) {
+        $data_row = array(
+          $reg->fecha.'<br>'.$reg->annio .'-P' .$reg->periodo_id 
+          ."<br><button id=\"id_btn_edit\" class=\"w3-btn w3-blue\" onclick=\"show_edit_form($reg->id)\">Editar</button>",
+          ucwords(OdaUtils::sanearString($reg->estudiante_nombre))."<br>$reg->salon_nombre [$reg->salon_id]",
+          'F: '.OdaUtils::truncate($reg->fortalezas, 50)
+          .'<br>D: '.OdaUtils::truncate($reg->dificultades, 50)
+          .'<br>C: '.OdaUtils::truncate($reg->compromisos, 50)
+          ."<br><button onclick=\"document.getElementById('$reg->id').style.display='block'\" class=\"w3-btn w3-theme\">ver mas</button>",
+        );
+        $tabla->addRow(data: $data_row, attrs_td:['','class="searchTdata"','class="searchTdata"']);
+      } //END-FOR
+      echo $tabla;
+      require('indexFooter.phtml');
+    }//END-IF
+    ?>
+  </div>
+</div>

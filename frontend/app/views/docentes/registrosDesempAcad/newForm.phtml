@@ -1,0 +1,25 @@
+<?php
+$model = new RegistroDesempAcad();
+$fieldsToShow = $model::getFieldsShow('create');
+$fieldsToHidden = $model::getFieldsHidden('create');
+
+//$fieldsToHidden = explode(',',  (new RegistroDesempAcad())::getFieldsHidden('create'));
+
+$myForm = new OdaForm($model, 'admin/registros_desemp_acad/create_ajax', _multipart: true);
+  $myForm->setAtrib('id="form_new"'); $myForm->setColumnas(2);
+  $myForm->addSelect(field:'periodo_id', columna:1, data: OdaUtils::PERIODOS);
+  $myForm->addInput(field:'fecha', columna:1, tipo:'date', attr:'required');
+
+  $myForm->addInput(field:'acudiente', columna:1, tipo:'text', attr:'required');
+  $myForm->addInput(field:'foto_acudiente', columna:1, tipo:'file', attr:'required');
+  $myForm->addInput(field:'director', columna:1, tipo:'text', attr:'required');
+  $myForm->addInput(field:'foto_director', columna:1, tipo:'file', attr:'required');
+  
+  $myForm->addTextarea(field:'fortalezas', columna:2, attr:'required');
+  $myForm->addTextarea(field:'dificultades', columna:2, attr:'required');
+  $myForm->addTextarea(field:'compromisos', columna:2, attr:'required');
+  
+  $myForm->addHiddens(implode(",", $fieldsToHidden));
+  
+  return "<div class=\"w3-container\" id=\"formulario\">$myForm</div>";
+?>

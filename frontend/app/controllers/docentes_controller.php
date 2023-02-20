@@ -71,18 +71,41 @@ class DocentesController extends AppController
     $resumen = (new RegistrosGen)->getRegistrosProfesorResumen(Session::get('id'));
     $this->arrData = ['resumen' => $resumen];
     $this->data = (new RegistrosGen)->getRegistrosProfesor(Session::get('id'));
-    View::select('registros_observaciones/list');
+    View::select('registrosObservGenerales/list');
   }//END-registros_observaciones
-  
+
   /**
    * registros_observaciones/list
    */
   public function nuevo_registro_observaciones() {
-    $this->page_action = 'Crear Nuevo Registros de Observaciones';
+    $this->page_action = 'Crear Nuevo Registro de Observaciones';
     $this->arrData = [];
     $this->data = (new Estudiante)->getListEstudiantes(estado: 1);
-    View::select('registros_observaciones/nuevo_registro');
+    View::select('registrosObservGenerales/new');
   }//END-registros_observaciones
+
+  /**
+   * registros_desemp_acad
+   */
+  public function registros_desemp_acad() {
+    $this->page_action = 'Registros de Desempeño Académico';
+    $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
+    $this->arrData = ['estudiantes' => $estudiantes];
+    $this->data = (new RegistroDesempAcad())->getRegistrosProfesor(Session::get('id'));
+    View::select('registrosDesempAcad/index');
+  }//END-registros_observaciones
+  
+
+  /**
+   * registros_observaciones/list
+   */
+  public function nuevo_registros_desemp_acad() {
+    $this->page_action = 'Crear Nuevo Registro de Desempeño Académico';
+    $this->arrData = [];
+    $this->data = (new Estudiante)->getListEstudiantes(estado: 1);
+    View::select('registrosDesempAcad/new');
+  }//END-registros_observaciones
+
 
   /**
    * indicadores/list

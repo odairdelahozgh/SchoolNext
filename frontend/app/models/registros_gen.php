@@ -27,18 +27,7 @@ class RegistrosGen extends LiteRecord {
 
   public static $periodos = [1=>'Periodo 1', 2=>'Periodo 2', 3=>'Periodo 3', 4=>'Periodo 4'];
 
-
-  public function cambiarSalonEstudiante(int $salon_id, int $estudiante_id) {
-    try {
-      $RegSalon = (new Salon)->first("SELECT id, grado_id FROM ".Config::get('tablas.salones')." WHERE id=?", [$salon_id]);
-      $this::query("UPDATE ".Config::get('tablas.estud_reg_obs_gen')." SET salon_id=?, grado_id=? WHERE estudiante_id = ?", 
-          [$salon_id, $RegSalon->grado_id, $estudiante_id])->rowCount() > 0;
-    } catch (\Throwable $th) {
-      OdaLog::error($th);
-    }
-  } //END-cambiarSalonEstudiante
-
-  
+ 
   // ===========
   public function getRegistrosProfesor(int $user_id) {
 

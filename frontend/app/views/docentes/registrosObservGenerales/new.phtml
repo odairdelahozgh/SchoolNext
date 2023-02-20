@@ -1,0 +1,31 @@
+<div class="w3-container">
+   <?= View::flash(); ?>
+   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+</div>
+
+<div class="w3-container w3-row">
+  <div id="formulario"> <?= require('newForm.phtml') ?> </div>
+  <div id="lista_estudiantes">
+    <?php
+         if (count($data)==0) {
+           Flash::valid('<h3>Atenci&oacute;n!</h3><p>No hay registros para mostrar.</p>');
+          } else {
+            require('newHeader.phtml');
+            $tabla = new OdaTable(showTotalRegs: true);
+            $tabla->setHead("*Estudiante");
+            foreach($data as $key => $estudiante) {
+              $data_row = array(
+                "<span class=\"w3-btn\" onclick=\"show_new_form($estudiante->id, $estudiante->grado_id, $estudiante->salon_id, $user_id)\">
+                [$estudiante->id]  $estudiante->estudiante_nombre [$estudiante->salon_nombre]</span>"
+              );
+              $tabla->addRow(data: $data_row, attrs_td:['class="searchTdata"']);
+            }
+            echo $tabla;
+            require('newFooter.phtml');
+          }//END-IF
+    ?>
+  </div>
+</div>
+      
+<?=Tag::js("table_filter", false);?>
+<?=Tag::js("docentes/registros_generales_new", false);?>

@@ -25,7 +25,6 @@ trait RegistroDesempAcadTraitSetUp {
         Session::set('error_validacion', 'Error evaluando Grado');
         return false;
       }
-
       if (!validar::numericVal()->positive()->validate((int)$input_post['salon_id'])) {
         Session::set('error_validacion', 'Error evaluando Salon');
         return false;
@@ -60,9 +59,7 @@ trait RegistroDesempAcadTraitSetUp {
       'compromisos'     => 'required',
       'fecha'           => 'required',
       'acudiente'       => 'required',
-      'foto_acudiente'  => 'required',
       'director'        => 'required',
-      'foto_director'   => 'required',
       
       'id'       => 'required',
       'uuid'     => 'required',
@@ -70,12 +67,11 @@ trait RegistroDesempAcadTraitSetUp {
   
     self::$_defaults = [
       'is_active'   => 1,
-      'annio'       => date('Y'),
     ];
   
     self::$_helps = [
-      'foto_acudiente'  => 'Archivo tipo imagen [.jpg, .png]',
-      'foto_director'   => 'Archivo tipo imagen [.jpg, .png]',
+      'foto_acudiente'  => 'Evidencia Acudiente. Archivo tipo imagen [jpg, png, gif, jpeg]',
+      'foto_director'   => 'Evidencia Docente. Archivo tipo imagen [jpg, png, gif, jpeg]',
     ];
   
     self::$_labels = [
@@ -87,7 +83,7 @@ trait RegistroDesempAcadTraitSetUp {
       'fortalezas'      => 'Fortalezas',
       'dificultades'    => 'Dificultades',
       'compromisos'     => 'Compromisos',
-      'fecha'           => 'Fecha',
+      'fecha'           => 'Fecha de Registro',
       'acudiente'       => 'Acudiente',
       'foto_acudiente'  => 'Evidencia Acudiente',
       'director'        => 'Docente',

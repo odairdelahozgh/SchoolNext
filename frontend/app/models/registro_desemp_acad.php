@@ -21,8 +21,7 @@ class RegistroDesempAcad extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-   
-  // ===========
+  
   public function getRegistrosProfesor(int $user_id) {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, s.nombre as salon_nombre')
@@ -38,6 +37,37 @@ class RegistroDesempAcad extends LiteRecord {
     $DQL->orderBy('t.fecha DESC');
     return $DQL->execute();
   }//END-getRegistrosProfesor
+
+  public function saveWithPhoto($data)
+  {
+    $this->begin();
+    if ($this->create($data)) {
+      if ($this->updatePhoto()) {
+        $this->commit();
+        return true;
+      }
+    }
+    $this->rollback();
+    return false;
+  } //END-saveWithPhoto
+
+  public function updatePhoto()
+  {
+    if ($photo = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
+      $this->foto_acudiente = $photo; // Modifica el campo photo del usuario y lo intenta actualizar
+      return $this->update();
+    }
+  } //END-updatePhoto
+
+  public function uploadPhoto($imageField)
+  {
+    $file = Upload::factory($imageField, 'image'); // Usamos el adapter 'image'
+    $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg')); // le asignamos las extensiones a permitir
+    if ($file->isUploaded()) { // Intenta subir el archivo
+      return $file->saveRandom(); // Lo guarda usando un nombre de archivo aleatorio y lo retorna.
+    }
+    return false; //Si falla al subir
+  } //END-uploadPhoto
 
 
 } //END-CLASS

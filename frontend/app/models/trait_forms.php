@@ -1,4 +1,5 @@
 <?php
+
 trait TraitForms {
   /// PARA TODOS LO SMODELOS !!
   protected static $_fields_show = ['all'=>[], 'index'=>[], 'create'=>[1=>[], 2=>[]], 'edit'=>[1=>[], 2=>[]], 'editUuid'=>[1=>[], 2=>[]]];

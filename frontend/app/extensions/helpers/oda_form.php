@@ -37,33 +37,35 @@ class OdaForm extends Form {
     * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
     * @source  frontend\app\extensions\helpers\odaodaform.php
     */
-   public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1, bool $_multipart=false) {
+   public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1, bool $multipart=false) {
       $this->_modelo   = $modelo;
       $this->_fname    = strtolower(OdaUtils::pluralize($modelo::class));
       $this->_faction  = $action;
       $this->_fmethod  = $method;
       $this->_ffields  = ($cols=1) ? array(1=>' ') : array(1=>' ', 2=>' ');
-      $this->_isMultipart = $_multipart;
+      $this->_isMultipart = $multipart;
    } // END-__construct
 
    public function __toString(): string {
       $cols_max = array_key_last($this->_ffields);
-      $form  = '';
       $data_sets = '';
       if ($cols_max==2) {
-         $fielset1   = self::createFieldset($this->_ffields[1], 'Columna 1', ' style="width:90%" ');
-         $data_sets .= self::createTag('div', $fielset1, 'class="w3-half w3-container"');
-         $fielset2   = self::createFieldset($this->_ffields[2], 'Columna 2', ' style="width:90%" ');
-         $data_sets .= self::createTag('div', $fielset2, 'class="w3-half w3-container"');         
+        $fielset1   = self::createFieldset($this->_ffields[1], 'Columna 1', ' style="width:90%" ');
+        $data_sets .= self::createTag('div', $fielset1, 'class="w3-half w3-container"');
+        $fielset2   = self::createFieldset($this->_ffields[2], 'Columna 2', ' style="width:90%" ');
+        $data_sets .= self::createTag('div', $fielset2, 'class="w3-half w3-container"');         
       } else {
-         $fieldset   = self::createFieldset($this->_ffields[1], 'Registro', ' style="width:50%" ');
-         $data_sets .= self::createTag('div', $fieldset, 'class="w3-col w3-container"');
+        $fieldset   = self::createFieldset($this->_ffields[1], 'Registro', ' style="width:50%" ');
+        $data_sets .= self::createTag('div', $fieldset, 'class="w3-col w3-container"');
       }
+
+      $form  = '';
       if ($this->_isMultipart) {
-        $form .= self::openMultipart($this->_faction, $this->_fmethod, $this->_fattrs);
+        $form .= self::openMultipart($this->_faction, $this->_fattrs);
       } else {
         $form .= self::open($this->_faction, $this->_fmethod, $this->_fattrs);
-      }      
+      }
+
       $form .= self::getHiddens();
       $form .= self::createTag('div', $data_sets, 'class="w3-row"');
       $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar', 'onclick="cancelar()"');
@@ -102,7 +104,18 @@ class OdaForm extends Form {
       $this->_ffields[$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label>";
    } // END-addInput
 
- 
+   public function addFile(int $columna=1, string $field='', $attr='', $inline=false) {
+    $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+    //$fieldname  = $this->_fname.'.'.trim($field);
+    $fieldname  = trim($field);
+    $label      = $this->getLabel($field, $inline);
+    $help       = $this->getHelp($field);
+    
+    $campo_file  = $this::file($fieldname, $attr);
+
+    $this->_ffields[$columna] .= "<br><label> $label" .$campo_file .$help ."</label>";
+
+   }
    /**
     * Retorna un campos Input dependiendo del "tipo".
     * @param integer           $columna:  Columna en la que se muestrará el elemento.

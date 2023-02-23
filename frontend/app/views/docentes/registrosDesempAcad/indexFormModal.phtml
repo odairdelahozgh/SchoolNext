@@ -1,27 +1,27 @@
-<div id="<?=$reg->id?>" class="w3-modal">
+<div id="modal_id" class="w3-modal">
    <div class="w3-modal-content">
       
       <header class="w3-container w3-theme"> 
-         <span onclick="document.getElementById('<?=$reg->id?>').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-         <h2>Registro Observador #<?=$reg->id?></h2>
+         <span onclick="document.getElementById(reg_id).style.display='none'" class="w3-button w3-display-topright">&times;</span>
+         <h2>Registro Desempeño Académemico</h2>
       </header>
       
       <div class="w3-container w3-pale-blue">
-         <h3><?=$reg->estudiante.' ['.$reg->salon.']'?></h3>
-         <p><?=$reg->asunto?></p>
+         <h3>estudiante [salon]</h3>
+         <p>asunto</p>
          </br>
          <div class="w3-row-padding">
-            <div class="w3-third"> <b>Acudiente:</b><br/>   <?=$reg->acudiente?> <br/> <?=$reg->getFotoAcudiente()?></div>
-            <div class="w3-third"> <b>Responsable:</b><br/> <?=$reg->director?> <br/> <?=$reg->getFotoDirector()?></div>
+            <div class="w3-third"> <b>Acudiente:</b><br/>acudiente<br/>foto_acudiente</div>
+            <div class="w3-third"> <b>Responsable:</b><br/>docente<br/>foto_docente</div>
             <div class="w3-third"> </div>
          </div>
       </div>
       
       <footer class="w3-container w3-theme">
          <div class="w3-row-padding">
-            <div class="w3-third"><?=$reg->creador?></div>
-            <div class="w3-third">Periodo: <?=$reg->periodo_id?></div>
-            <div class="w3-third">Creado: <?=$reg->getFecha()?></div>
+            <div class="w3-third">creador</div>
+            <div class="w3-third">Periodo: periodo_id</div>
+            <div class="w3-third">Creado: fecha</div>
          </div>
       </footer>
 

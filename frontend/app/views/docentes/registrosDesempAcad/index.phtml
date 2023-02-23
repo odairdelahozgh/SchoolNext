@@ -28,7 +28,8 @@
       foreach($data as $key => $reg) {
         $data_row = array(
           $reg->fecha.'<br>'.$reg->annio .'-P' .$reg->periodo_id 
-          ."<br><button id=\"id_btn_edit\" class=\"w3-btn w3-blue\" onclick=\"show_edit_form($reg->id)\">Editar</button>",
+          //."<br><button id=\"id_btn_edit\" class=\"w3-btn w3-blue\" onclick=\"show_edit_form($reg->id)\">Editar</button>"
+          ,
           ucwords(OdaUtils::sanearString($reg->estudiante_nombre))."<br>$reg->salon_nombre [$reg->salon_id]",
           'F: '.OdaUtils::truncate($reg->fortalezas, 50)
           .'<br>D: '.OdaUtils::truncate($reg->dificultades, 50)

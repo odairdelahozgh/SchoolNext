@@ -9,7 +9,7 @@ use Mpdf\Tag\Select;
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
  /* 
-  id, uuid, estudiante_id, annio, periodo_id, grado_id, salon_id, 
+  id, uuid, tipo_reg, estudiante_id, annio, periodo_id, grado_id, salon_id, 
   fecha, asunto, acudiente, foto_acudiente, director, foto_director, 
   created_at, updated_at, created_by, updated_by
 */
@@ -25,16 +25,11 @@ class RegistrosGen extends LiteRecord {
     self::$order_by_default = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
   } //END-__construct
 
-  public static $periodos = [1=>'Periodo 1', 2=>'Periodo 2', 3=>'Periodo 3', 4=>'Periodo 4'];
-
- 
-  // ===========
   public function getRegistrosProfesor(int $user_id) {
-
     $DQL = new OdaDql(__CLASS__);
-    $DQL->select('t.*, s.nombre as salon')
-        ->concat(concat:['e.nombres','e.apellido1','e.apellido2'], alias: 'estudiante')
-        ->concat(concat:['u.nombres','u.apellido1','u.apellido2'], alias: 'creador')
+    $DQL->select('t.*, s.nombre as salon_nombre')
+        ->concat(concat:['e.nombres','e.apellido1','e.apellido2'], alias: 'estudiante_nombre')
+        ->concat(concat:['u.nombres','u.apellido1','u.apellido2'], alias: 'usuario_nombre')
         ->leftJoin(table_singular:'estudiante', alias:'e')
         ->leftJoin(table_singular:'salon', alias:'s')
         ->leftJoin(table_singular:'usuario', alias:'u', condition:'t.created_by=u.id');
@@ -44,30 +39,50 @@ class RegistrosGen extends LiteRecord {
     }
     $DQL->orderBy('t.fecha DESC');
     return $DQL->execute();
-
-    /*
-    $DQL = "SELECT rg.*, CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante,
-            s.nombre as salon, CONCAT(u.nombres,' ',u.apellido1,' ',u.apellido2) as creador
-            FROM ".self::$table." AS rg
-            LEFT JOIN ".Config::get('tablas.estudiantes') ." as e ON rg.estudiante_id = e.id
-            LEFT JOIN ".Config::get('tablas.salones') ." as s ON rg.salon_id      = s.id
-            LEFT JOIN ".Config::get('tablas.usuarios')  ." as u ON rg.created_by    = u.id
-            WHERE rg.created_by=$user_id
-            ORDER BY rg.fecha desc";
-    return $this::all($DQL);
-    */
   } // END-getListProfesor
 
-  // =============
-  public function getRegistrosProfesorResumen($user_id) {
-    $DQL = "SELECT s.nombre AS salon, COUNT(*) AS tot_reg
-            FROM ".self::$table." AS rg
-            LEFT JOIN ".Config::get('tablas.salones')." as s ON rg.salon_id=s.id
-            WHERE rg.created_by=$user_id
-            GROUP BY rg.salon_id;";
-    return $this::all($DQL);
-  } // END-getResumen
+  
+  public function saveWithPhoto($data)
+  {
+    $this->begin();
+    if ($this->create($data)) {
+      if ($this->updatePhoto($this->lastInsertId())) {
+        $this->commit();
+        return true;
+      }
+    }
+    $this->rollback();
+    return false;
+  } //END-saveWithPhoto
 
+  public function updatePhoto($id)
+  {
+    if ($foto_acudiente = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
+      $this->foto_acudiente = $foto_acudiente;
+      Session::set('foto_acudiente',$foto_acudiente);
+    }
+    if ($foto_director = $this->uploadPhoto('foto_director')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
+      $this->foto_director = $foto_director;
+      Session::set('foto_director',$foto_director);
+    }
+    $reg = (new RegistrosGen)::get($id);
+    $reg->save([
+      'foto_acudiente' => $foto_acudiente,
+      'foto_director'  => $foto_director,
+    ]);
+    return true;
+  } //END-updatePhoto 
+
+  public function uploadPhoto($imageField)  {
+    $file = Upload::factory($imageField, 'file');
+    $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg'));
+    if ($file->isUploaded()) {
+      return $file->saveRandom('estud_reg_observ_gen');
+    }
+    return false;
+  } //END-uploadPhoto
+
+  
   
   // =============
   public function getRegistrosAnnio(int $annio) {

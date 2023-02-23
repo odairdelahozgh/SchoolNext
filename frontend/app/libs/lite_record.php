@@ -56,11 +56,16 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 
   public function _beforeUpdate() { // ANTES de actualizar el registro
     if (property_exists($this, "is_active")) {
-      if (is_null($this->is_active)) { $this->is_active = 0; }
+      if (is_null($this->is_active)) { 
+        $this->is_active = 0; 
+      }
     }
+
     if (property_exists($this, 'uuid')) {
       if (method_exists($this, 'UUIDReal')) {
-        if (strlen($this->uuid)==0) { $this->uuid = $this->UUIDReal(); }
+        if (strlen($this->uuid)==0) { 
+          $this->uuid = $this->UUIDReal(); 
+        }
       }
     }
     $this->updated_by = self::$session_user_id;

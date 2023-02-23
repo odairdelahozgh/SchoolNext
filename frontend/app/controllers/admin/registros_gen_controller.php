@@ -74,29 +74,29 @@ class RegistrosGenController extends ScaffoldController
 
   
 
-  public function edit_form_ajax(int $id) {
-    try {
-      View::select(null, null);
-      $model = new RegistrosGen();
-      $fieldsToHidden = $model::getFieldsHidden('edit');
+  // public function edit_form_ajax(int $id) {
+  //   try {
+  //     View::select(null, null);
+  //     $model = new RegistrosGen();
+  //     $fieldsToHidden = $model::getFieldsHidden('edit');
     
-      $myForm = new OdaForm($model, 'admin/registros_gen/edit_ajax', multipart: true);
-      $myForm->setEdit();
-      $myForm->setColumnas(2);
-      $myForm->addSelect(field:'periodo_id', columna:1, data: OdaUtils::PERIODOS);
-      $myForm->addInput(field:'fecha', columna:1, tipo:'date');
-      $myForm->addInput(field:'acudiente', columna:1, tipo:'text');
-      $myForm->addFile(field:'foto_acudiente', columna:1);
-      $myForm->addInput(field:'director', columna:1, tipo:'text');
-      $myForm->addFile(field:'foto_director', columna:1);  
-      $myForm->addTextarea(field:'asunto', columna:2);
-      $myForm->addHiddens(implode(",", $fieldsToHidden));
-      return "<div id=\"edit_form_registros_gen\" class=\"w3-container\" id=\"formulario\">$myForm</div>";      
-    } catch (\Throwable $th) {
-      OdaFlash::error($this->page_action, true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
-    }
-  }//END-edit_form_ajax
+  //     $myForm = new OdaForm($model, 'admin/registros_gen/edit_ajax', multipart: true);
+  //     $myForm->setEdit();
+  //     $myForm->setColumnas(2);
+  //     $myForm->addSelect(field:'periodo_id', columna:1, data: OdaUtils::PERIODOS);
+  //     $myForm->addInput(field:'fecha', columna:1, tipo:'date');
+  //     $myForm->addInput(field:'acudiente', columna:1, tipo:'text');
+  //     $myForm->addFile(field:'foto_acudiente', columna:1);
+  //     $myForm->addInput(field:'director', columna:1, tipo:'text');
+  //     $myForm->addFile(field:'foto_director', columna:1);  
+  //     $myForm->addTextarea(field:'asunto', columna:2);
+  //     $myForm->addHiddens(implode(",", $fieldsToHidden));
+  //     return "<div id=\"edit_form_registros_gen\" class=\"w3-container\" id=\"formulario\">$myForm</div>";      
+  //   } catch (\Throwable $th) {
+  //     OdaFlash::error($this->page_action, true);
+  //     OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+  //   }
+  // }//END-edit_form_ajax
   
   
   

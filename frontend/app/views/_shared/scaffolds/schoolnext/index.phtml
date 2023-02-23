@@ -24,9 +24,9 @@
         if ('is_active'==$field) {
           $dato = $item_data->is_active_f(true);
         }
-        if (str_ends_with($field, '_id')) {
-          $nuevo_field = substr($field, 0, strlen($field)-3).'_nombre';
-          $dato = '['.$item_data->$field.'] '.$item_data->$nuevo_field;
+        $field_with_name = substr($field, 0, strlen($field)-3).'_nombre'; 
+        if ( ( str_ends_with($field, '_id')) && (in_array($field_with_name, $fieldsToShow)) ) {
+          $dato = '['.$item_data->$field.'] '.$item_data->$field_with_name;
         }
         if ('nombre'==$field) {
           $dato = '['.$item_data->id.'] '.$item_data->$field;

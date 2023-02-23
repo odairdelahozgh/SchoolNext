@@ -1,0 +1,20 @@
+  <h2>Edit form</h2>
+  <?php
+  $model = new RegistrosGen();
+  $fieldsToHidden = $model::getFieldsHidden('edit');
+
+  $myForm = new OdaForm($model, 'admin/registros_gen/edit_ajax', multipart: true);
+    $myForm->setColumnas(2);
+    $myForm->addSelect(field:'periodo_id', columna:1, data: OdaUtils::PERIODOS);
+    $myForm->addInput(field:'fecha', columna:1, tipo:'date');
+    $myForm->addInput(field:'acudiente', columna:1, tipo:'text');
+    $myForm->addFile(field:'foto_acudiente', columna:1);
+    $myForm->addInput(field:'director', columna:1, tipo:'text');
+    $myForm->addFile(field:'foto_director', columna:1);  
+    
+    $myForm->addTextarea(field:'asunto', columna:2);
+
+    $myForm->addHiddens(implode(",", $fieldsToHidden));
+    
+    return "<div class=\"w3-container\" id=\"formulario\">$myForm</div>";
+  ?>

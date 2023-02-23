@@ -36,10 +36,10 @@ class Nota extends LiteRecord {
     return $this->annio.'-'.$this->periodo_id.'-'.$this->salon_id.'-'.$this->asignatura_id.'-'.$this->estudiante_id.'-'.$this->definitiva;
   }
 
-  public function cambiarSalonEstudiante(int $salon_id, int $estudiante_id) {
+  public function cambiarSalonEstudiante(int $nuevo_salon_id, int $estudiante_id) {
     try {
-      $RegSalon = (new Salon)->first("SELECT id, grado_id FROM ".Config::get('tablas.salones')." WHERE id=?", [$salon_id]);
-      $this::query("UPDATE ".Config::get('tablas.nota')." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$salon_id, $RegSalon->grado_id, $estudiante_id])->rowCount() > 0;
+      $RegSalonNuevo = (new Salon)->first("SELECT id, grado_id FROM ".Config::get('tablas.salones')." WHERE id=?", [$nuevo_salon_id]);
+      $this::query("UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id])->rowCount() > 0;
     } catch (\Throwable $th) {
       OdaLog::error($th);
     }

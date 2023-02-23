@@ -221,7 +221,7 @@ class Estudiante extends LiteRecord {
           if ($cambiar_en_notas) {
             (new Nota)->cambiarSalonEstudiante($nuevo_salon_id, $estudiante_id);
             (new RegistrosGen)->cambiarSalonEstudiante($nuevo_salon_id, $estudiante_id);
-            (new RegistrosDesemp)->cambiarSalonEstudiante($nuevo_salon_id, $estudiante_id);
+            (new RegistroDesempAcad)->cambiarSalonEstudiante($nuevo_salon_id, $estudiante_id);
           }
           return true; // para acá
       }

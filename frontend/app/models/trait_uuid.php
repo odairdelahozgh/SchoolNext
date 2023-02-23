@@ -50,11 +50,13 @@ trait TraitUuid {
   /**
    * Rellena el campo UUID de todos los registros del modelo
    */
-  public function setUUID_All_ojo($long=20) {
+  public function setUUID_All_ojo(int $long=20) {
     $Todos = $this::all();
     foreach ($Todos as $reg) {
-      $reg->uuid = $this->UUIDReal($long);
-      $reg->update();
+      if (strlen($reg->uuid)==0) {
+        $reg->uuid = $this->UUIDReal($long);
+        $reg->update();
+      }
     }
   } //END-setUUID_All_ojo
   

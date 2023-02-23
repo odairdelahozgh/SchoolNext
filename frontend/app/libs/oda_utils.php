@@ -72,7 +72,11 @@ class OdaUtils extends Util {
     0 => 'Visible',
     1 => 'Invisible',
   ];
-    
+
+  const TIPO_REG_OBSERV = [
+    'ACAD' => 'Academico',
+    'DISC' => 'Disciplinario',
+  ];
   
   /**
      * Obtiene el nombre del mes (valor numérico)

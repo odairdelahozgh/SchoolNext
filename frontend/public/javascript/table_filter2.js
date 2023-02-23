@@ -1,10 +1,10 @@
 
 function myFunctionFilter() {
   var input, filter, arrayDeFilter, table, tr, td, i, td_i, td_ii, hit1, hit2;
- input = document.getElementById("inputSearch");
+ input = document.getElementById("inputSearch2");
  filter = input.value.toUpperCase().trim();
  arrayDeFilter = filter.split(" ");
-table = document.getElementById("myTable");
+table = document.getElementById("myTable2");
 tr = table.getElementsByClassName("item");
 for (tri = 0; tri < tr.length; tri++) {
   td = tr[tri].getElementsByClassName("searchTdata");
@@ -29,4 +29,4 @@ for (tri = 0; tri < tr.length; tri++) {
   }
 }
 
-document.getElementById("inputSearch").addEventListener("keyup", myFunctionFilter);
+document.getElementById("inputSearch2").addEventListener("keyup", myFunctionFilter);

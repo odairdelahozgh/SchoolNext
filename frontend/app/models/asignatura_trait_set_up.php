@@ -4,26 +4,39 @@ use Respect\Validation\Validator as validar;
 use Respect\Validation\Exceptions\NestedValidationException;
 // https://respect-validation.readthedocs.io/en/latest/
 
+
 trait AsignaturaTraitSetUp {
   
   use TraitUuid, TraitForms;
 
   public function validar($input_post) {
-    Session::set('error_validacion', '');
     try{
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
-      
-      // campos numéricos
-      validar::number()->assert($input_post['orden']);
-      validar::number()->assert($input_post['area_id']);
+      Session::set('error_validacion', '');
 
-      // campos alfanumericos
-      validar::alnum()->assert($input_post['nombre']);
-      validar::alnum()->assert($input_post['abrev']);
+      // if (!validar::digit()->length(1)->min(0)->max(1)->assert($input_post['is_active'])) {
+      //   Session::set('error_validacion', 'Error evaluando '.self::$_labels['is_active']);
+      //   return false;
+      // }
+      if (!validar::number()->assert($input_post['orden'])) {
+        Session::set('error_validacion', 'Error evaluando '.self::$_labels['orden']);
+        return false;
+      }
+      if (!validar::number()->assert($input_post['area_id'])) {
+        Session::set('error_validacion', 'Error evaluando '.self::$_labels['area_id']);
+        return false;
+      }
+      if (!validar::alnum('á','é', 'í', 'ó', 'ú')->assert($input_post['nombre'])) {
+        Session::set('error_validacion', 'Error evaluando '.self::$_labels['nombre']);
+        return false;
+      }
+      if (!validar::alnum('á','é', 'í', 'ó', 'ú')->assert($input_post['abrev'])) {
+        Session::set('error_validacion', 'Error evaluando '.self::$_labels['abrev']);
+        return false;
+      }
+      
       return true;
-    } catch(NestedValidationException $exception) {
-      Session::set('error_validacion', $exception->getFullMessage());
-      return false;
+    } catch (\Throwable $th) {
+      OdaFlash::error($th, true, 'Model:'.__CLASS__.'->'.__FUNCTION__.'() Line:'.__LINE__);
     }
   } //END-validar
 
@@ -34,10 +47,11 @@ trait AsignaturaTraitSetUp {
   private function setUp() {
     // 'calc_prom' ??? se debe eliminar
     self::$_fields_show = [
-      'all'     => ['id', 'nombre', 'abrev', 'orden', 'area_id', 'calc_prom', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
-      'index'   => ['is_active', 'nombre', 'abrev', 'orden', 'area_id'],
-      'create'  => ['nombre', 'abrev', 'orden', 'area_id'],
-      'edit'    => ['nombre', 'abrev', 'orden', 'area_id', 'is_active']
+      'all'       => ['id', 'nombre', 'abrev', 'orden', 'area_id', 'calc_prom', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
+      'index'     => ['is_active', 'nombre', 'abrev', 'orden', 'area_id'],
+      'create'    => ['nombre', 'abrev', 'orden', 'area_id'],
+      'edit'      => ['nombre', 'abrev', 'orden', 'area_id', 'is_active'],
+      'editUuid'  => ['nombre', 'abrev', 'orden', 'area_id', 'is_active'],
     ];
   
     self::$_attribs = [
@@ -47,7 +61,8 @@ trait AsignaturaTraitSetUp {
     ];
   
     self::$_defaults = [
-      'is_active'       => 1,
+      'is_active'   => 1,
+      'orden'       => 0,
     ];
   
     self::$_helps = [
@@ -59,7 +74,7 @@ trait AsignaturaTraitSetUp {
       'abrev'           => 'Abreviatura', 
       'orden'           => 'Orden de Listado', 
       'area_id'         => '&Aacute;rea',
-      'is_active'       => 'Est&aacute; Activo? ',
+      'is_active'       => 'Estado',
       'created_at'      => 'Creado el',
       'created_by'      => 'Creado por',
       'updated_at'      => 'Actualizado el',
@@ -69,10 +84,6 @@ trait AsignaturaTraitSetUp {
     self::$_placeholders = [
     ];
   
-    // numeric, int, maxlength, length, range, select, email, url, ip, required, alphanum, alpha, date, pattern, decimal, equal
-    self::$_rules_validators = [
-    ];
-
   } //END-SetUp
  
   

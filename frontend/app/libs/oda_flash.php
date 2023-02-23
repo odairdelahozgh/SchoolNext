@@ -35,12 +35,12 @@ class OdaFlash {
      * @param string $msg Mensaje a mostrar
      * @param boolean $audit Indica si el mensaje se almacena como auditoría
      */
-    public static function set($name, $msg, $audit=FALSE) { 
+    public static function set($name, $msg, $audit=FALSE, $rastreo='') { 
         $color = self::$themes[$name];
         $icon  = '<i class="fa fa-'.self::$icons[$name].'"></i>&nbsp; ';
         //Verifico si hay mensajes almacenados en sesión por otro request.
         if(self::hasMessage()) {            
-            self::$_contentMsj = Session::get('flash_message');                
+            self::$_contentMsj = Session::get('flash_message');
         }        
         //Guardo el mensaje en el array
         if (isset($_SERVER['SERVER_SOFTWARE'])) {                    
@@ -57,19 +57,19 @@ class OdaFlash {
         Session::set('flash_message', self::$_contentMsj);
         if($audit) {
             if($name=='success') {
-              OdaLog::set('NOTICE', $msg, '');
+              OdaLog::set('NOTICE', $rastreo.' '.$msg, '');
 
             } else if($name=='info') {
-              OdaLog::set('INFO', $msg, '');
+              OdaLog::set('INFO', $rastreo.' '.$msg, '');
 
             } else if($name=='warning') {
-              OdaLog::set('WARNING', $msg, '');
+              OdaLog::set('WARNING', $rastreo.' '.$msg, '');
               
             } else if($name=='danger') {
-              OdaLog::set('ERROR', $msg, '');
+              OdaLog::set('ERROR', $rastreo.' '.$msg, '');
               
             } else {
-              OdaLog::set('DEBUG', $msg, '');             
+              OdaLog::set('DEBUG', $rastreo.' '.$msg, '');
             }
         }            
     }
@@ -131,8 +131,8 @@ class OdaFlash {
      * @param string $msg
      * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function error($msg, $audit=FALSE) {
-        self::set('danger','Fall&oacute; Operaci&oacute;n: '.$msg, $audit);          
+    public static function error($msg, $audit=FALSE, $rastreo='') {
+        self::set('danger','Fall&oacute; Operaci&oacute;n: '.$msg, $audit, $rastreo);          
     }
 
     /**
@@ -141,8 +141,8 @@ class OdaFlash {
      * @param string $msg
      * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function warning($msg, $audit=FALSE) {
-        self::set('warning','Atención: '.$msg, $audit);
+    public static function warning($msg, $audit=FALSE, $rastreo='') {
+        self::set('warning','Atención: '.$msg, $audit, $rastreo);
     }
 
     /**
@@ -151,8 +151,8 @@ class OdaFlash {
      * @param string $msg
      * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function info($msg, $audit=FALSE) {
-        self::set('info',$msg, $audit);
+    public static function info($msg, $audit=FALSE, $rastreo='') {
+        self::set('info',$msg, $audit, $rastreo);
     }
     
     /**
@@ -161,8 +161,8 @@ class OdaFlash {
      * @param string $msg
      * @param boolean $autid Indica si se registra el mensaje como una auditoría
      */
-    public static function valid($msg, $audit=FALSE) {
-        self::set('success','Operaci&oacute;n exitosa: '.$msg, $audit);
+    public static function valid($msg, $audit=FALSE, $rastreo='') {
+        self::set('success','Operaci&oacute;n exitosa: '.$msg, $audit, $rastreo);
     }    
     
 }

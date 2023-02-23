@@ -1,16 +1,19 @@
-<?php
-  $model = new RegistrosGen;
-  $myForm = new OdaForm($model, 'admin/registros_gen/create_ajax', _multipart: true);
-    $myForm->setAtrib('id="form_new"');
+  <h2>New form</h2>
+  <?php
+  $model = new RegistrosGen();
+  $fieldsToHidden = $model::getFieldsHidden('create');
+  $myForm = new OdaForm($model, 'admin/registros_gen/create_ajax2', multipart: true);
     $myForm->setColumnas(2);
-    $myForm->addSelect(columna:1, field:'periodo_id', data: $model::$periodos);
-    $myForm->addInput(columna:1, tipo:'date', field:'fecha', attr:'required');
-    $myForm->addInput(columna:1, tipo:'text', field:'asunto', attr:'required');
-    $myForm->addInput(columna:1, tipo:'text', field:'acudiente', attr:'required');
-    $myForm->addInput(columna:1, tipo:'text', field:'director', attr:'required');
-    $myForm->addInput(columna:2, tipo:'file', field:'foto_acudiente', attr:'required');
-    $myForm->addInput(columna:2, tipo:'file', field:'foto_director', attr:'required');
-  $myForm->addHiddens('uuid, estudiante_id, annio, grado_id, salon_id, created_by, updated_by, created_at, updated_at');
+    $myForm->addSelect(field:'tipo_reg', columna:1, data: OdaUtils::TIPO_REG_OBSERV);
+    $myForm->addSelect(field:'periodo_id', columna:1, data: OdaUtils::PERIODOS);
+    $myForm->addInput(field:'fecha', columna:1, tipo:'date');
+    $myForm->addTextarea(field:'asunto', columna:1);
 
-  return "<div class=\"w3-container\" id=\"formulario\" style=\"display: none;\">$myForm</div>";
-?>
+    $myForm->addInput(field:'acudiente', columna:2, tipo:'text');
+    $myForm->addFile(field:'foto_acudiente', columna:2);
+    $myForm->addInput(field:'director', columna:2, tipo:'text');
+    $myForm->addFile(field:'foto_director', columna:2); 
+
+    $myForm->addHiddens(implode(",", $fieldsToHidden));
+    return "<div class=\"w3-container\" id=\"formulario\">$myForm</div>";
+  ?>

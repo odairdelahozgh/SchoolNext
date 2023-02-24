@@ -27,7 +27,6 @@ class DocentesController extends AppController
    */
   public function index() {
       $this->page_action = 'M&oacute;dulo Docentes';
-      (new RegistrosGen)->setRellenarUuid(); // ojo quitar
   }//END-index
     
 

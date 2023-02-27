@@ -6,31 +6,29 @@
 <div class="w3-container">
   
   <?php
-    echo OdaTags::meter(10, 'Titulo');
-    echo _Icons::solid('flag', 'w3-xxxlarge');
-
-    list($id, $name, $value) = array(1,2,3);
-    echo $id.'-'.$name.'-'.$value;
-
-    $array = ['locality' => 'Tunis', 'postal_code' => '1110'];
-    list('postal_code' => $zipCode, 'locality' => $locality) = $array;
-    print $zipCode; // will output 1110
-    print $locality; // will output Tunis
-
-    $names = array('Jesse', 'joey', 'jelnny', 'justine');
-    $names = new ArrayObject($names);
-
-    echo '<pre>';
-      print_r($names);
-    echo '</pre>';
-
-    $tabla = new OdaTable();
-    $tabla->setHead('col 1, col 2, col 3')
-          ->addRow('data 1-1, col 1-2, col 1-3')
-          ->addRow('data 2-1, col 2-2, col 2-3')
-          ->addRow('data 3-1, col 3-2, col 3-3')
-          ->setFoot(['--', 'Fin', '--']);
-    echo $tabla;
+    $frm = Form::Open();
+    $frm .= Form::input('text', 'test', attrs:'maxlength="10"');
+    $frm .= Form::close();
+    echo $frm;
    ?>
-
+<div id="remaining-chars"></div>
 </div>
+
+<script>
+  // Selecciona el input y establece la longitud máxima permitida
+  const input = document.querySelector('#test');
+  const maxLength = 10;
+  
+  // Función que se ejecuta cada vez que se escribe algo en el input
+  input.addEventListener('input', () => {
+    // Obtiene la longitud actual del valor del input
+    const currentLength = input.value.length;
+    
+    // Calcula la cantidad de caracteres faltantes
+    const remainingChars = maxLength - currentLength;
+    
+    // Actualiza el elemento que muestra la cantidad de caracteres faltantes
+    const remainingCharsElement = document.querySelector('#remaining-chars');
+    remainingCharsElement.textContent = `Faltan ${remainingChars} caracteres`;
+  });
+</script>

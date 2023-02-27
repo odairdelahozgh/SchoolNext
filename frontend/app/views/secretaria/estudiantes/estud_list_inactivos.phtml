@@ -13,7 +13,7 @@
                 .'<br/>'
                 .Html::linkAction("activarEstudiante/$Estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"').'<br/>';
          
-         $col2 = ((!is_null($Estud->estudiante_nombre)) ? strtoupper($Estud->estudiante_nombre) : '').'<br/>'
+         $col2 = strtoupper($Estud).'<br/>'
                 .$Estud->getCodigo() .'<br/>' 
                 .'[Último Grado: '.$Estud->grado_nombre .'</br>'
                 .'Doc: '.$Estud->documento.'</br>'

@@ -1,8 +1,11 @@
-  <h2>New form</h2>
+  <h2>Agregando Nuevo Registro</h2>
   <?php
   $model = new RegistrosGen();
   $fieldsToHidden = $model::getFieldsHidden('create');
-  $myForm = new OdaForm($model, 'admin/registros_gen/create_ajax2', multipart: true);
+  $titulo = '<h3 id="nombre_estud_new"></h3>';
+
+  $myForm = new OdaForm($model, 'admin/registros_gen/create_ajax', multipart: true);
+    $myForm->setAtrib('id="frm_new" name="frm_new"');
     $myForm->setColumnas(2);
     $myForm->addSelect(field:'tipo_reg', columna:1, data: OdaUtils::TIPO_REG_OBSERV);
     $myForm->addSelect(field:'periodo_id', columna:1, data: OdaUtils::PERIODOS);
@@ -15,5 +18,5 @@
     $myForm->addFile(field:'foto_director', columna:2); 
 
     $myForm->addHiddens(implode(",", $fieldsToHidden));
-    return "<div class=\"w3-container\" id=\"formulario\">$myForm</div>";
+    return "<div class=\"w3-container\">$titulo $myForm</div>";
   ?>

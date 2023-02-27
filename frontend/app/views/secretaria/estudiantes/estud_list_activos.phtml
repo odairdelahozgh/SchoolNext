@@ -26,21 +26,19 @@
             $lnk_act_pago = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
          }
          
-         $nombre = $Estud;
-         $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>'.$nombre.$Estud->isNuevoIco().'<br>'
-                 /*.Html::linkAction(
-                    "estud_edit_activos/$Estud->id/", 
-                    $nombre.'  '
-                    ._Icons::solid('pen-to-square', 'w3-large'), 
-                    "title=\"Click para MODIFICAR DATOS del ESTUDIANTE\"")
-                    */
-                 .$Estud->getCuentaInstit().'<br/>'
-                 .$Estud->getCodigo().'<br/>'
+         $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>' .$Estud .$Estud->isNuevoIco().'<br>'
+                 .$Estud->getCuentaInstit(true).'<br/>'
                  .$Estud->getPagoPension().'<br/>'
                  .$lnk_act_pago.'<br/>'
                  .$Estud->linkOld_BoletinPeriodo();
 
-         $col3 = $Estud->getSalonesCambiar('secretaria');
+         $col3  = $Estud->getSalonesCambiar('secretaria').'<br><br>';
+         $col3 .= $Estud->madre.' ['.$Estud->madre_id.'] '
+                  .OdaUtils::linkWhatsApp(telefono: (string)$Estud->madre_tel_1, show_tel:true)
+                  .OdaUtils::linkTelefono(telefono: (string)$Estud->madre_tel_1).'<br><br>';
+         $col3 .= $Estud->padre.' ['.$Estud->padre_id.'] '
+                  .OdaUtils::linkWhatsApp(telefono: (string)$Estud->padre_tel_1, show_tel:true)
+                  .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1).'<br>';
          $data=[$col1, $col2, $col3];
          $tabla->addRow(
             data: $data, 

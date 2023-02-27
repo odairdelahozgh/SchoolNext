@@ -53,12 +53,12 @@ trait TraitUuid {
   public function setUUID_All_ojo(int $long=20) {
     $Todos = $this::all();
     foreach ($Todos as $reg) {
-      if (strlen($reg->uuid)==0) {
+      if ( (is_null($reg->uuid)) or (0==strlen($reg->uuid)) ) {
         $reg->uuid = $this->UUIDReal($long);
         $reg->update();
       }
     }
   } //END-setUUID_All_ojo
-  
+
 
 } //END-TraitUuid

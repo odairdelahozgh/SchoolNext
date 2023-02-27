@@ -7,7 +7,10 @@
  */
  
 /* 
-'id', 'uuid', 'estudiante_id', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'fortalezas', 'dificultades', 'compromisos', 'fecha', 'acudiente', 'foto_acudiente', 'director', 'foto_director', 'created_at', 'updated_at', 'created_by', 'updated_by'
+'id', 'uuid', 'estudiante_id', 'annio', 'periodo_id', 'grado_id', 'salon_id', 
+'fortalezas', 'dificultades', 'compromisos', 'fecha', 
+'acudiente', 'foto_acudiente', 'director', 'foto_director', 
+'created_at', 'updated_at', 'created_by', 'updated_by'
 */
   
 class RegistroDesempAcad extends LiteRecord {
@@ -38,11 +41,10 @@ class RegistroDesempAcad extends LiteRecord {
     return $DQL->execute();
   }//END-getRegistrosProfesor
 
-  public function saveWithPhoto($data)
-  {
+  public function saveWithPhoto($data) {
     $this->begin();
-    if ($this->create($data)) {
-      if ($this->updatePhoto()) {
+    if ($this->update($data)) {
+      if ($this->updatePhoto($this->id)) {
         $this->commit();
         return true;
       }
@@ -51,23 +53,46 @@ class RegistroDesempAcad extends LiteRecord {
     return false;
   } //END-saveWithPhoto
 
-  public function updatePhoto()
-  {
-    if ($photo = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
-      $this->foto_acudiente = $photo; // Modifica el campo photo del usuario y lo intenta actualizar
-      return $this->update();
+  
+  public function createWithPhoto($data) {
+    $this->begin();
+    if ($this->create($data)) {
+      if ($this->updatePhoto($this->lastInsertId())) {
+        $this->commit();
+        return true;
+      }
     }
-  } //END-updatePhoto
+    $this->rollback();
+    return false;
+  } //END-saveWithPhoto
 
-  public function uploadPhoto($imageField)
-  {
-    $file = Upload::factory($imageField, 'image'); // Usamos el adapter 'image'
-    $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg')); // le asignamos las extensiones a permitir
-    if ($file->isUploaded()) { // Intenta subir el archivo
-      return $file->saveRandom(); // Lo guarda usando un nombre de archivo aleatorio y lo retorna.
+  public function updatePhoto($id) {
+    if ($foto_acudiente = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
+      $this->foto_acudiente = $foto_acudiente;
+      Session::set('foto_acudiente',$foto_acudiente);
     }
-    return false; //Si falla al subir
+    if ($foto_director = $this->uploadPhoto('foto_director')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
+      $this->foto_director = $foto_director;
+      Session::set('foto_director',$foto_director);
+    }
+    $reg = (new RegistrosGen)::get($id);
+    $reg->save([
+      'foto_acudiente' => $foto_acudiente,
+      'foto_director'  => $foto_director,
+    ]);
+    return true;
+  } //END-updatePhoto 
+
+  public function uploadPhoto($imageField)  {
+    $file = Upload::factory($imageField, 'file');
+    $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg'));
+    if ($file->isUploaded()) {
+      return $file->saveRandom('estud_reg_des_aca_com');
+    }
+    return false;
   } //END-uploadPhoto
+
+  
 
   
   public function cambiarSalonEstudiante(int $nuevo_salon_id, int $estudiante_id) {

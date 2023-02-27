@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait RegistrosGenTraitSetUp {
   
-  use TraitUuid, TraitForms, RegistrosGenTraitCorrecciones;
+  use TraitUuid, TraitForms, RegistrosGenTraitCorrecciones, RegistrosGenTraitProps;
 
   public function validar($input_post) {
     Session::set('error_validacion', '');
@@ -19,26 +19,6 @@ trait RegistrosGenTraitSetUp {
     }
   } //END-validar
 
-  // ===========
-  public function getFecha($date_format="d-M-Y") {
-    return date($date_format, strtotime($this->fecha));
-  } // END-getFecha
-  
-  // ===========
-  public function getFotoAcudiente() {
-    //if (!$this->foto_acudiente) { return 'no foto_acudiente'; }
-    $filename = 'estud_reg_observ_gen/'.$this->foto_acudiente;
-    return OdaTags::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
-  } // END-getFotoAcudiente
-  
-  // ===========
-  public function getFotoDirector() {
-    if (!$this->foto_director) { return 'no foto_director'; }
-    $filename = 'estud_reg_observ_gen/'.$this->foto_director;
-    return OdaTags::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
-  } // END-getFotoDirector
-
-  
   /**
    * CONFIGURACIÓN DEL MODELO
    */
@@ -49,8 +29,8 @@ trait RegistrosGenTraitSetUp {
                     'created_at', 'updated_at', 'created_by', 'updated_by'],
       'index'     => ['tipo_reg', 'estudiante_id', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'fecha', 'asunto'],
       'create'    => ['tipo_reg', 'periodo_id', 'fecha', 'asunto', 'acudiente', 'director'],
-      'edit'      => ['tipo_reg', 'periodo_id', 'fecha', 'asunto', 'acudiente', 'foto_acudiente', 'director', 'foto_director'],
-      'editUuid'  => ['tipo_reg', 'periodo_id', 'fecha', 'asunto', 'acudiente', 'foto_acudiente', 'director', 'foto_director'],
+      'edit'      => ['tipo_reg', 'periodo_id', 'fecha', 'asunto', 'acudiente', 'director'],
+      'editUuid'  => ['tipo_reg', 'periodo_id', 'fecha', 'asunto', 'acudiente', 'director'],
     ];
   
     self::$_attribs = [
@@ -90,9 +70,9 @@ trait RegistrosGenTraitSetUp {
       'fecha'=>'Fecha de Registro', 
       'asunto'=>'Asunto', 
       'acudiente'=>'Acudiente', 
-      'foto_acudiente'=>'Evidencia', 
-      'director'=>'Director', 
-      'foto_director'=>'Evidencia',
+      'foto_acudiente'=>'Evidencia acudiente', 
+      'director'=>'Docente', 
+      'foto_director'=>'Evidencia docente',
       
       'created_at'      => 'Creado el',
       'created_by'      => 'Creado por',

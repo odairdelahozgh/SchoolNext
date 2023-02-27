@@ -21,7 +21,7 @@ class Estudiante extends LiteRecord {
 
 
   const LIM_PAGO_PERIODOS = [ 1 => 4, 2 => 6, 3 => 9, 4 => 11, 5 => 11 ];
-   
+
   /**
    * Devuelve lista de todos los Registros.
    */
@@ -31,124 +31,138 @@ class Estudiante extends LiteRecord {
       array('t.nombres', 't.apellido1', 't.apellido2'),
       $orden
     );
+
     $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
       array('t.nombres', 't.apellido1', 't.apellido2'),
       $nombre_estud
-    );
-    $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon_nombre " : " s.nombre AS salon_nombre " ;
-    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado_nombre " : " g.nombre  AS grado_nombre " ;
-    
+    );    
     $DQL = (new OdaDql(__CLASS__))
-        ->select('t.*, s.grado_id, '.$nombre_estud.' as estudiante_nombre, de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
-        ->addSelect("s.nombre AS salon_nombre, g.nombre AS grado_nombre")
+        ->select('t.*, '.$nombre_estud.' as estudiante_nombre')
+        ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
         ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
         ->leftJoin('salon', 's')
         ->leftJoin('grado', 'g', 's.grado_id=g.id')
-        ->orderBy(self::$order_by_default);
+        ->orderBy('g.orden,'.$orden);
         
     if (!is_null($order_by)) { $DQL->orderBy($order_by); }
     if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
     return $DQL->execute();
-  } // END-getList
+  } // END-getListEstudiantes
 
-  
-  /*
-  //==============
-  public function getList(mixed $estado=null, string $orden='a1,a2,n'): array {
+  public function getListSecretaria(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
     $orden = str_replace(
       array('n', 'a1', 'a2'),
-      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
       $orden
     );
 
     $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
-      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
       $nombre_estud
-    );
-    
-    $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre AS salon " ;
-    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
+    );    
+    $DQL = (new OdaDql(__CLASS__))
+        ->select('t.*, s.grado_id, '.$nombre_estud.' as estudiante_nombre, '
+        .'de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
+        ->addSelect("s.nombre AS salon_nombre, g.nombre AS grado_nombre")
+        ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id=g.id')
+        ->orderBy('g.orden,'.$orden);
+        
+    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+    if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
+    return $DQL->execute();
+  } // END-getListSecretaria
 
-    if (is_null($estado)) { // todos
-      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
-      FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.salones')." AS s ON e.salon_id=s.id
-      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
-      ORDER BY $orden";
-      return $this::all($DQL);
-    } else {
-      $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
-      FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.salones')." AS s ON e.salon_id=s.id
-      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
-      WHERE e.is_active=?
-      ORDER BY $orden";
-      
-      return $this::all($DQL, array((int)$estado));
-    }
 
-  } // END-getList
-  
-
-  //==============
-  public function getListActivos(string $orden='a1,a2,n'): array {
+  public function getListContabilidad(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
     $orden = str_replace(
       array('n', 'a1', 'a2'),
-      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
       $orden
     );
 
     $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
-      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
       $nombre_estud
-    );
-    
-    $salon = (self::$session_username=='admin') ? " CONCAT('[',s.id,'] ',s.nombre) AS salon " : " s.nombre  AS salon " ;
-    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
-    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $salon, $grado
-      FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.salones')." AS s ON e.salon_id=s.id
-      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
-      WHERE e.is_active=1
-      ORDER BY $orden";
-    
-    return $this::all($DQL);
-  } // END-getList
-  
-  
-  //==============
-  public function getListInactivos(string $orden='a1,a2,n'): array {
+    );    
+    $DQL = (new OdaDql(__CLASS__))
+        ->select('t.*, s.grado_id, '.$nombre_estud.' as estudiante_nombre, '
+        .'de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
+        ->addSelect("s.nombre AS salon_nombre, g.nombre AS grado_nombre")
+        ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id=g.id')
+        ->orderBy('g.orden,'.$orden);
+        
+    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+    if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
+    return $DQL->execute();
+  } // END-getListContabilidad
+
+
+  public function getListSicologia(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
     $orden = str_replace(
       array('n', 'a1', 'a2'),
-      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
       $orden
     );
 
     $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
     $nombre_estud = str_replace(
       array('n', 'a1', 'a2'),
-      array('e.nombres', 'e.apellido1', 'e.apellido2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
       $nombre_estud
+    );    
+    $DQL = (new OdaDql(__CLASS__))
+        ->select('t.*, s.grado_id, '.$nombre_estud.' as estudiante_nombre, '
+        .'de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
+        ->addSelect("s.nombre AS salon_nombre, g.nombre AS grado_nombre")
+        ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id=g.id')
+        ->orderBy('g.orden,'.$orden);
+        
+    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+    if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
+    return $DQL->execute();
+  } // END-getListSicologia
+
+
+
+  public function getListEnfermeria(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
+    $orden = str_replace(
+      array('n', 'a1', 'a2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
+      $orden
     );
 
-    $grado = (self::$session_username=='admin') ? " CONCAT('[',g.id,'] ',g.nombre) AS grado " : " g.nombre  AS grado " ;
-    $DQL = "SELECT e.*, $nombre_estud AS nombre_estudiante, $grado
-      FROM ".self::$table." AS e
-      LEFT JOIN ".Config::get('tablas.grados')." AS g ON e.grado_mat=g.id
-      WHERE e.is_active=0
-      ORDER BY $orden";
-    
-    return $this::all($DQL);
-  } // END-getList
-  
-   
-   */
+    $nombre_estud = "CONCAT(a1, ' ', a2, ' ', n)";
+    $nombre_estud = str_replace(
+      array('n', 'a1', 'a2'),
+      array('t.nombres', 't.apellido1', 't.apellido2'),
+      $nombre_estud
+    );    
+    $DQL = (new OdaDql(__CLASS__))
+        ->select('t.*, s.grado_id, '.$nombre_estud.' as estudiante_nombre, '
+        .'de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
+        ->addSelect("s.nombre AS salon_nombre, g.nombre AS grado_nombre")
+        ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id=g.id')
+        ->orderBy('g.orden,'.$orden);
+        
+    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+    if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
+    return $DQL->execute();
+  } // END-getListEnfermeria
+
 
   /**
    * 
@@ -156,7 +170,7 @@ class Estudiante extends LiteRecord {
   public function getListPorProfesor(int $user_id): array {
     $salones = '';
     $CargaProfe = (new CargaProfesor)->getSalonesCarga($user_id);
-    foreach ($CargaProfe as $key => $carga) {
+    foreach ($CargaProfe as $carga) {
       $salones .= $carga->salon_id.",";
     }
     $salones = substr($salones,0,-1);
@@ -165,7 +179,7 @@ class Estudiante extends LiteRecord {
             LEFT JOIN ".Config::get('tablas.salones')." as s ON e.salon_id=s.id
             WHERE s.id IN($salones)";
     return $this::all($DQL);
-  } // END-
+  } // END-getListPorProfesor
 
   
     /**
@@ -188,13 +202,13 @@ class Estudiante extends LiteRecord {
               6 => array(21=>'06-A',25=>'06-B', 20=>'07-A',28=>'07-B'),
               7 => array(20=>'07-A',28=>'07-B', 19=>'08-A',31=>'08-B'),
               8 => array(19=>'08-A',31=>'08-B', 18=>'09-A',34=>'09-B'),
-              9 => array(18=>'09-A',34=>'09-B', 17=>'10-A'),
-              10 => array(17=>'10-A', 16=>'11-A',36=>'11-B'),
+              9 => array(18=>'09-A',34=>'09-B', 17=>'10-A', 35=>'10-B'),
+              10 => array(17=>'10-A', 35=>'10-B', 16=>'11-A',36=>'11-B'),
               11 => array(16=>'11-A',36=>'11-B'),
               12 => array(15=>'PV-A', 10=>'PK-A'),
               13 => array(10=>'PK-A', 12=>'KD-A'),
               14 => array(12=>'KD-A', 9=>'TN-A'),
-              15 => array(9=>'TN-A',  1=>'01-A',2=>'01-B'),
+              15 => array(9=>'TN-A',  1=>'01-A'),
           );
 
           if ( array_key_exists($this->grado_mat, $salonesSig) ) {

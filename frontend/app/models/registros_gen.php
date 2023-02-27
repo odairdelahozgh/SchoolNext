@@ -45,6 +45,20 @@ class RegistrosGen extends LiteRecord {
   public function saveWithPhoto($data)
   {
     $this->begin();
+    if ($this->update($data)) {
+      if ($this->updatePhoto($this->id)) {
+        $this->commit();
+        return true;
+      }
+    }
+    $this->rollback();
+    return false;
+  } //END-saveWithPhoto
+
+  
+  public function createWithPhoto($data)
+  {
+    $this->begin();
     if ($this->create($data)) {
       if ($this->updatePhoto($this->lastInsertId())) {
         $this->commit();

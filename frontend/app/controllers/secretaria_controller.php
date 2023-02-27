@@ -14,13 +14,13 @@ class SecretariaController extends AppController
     
     public function listadoEstudActivos() {
       $this->page_action = 'Listado de Estudiantes Activos';
-      $this->data = (new Estudiante)->getListEstudiantes(estado:1);
+      $this->data = (new Estudiante)->getListSecretaria(estado:1);
       View::select('estudiantes/estud_list_activos');
     } // END-listadoEstudActivos
     
     public function listadoEstudInactivos() {
       $this->page_action = 'Listado de Estudiantes Inactivos';
-      $this->data = (new Estudiante)->getListEstudiantes(estado:0);
+      $this->data = (new Estudiante)->getListSecretaria(estado:0);
       View::select('estudiantes/estud_list_inactivos');
     } // END-listadoEstudInactivos
     
@@ -77,13 +77,14 @@ class SecretariaController extends AppController
   /**
    * Cambiar de salon a un estudiante: /secre-estud-list-activos
    */
-  public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {
+  public function cambiar_salon_estudiante(int $estudiante_id, int $nuevo_salon_id, bool $cambiar_en_notas = true) {
     try {
       $this->page_action = 'Cambiar Sal&oacute;n Estudiante';
-      if ((new Estudiante)->setCambiarSalon($estudiante_id, $salon_id, $cambiar_en_notas) ) {
-        OdaFlash::valid(msg: "$this->page_action: ");
+      $Estud = (new Estudiante)->get($estudiante_id);
+      if ($Estud->setCambiarSalon($estudiante_id, $nuevo_salon_id, $cambiar_en_notas) ) {
+        OdaFlash::valid(msg: "$this->page_action: $Estud");
       } else {
-        OdaFlash::error(msg: "$this->page_action: ");
+        OdaFlash::error(msg: "$this->page_action: $Estud");
       }
     } catch (\Throwable $th) {
       OdaLog::error($th);

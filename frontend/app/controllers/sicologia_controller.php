@@ -11,11 +11,12 @@ class SicologiaController extends AppController
     public function index() {
       $this->page_action = 'M&oacute;dulo Sicolog&iacute;a';
     }
-
     
     public function estudiantes() {
       $this->page_title = 'Estudiantes Activos';
-      $this->data = (new Estudiante)->getList();
+      $this->data = (new Estudiante)->getListSicologia(estado:1);
+      View::select('estudiantes/index');
     }
     
+
 } // END CLASS

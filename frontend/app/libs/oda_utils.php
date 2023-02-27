@@ -358,6 +358,16 @@ class OdaUtils extends Util {
       return $cadena;
     } // END-pluralize
 
+  public static function linkWhatsApp(string $telefono, string $caption='link WhatsApp', $show_tel=false) {
+    $text = ($show_tel) ? $telefono : '' ;
+    return "$text <a title=\"$caption\" href=\"whatsapp://send?phone=$telefono\">"._Icons::brands('whatsapp', 'w3-large').'</a>';
+  }
+
+  public static function linkTelefono(string $telefono, string $caption='link Llamada', $show_tel=false) {
+    $text = ($show_tel) ? $telefono : '' ;
+    return "$text <a title=\"$caption\" href=\"tel:$telefono\">"._Icons::solid('square-phone', 'w3-large').'</a>';
+  }
+
 
     /**
      * Escribe en letras un monto numerico
@@ -542,6 +552,8 @@ function miles($a=1){
 	return value_num($a)." MIL ";
     }
 }
+
+
 
 
 ?>

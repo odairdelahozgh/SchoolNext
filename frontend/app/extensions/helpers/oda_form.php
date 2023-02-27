@@ -28,12 +28,6 @@ class OdaForm extends Form {
    ];
 
    /**
-    * @param string        $modelo: modelo de datos que usará.
-    * @param string        $action: accion del formulario.
-    * @param int           $max_cols: número de columnas del formulario.
-    * @param string        $method: método HTTP que usará el formulario.
-    * @param string/array  $attr: atributos html.
-    * @return void
     * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
     * @source  frontend\app\extensions\helpers\odaodaform.php
     */
@@ -84,12 +78,6 @@ class OdaForm extends Form {
  
    /**
     * Retorna un campos Input dependiendo del "tipo".
-    * @param integer           $columna:  Columna en la que se muestrará el elemento.
-    * @param string            $tipo:     Tipo de input (text, number, etc).
-    * @param string            $field:    Nombre del campo en la tabla.
-    * @param string|Integer    $value:    Valor por defecto.
-    * @param string/array      $attr:     atributos html.
-    * @return string
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
@@ -118,12 +106,6 @@ class OdaForm extends Form {
    }
    /**
     * Retorna un campos Input dependiendo del "tipo".
-    * @param integer           $columna:  Columna en la que se muestrará el elemento.
-    * @param string            $tipo:     Tipo de input (text, number, etc).
-    * @param string            $field:    Nombre del campo en la tabla.
-    * @param string|Integer    $value:    Valor por defecto.
-    * @param string/array      $attr:     atributos html.
-    * @return string
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
@@ -141,12 +123,6 @@ class OdaForm extends Form {
    
    /**
     * Retorna un campos Texarea.
-    * @param integer           $columna:  Columna en la que se muestrará el elemento.
-    * @param string            $tipo:     Tipo de input (text, number, etc).
-    * @param string            $field:    Nombre del campo en la tabla.
-    * @param string|Integer    $value:    Valor por defecto.
-    * @param string/array      $attr:     atributos html.
-    * @return string
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
@@ -161,16 +137,8 @@ class OdaForm extends Form {
       $this->_ffields[$columna] .= "<br><label>$label" .$campo_textarea .$help ."</label>";
    } // END-addTextarea
 
- 
-
-
    /**
     * Retorna un campo Select.
-    * @param integer           $columna:  Columna en que se muestra.
-    * @param string            $field:    Nombre del campo en la tabla.
-    * @param string|Integer    $value:    Valor por defecto.
-    * @param string/array      $attr:     atributos html.
-    * @return string
     * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
     */
    public function addSelect(int $columna, string $field, array $data, string $attr='') {
@@ -188,9 +156,6 @@ class OdaForm extends Form {
    
    /**
     * Retorna un campo CHECKBOX.
-    * @param integer           $columna: Columna en que se muestra.
-    * @param string            $field:   Nombre del campo en la tabla.
-    * @param string/array      $attrs:   Atributos html.
     * @example echo $myForm->addCheck(2, 'is_active', 'class="w3-red"');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
     */
@@ -209,11 +174,6 @@ class OdaForm extends Form {
    
    /**
     * Retorna un campos radio button.
-    * @param string            $field:      Nombre del campo en la tabla.
-    * @param string|Integer    $radioValue: Valor por defecto.
-    * @param string/array      $attrs:      atributos html.
-    * @param bool              $checked:    .
-    * @return string
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
@@ -259,8 +219,6 @@ class OdaForm extends Form {
 
    /**
     * Establece el número de columnas que tendrá el formuario.
-    * @param int $max_cols: número de columnas del formulario.
-    * @return void
     * @example echo $myForm->setColumnas(2);
     */
    public function setColumnas(int $max_cols=1) {
@@ -269,8 +227,6 @@ class OdaForm extends Form {
 
    /**
     * Establece los atributos que tendrá el formuario.
-    * @param string|array $attrs: atributos.
-    * @return void
     * @example echo $myForm->setColumnas(2);
     */
    public function setAtrib(string|array $attrs = '') {
@@ -311,8 +267,6 @@ class OdaForm extends Form {
 
    /**
     * Establece cuáles campos serán ocultos (type="hide") en el formulario.
-    * @param  string  $fields  Lista de campos (separados por coma).
-    * @return string
     * @example        echo $myForm->setHiddens('id, created_by, updated_by, created_at, updated_at, is_active');
     */
     public function addHiddens($fields='id') {
@@ -321,7 +275,6 @@ class OdaForm extends Form {
 
    /**
     * Retorna todos los campos tipo "hidden" que están en $_fhiddens.
-    * @return string
     * @example echo OdaForm->getHiddens();
     */
    public function getHiddens() {
@@ -337,7 +290,6 @@ class OdaForm extends Form {
 
    /**
     * Crea un Input 'Search' para filtrar dentro de una tabla de datos
-    * @return string
     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search
     * @example echo OdaForm::inputSerach();
     */
@@ -357,7 +309,6 @@ class OdaForm extends Form {
 
   /**
    * Crea un Input 'Range'
-   * @return string
    * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
    * @example echo OdaForm::inputRango(id: 'ir1', caption: 'Rango de Valores', value: 5, min:0, max=10, step=1)
    */
@@ -386,8 +337,6 @@ class OdaForm extends Form {
 
     /**
      * Crea un fieldset
-     *
-     * @return string
      * @example echo OdaForm->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
      * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
      * */
@@ -401,8 +350,6 @@ class OdaForm extends Form {
     
     /**
      * Convierte los argumentos de un metodo de parametros por nombre a un string con los atributos
-     *
-     * @param string|array $params argumentos a convertir
      * @return string
      */
    public static function getAttrs($params) {
@@ -416,11 +363,6 @@ class OdaForm extends Form {
   
    /**
     * Crea un tag HTML
-    *
-    * @param string $tag nombre de tag
-    * @param string|null $content contenido interno
-    * @param string|array $attrs atributos para el tag
-    * @return string
     * */
    public static function createTag($tag, $content = null, $attrs = '') {
       if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }

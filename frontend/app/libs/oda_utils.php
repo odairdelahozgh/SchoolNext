@@ -349,7 +349,7 @@ class OdaUtils extends Util {
      * Devuelve el singular de un texto
      */
     public static function singularize(string $cadena): string {
-      $excepciones = ['estudiantes'=>'estudiante'];
+      $excepciones = ['estudiantes'=>'estudiante', 'cargas'=>'SalAsigProf'];
       if (array_key_exists($cadena, $excepciones)) {
         return $excepciones[$cadena];
       }

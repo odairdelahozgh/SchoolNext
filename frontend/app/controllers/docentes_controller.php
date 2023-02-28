@@ -154,5 +154,14 @@ class DocentesController extends AppController
   }//END-notas
 
 
+  /**
+   * notas/notasCalificar
+   */
+  public function perfilUsuario() {
+    $this->page_action = 'Perfil del Usuario';
+    //$this->data = (array)(new Usuario())::get($this->user_id);
+    View::select('perfilUsuario/index');
+  }//END-perfilUsuario
+
 
 } // END CLASS

@@ -25,19 +25,20 @@ class Empleado extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
-    $DQL = new OdaDql(self::$class_name);
-    $DQL->select($select)
-        ->where('t.username<>t.documento')
-        ->orderBy(self::$order_by_default);
-   if (!is_null($order_by)) { $DQL->orderBy($order_by); }
-   
-   if (!is_null($estado)) { 
-    $DQL->AndWhere('t.is_active=?')
-      ->setParams([$estado]);
-   }
-   return $DQL->execute();
- } // END-getList
+ public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
+  $DQL = new OdaDql('usuario');
+  $DQL->select("t.*")
+      ->concat(concat: ['t.nombres', 't.apellido1', 't.apellido2'], alias:'nombre')
+      ->where('t.username<>t.documento')
+      ->orderBy(self::$order_by_default);
+
+  if (!is_null($estado)) { $DQL->andWhere("t.is_active=$estado"); }
+
+  if (!is_null($order_by)) { 
+    $DQL->orderBy($order_by); 
+  }
   
-  
+  return $DQL->execute();
+}
+
 } //END-CLASS

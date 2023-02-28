@@ -24,12 +24,18 @@
         if ('is_active'==$field) {
           $dato = $item_data->is_active_f(true);
         }
-        $field_with_name = substr($field, 0, strlen($field)-3).'_nombre'; 
-        if ( ( str_ends_with($field, '_id')) && (in_array($field_with_name, $fieldsToShow)) ) {
-          $dato = '['.$item_data->$field.'] '.$item_data->$field_with_name;
-        }
+
         if ('nombre'==$field) {
           $dato = '['.$item_data->id.'] '.$item_data->$field;
+        }
+
+        if (str_ends_with($field, '_id')) {
+          $field_with_name = substr($field, 0, strlen($field)-3).'_nombre';
+          if (isset($item_data->$field_with_name) ) {
+            $dato = '['.$item_data->$field.'] '.$item_data->$field_with_name;
+          } else {
+            $dato = '['.$item_data->$field.'] '.$item_data->$field;
+          }
         }
         $arrFields[] = $dato;
       }

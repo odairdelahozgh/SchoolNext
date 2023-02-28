@@ -75,34 +75,34 @@ class OdaForm extends Form {
   } // END-getFields
  
 
- 
    /**
     * Retorna un campos Input dependiendo del "tipo".
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
+    * week url time text tel submit search reset range radio password number month image hidden file email datetime-local date color checkbox button
     */
-   public function addInput(int $columna=1, string $tipo='input', string $field='', $attr='', $inline=false) {
+   public function addInput(int $columna=1, string|bool $tipo=null, string $field='', $attr='', $inline=false) {
       $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = $this->_fname.'.'.trim($field);
       $label      = $this->getLabel($field, $inline);
       $help       = $this->getHelp($field);
       $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-
-      $campo_input = $this::input($tipo, $fieldname, $attr, $value);
+      $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
+      $campo_input = $this::input($widget, $fieldname, $attr, $value);
       $this->_ffields[$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label>";
    } // END-addInput
 
+   /**
+    * Retorna un campo FILE.
+    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+    */
    public function addFile(int $columna=1, string $field='', $attr='', $inline=false) {
     $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-    //$fieldname  = $this->_fname.'.'.trim($field);
     $fieldname  = trim($field);
     $label      = $this->getLabel($field, $inline);
     $help       = $this->getHelp($field);
-    
     $campo_file  = $this::file($fieldname, $attr);
-
     $this->_ffields[$columna] .= "<br><label> $label" .$campo_file .$help ."</label>";
-
    }
    /**
     * Retorna un campos Input dependiendo del "tipo".
@@ -264,6 +264,10 @@ class OdaForm extends Form {
       return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : '') ;
    } // END-getAttrib
 
+
+   private function getWidget($field) {
+    return (($this->_modelo->getWidget($field)) ? $this->_modelo->getWidget($field) : 'input') ;
+  } // END-getWidget
 
    /**
     * Establece cuáles campos serán ocultos (type="hide") en el formulario.

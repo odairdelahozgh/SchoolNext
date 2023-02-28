@@ -21,7 +21,7 @@ class Empleado extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.usuario');
-    self::$order_by_default = 't.is_active DESC, t.username';
+    self::$order_by_default = 't.is_active DESC, t.created_at DESC';
     $this->setUp();
   } //END-__construct
 

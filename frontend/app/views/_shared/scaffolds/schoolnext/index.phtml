@@ -32,7 +32,7 @@
         if (str_ends_with($field, '_id')) {
           $field_with_name = substr($field, 0, strlen($field)-3).'_nombre';
           if (isset($item_data->$field_with_name) ) {
-            $dato = '['.$item_data->$field.'] '.$item_data->$field_with_name;
+            $dato = '['.$item_data->$field.'] '.OdaUtils::nombrePersona($item_data->$field_with_name);
           } else {
             $dato = '['.$item_data->$field.'] '.$item_data->$field;
           }

@@ -4,6 +4,7 @@ trait TraitForms {
   /// PARA TODOS LO SMODELOS !!
   protected static $_fields_show = ['all'=>[], 'index'=>[], 'create'=>[1=>[], 2=>[]], 'edit'=>[1=>[], 2=>[]], 'editUuid'=>[1=>[], 2=>[]]];
   protected static $_attribs      = [];
+  protected static $_widgets      = [];
   protected static $_defaults     = [];
   protected static $_helps        = [];
   protected static $_labels       = [];
@@ -16,6 +17,7 @@ trait TraitForms {
   public static function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }
   public static function getHelp($field)        { return ((array_key_exists($field, self::$_helps)) ? self::$_helps[$field]: ''); }
   public static function getAttrib($field)      { return ((array_key_exists($field, self::$_attribs)) ? self::$_attribs[$field]: ''); }
+  public static function getWidget($field)      { return ((array_key_exists($field, self::$_widgets)) ? self::$_widgets[$field]: 'input'); }
   public static function getValidators($field)  { return ((array_key_exists($field, self::$_rules_validators)) ? self::$_rules_validators[$field]: ''); }
   
   public static function getFieldsShow(string $show='index', bool $show_labels = false): array {

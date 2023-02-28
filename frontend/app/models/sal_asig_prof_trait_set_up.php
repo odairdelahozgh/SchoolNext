@@ -25,10 +25,10 @@ trait SalAsigProfTraitSetUp {
   private function setUp() {
 
     self::$_fields_show = [
-      'all'     => ['id', 'uuid', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
-      'index'   => ['id', 'uuid',  'created_at', 'updated_at', 'is_active'],
-      'create'  => ['id', 'uuid', ],
-      'edit'    => ['id', 'uuid',  'is_active']
+      'all'     => ['id', 'salon_id', 'asignatura_id', 'user_id', 'pend_cal_p1', 'pend_cal_p2', 'pend_cal_p3', 'pend_cal_p4', 'pend_cal_p5'],
+      'index'   => ['id', 'salon_id', 'asignatura_id', 'user_id'],
+      'create'  => ['salon_id', 'asignatura_id', 'user_id', 'pend_cal_p1', 'pend_cal_p2', 'pend_cal_p3', 'pend_cal_p4', 'pend_cal_p5'],
+      'edit'    => ['salon_id', 'asignatura_id', 'user_id', 'pend_cal_p1', 'pend_cal_p2', 'pend_cal_p3', 'pend_cal_p4', 'pend_cal_p5'],
     ];
   
     self::$_attribs = [

@@ -12,16 +12,16 @@ trait AsignaturaTraitSetUp {
   public function validar($input_post) {
     try{
       Session::set('error_validacion', '');
-
-      // if (!validar::digit()->length(1)->min(0)->max(1)->assert($input_post['is_active'])) {
-      //   Session::set('error_validacion', 'Error evaluando '.self::$_labels['is_active']);
-      //   return false;
-      // }
-      if (!validar::number()->assert($input_post['orden'])) {
-        Session::set('error_validacion', 'Error evaluando '.self::$_labels['orden']);
+      /*
+      if (!validar::digit()->length(1)->min(0)->max(1)->assert($input_post['is_active'])) {
+        Session::set('error_validacion', 'Error evaluando '.self::$_labels['is_active']);
         return false;
       }
-      if (!validar::number()->assert($input_post['area_id'])) {
+      if (!validar::digit()->assert($input_post['orden'])) {
+        Session::set('error_validacion', 'Error evaluando '.self::$_labels['orden'].' ['.gettype($input_post['orden']).']');
+        return false;
+      }
+      if (!validar::digit()->assert($input_post['area_id'])) {
         Session::set('error_validacion', 'Error evaluando '.self::$_labels['area_id']);
         return false;
       }
@@ -33,7 +33,7 @@ trait AsignaturaTraitSetUp {
         Session::set('error_validacion', 'Error evaluando '.self::$_labels['abrev']);
         return false;
       }
-      
+      */
       return true;
     } catch (\Throwable $th) {
       OdaFlash::error($th, true, 'Model:'.__CLASS__.'->'.__FUNCTION__.'() Line:'.__LINE__);
@@ -53,7 +53,12 @@ trait AsignaturaTraitSetUp {
       'edit'      => ['nombre', 'abrev', 'orden', 'area_id', 'is_active'],
       'editUuid'  => ['nombre', 'abrev', 'orden', 'area_id', 'is_active'],
     ];
-  
+    
+    self::$_widgets = [
+      'is_active'   => 'select',
+      'orden'       => 'number',
+    ];
+
     self::$_attribs = [
       'nombre'      => 'required',
       'abrev'       => 'required',

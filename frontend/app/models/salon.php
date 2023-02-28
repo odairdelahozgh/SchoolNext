@@ -39,7 +39,6 @@ class Salon extends LiteRecord {
     return true;
   } */
 
-  
   /**
    * Devuelve lista de Salones.
    */

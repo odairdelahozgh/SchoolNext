@@ -13,20 +13,6 @@ trait SalonTraitSetUp {
   public function validar($input_post) {
     Session::set('error_validacion', '');
     try {
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
-      validar::alnum()->assert($input_post['nombre']);
-      if ($input_post['director_id']) {
-        validar::number()->assert($input_post['director_id']);
-      }
-      if ($input_post['codirector_id']) {
-        validar::number()->assert($input_post['codirector_id']);
-      }
-      if ($input_post['position']) {
-        validar::number()->assert($input_post['position']);
-      }
-      if ($input_post['tot_estudiantes']) {
-        validar::number()->assert($input_post['tot_estudiantes']);
-      }
       return true;
     } catch(NestedValidationException $exception) {
       Session::set('error_validacion', $exception->getFullMessage());
@@ -41,7 +27,7 @@ trait SalonTraitSetUp {
 
     self::$_fields_show = [
       'all'      => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at'],
-      'index'    => ['is_active', 'nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'],
+      'index'    => ['is_active', 'nombre', 'grado_nombre', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'],
       'create'   => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
       'edit'     => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
       'editUuid' => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
@@ -90,8 +76,11 @@ trait SalonTraitSetUp {
     self::$_labels = [
       'nombre'            => 'Salon',
       'grado_id'          => 'Grado',
+      'grado_nombre'      => 'Grado',
       'director_id'       => 'Director',
+      'director_nombre'       => 'Director',
       'codirector_id'     => 'Codirector',
+      'codirector_nombre'     => 'Codirector',
       'position'          => 'Orden',
       'tot_estudiantes'   => 'Total Estudiantes',
       'print_state1'      => 'Estado Impresión P1',

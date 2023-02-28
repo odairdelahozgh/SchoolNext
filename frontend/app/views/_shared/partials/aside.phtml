@@ -1,5 +1,6 @@
 <?php
   $theme=Session::get('theme');
+  $modulo = Session::get('modulo');
 ?>
 <nav class="w3-sidebar w3-collapse w3-theme-<?=$theme?> w3-animate-left" 
      style="z-index:3;width:250px;" id="mySidebar">
@@ -29,7 +30,7 @@
       <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
       <br/>
         <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'envelope').'&nbsp;'; ?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'user-gear').'&nbsp;';?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon("$modulo/perfilUsuario", 'user-gear').'&nbsp;';?></span>
         <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'gear').'&nbsp;';?></span>
         
     </div>
@@ -42,7 +43,6 @@
 
 
   <!-- MENÚ DEL SISTEMA -->
-  <?php $modulo = Session::get('modulo'); ?>
   <div class="w3-bar-block w3-row">
     <a href="/" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" 
     onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>

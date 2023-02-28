@@ -21,8 +21,8 @@ trait EmpleadoTraitProps {
   } //getNombreCompleto
 
   public function getCuentaInstit($show_ico=false) { 
-    $ico = ($show_ico) ? OdaTags::img(src:'msteams_logo.svg', attrs:'width="16"', err_message:'').' ' : 'MS Teams: ' ;
-    return $ico.(($this->usuario_instit) ? $this->usuario_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit : 'No tiene usuario en plataforma'); 
+    $ico = ($show_ico) ? OdaTags::img(src:'msteams_logo.svg', attrs:'width="16"', err_message:'').' ' : '' ;
+    return $ico.(($this->usuario_instit) ? $this->usuario_instit.'@'.Config::get('config.institution.dominio').'<br>Clave: '.$this->clave_instit : 'No tiene usuario en plataforma'); 
   }
   
   public function getFoto($max_width=80) { 

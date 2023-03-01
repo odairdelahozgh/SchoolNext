@@ -1,0 +1,47 @@
+<?php 
+  $Usuario = (new Empleado())::get($user_id);
+?>
+<div class="w3-container">
+   <?= View::flash().View::Encab($controller_name, $page_action, '') ?>
+</div>
+
+<div class="w3-container">
+  <div class="w3-row w3-center">
+    <div class="w3-card-4 w3-dark-grey">
+      <div class="w3-container w3-center">
+      <?= OdaTags::img_docente(Session::get('documento'), Session::get('sexo'), Session::get('id'),'class="w3-circle w3-margin-right" style="width:100px"') ?>
+        <h3><?= $Usuario->getNombreCompleto() ?></h3>
+        <h4><?= $Usuario->cargo ?></h4>
+      </div>
+    </div>
+  </div>
+  
+  <br>
+  <div class="w3-cell-row">
+    <div class="w3-container w3-cell w3-dark-grey">
+      <br>
+      <?php 
+        $tabla = new OdaTable();
+        $tabla->addRow(data: ['Documento', $Usuario->documento ]);
+        $tabla->addRow(data: ['Direccion', $Usuario->direccion ]);
+        $tabla->addRow(data: ['Email', $Usuario->email ]);
+        $tabla->addRow(data: ['Teléfono(s)', "$Usuario->telefono1 $Usuario->telefono2" ]);
+        $tabla->addRow(data: ['Fecha Nac.', $Usuario->fecha_nac ]);
+        echo $tabla;
+        ?>
+      <br>
+    </div>
+    <div class="w3-container w3-cell w3-dark-grey">
+      <br>
+      <?php 
+        $tabla = new OdaTable();
+        $tabla->addRow(data: ['Username', "$Usuario->username [$Usuario->id]" ]);
+        $tabla->addRow(data: ['MS TEAMS', $Usuario->getCuentaInstit() ]);
+        $tabla->addRow(data: ['Roll', $Usuario->roll ]);
+        $tabla->addRow(data: ['Fecha Ingreso', $Usuario->fecha_ing ]);
+        echo $tabla;
+        ?>
+      <br>
+    </div>
+  </div>
+</div>

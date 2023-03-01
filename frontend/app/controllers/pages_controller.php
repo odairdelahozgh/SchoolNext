@@ -38,4 +38,9 @@ class PagesController extends AppController
         array_unshift($params, $name);
         View::select(implode('/', $params));
     }
-}
+
+    public function miperfil() {
+      $this->page_action = 'Mi Perfil';
+    }
+
+} //END-CLASS

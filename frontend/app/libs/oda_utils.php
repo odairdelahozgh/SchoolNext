@@ -169,6 +169,10 @@ class OdaUtils extends Util {
       return self::nombrePersona($new_string);
     } // END-nombrePersona
   
+    static function eliminarTildes($texto) {
+      return strtr($texto, "áéíóúÁÉÍÓÚüÜ", "aeiouAEIOUuU");
+    }
+
   /***
    * Retorna una cadena limpia de caracteres no deseados
    */

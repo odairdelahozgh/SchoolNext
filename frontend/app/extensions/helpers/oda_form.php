@@ -109,14 +109,15 @@ class OdaForm extends Form {
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
-    public function addInput2(int $columna=1, string $tipo='input', string $field='', $attr='', $inline=true) {
+    public function addInput2(int $columna=1, string|bool $tipo=null, string $field='', $attr='', $inline=true) {
       $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = $this->_fname.'.'.trim($field);
+      $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
       $label      = $this->getLabel($field, $inline);
       $help       = $this->getHelp($field);
       $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
 
-      $campo_input = $this::input($tipo, $fieldname, $attr, $value);
+      $campo_input = $this::input($widget, $fieldname, $attr, $value);
       $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<label>$label" .$campo_input."</label>";
    } // END-addInput
 

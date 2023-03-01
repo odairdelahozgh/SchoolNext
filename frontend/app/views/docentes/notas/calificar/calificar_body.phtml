@@ -3,7 +3,7 @@
    <?php
       $result = '';
       $tabla = new OdaTable();
-      echo OdaForm::inputRango('r1', 'Rango Test', 4, 0, 10, 2);
+      echo OdaForm::inputRango('r1', 'Rango Test', 0, 0, 100, 1);
 
       foreach ($data as $reg_nota) {
             $registro = require('calificarForm.phtml');

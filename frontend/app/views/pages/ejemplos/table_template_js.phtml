@@ -17,7 +17,19 @@
   </tr>
 </template>
 
+<form>
+  <label for="texto">Texto:</label>
+  <input type="text" id="texto" name="texto" oninput="eliminarTildes()">
+</form>
+
 <script>
+
+function eliminarTildes() {
+  const textoConTildes = document.getElementById("texto").value;
+  const textoSinTildes = textoConTildes.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  document.getElementById("texto").value = textoSinTildes;
+}
+
   // Comprobar si el navegador soporta el elemento HTML template element chequeando
 // si tiene el atributo 'content'
 if ('content' in document.createElement('template')) {

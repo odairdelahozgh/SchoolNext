@@ -37,7 +37,6 @@ return [
         '/notas'                    => 'docentes/listNotas',
         '/docen-indicadores'        => 'docentes/listIndicadores',
         '/indicadores'              => 'docentes/listIndicadores',
-        '/docen-perfil'             => 'docentes/perfilUsuario',
         
         //'/coord-consoli-notas'   => 'coordinador/consolidado_notas',
         //'/coord-consoli-notas'   => 'coordinador/consolidado',

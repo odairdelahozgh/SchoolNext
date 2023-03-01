@@ -26,7 +26,7 @@
         }
 
         if ('nombre'==$field) {
-          $dato = '['.$item_data->id.'] '.$item_data->$field;
+          $dato = '['.$item_data->id.'] '.OdaUtils::nombrePersona($item_data->$field);
         }
 
         if (str_ends_with($field, '_id')) {
@@ -41,7 +41,7 @@
       }
 
       $arrBody = [$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar, ...$arrFields];
-      $tabla->addRow($arrBody, attrs_td: [null, null, 'class="searchTdata"']);
+      $tabla->addRow($arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"']);
     }
     echo $tabla;
     echo "<h4>Total Registros: $tot_regs</h4>";

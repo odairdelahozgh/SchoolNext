@@ -21,14 +21,14 @@ class Empleado extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.usuario');
-    self::$order_by_default = 't.is_active DESC, t.created_at DESC';
+    self::$order_by_default = 't.is_active DESC, t.apellido1, t.apellido2, t.nombres';
     $this->setUp();
   } //END-__construct
 
  public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
   $DQL = new OdaDql('usuario');
   $DQL->select("t.*")
-      ->concat(concat: ['t.nombres', 't.apellido1', 't.apellido2'], alias:'nombre')
+      ->concat(concat: ['t.apellido1', 't.apellido2', 't.nombres'], alias:'nombre')
       ->where('t.username<>t.documento')
       ->orderBy(self::$order_by_default);
 

@@ -40,7 +40,7 @@ class SalAsigProf extends LiteRecord {
         $DQL->andWhere('t.user_id=?');
         $DQL->setParams([$user_id]);
     }
-    return $DQL->execute(true);
+    return $DQL->execute();
   }//END-getCarga
 
 

@@ -11,7 +11,6 @@ trait IndicadorTraitSetUp {
   public function validar($input_post) {
     Session::set('error_validacion', '');
     try{
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       return true;
     } catch(NestedValidationException $exception) {
       Session::set('error_validacion', $exception->getFullMessage());
@@ -25,10 +24,11 @@ trait IndicadorTraitSetUp {
   private function setUp() {
 
     self::$_fields_show = [
-      'all'     => ['id', 'uuid', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
-      'index'   => ['is_active', 'concepto', 'created_at', 'updated_at'],
-      'create'  => ['id', 'uuid', ],
-      'edit'    => ['id', 'uuid',  'is_active']
+      'all'       => ['id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'asignatura_id', 'codigo', 'concepto', 'valorativo', 'is_visible', 'is_active', 'created_at', 'updated_at', 'created_by', 'updated_by'],
+      'index'     => ['is_active', 'periodo_id', 'grado_id', 'asignatura_id', 'codigo', 'valorativo'],
+      'create'    => ['codigo', 'concepto', 'valorativo', 'is_visible', 'is_active'],
+      'edit'      => ['codigo', 'concepto', 'valorativo', 'is_visible', 'is_active'],
+      'editUuid'  => ['codigo', 'concepto', 'valorativo', 'is_visible', 'is_active'],
     ];
   
     self::$_attribs = [

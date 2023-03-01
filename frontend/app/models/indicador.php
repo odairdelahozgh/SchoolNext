@@ -4,6 +4,8 @@
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ * 
+ * 'id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'asignatura_id', 'codigo', 'concepto', 'valorativo', 'is_visible', 'is_active', 'created_at', 'updated_at', 'created_by', 'updated_by'
  */
   
 class Indicador extends LiteRecord {
@@ -19,7 +21,27 @@ class Indicador extends LiteRecord {
 
   const IS_visible  = [0 => 'No visible', 1 => 'Visible' ];
   public static $valorativos = ['Fortaleza'=>'Fortaleza', 'Debilidad'=>'Debilidad', 'Recomendación'=>'Recomendación'];
-  
+
+  /**
+   * Devuelve lista de todos los Registros.
+   */
+  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select('t.*, p.periodo as periodo_nombre, g.nombre AS grado_nombre, a.nombre AS asignatura_nombre')
+        ->leftJoin('periodo', 'p')
+        ->leftJoin('grado', 'g')
+        ->leftJoin('asignatura', 'a')
+        ->orderBy(self::$order_by_default);
+    if (!is_null($order_by)) {
+      $DQL->orderBy($order_by);
+    }
+    if (!is_null($estado)) { 
+      $DQL->where('t.is_active=?')
+          ->setParams([$estado]);
+    }
+    return $DQL->execute();
+  }
+
   /**
    * Regresa Lista de indicadores filtrada
    */

@@ -39,7 +39,7 @@ class Estudiante extends LiteRecord {
       $nombre_estud
     );    
     $DQL = (new OdaDql(__CLASS__))
-        ->select('t.*, '.$nombre_estud.' as estudiante_nombre')
+        ->select('t.*, '.$nombre_estud.' as estudiante_nombre,'.$nombre_estud.' as nombre')
         ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
         ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
         ->leftJoin('salon', 's')

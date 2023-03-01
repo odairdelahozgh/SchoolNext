@@ -33,6 +33,6 @@ class Asignatura extends LiteRecord {
       $DQL->where('t.is_active=?')
           ->setParams([$estado]);
     }
-    return $DQL->execute(true);
+    return $DQL->execute();
   }
 } //END-CLASS

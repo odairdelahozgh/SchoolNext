@@ -19,7 +19,7 @@
   ];
 
   foreach ($arr_campos as $key => $campo) {
-    $myForm->addInput2(tipo: 'text', field: $key, inline:true);
+    $myForm->addInput2(field: $key.'_'.$reg_nota->id, inline:true);
   }
   return $myForm->getFields($reg_nota->estudiante_nombre);
  

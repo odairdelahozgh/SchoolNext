@@ -29,9 +29,9 @@
       <?='['.Session::get('id').'] '.Session::get('username').'&nbsp;&nbsp;';?> 
       <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
       <br/>
-        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'envelope').'&nbsp;'; ?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon("$modulo/perfilUsuario", 'user-gear').'&nbsp;';?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon('', 'gear').'&nbsp;';?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=_Icons::solid('envelope').'&nbsp;'; ?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon("pages/miperfil", 'user-gear').'&nbsp;';?></span>
+        <span class="w3-hover-text-<?=$theme?>"><?=_Icons::solid('gear').'&nbsp;';?></span>
         
     </div>
     <h5 class="w3-small">

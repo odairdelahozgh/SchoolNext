@@ -12,7 +12,6 @@ trait NotaTraitSetUp {
   public function validar($input_post) {
     Session::set('error_validacion', '');
     try{
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       return true;
     } catch(NestedValidationException $exception) {
       Session::set('error_validacion', $exception->getFullMessage());
@@ -33,9 +32,17 @@ trait NotaTraitSetUp {
       'edit'    => ['id', 'uuid',  'is_active']
     ];
   
+    self::$_widgets = [
+      'definitiva'   => 'text',
+      'plan_apoyo'   => 'numeric',
+    ];
+
     self::$_attribs = [
       'id'       => 'required',
       'uuid'     => 'required',
+
+      'definitiva' => 'inputmode="numeric" pattern="\d*"',
+      'plan_apoyo' => 'min="0" max="100" maxlength="3"',
     ];
   
     self::$_defaults = [

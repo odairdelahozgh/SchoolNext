@@ -4,17 +4,20 @@
   $tabla->setCaption(caption:'Calendario de Eventos');
   foreach ($data as $key => $value) {
     $hoy = new DateTime();
-    $desde = new DateTime($value->fecha_desde);
-    $hasta = new DateTime($value->fecha_hasta);
+    $desde = DateTime::createFromFormat('Y-m-d', $value->fecha_desde);
+    $hasta = DateTime::createFromFormat('Y-m-d', $value->fecha_hasta);
 
-    $pasado  = ($hoy>$hasta) ? 'Pasado' : ''; 
+    $pasado  = ($hoy>$hasta) ? 'Pasado' : '';
     $vigente = (($hoy>=$desde) and ($hoy<=$hasta)) ? '<b class="w3-yellow">HOY</b>' : '';
+
+    $diferencia = $hoy->diff($hasta);
+    $numDias = (($vigente) and ($diferencia->days>0)) ? '<b class="w3-yellow">Restan '.($diferencia->days+1).' dias mas</b>' : '' ;
 
     $columna_1 = $desde->format('Y-M-d').'<br> al <br>'.$hasta->format('Y-M-d');
     if ($desde == $hasta) { $columna_1 = $desde->format('Y-M-d'); }
-    $columna_2 = $value->nombre;
+    $columna_2 = $value->nombre.'<br>'.$numDias;
 
-    $tabla->addRow(data:[$pasado.$vigente, $columna_1, $columna_2], attrs_td:['class="w3-center"']);
+    $tabla->addRow(data:[$pasado.$vigente, $columna_1, $columna_2], attrs_td:['class="w3-center"', 'class="w3-center"']);
   } 
   echo $tabla;
 ?>

@@ -10,6 +10,7 @@ class SicologiaController extends AppController
     
     public function index() {
       $this->page_action = 'M&oacute;dulo Sicolog&iacute;a';
+      $this->data = (new Evento)->getEventosDashboard();
     }
     
     public function estudiantes() {

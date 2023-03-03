@@ -14,10 +14,13 @@ class DocentesController extends AppController
   public function example1() {
     //Importante: Sin vista y sin tamplate 
     View::select(null, null);
+
     //Crea una instancia de la clase y le pasa el directorio default/app/temp/ 
     $mpdf = new Mpdf(['tempDir' => APP_PATH . '/temp']);
+
     //Escribe algo de contenido HTML: 
     $mpdf->WriteHTML('¡Hola KumbiaPHP!');
+
     //Envía un archivo PDF directamente al navegador 
     $mpdf->Output(); 
   }
@@ -27,6 +30,7 @@ class DocentesController extends AppController
    */
   public function index() {
       $this->page_action = 'M&oacute;dulo Docentes';
+      $this->data = (new Evento)->getEventosDashboard();
   }//END-index
     
 
@@ -155,13 +159,15 @@ class DocentesController extends AppController
 
 
   /**
-   * notas/notasCalificar
+   * 
    */
   public function perfilUsuario() {
     $this->page_action = 'Perfil del Usuario';
     //$this->data = (array)(new Usuario())::get($this->user_id);
     View::select('perfilUsuario/index');
   }//END-perfilUsuario
+
+
 
 
 } // END CLASS

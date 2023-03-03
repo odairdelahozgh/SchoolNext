@@ -10,6 +10,7 @@ class SecretariaController extends AppController
 
     public function index() {
       $this->page_action = 'M&oacute;dulo Secretar&iacute;a';
+      $this->data = (new Evento)->getEventosDashboard();
     }
     
     public function listadoEstudActivos() {

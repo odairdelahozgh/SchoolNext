@@ -11,7 +11,7 @@ trait EstudianteTraitSetUp {
   public function validar($input_post) {
     Session::set('error_validacion', '');
     try{
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
+      //validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       //validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_debe_preicfes']);
       //validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_debe_almuerzos']);
       
@@ -22,7 +22,7 @@ trait EstudianteTraitSetUp {
       //validar::alnum()->assert($input_post['nombres']);
       //validar::alnum()->assert($input_post['apellido1']);
       
-      validar::date()->assert($input_post['fecha_nac']);
+      //validar::date()->assert($input_post['fecha_nac']);
       // campos alfanumericos
       
       return true;

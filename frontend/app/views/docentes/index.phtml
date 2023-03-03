@@ -8,6 +8,7 @@
     </div>
   </div>
 
+
   <div class="w3-row">
     <?php for ($i=1; $i<=4 ; $i++): ?>
       <div class="w3-quarter w3-padding w3-center">
@@ -24,5 +25,7 @@
       </div>
    <?php endfor; ?>
   </div>
+
+  <?= View::partial(partial: 'eventos_dashboard', params: ['data'=>$data]); ?>
 
 </div>

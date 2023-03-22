@@ -43,4 +43,7 @@ class PagesController extends AppController
       $this->page_action = 'Mi Perfil';
     }
 
+    public function index() {
+    }
+
 } //END-CLASS

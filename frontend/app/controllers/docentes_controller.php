@@ -12,17 +12,10 @@ class DocentesController extends AppController
 {
 
   public function example1() {
-    //Importante: Sin vista y sin tamplate 
     View::select(null, null);
-
-    //Crea una instancia de la clase y le pasa el directorio default/app/temp/ 
     $mpdf = new Mpdf(['tempDir' => APP_PATH . '/temp']);
-
-    //Escribe algo de contenido HTML: 
     $mpdf->WriteHTML('¡Hola KumbiaPHP!');
-
-    //Envía un archivo PDF directamente al navegador 
-    $mpdf->Output(); 
+    $mpdf->Output();
   }
 
   /**
@@ -107,7 +100,8 @@ class DocentesController extends AppController
     }
     $this->data = $arrIndic; 
     */
-    View::select('indicadores/list');
+    //View::select('indicadores/list');
+    View::select('indicadores/index');
   }//END-indicadores
 
 

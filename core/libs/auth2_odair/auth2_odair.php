@@ -106,8 +106,8 @@ abstract class Auth2Odair {
         } else {
             // check
             if (($mode == 'auth') || (isset($_POST['mode']) && $_POST['mode'] === 'auth')) {
-                $login = empty($login)?Input::post($this->_login):$login;
-                $pass  = empty($pass)?Input::post($this->_pass):$pass;
+                $login = empty($login) ? Input::post($this->_login) : $login;
+                $pass  = empty($pass) ? Input::post($this->_pass) : $pass;
                 return $this->_check($login, $pass);
             }
             //FAIL
@@ -176,7 +176,7 @@ abstract class Auth2Odair {
      *
      * @param string $algos
      */
-    public function setAlgos($algos, $salt = '') {
+    public function setAlgos($algos) {
         $this->_algos = $algos;
     }
 

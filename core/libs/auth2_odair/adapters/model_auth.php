@@ -117,7 +117,7 @@ class ModelAuth extends Auth2Odair
             return FALSE;
         }
 
-        if ($user_salt->is_active!=1) {
+        if (1 != $user_salt->is_active) {
             $msg = '('.__METHOD__.") Error Login: Usuario $username Inactivo";
             self::log($msg); 
             $this->setError("Usuario $username Inactivo");
@@ -128,7 +128,8 @@ class ModelAuth extends Auth2Odair
         $password_salt = hash($this->_algos, $user_salt->salt.$password);
         $user=$Model->find_first("$this->_pass = '$password_salt' ");
         if (!$user) {
-            $msg = '('.__METHOD__.") Error Login: ($username) password errado!";
+            $msg = '('.__METHOD__.") Error Login: ($username) password errado! ";
+                    "password:$password \nHASH Buscado:$password_salt \nHASH Encontrado:".$Model->password." \nAlgortimo de Busqued:$this->_algos";
             self::log($msg);
             $this->setError("Password errado!");
             Session::set($this->_key, FALSE);

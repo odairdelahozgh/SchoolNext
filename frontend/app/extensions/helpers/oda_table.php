@@ -20,7 +20,7 @@ class OdaTable {
       private array $searchCol = [1],
       private bool $showTotalRegs = false,
    ) {
-      $this->theme = Session::get('theme') ?? 'dark';
+    $this->theme = ($theme) ? $theme : Session::get('theme');
    }
 
    /**
@@ -95,9 +95,9 @@ class OdaTable {
       $this->body_counter +=1;
       $t = substr($this->theme, 0, 1);
       if (!$attrs) {
-         $par   = ($t=='d')?'d1':'l4';
-         $impar = ($t=='d')?'d4':'l1';
-         $attrs = ($this->body_counter%2==0) ?  "class=\"item w3-theme-$par\"" :  "class=\"item w3-theme-$impar\"" ;
+        $impar = ($t=='d')?'d4':'l5';
+        $par   = ($t=='d')?'d1':'l1';
+        $attrs = ($this->body_counter%2==0) ?  "class=\"item w3-theme-$par\"" :  "class=\"item w3-theme-$impar\"" ;
       }
       $this->tableRows.= "<tr $attrs>";
       foreach ($arr_data as $key => $td) {
@@ -114,7 +114,7 @@ class OdaTable {
             }
          }
          
-         $this->tableRows.= "<td $atr2>".trim($td).'</td>';
+         $this->tableRows.= "<td $atr2>".$td.'</td>';
       }
       $this->tableRows.= '</tr>';
       return $this;

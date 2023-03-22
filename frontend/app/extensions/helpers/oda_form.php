@@ -36,7 +36,12 @@ class OdaForm extends Form {
       $this->_fname    = strtolower(OdaUtils::pluralize($modelo::class));
       $this->_faction  = $action;
       $this->_fmethod  = $method;
-      $this->_ffields  = ($cols=1) ? array(1=>' ') : array(1=>' ', 2=>' ');
+      $this->_ffields  = match ($cols) {
+          1 => [1=>' '],
+          2 => [1=>' ', 2=>' '],
+          3 => [1=>' ', 2=>' ', 3=>' '],
+          default => [1=>' '],
+      };
       $this->_isMultipart = $multipart;
    } // END-__construct
 
@@ -142,7 +147,7 @@ class OdaForm extends Form {
     * Retorna un campo Select.
     * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
     */
-   public function addSelect(int $columna, string $field, array $data, string $attr='') {
+   public function addSelect(int $columna=1, string $field='', array $data=[], string $attr='') {
       $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = trim($this->_fname.'.'.$field);
       $label       = $this->getLabel($field);
@@ -160,7 +165,7 @@ class OdaForm extends Form {
     * @example echo $myForm->addCheck(2, 'is_active', 'class="w3-red"');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
     */
-    public function addCheck(int $columna, string $field, string|array $attr=''){
+    public function addCheck(int $columna=1, string $field='', string|array $attr=''){
       $fieldname  = trim($this->_fname.'.'.$field);
       $label = $this->getLabel($field);
       $help  = $this->getHelp($field);
@@ -178,7 +183,7 @@ class OdaForm extends Form {
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
-   public function addRadio(int $columna, string $field, string|array $attrs='', bool $checked=false){
+   public function addRadio(int $columna=1, string $field='', string|array $attrs='', bool $checked=false){
       /*
       <fieldset>
          <legend>Select a maintenance drone:</legend>

@@ -19,5 +19,4 @@ class EstudiantesController extends ScaffoldController
     $this->data = (new Estudiante)->getListEstudiantes(estado:1);
   }//END-list
   
-  
 } // END CLASS

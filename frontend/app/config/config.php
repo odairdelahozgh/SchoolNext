@@ -9,7 +9,7 @@ $year = date('Y');
 
 return [
     'application' => [
-        'production' => false,
+        'production' => true,
         'database' => 'development',
         'dbdate' => 'YYYY-MM-DD',
         'debug' => 'On',
@@ -66,6 +66,9 @@ return [
       
       'contador'        => 'Mary Monachello',
       'contador_cc'     => '',
-      
+    ],
+    'bitly' => [
+      'access_token' => '8814d2e204427b9b31d89603afda9a3f87a980e7',
+      'servicio_web' => 'https://api-ssl.bitly.com/v4/bitlinks',
     ],
 ];

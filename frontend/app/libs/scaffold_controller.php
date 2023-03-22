@@ -10,6 +10,23 @@ abstract class ScaffoldController extends AdminController
 {
   public string $scaffold = 'schoolnext'; // en views/_shared/scaffolds/
   public string $model = ''; //Nombre del modelo en CamelCase
+  
+  public string $pdf_fileName = '';
+  public string $pdf_title = '';
+  public bool $pdf_download = false;
+    
+  public function info($view) {
+    View::response($view);
+  }
+
+  public function exportPdf() {
+    View::template('pdf/mpdf');
+    $this->pdf_fileName = OdaUtils::getSlug("listado-de-$this->controller_name");
+    $this->pdf_title = "Listado de $this->controller_name";
+    $this->data = (new $this->nombre_modelo())->getList(estado:1);
+    $this->pdf_download = false;    
+    View::select("export_pdf_$this->controller_name", 'pdf/mpdf');
+  }
 
   /**
    * admin/.../index

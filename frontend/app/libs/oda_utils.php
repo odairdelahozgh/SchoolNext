@@ -1,7 +1,5 @@
 <?php
 
-use LDAP\Result;
-
 /**
  * Clase con diversas utilidades
  * ::camelcase($str, $lower = false)
@@ -24,13 +22,20 @@ class OdaUtils extends Util {
     3=>'Periodo 3', 
     4=>'Periodo 4'
   ];
-
+  
+  
   const PERIODOS2 = [
     1=>'Periodo 1', 
     2=>'Periodo 2', 
     3=>'Periodo 3', 
     4=>'Periodo 4',
     5=>'Periodo 5',
+  ];
+  
+  const VALORATIVOS = [
+    'Fortaleza'=>'Fortaleza', 
+    'Debilidad'=>'Debilidad', 
+    'Recomendación'=>'Recomendación'
   ];
 
   const GENERO = [

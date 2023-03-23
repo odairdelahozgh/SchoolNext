@@ -29,6 +29,7 @@ class Nota extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.nota');
+    self::$order_by_default = 't.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id';
     $this->setUp();
   } //END-__construct
 
@@ -44,6 +45,27 @@ class Nota extends LiteRecord {
       OdaLog::error($th);
     }
   } //END-cambiarSalonEstudiante
+
+  
+
+  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
+    $DQL = (new OdaDql(__CLASS__))
+        ->select('t.*')
+        ->addSelect('CONCAT(e.apellido1, " ", e.apellido2, " ", e.nombres) as estudiante_nombre')
+        ->addSelect('s.nombre as salon_nombre')
+        ->addSelect('g.nombre as grado_nombre')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->leftJoin(table_singular:'estudiante', alias:'e')
+        ->leftJoin(table_singular:'salon', alias:'s')
+        ->leftJoin(table_singular:'grado', alias:'g')
+        ->leftJoin(table_singular:'asignatura', alias:'a')
+        ->where('t.salon_id=17')
+        ->orderBy(self::$order_by_default);
+
+   if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+   return $DQL->execute();
+//    return (new Nota)::all("SELECT count(t.id) as cnt, t.*  FROM sweb_notas as t GROUP BY t.id, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id HAVING count(id)>0");
+ } // END-getList
 
 
   //====================

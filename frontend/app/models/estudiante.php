@@ -5,7 +5,11 @@
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  * 
- * 'id', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'uuid', 'documento', 'contabilidad_id', 'nombres', 'apellido1', 'apellido2', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'
+ * 'id', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 
+ * 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'uuid', 'documento', 'contabilidad_id', 
+ * 'nombres', 'apellido1', 'apellido2', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 
+ * 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 
+ * 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'
  */
   
 class Estudiante extends LiteRecord {
@@ -21,6 +25,23 @@ class Estudiante extends LiteRecord {
 
 
   const LIM_PAGO_PERIODOS = [ 1 => 4, 2 => 6, 3 => 9, 4 => 11, 5 => 11 ];
+
+  
+  /**
+   * Devuelve lista de todos los Registros.
+   */
+  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
+
+    $DQL = (new OdaDql(__CLASS__))
+        ->select('t.*, CONCAT(t.apellido1, " ", t.apellido2, " ", t.nombres) as estudiante_nombre')
+        ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+        ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id=g.id')
+        ->orderBy('g.orden,s.nombre,t.apellido1,t.apellido2, t.nombres');
+    if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
+    return $DQL->execute();
+  } // END-getListEstudiantes
 
   /**
    * Devuelve lista de todos los Registros.

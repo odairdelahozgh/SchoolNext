@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait IndicadorTraitSetUp {
   
-  use TraitUuid, TraitForms;
+  use TraitUuid, TraitForms, IndicadorTraitProps;
   
   public function validar($input_post) {
     Session::set('error_validacion', '');
@@ -40,6 +40,7 @@ trait IndicadorTraitSetUp {
   
     self::$_defaults = [
       'is_active'       => 1,
+      'is_visible'      => 1,
     ];
   
     self::$_helps = [
@@ -66,25 +67,6 @@ trait IndicadorTraitSetUp {
   
     self::$_placeholders = [
       'codigo'     => 'Fort:100-199 - Debil:200-299 - Recom:300-399',
-    ];
-  
-    // numeric, int, maxlength, length, range, select, email, url, ip, required, alphanum, alpha, date, pattern, decimal, equal
-    self::$_rules_validators = [
-        /*
-        'NombreCompleto' => [
-				  'required' => [ 'error' => 'Indique su nombre.' ],
-				  'alpha'    => [ 'error' => 'Nombre incompleto o incorrecto.' ]
-			  ],
-			  'Email' => [
-				  'required' => [ 'error' => 'Indique su email.' ],
-				  'email'    => [ 'error' => 'Email incorrecto.' ]
-			  ],
-			  'Movil' => [
-				  'required' => [ 'error' => 'Indique su teléfono / móvil.' ],
-				  'length'   => [ 'min' => '9', 'max' => '17', 'error' => 'Teléfono / móvil incorrecto' ],
-          'pattern'  => [ 'regexp' => '/^\+(?:[0-9] ?){6,14}[0-9]$/', 'error'  => 'Teléfono incorrecto. ejemplo. +34 862929929']
-        ], 
-        */
     ];
 
   }

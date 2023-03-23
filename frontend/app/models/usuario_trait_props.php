@@ -1,7 +1,6 @@
 <?php
 trait UsuarioTraitProps {
-  /*
-  */
+
   public function __toString() {
     return $this->getNombreCompleto('a1 a2 n');
   }

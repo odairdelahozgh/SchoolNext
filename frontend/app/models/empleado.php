@@ -25,20 +25,37 @@ class Empleado extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
- public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
-  $DQL = new OdaDql('usuario');
-  $DQL->select("t.*")
+  public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
+    $DQL = new OdaDql('usuario');
+    $DQL->select("t.*")
       ->concat(concat: ['t.apellido1', 't.apellido2', 't.nombres'], alias:'nombre')
       ->where('t.username<>t.documento')
       ->orderBy(self::$order_by_default);
 
-  if (!is_null($estado)) { $DQL->andWhere("t.is_active=$estado"); }
+    if (!is_null($estado)) { $DQL->andWhere("t.is_active=$estado"); }
 
-  if (!is_null($order_by)) { 
-    $DQL->orderBy($order_by); 
+    if (!is_null($order_by)) { 
+      $DQL->orderBy($order_by); 
+    }
+    return $DQL->execute();
+  }//END-getList
+
+
+public function setPassDocente() {
+  try {
+    $pass = substr($this->documento, -4);
+    $password_salt = hash('sha1', $this->salt . $pass);
+    $this->password = $password_salt;
+    $this->update();
+
+    //$rec_count = $this::query("UPDATE ".self::$table." SET password=? WHERE id=? ", [$password_salt, $this->id])->rowCount();
+    //OdaFlash::info("\nUsername: $this->username \nId: $this->id \nDocumento: $this->documento \nPassword:  $pass \nSALT: $this->salt \nPassword SALT $password_salt \nAfect: $rec_count", true);
+  } catch (\Throwable $th) {
+    OdaLog::error($th);
   }
-  
-  return $DQL->execute();
-}
+
+} //END-setPassword
+
+
 
 } //END-CLASS

@@ -24,5 +24,5 @@ class Usuario extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-  
+
 } //END-CLASS

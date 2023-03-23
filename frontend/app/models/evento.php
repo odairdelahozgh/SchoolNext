@@ -31,7 +31,7 @@ class Evento extends LiteRecord {
         ->where('(fecha_desde BETWEEN ? AND ?) OR (fecha_hasta BETWEEN ? AND ?)')
         ->orderBy(self::$order_by_default)
         ->setParams([$desde, $hasta, $desde, $hasta]);
-    return $DQL->execute(true);
+    return $DQL->execute();
   }
 
 } //END-CLASS

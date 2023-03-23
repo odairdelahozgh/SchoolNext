@@ -45,7 +45,7 @@ trait EmpleadoTraitProps {
     if ($show_ico) {
       $ico = match((int)$this->is_active) {
         0   => '<span class="w3-text-red">'._Icons::solid(self::ICO_IS_ACTIVE[0], $attr).'</span> ',
-        1 => '<span class="w3-text-green">'  ._Icons::solid(self::ICO_IS_ACTIVE[1], $attr).'</span> '
+        1   => '<span class="w3-text-green">'._Icons::solid(self::ICO_IS_ACTIVE[1], $attr).'</span> '
       };
     }
     return $ico.$estado;

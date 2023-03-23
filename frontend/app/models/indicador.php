@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Modelo Indicador * 
+ * Modelo Indicador
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
@@ -19,15 +20,16 @@ class Indicador extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-  const IS_visible  = [0 => 'No visible', 1 => 'Visible' ];
-  public static $valorativos = ['Fortaleza'=>'Fortaleza', 'Debilidad'=>'Debilidad', 'Recomendación'=>'Recomendación'];
+  //const IS_visible  = [0 => 'No visible', 1 => 'Visible' ];
+  //const VALORATIVOS  = ['Fortaleza'=>'Fortaleza', 'Debilidad'=>'Debilidad', 'Recomendación'=>'Recomendación'];
+  //public static $valorativos = ['Fortaleza'=>'Fortaleza', 'Debilidad'=>'Debilidad', 'Recomendación'=>'Recomendación'];
 
   /**
    * Devuelve lista de todos los Registros.
    */
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
     $DQL = new OdaDql(__CLASS__);
-    $DQL->select('t.*, p.periodo as periodo_nombre, g.nombre AS grado_nombre, a.nombre AS asignatura_nombre')
+    $DQL->select("t.*, CONCAT('Periodo ', p.periodo) as periodo_nombre, g.nombre AS grado_nombre, a.nombre AS asignatura_nombre")
         ->leftJoin('periodo', 'p')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')

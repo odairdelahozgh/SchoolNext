@@ -2,28 +2,33 @@
   <?php 
   try {    
     require('indexHeader.phtml');
-    
+
     echo OdaForm::inputSearch();
     if ($tot_regs = count($data)) {
       $tabla = new OdaTable();
       $tabla->setHead(['Acciones', ...$fieldsToShowLabels]);
       foreach ($data as $key => $item_data) {
-        $uuid_ok   = (property_exists($item_data, 'uuid') && strlen($item_data->uuid)>0);
+        $uuid_ok   = (property_exists($item_data, 'uuid') && !is_null($item_data->uuid));
         $edit_id   = ($uuid_ok) ? "editUuid/$item_data->uuid" : "edit/$item_data->id";
         $delete_id = ($uuid_ok) ? "delUuid/$item_data->uuid" : "del/$item_data->id";
         
+        $set_pass = "setPassDocente/$item_data->id";
+
         $msg_name  = strtoupper($nombre_modelo.': '.((property_exists($item_data, 'nombre')) ? $item_data->nombre : " # $item_data->id")) ;
         
         $lnkEditar = OdaTags::linkIcon(action: "admin/$controller_name/$edit_id", icon: 'square-pen', attr: 'title="Editar Registro"');
         $lnkBorrar = Html::linkAction($delete_id, _Icons::solid('trash-can'), 
-          'title="Eliminar Registro" onclick="return confirm(\'Atención: ¿Quiere eliminar? \n'.$msg_name.'\')"');
+        'title="Eliminar Registro" onclick="return confirm(\'Atención: ¿Quiere eliminar? \n'.$msg_name.'\')"');
+        
+        $lnkSetPass = Html::linkAction($set_pass, _Icons::solid('key'), 
+          'title="Actualizar Password" onclick="return confirm(\'Atención: ¿Quiere establecer password por default?)\'"');
 
         $arrFields = [];
         foreach ($fieldsToShow as $key => $field) {
           //$arrFields[]= (('is_active'==$field)? $item_data->is_active_f(true): $item_data->$field);
           $dato = $item_data->$field;
           if ('is_active'==$field) {
-            $dato = $item_data->is_active_f(true);
+            $dato = $item_data->is_active_f2(true);
           }
 
           if ('nombre'==$field) {
@@ -41,7 +46,7 @@
           $arrFields[] = $dato;
         }
 
-        $arrBody = [$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar, ...$arrFields];
+        $arrBody = [$lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar, ...$arrFields];
         $tabla->addRow($arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"']);
       }
       echo $tabla;

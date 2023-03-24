@@ -1,0 +1,14 @@
+<?php 
+$tabla = new OdaTable(theme:'light');
+$tabla->setCaption($pdf_title);
+$tabla->setHead(data_head: ['Salon', 'Estudiante', 'Documento', 'Usuario', 'Clave'],
+arr_attrs_th:['class="w3-theme"', 'class="w3-theme"', 'class="w3-theme"', 'class="w3-theme"', 'class="w3-theme"']
+);
+foreach ($data as $item) {
+  $estud = OdaUtils::nombrePersona($item->estudiante_nombre);
+  $email = (($item->email_instit) ? $item->email_instit : '');
+  $clave = (($item->clave_instit) ? $item->clave_instit : '');
+  $tabla->addRow( data:[$item->salon_nombre, $estud, $item->documento, $email, $clave] );
+}
+echo $tabla;
+?>

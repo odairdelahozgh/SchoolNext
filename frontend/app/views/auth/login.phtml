@@ -1,30 +1,24 @@
 <div class="w3-container w3-padding w3-center">
   <?= View::flash(); ?>
   <br>
-
   <div class="w3-display-container w3-padding w3-center">
-      
     <div class="w3-display-topmiddle w3-row">
-      
-        <div class="w3-padding w3-row w3-blue-gray">
-          <br>
+        <div class="w3-padding w3-row w3-blue-gray"> <br>
           <?= OdaTags::img('ws_logo.png', 'logo', "style=\"width:80%;\""); ?>
         </div> 
-
         <div class="w3-padding w3-row w3-blue-gray">
             <h2>SchoolNext App</h2>
             <h3>Acceso Web</h3>
         </div>
-          
         <div class="w3-padding w3-row w3-blue-gray w3-large">
-              <?php echo Form::open('auth/login','post','class="w3-center"') ?>
-                <input name="mode" type="hidden" value="auth">
-                <?= Form::text('username', 'class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese USUARIO"') ?><br>
-                <?= Form::password('password', 'class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese CLAVE"  ') ?>
-                <p><?= Form::submit('ENTRAR') ?></p>
-                <?php echo Form::close(); ?>
+          <form action="<?=PUBLIC_PATH?>auth/login" method="post" class="w3-center">
+            <input name="mode" type="hidden" value="auth">
+            <input id="username" name="username" type="text" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese USUARIO">
+              <br>
+            <input id="password" name="password" type="password" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese CLAVE">                
+            <p><button type="submit">ENTRAR</button></p>
+          </form>
         </div>
-            
         <div class="w3-padding w3-row">
               <br/><b>¿Necesita ayuda para ingresar?</b><br/>
               <a title="Escríbenos" href="whatsapp://send?phone=<?= Config::get('config.construxzion.telefono')?>&amp;text=Requiero+soporte+técnico">
@@ -42,7 +36,6 @@
                     </span>
         </div>
     </div>
-
   </div>
 
 </div>

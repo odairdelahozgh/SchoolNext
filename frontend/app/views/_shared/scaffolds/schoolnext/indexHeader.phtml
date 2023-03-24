@@ -1,5 +1,9 @@
 <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
 <?= View::flash(); ?>
 <div class="w3-panel">
-  <?=OdaTags::linkButton("admin/$controller_name/create",'Nuevo Registro')?>
+  <?=OdaTags::linkButton(action: "admin/$controller_name/create", text: 'Nuevo Registro')?>
+
+  <?=OdaTags::linkButton(action: "admin/$controller_name/exportPdf", text: 'Generar PDF', attrs: 'class="w3-button w3-green" target="_blank"')?>
+  <?=OdaTags::linkButton(action: "admin/$controller_name/exportExcel", text: 'Generar Excel', attrs: 'class="w3-button w3-green" target="_blank"')?>
+  <?=OdaTags::linkButton(action: "admin/$controller_name/exportCsv", text: 'Generar CSV', attrs: 'class="w3-button w3-green" target="_blank"')?>
 </div>

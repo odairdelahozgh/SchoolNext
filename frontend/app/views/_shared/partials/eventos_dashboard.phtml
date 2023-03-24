@@ -2,23 +2,28 @@
 <?php
   $tabla = new OdaTable();
   $tabla->setCaption(caption:'Calendario de Eventos');
+  
+  $hoy = new DateTime();
   foreach ($data as $key => $value) {
-    $hoy = new DateTime();
     $desde = DateTime::createFromFormat('Y-m-d', $value->fecha_desde);
     $hasta = DateTime::createFromFormat('Y-m-d', $value->fecha_hasta);
+    $is_pasado = ($hoy > $hasta);
+    $is_vigente = (($hoy >= $desde) and ($hoy <= $hasta));
 
-    $pasado  = ($hoy>$hasta) ? 'Pasado' : '';
-    $vigente = (($hoy>=$desde) and ($hoy<=$hasta)) ? '<b class="w3-yellow">HOY</b>' : '';
+
+    $pasado  = ($is_pasado) ? 'Pasado' : '';
+    $vigente = ($is_vigente) ? '<b class="w3-yellow">HOY</b>' : '';
 
     $diferencia = $hoy->diff($hasta);
-    $numDias = (($vigente) and ($diferencia->days>0)) ? '<b class="w3-yellow">Restan '.($diferencia->days+1).' dias mas</b>' : '' ;
+    $numDias = ($is_vigente and ($diferencia->days > 0)) ? '<b class="w3-yellow">Falta(n) '.($diferencia->days).' dia(s) mas</b>' : '' ;
 
-    $columna_1 = $desde->format('Y-M-d').'<br> al <br>'.$hasta->format('Y-M-d');
-    if ($desde == $hasta) { $columna_1 = $desde->format('Y-M-d'); }
-    $columna_2 = $value->nombre.'<br>'.$numDias;
+    $col_estado_evento = $pasado.$vigente;
+    $col_fecha_evento = ($desde == $hasta) ? $desde->format('Y-M-d') : $desde->format('Y-M-d').'<br> al <br>'.$hasta->format('Y-M-d') ;
+    $col_evento = $value->nombre.'<br>'.$numDias;
 
-    $tabla->addRow(data:[$pasado.$vigente, $columna_1, $columna_2], attrs_td:['class="w3-center"', 'class="w3-center"']);
+    $tabla->addRow(data:[$col_estado_evento, $col_fecha_evento, $col_evento], attrs_td:['class="w3-center"', 'class="w3-center"']);
   } 
   echo $tabla;
+
 ?>
 </div>

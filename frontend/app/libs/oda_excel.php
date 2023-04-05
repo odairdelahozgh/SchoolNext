@@ -10,7 +10,7 @@ class OdaExcel extends XLSXWriter {
     return 'files/download/xlsx-'.$name.'.xlsx';
   }
 
-  public function ejemplo1() {
+  public function ejemplo1(): void {
     $header = array(
       'c1-text'=>'string',//text
       'c2-text'=>'@',//text
@@ -32,14 +32,15 @@ class OdaExcel extends XLSXWriter {
     );
     $writer = new XLSXWriter();
     
-    $writer->writeSheetHeader('Sheet1', $header);
+    $writer->writeSheetHeader(sheet_name: 'Sheet1', header_types: $header);
     foreach($rows as $row)
-      $writer->writeSheetRow('Sheet1', $row);
+      $writer->writeSheetRow(sheet_name: 'Sheet1', row: $row);
     
-    //$writer->writeSheet($rows,'Sheet1', $header);//or write the whole sheet in 1 call
-    $writer->writeToFile( $this->getFileName(__FUNCTION__) );
+    //$writer->writeSheet($rows,'Sheet1', $header); //or write the whole sheet in 1 call
+    $writer->writeToFile( filename: $this->getFileName(name: __FUNCTION__) );
     //$writer->writeToStdOut();
     //echo $writer->writeToString();
+
   }//END-ejemplo1
 
 
@@ -62,21 +63,21 @@ class OdaExcel extends XLSXWriter {
     );
 
     $writer = new XLSXWriter();
-    $writer->writeSheetHeader('Sheet1', $header);
+    $writer->writeSheetHeader(sheet_name: 'Sheet1', header_types: $header);
     foreach($data1 as $row)
-    $writer->writeSheetRow('Sheet1', $row);
+    $writer->writeSheetRow(sheet_name: 'Sheet1', row: $row);
     foreach($data2 as $row)
-    $writer->writeSheetRow('Sheet2', $row);
+    $writer->writeSheetRow(sheet_name: 'Sheet2', row: $row);
 
-    $writer->writeToFile( $this->getFileName(__FUNCTION__) );
+    $writer->writeToFile( filename: $this->getFileName(name: __FUNCTION__) );
     //$writer->writeToStdOut();
     //echo $writer->writeToString();
     //exit(0);
   }//END-ejemplo2
   
 
-  public function ejemplo3() {
-    $writer->writeToFile( $this->getFileName(__FUNCTION__) );
+  public function ejemplo3(): void {
+    $writer->writeToFile( $this->getFileName(name: __FUNCTION__) );
   }//END-ejemplo3
   
 

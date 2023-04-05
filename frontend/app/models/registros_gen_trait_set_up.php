@@ -44,9 +44,11 @@ trait RegistrosGenTraitSetUp {
       'fecha'           => 'required',
       'acudiente'       => 'required',
       'director'        => 'required',
+      'foto_acudiente'  => 'required',
+      'foto_director'   => 'required',
 
-      'id'                => 'required',
-      'uuid'              => 'required',
+      'id'              => 'required',
+      'uuid'            => 'required',
     ];
   
     self::$_defaults = [

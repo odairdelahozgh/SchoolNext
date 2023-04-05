@@ -50,7 +50,7 @@ class Indicador extends LiteRecord {
   public function getListIndicadores(int $periodo_id, int $grado_id, int $asignatura_id) {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
-        ->where('t.is_active=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+        ->where('t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
         ->orderBy(self::$order_by_default)
@@ -58,6 +58,29 @@ class Indicador extends LiteRecord {
     return $DQL->execute();
   } // END-getListIndicadores
 
+  /**
+   * Regresa Lista de indicadores filtrada
+   */
+  public function getListIndicadoresVisibles(int $periodo_id, int $grado_id, int $asignatura_id) {
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
+        ->where('t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+        ->leftJoin('grado', 'g')
+        ->leftJoin('asignatura', 'a')
+        ->orderBy(self::$order_by_default)
+        ->setParams([$periodo_id, $grado_id, $asignatura_id]);
+    return $DQL->execute();
+  } // END-getListIndicadores
+
+
+  public function getIndicadoresCalificar(int $periodo_id, int $grado_id, int $asignatura_id) {
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select('t.codigo, t.valorativo, t.concepto')
+        ->where('t.is_active=1 AND t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+        ->orderBy(self::$order_by_default)
+        ->setParams([$periodo_id, $grado_id, $asignatura_id]);
+    return $DQL->execute();
+  } // END-getListIndicadores
 
 
 } //END-CLASS

@@ -1,11 +1,10 @@
 <?php
 /**
-  * Controlador Indicadores  
+  * Controlador Periodos  
   * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
   
-class IndicadoresController extends ScaffoldController
+class PeriodosController extends ScaffoldController
 {
- 
 } // END CLASS

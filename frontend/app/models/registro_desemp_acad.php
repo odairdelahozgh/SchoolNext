@@ -1,6 +1,6 @@
 <?php
 /**
- * Modelo RegistrosDesemp * 
+ * Modelo RegistrosDesemp 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
@@ -71,11 +71,13 @@ class RegistroDesempAcad extends LiteRecord {
       $this->foto_acudiente = $foto_acudiente;
       Session::set('foto_acudiente',$foto_acudiente);
     }
+
     if ($foto_director = $this->uploadPhoto('foto_director')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
-      $this->foto_director = $foto_director;
-      Session::set('foto_director',$foto_director);
+        $this->foto_director = $foto_director;
+        Session::set('foto_director',$foto_director);
     }
-    $reg = (new RegistrosGen)::get($id);
+
+    $reg = (new RegistroDesempAcad)::get($id);
     $reg->save([
       'foto_acudiente' => $foto_acudiente,
       'foto_director'  => $foto_director,

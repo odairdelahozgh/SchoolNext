@@ -1,0 +1,27 @@
+<div class="w3-panel">
+    <?= View::Encab($controller_name, $page_action, $breadcrumb).View::flash() ?>
+    <?php
+      $tabla = new OdaTable();
+      $tabla->setCaption('PROMEDIOS ACUMULADOS');
+      $tabla->setHead(['#', 'Materia',	'P1', 'P2', 'P3', 'P4', 'P5']);
+            
+      $buttons = [];
+      foreach ($data as $key => $salon) {
+        $buttons[$key] = ['caption'=>$salon, 'action'=>"traer_data($salon->id)"];
+      }
+      echo OdaTags::buttonBars($buttons);
+      $cnt = 1;
+      foreach($arrData as $key => $nota) {
+        $cols = [];
+        array_push($cols, $cnt);
+        array_push($cols, $key);
+        for ($i=1; $i <=5 ; $i++) { 
+          array_push($cols, ((array_key_exists($i, $nota)) ? $nota[$i]['avg'] : "-" ));
+        }
+        $tabla->addRow($cols);
+        $cnt +=1;
+      }
+      echo $tabla;
+    ?>
+
+</div>

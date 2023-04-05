@@ -7,8 +7,8 @@
   $myForm = new OdaForm($model, 'admin/indicadores/create_ajax');
     $myForm->setAtrib('id="frm_new" name="frm_new"');
     
-    $myForm->addInput(field:'codigo', tipo:'number');
     $myForm->addSelect(field:'valorativo', data: OdaUtils::VALORATIVOS);
+    $myForm->addInput(field:'codigo', tipo:'number');
     $myForm->addTextarea(field:'concepto');
 
     $myForm->addHiddens(implode(",", $fieldsToHidden));

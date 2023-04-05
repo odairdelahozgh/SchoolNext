@@ -26,9 +26,9 @@ trait IndicadorTraitSetUp {
     self::$_fields_show = [
       'all'       => ['id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'asignatura_id', 'codigo', 'concepto', 'valorativo', 'is_visible', 'is_active', 'created_at', 'updated_at', 'created_by', 'updated_by'],
       'index'     => ['is_active', 'periodo_id', 'grado_id', 'asignatura_id', 'codigo', 'valorativo'],
-      'create'    => ['codigo', 'concepto', 'valorativo', 'is_visible', 'is_active'],
-      'edit'      => ['codigo', 'concepto', 'valorativo', 'is_visible', 'is_active'],
-      'editUuid'  => ['codigo', 'concepto', 'valorativo', 'is_visible', 'is_active'],
+      'create'    => ['codigo', 'concepto', 'valorativo'],
+      'edit'      => ['concepto', 'is_visible', 'is_active'],
+      'editUuid'  => ['concepto', 'is_visible', 'is_active'],
     ];
   
     self::$_attribs = [

@@ -156,4 +156,22 @@ class Nota extends LiteRecord {
   } //END-getVistaNotasTodasExportar
 
 
+
+  public static function getNotasPromAnnioPeriodoSalon(int $periodo_id, int $salon_id) {
+    $DQL = (new OdaDql(__CLASS__))
+    ->select('t.periodo_id, a.nombre as asignatura_nombre')
+    ->addSelect('round(AVG(if(t.nota_final>0, t.nota_final, t.definitiva)), 2) as avg')
+    ->leftJoin(table_singular:'asignatura', alias:'a')
+    ->where('t.asignatura_id NOT IN (30,35,36,37,38,39,40) AND t.periodo_id = ? AND t.salon_id = ?')
+    ->groupBy('t.periodo_id, a.nombre')
+    ->setParams([$periodo_id, $salon_id]);
+    
+    // foreach ($registros as $reg) {
+    //   $aResult["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
+    // }
+    return $DQL->execute(true);
+  }//END-getNotasPromAnnioPeriodoSalon
+
+
+
 } //END-CLASS

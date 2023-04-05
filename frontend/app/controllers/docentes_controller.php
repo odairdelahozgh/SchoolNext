@@ -53,11 +53,26 @@ class DocentesController extends AppController
 
 
   /**
-   * Método Dirección de Grupo|
+   * Método Dirección de Grupo
    */
   public function direccion_grupo() {
     $this->page_action = 'Direcci&oacute;n de Grupo';
-    View::select('direccion_grupo/index');
+    View::select('direccionDeGrupo/index');
+    
+    $this->data = (new usuario)->misGrupos();
+    
+    for ($i=1; $i <=5 ; $i++) { 
+      $a_regs = (new Nota)::getNotasPromAnnioPeriodoSalon($i, $this->data[0]->id);
+      foreach ($a_regs as $key => $value) {
+        $this->arrData[$value->asignatura_nombre][$i]['avg'] = $value->avg;
+      }
+      //$this->a_prom_p[$i]  = array_prom_key($a_regs, 'avg' );
+    }
+
+    if (Session::get('es_director')) {
+      # code...
+    }
+
   }//END-direccion_grupo
 
   /**
@@ -133,21 +148,59 @@ class DocentesController extends AppController
   /**
    * notas/notasCalificar
    */
-  public function notasCalificar(int $periodo, int $salon_id, int $asignatura_id) {
+  public function notasCalificar(int $periodo_id, int $salon_id, int $asignatura_id) {
     $this->page_action = 'Calificar Notas del Sal&oacute;n';
+    $RegSalon = (new Salon)->get($salon_id);
+    $RegPeriodo =(new Periodo)->get($periodo_id);
+    $RegAsignatura = (new Asignatura)->get($asignatura_id);
 
-    $this->Asignatura = (new Asignatura)->get($asignatura_id);
-    $this->Salon = (new Salon)->get($salon_id);
+    $Nota = new Nota();
+    $this->data = $Nota->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
+    $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
     
-    $annio_actual   = (int)Config::get('config.academic.annio_actual');
-    $periodo_actual = (int)Config::get('config.academic.periodo_actual');
+    $regs_min = min($RegsIndicad);
+    $regs_max = max($RegsIndicad);
+
+    $min_fortaleza = min(array_filter($RegsIndicad, function ($element) {
+      return $element->valorativo == 'Fortaleza';
+    }));
+    $max_fortaleza = max(array_filter($RegsIndicad, function ($element) {
+      return $element->valorativo == 'Fortaleza';
+    }));
     
+    $min_debilidad = min(array_filter($RegsIndicad, function ($element) {
+      return $element->valorativo == 'Debilidad';
+    }));
+    $max_debilidad = max(array_filter($RegsIndicad, function ($element) {
+      return $element->valorativo == 'Debilidad';
+    }));
+
+    $min_recomendacion = min(array_filter($RegsIndicad, function ($element) {
+      return $element->valorativo == 'Recomendación';
+    }));
+    $max_recomendacion = max(array_filter($RegsIndicad, function ($element) {
+      return $element->valorativo == 'Recomendación';
+    }));
+
+    
+    $this->fieldsToShow = $Nota::getFieldsShow('calificar');
     $this->arrData = [
-      'annio_actual'   => $annio_actual,
-      'periodo_actual' => $periodo_actual,
+      'Periodo'           => $RegPeriodo,
+      'Asignatura'        => $RegAsignatura,
+      'Salon'             => $RegSalon,
+      'Indicadores'       => $RegsIndicad,
+      'annio_actual'      => (int)Config::get('config.academic.annio_actual'),
+      'periodo_actual'    => (int)Config::get('config.academic.periodo_actual'),
+      'min_fortaleza'     =>$min_fortaleza,
+      'max_fortaleza'     =>$max_fortaleza,
+      'min_debilidad'     =>$min_debilidad,
+      'max_debilidad'     =>$max_debilidad,
+      'min_recomendacion' =>$min_recomendacion,
+      'max_recomendacion' =>$max_recomendacion,
+      'min_indic' => $regs_min,
+      'max_indic' => $regs_max,
+      'cnt_indicador'   =>count($RegsIndicad),
     ];
-
-    $this->data = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_actual]);
     View::select('notas/calificar/index');
   }//END-notas
 

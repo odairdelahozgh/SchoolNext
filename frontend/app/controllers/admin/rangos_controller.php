@@ -1,11 +1,10 @@
 <?php
 /**
-  * Controlador Indicadores  
+  * Controlador Rangos  
   * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
   
-class IndicadoresController extends ScaffoldController
+class RangosController extends ScaffoldController
 {
- 
 } // END CLASS

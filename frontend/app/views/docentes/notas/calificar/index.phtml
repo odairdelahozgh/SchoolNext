@@ -7,3 +7,25 @@
       require 'calificar_footer.phtml'; 
    ?>
 </div>
+
+<script>
+// selecciona todos los elementos input con la clase 'color-input'
+const inputs = document.querySelectorAll('.color-input');
+
+// agrega un evento 'input' a cada elemento input
+inputs.forEach(input => {
+  input.addEventListener('input', () => {
+    const num = parseInt(input.value);
+    if (num >= 100 && num <= 199) {
+      input.style.color = 'green';
+    } else if (num >= 200 && num <= 299) {
+      input.style.color = 'blue';
+    } else if (num >= 300 && num <= 399) {
+      input.style.color = 'red';
+    } else {
+      input.style.color = 'black';
+    }
+  });
+});
+
+</script>

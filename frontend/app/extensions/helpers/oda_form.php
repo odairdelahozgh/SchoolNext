@@ -72,6 +72,7 @@ class OdaForm extends Form {
       return $form;
    } // END-__toString
   
+   
   /**
    * OdaForm->getFields('legend Fieldset');
    */
@@ -119,7 +120,6 @@ class OdaForm extends Form {
       $fieldname  = $this->_fname.'.'.trim($field);
       $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
       $label      = $this->getLabel($field, $inline);
-      $help       = $this->getHelp($field);
       $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
 
       $campo_input = $this::input($widget, $fieldname, $attr, $value);
@@ -316,33 +316,6 @@ class OdaForm extends Form {
         </div>";
    } // END-inputSerach
 
-
-  /**
-   * Crea un Input 'Range'
-   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
-   * @example echo OdaForm::inputRango(id: 'ir1', caption: 'Rango de Valores', value: 5, min:0, max=10, step=1)
-   */
-  public static function inputRango(string $id_name, string $caption, int $value, int $min=0, int $max=100, int $step=1) {
-    return ($min<=$value && $value<=$max) ?
-          "<div>
-              <input type=\"range\" id=\"range_$id_name\" name=\"$id_name\" min=\"$min\" max=\"$max\" value=\"$value\" step=\"$step\">
-              <label for=\"$id_name\">$caption</label>
-              <p>Value: <output id=\"out_range_$id_name\"></output></p>
-           </div>"
-           : "inputRange : valor fuera de rango" ;
-  } // END-inputRango
-
-  public static function inputRangoJs ($range_id) {
-    return 
-    "const value = document.querySelector(\"#out_range_$range_id\")
-     const input = document.querySelector(\"#range_$range_id\")
-
-     value.textContent = input.value
-
-     input.addEventListener(\"input\", (event) => {
-       value.textContent = event.target.value
-     })";
-  }
   
 
     /**
@@ -350,7 +323,7 @@ class OdaForm extends Form {
      * @example echo OdaForm->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
      * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
      * */
-   private static function createFieldset($content, $legend = '', $attrs = '') {
+   private static function createFieldset($content, $legend = '', $attrs = ''): string {
       return "<fieldset $attrs> 
                   <legend> $legend </legend>
                   $content
@@ -362,7 +335,7 @@ class OdaForm extends Form {
      * Convierte los argumentos de un metodo de parametros por nombre a un string con los atributos
      * @return string
      */
-   public static function getAttrs($params) {
+   public static function getAttrs($params): string {
       if (!is_array($params)) { return (string)$params; }
       $data = '';
       foreach ($params as $k => $v) {
@@ -370,18 +343,9 @@ class OdaForm extends Form {
       }
       return trim($data);
    }
-  
-   /**
-    * Crea un tag HTML
-    * */
-   public static function createTag($tag, $content = null, $attrs = '') {
-      if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
-      if (is_null($content)) { return "<$tag $attrs/>"; }
-      return "<$tag $attrs>$content</$tag>";
-   }
 
-   public function v(){
-      $version = \DateTime::createFromFormat('Y.m.d', $this->version);
-      return 'PHP Helper OdaForm -> Version '.$version->format('d M Y');
+   public function v(): string {
+      $version = \DateTime::createFromFormat(format: 'Y.m.d', datetime: $this->version);
+      return 'PHP Helper OdaForm -> Version '.$version->format(format: 'd M Y');
    }
 } // END-Class

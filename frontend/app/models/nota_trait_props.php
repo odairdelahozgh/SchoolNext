@@ -1,4 +1,7 @@
 <?php
+/**
+ * Summary of NotaTraitProps
+ */
 trait NotaTraitProps {
   /*
   */
@@ -17,5 +20,16 @@ trait NotaTraitProps {
             </span> $plan_apoyo ";
   }
 
+  private static $arrExcepProm = array(30,35,36,37,38,39,40);
   
+  public function fieldForm(string $field_name, string $attr) {
+    $attribs = ($this->getAttrib(field: $field_name)) ? $this->getAttrib(field: $field_name) : $attr ;
+    return Form::input(
+      type:  $this->getWidget($field_name),
+      field: 'notas.'.$field_name.'_'.$this->id, 
+      attrs: $attribs . $this->getPlaceholder($field_name),
+      value: $this->$field_name,
+    );
+  }//END-fieldForm
+
 } //END-TraitProps

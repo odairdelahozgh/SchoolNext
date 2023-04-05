@@ -1,8 +1,9 @@
 <div class="w3-row w3-theme">
   <h2 class="w3-margin-left w3-bottombar w3-border-green w3-margin-right"><?=ucwords($page_module) .' - '.ucwords($page_action)?></h2>
   
-  <span id="public_path"  class="w3-hide"><?= trim(PUBLIC_PATH)?> </span>
-  <span id="schoolweb_public_path"  class="w3-hide"><?= trim(SCHOOLWEB_PUBLIC_PATH)?> </span>
+  <span id="public_path"  class="w3-hide"><?=trim(PUBLIC_PATH)?></span>
+  <span id="schoolweb_public_path" class="w3-hide"><?=trim(SCHOOLWEB_PUBLIC_PATH)?></span>
+  <span id="theme" class="w3-hide"><?=Session::get('theme')?></span>
 
   <span class="w3-margin-left"> <?= OdaTags::linkBarItem('', 'INICIO')?>
 </div>

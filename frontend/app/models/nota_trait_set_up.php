@@ -20,7 +20,7 @@ trait NotaTraitSetUp {
   } //END-validar
 
   
-  /**
+  /*
    * CONFIGURACIÓN DEL MODELO
    *   'id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 
   'asignatura', 'estudiante', 'email_envios', 'asi_num_envios', 
@@ -36,6 +36,7 @@ trait NotaTraitSetUp {
   'ausencias', 'inthoraria', 'created_at', 'updated_at', 'created_by', 'updated_by'
   'is_asi_validar_ok', 'asi_calificacion', 'is_asi_ok_dirgrupo', 'is_asi_ok_coord', 
    */
+
   private function setUp() {
 
     self::$_fields_show = [
@@ -52,19 +53,40 @@ trait NotaTraitSetUp {
       'create'    => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
       'edit'      => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
       'editUuis'  => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
+      'calificar' => ['definitiva', 'plan_apoyo', 'i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10', 'i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20'],
     ];
   
     self::$_widgets = [
-      'definitiva'   => 'text',
-      'plan_apoyo'   => 'numeric',
+      'definitiva'   => 'number',
+      'plan_apoyo'   => 'number',
+      'i01'   => 'number', 
+      'i02'   => 'number', 
+      'i03'   => 'number', 
+      'i04'   => 'number', 
+      'i05'   => 'number', 
+      'i06'   => 'number', 
+      'i07'   => 'number', 
+      'i08'   => 'number', 
+      'i09'   => 'number', 
+      'i10'   => 'number', 
+      'i11'   => 'number', 
+      'i12'   => 'number', 
+      'i13'   => 'number', 
+      'i14'   => 'number', 
+      'i15'   => 'number', 
+      'i16'   => 'number', 
+      'i17'   => 'number', 
+      'i18'   => 'number', 
+      'i19'   => 'number', 
+      'i20'   => 'number', 
     ];
 
     self::$_attribs = [
       'id'       => 'required',
-      'uuid'     => 'required',
+      'uuid'     => 'required', 
 
-      'definitiva' => 'inputmode="numeric" pattern="\d*"',
-      'plan_apoyo' => 'min="0" max="100" maxlength="3"',
+      'definitiva'   => ' min="0" max="100" maxlength="3" size="2" pattern="[0-9]{3}" ',
+      'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="2" pattern="[0-9]{3}" ',
     ];
   
     self::$_defaults = [

@@ -45,7 +45,7 @@ abstract class AdminController extends Controller
       $this->themei = substr($this->theme,0,1);
 
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
-      $this->nombre_post  = strtolower(OdaUtils::pluralize($this->nombre_modelo));
+      $this->nombre_post   = strtolower(OdaUtils::pluralize( $this->nombre_modelo ));
       //OdaLog::alert("$this->nombre_post : $this->nombre_modelo");
     }
 

@@ -5,6 +5,7 @@ class OdaDql {
   private string $_from_source = ''; //web_salones
   private string $_where       = '';
   private string $_order_by    = '';
+  private string $_group_by    = '';
   private array  $_joins       = [];
   private array  $_params      = [];
 
@@ -27,6 +28,7 @@ class OdaDql {
         . " FROM $this->_from_source AS t"
         . implode(" ", $this->_joins)
         . (empty($this->_where) ? '' : " WHERE $this->_where ")
+        . (empty($this->_group_by) ? '' : " GROUP BY $this->_group_by")
         . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by");
   }
   
@@ -161,9 +163,11 @@ class OdaDql {
     return $this;
   } 
 
-  /**
-   *
-   */
+  public function groupBy(string $group){
+    $this->_group_by = $group;
+    return $this;
+  }
+
   public function setParams($params=[]) {
     array_push($this->_params, ...$params);
     return $this;

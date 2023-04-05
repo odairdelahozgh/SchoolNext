@@ -11,24 +11,24 @@ trait RegistroDesempAcadTraitSetUp {
   public function validar($input_post) {
     try{
       Session::set('error_validacion', '');
-      if (!validar::numericVal()->validate($input_post['estudiante_id'])) {
-        Session::set('error_validacion', 'Error evaluando Estudiante');
-        return false;
-      }
+      // if (!validar::numericVal()->validate($input_post['estudiante_id'])) {
+      //   Session::set('error_validacion', 'Error evaluando Estudiante');
+      //   return false;
+      // }
       
-      if (!validar::numericVal()->positive()->length(4)->validate((int)$input_post['annio'])) {
-        Session::set('error_validacion', 'Error evaluando Año');
-        return false;
-      }
+      // if (!validar::numericVal()->positive()->length(4)->validate((int)$input_post['annio'])) {
+      //   Session::set('error_validacion', 'Error evaluando Año');
+      //   return false;
+      // }
 
-      if (!validar::numericVal()->positive()->validate((int)$input_post['grado_id'])) {
-        Session::set('error_validacion', 'Error evaluando Grado');
-        return false;
-      }
-      if (!validar::numericVal()->positive()->validate((int)$input_post['salon_id'])) {
-        Session::set('error_validacion', 'Error evaluando Salon');
-        return false;
-      }
+      // if (!validar::numericVal()->positive()->validate((int)$input_post['grado_id'])) {
+      //   Session::set('error_validacion', 'Error evaluando Grado');
+      //   return false;
+      // }
+      // if (!validar::numericVal()->positive()->validate((int)$input_post['salon_id'])) {
+      //   Session::set('error_validacion', 'Error evaluando Salon');
+      //   return false;
+      // }
       return true;
     } catch (\Throwable $th) {
       OdaFlash::error($th, true);

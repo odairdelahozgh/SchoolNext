@@ -56,4 +56,22 @@ class NotasController extends RestController
     }
   }//END-get_notas_salon
 
+
+  public function get_notasprom_periodo_salon(int $periodo_id, int $salon_id) {
+    try {
+      
+      $record = (new Nota)->getNotasPromAnnioPeriodoSalon($periodo_id, $salon_id);
+      if (isset($record)) {
+        $this->data = $record;
+      } else {
+        $this->error('El registro buscado no existe', 404);
+      }
+
+    } catch (\Throwable $th) {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+    }
+    
+  }//END-get_notasprom_periodo_salon
+  
+
 }

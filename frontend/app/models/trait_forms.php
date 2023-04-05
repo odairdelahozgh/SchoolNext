@@ -2,7 +2,14 @@
 
 trait TraitForms {
   /// PARA TODOS LO SMODELOS !!
-  protected static $_fields_show = ['all'=>[], 'index'=>[], 'create'=>[1=>[], 2=>[]], 'edit'=>[1=>[], 2=>[]], 'editUuid'=>[1=>[], 2=>[]]];
+  protected static $_fields_show = [
+    'all'=>[], 
+    'index'=>[], 
+    'create'=>[1=>[], 2=>[]], 
+    'edit'=>[1=>[], 2=>[]], 
+    'editUuid'=>[1=>[], 2=>[]], 
+    'calificar'=>[],
+  ];
   protected static $_attribs      = [];
   protected static $_widgets      = [];
   protected static $_defaults     = [];

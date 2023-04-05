@@ -18,7 +18,11 @@
       $tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
       foreach($data as $key => $reg) {
         $estudiante = ucwords(OdaUtils::sanearString($reg->estudiante_nombre))." $reg->salon_nombre [$reg->salon_id]";
-        $btn_edit = "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
+
+        $btn_edit = '';
+        if ( ('sin evidencia'===$reg->getFotoAcudiente()) || ('sin evidencia'===$reg->getFotoDirector()) ) {
+          $btn_edit = "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
+        }
 
         $data_row = array(
             $reg.$btn_edit,

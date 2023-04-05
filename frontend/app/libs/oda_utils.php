@@ -33,9 +33,9 @@ class OdaUtils extends Util {
   ];
   
   const VALORATIVOS = [
-    'Fortaleza'=>'Fortaleza', 
-    'Debilidad'=>'Debilidad', 
-    'Recomendación'=>'Recomendación'
+    'Fortaleza'     => 'Fortaleza', 
+    'Debilidad'     => 'Debilidad', 
+    'Recomendación' => 'Recomendación'
   ];
 
   const GENERO = [
@@ -69,13 +69,13 @@ class OdaUtils extends Util {
   ];
   
   const IS_ACTIVE = [
-    0 => 'Activo',
-    1 => 'Inactivo',
+    0 => 'Inactivo',
+    1 => 'Activo',
   ];
 
   const IS_VISIBLE = [
-    0 => 'Visible',
-    1 => 'Invisible',
+    0 => 'Invisible',
+    1 => 'Visible',
   ];
 
   const TIPO_REG_OBSERV = [
@@ -161,22 +161,22 @@ class OdaUtils extends Util {
      * Retorna una cadena con cada palabra en su primera letra en mayusculas y el resto en minúsculas.
      * 
      */
-    static function nombrePersona(string $string): string {
-        return ucwords(mb_strtolower(OdaUtils::sanearString($string), 'UTF-8'));
+    static function nombrePersona(string $string, bool $sanear = false, bool $notildes=false): string {
+      $string = ($sanear) ? OdaUtils::sanearString(string: $string) : $string ;
+      $string = ($notildes) ? self::eliminarTildes(texto: $string) : $string ;
+      return ucwords(string: mb_strtolower(string: $string, encoding: 'UTF-8'));
     } // END-nombrePersona
 
     static function functionNames(string $string): string {
-      $arr = str_split(str_replace('_', '', $string));
+      $arr = str_split(string: str_replace(search: '_', replace: '', subject: $string));
       $new_string = '';
       foreach ($arr as $letra) {
-        $new_string .= (($letra==strtoupper($letra)) ? ' '.$letra : $letra);
+        $new_string .= (($letra==strtoupper(string: $letra)) ? ' '.$letra : $letra);
       }
-      return self::nombrePersona($new_string);
+      return self::nombrePersona(string: $new_string);
     } // END-nombrePersona
-  
-    static function eliminarTildes($texto) {
-      return strtr($texto, "áéíóúÁÉÍÓÚüÜ", "aeiouAEIOUuU");
-    }
+
+    static function eliminarTildes(string $texto): string { return strtr($texto, "áéíóúÁÉÍÓÚüÜ", "aeiouAEIOUuU"); }
 
   /***
    * Retorna una cadena limpia de caracteres no deseados
@@ -184,44 +184,44 @@ class OdaUtils extends Util {
   static function sanearString($string) {
     $string = trim($string);
     $string = str_replace(
-        array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
-        array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
-        $string
+        search: array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
+        replace: array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
+        subject: $string
     );
  
     $string = str_replace(
-        array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
-        array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
-        $string
+        search: array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
+        replace: array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
+        subject: $string
     );
  
     $string = str_replace(
-        array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
-        array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
-        $string
+        search: array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
+        replace: array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
+        subject: $string
     );
  
     $string = str_replace(
-        array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
-        array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
-        $string
+        search: array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
+        replace: array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
+        subject: $string
     );
  
     $string = str_replace(
-        array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
-        array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
-        $string
+        search: array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
+        replace: array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
+        subject: $string
     );
 
     $string = str_replace(
-        array('ç', 'Ç'),
-        array('c', 'C'),
-        $string
+        search: array('ç', 'Ç'),
+        replace: array('c', 'C'),
+        subject: $string
     );
  
     //Esta parte se encarga de eliminar cualquier caracter extraño
     $string = str_replace(
-        array("¨", "º", "-", "~",
+        search: array("¨", "º", "-", "~",
              "#", "@", "|", "!", '"',
              "·", "$", "%", "&", "/",
              "(", ")", "?", "'", "¡",
@@ -229,8 +229,8 @@ class OdaUtils extends Util {
              "+", "}", "{", "¨", "´",
              ">", "< ", ";", ",", ":",
              "."),
-        '',
-        $string
+        replace: '',
+        subject: $string
     );
 
     return $string;
@@ -266,29 +266,28 @@ class OdaUtils extends Util {
     }
 
     //=============
-    static function isLocalhost() {
-      return
-            $_SERVER["HTTP_HOST"] === "127.0.0.1"
-            || $_SERVER["HTTP_HOST"] === "localhost"
-            || strncmp($_SERVER["HTTP_HOST"], "192.168.", 8) === 0;
+    static function isLocalhost(): bool {
+      return    $_SERVER["HTTP_HOST"] === "127.0.0.1"
+             || $_SERVER["HTTP_HOST"] === "localhost"
+             || strncmp(string1: $_SERVER["HTTP_HOST"], string2: "192.168.", length: 8) === 0;
     } // END-isLocalhost
 
     /*
      * Metodo para resaltar palabras de una cadena de texto
      */
-    public static function resaltar(string $palabra, string $texto) {
-        $reemp  =   str_ireplace($palabra,'%s',$texto);
-        $aux    =   $reemp;
-        $veces  =   substr_count($reemp,'%s');
-        if($veces == 0) {
-            return $texto;
-        }
-        $palabras_originales    =   array();
+    public static function resaltar(string $palabra, string $texto): string {
+        $reemp = str_ireplace(search: $palabra, replace: '%s', subject: $texto);
+        $aux = $reemp;
+        $veces = substr_count(haystack: $reemp, needle: '%s');
+        
+        if($veces == 0) { return $texto; }
+
+        $palabras_originales = array();
         for($i = 0 ; $i < $veces ; $i ++) {
-            $palabras_originales[] = '<b style="color: red;">'.substr($texto,strpos($aux,'%s'),strlen($palabra)).'</b>';
-            $aux = substr($aux,0,strpos($aux,'%s')).$palabra.substr($aux,strlen(substr($aux,0,strpos($aux,'%s')))+2);
+            $palabras_originales[] = '<b style="color: red;">'.substr(string: $texto, offset: strpos(haystack: $aux, needle: '%s'), length: strlen(string: $palabra)).'</b>';
+            $aux = substr(string: $aux, offset: 0, length: strpos(haystack: $aux, needle: '%s')). $palabra.substr(string: $aux, offset: strlen(string: substr(string: $aux, offset: 0, length: strpos(haystack: $aux, needle: '%s')))+2);
         }
-        return vsprintf($reemp,$palabras_originales);
+        return vsprintf(format: $reemp, values: $palabras_originales);
     }
 
     /**
@@ -299,17 +298,17 @@ class OdaUtils extends Util {
         string $separator = '-', 
         int $length = 100,
     ): string {
-        $search = explode(',', 'ç,Ç,ñ,Ñ,æ,Æ,œ,á,Á,é,É,í,Í,ó,Ó,ú,Ú,à,À,è,È,ì,Ì,ò,Ò,ù,Ù,ä,ë,ï,Ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u,Š,Œ,Ž,š,¥');
-        $replace = explode(',', 'c,C,n,N,ae,AE,oe,a,A,e,E,i,I,o,O,u,U,a,A,e,E,i,I,o,O,u,U,ae,e,i,I,oe,ue,y,a,e,i,o,u,a,e,i,o,u,s,o,z,s,Y');
-        $string = str_replace($search, $replace, $string);
-        $string = strtolower($string);
-        $string = preg_replace('/[^a-z0-9_]/i', $separator, $string);
-        $string = preg_replace('/\\' . $separator . '[\\' . $separator . ']*/', $separator, $string);
-        if (strlen($string) > $length) {
-            $string = substr($string, 0, $length);
+        $search = explode(separator: ',', string: 'ç,Ç,ñ,Ñ,æ,Æ,œ,á,Á,é,É,í,Í,ó,Ó,ú,Ú,à,À,è,È,ì,Ì,ò,Ò,ù,Ù,ä,ë,ï,Ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u,Š,Œ,Ž,š,¥');
+        $replace = explode(separator: ',', string: 'c,C,n,N,ae,AE,oe,a,A,e,E,i,I,o,O,u,U,a,A,e,E,i,I,o,O,u,U,ae,e,i,I,oe,ue,y,a,e,i,o,u,a,e,i,o,u,s,o,z,s,Y');
+        $string = str_replace(search: $search, replace: $replace, subject: $string);
+        $string = strtolower(string: $string);
+        $string = preg_replace(pattern: '/[^a-z0-9_]/i', replacement: $separator, subject: $string);
+        $string = preg_replace(pattern: '/\\' . $separator . '[\\' . $separator . ']*/', replacement: $separator, subject: $string);
+        if (strlen(string: $string) > $length) {
+            $string = substr(string: $string, offset: 0, length: $length);
         }
-        $string = preg_replace('/\\' . $separator . '$/', '', $string);
-        $string = preg_replace('/^\\' . $separator . '/', '', $string);
+        $string = preg_replace(pattern: '/\\' . $separator . '$/', replacement: '', subject: $string);
+        $string = preg_replace(pattern: '/^\\' . $separator . '/', replacement: '', subject: $string);
         return $string;
     }
 
@@ -348,8 +347,8 @@ class OdaUtils extends Util {
      * Devuelve el plural de un texto
      */
     public static function pluralize(string $cadena): string {
-      if (str_ends_with($cadena, 'es')) { return $cadena; }
-      if (str_ends_with($cadena, 's'))  { return $cadena; }
+      if (str_ends_with(haystack: $cadena, needle: 'es')) { return $cadena; }
+      if (str_ends_with(haystack: $cadena, needle: 's'))  { return $cadena; }
       return $cadena.'s';
     } // END-pluralize
 
@@ -369,12 +368,12 @@ class OdaUtils extends Util {
 
   public static function linkWhatsApp(string $telefono, string $caption='link WhatsApp', $show_tel=false) {
     $text = ($show_tel) ? $telefono : '' ;
-    return "$text <a title=\"$caption\" href=\"whatsapp://send?phone=$telefono\">"._Icons::brands('whatsapp', 'w3-large').'</a>';
+    return "$text <a title=\"$caption\" href=\"whatsapp://send?phone=$telefono\">"._Icons::brands(icon: 'whatsapp', size: 'w3-large').'</a>';
   }
 
-  public static function linkTelefono(string $telefono, string $caption='link Llamada', $show_tel=false) {
+  public static function linkTelefono(string $telefono, string $caption='link Llamada', $show_tel=false): string {
     $text = ($show_tel) ? $telefono : '' ;
-    return "$text <a title=\"$caption\" href=\"tel:$telefono\">"._Icons::solid('square-phone', 'w3-large').'</a>';
+    return "$text <a title=\"$caption\" href=\"tel:$telefono\">"._Icons::solid(icon: 'square-phone', size: 'w3-large').'</a>';
   }
 
 

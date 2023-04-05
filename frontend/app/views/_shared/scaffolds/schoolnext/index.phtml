@@ -4,24 +4,35 @@
     require('indexHeader.phtml');
 
     echo OdaForm::inputSearch();
-    if ($tot_regs = count($data)) {
+    if ($tot_regs = count(value: $data)) {
       $tabla = new OdaTable();
-      $tabla->setHead(['Acciones', ...$fieldsToShowLabels]);
+      $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels]);
       foreach ($data as $key => $item_data) {
-        $uuid_ok   = (property_exists($item_data, 'uuid') && !is_null($item_data->uuid));
+        $uuid_ok   = (property_exists(object_or_class: $item_data, property: 'uuid') && !is_null(value: $item_data->uuid));
         $edit_id   = ($uuid_ok) ? "editUuid/$item_data->uuid" : "edit/$item_data->id";
         $delete_id = ($uuid_ok) ? "delUuid/$item_data->uuid" : "del/$item_data->id";
         
         $set_pass = "setPassDocente/$item_data->id";
 
-        $msg_name  = strtoupper($nombre_modelo.': '.((property_exists($item_data, 'nombre')) ? $item_data->nombre : " # $item_data->id")) ;
+        $msg_name  = strtoupper(string: $nombre_modelo.': '.((property_exists(object_or_class: $item_data, property: 'nombre')) ? $item_data->nombre : " # $item_data->id")) ;
         
-        $lnkEditar = OdaTags::linkIcon(action: "admin/$controller_name/$edit_id", icon: 'square-pen', attr: 'title="Editar Registro"');
-        $lnkBorrar = Html::linkAction($delete_id, _Icons::solid('trash-can'), 
-        'title="Eliminar Registro" onclick="return confirm(\'Atención: ¿Quiere eliminar? \n'.$msg_name.'\')"');
+        $lnkEditar = OdaTags::linkIcon(
+          action: "admin/$controller_name/$edit_id", 
+          icon: 'square-pen', 
+          attr: 'title="Editar Registro"'
+        );
+
+        $lnkBorrar = Html::linkAction(
+          action: $delete_id, 
+          text: _Icons::solid(icon: 'trash-can'), 
+          attrs: 'title="Eliminar Registro" onclick="return confirm(\'Atención: ¿Quiere eliminar? \n'.$msg_name.'\')"'
+        );
         
-        $lnkSetPass = Html::linkAction($set_pass, _Icons::solid('key'), 
-          'title="Actualizar Password" onclick="return confirm(\'Atención: ¿Quiere establecer password por default?)\'"');
+        $lnkSetPass = Html::linkAction(
+          action: $set_pass, 
+          text: _Icons::solid(icon: 'key'), 
+          attrs: 'title="Actualizar Password" onclick="return confirm(\'Atención: ¿Quiere establecer password por default?)\'"'
+        );
 
         $arrFields = [];
         foreach ($fieldsToShow as $key => $field) {
@@ -32,13 +43,13 @@
           }
 
           if ('nombre'==$field) {
-            $dato = '['.$item_data->id.'] '.OdaUtils::nombrePersona((string)$item_data->$field);
+            $dato = '['.$item_data->id.'] '.OdaUtils::nombrePersona(string: (string)$item_data->$field);
           }
 
-          if (str_ends_with($field, '_id')) {
-            $field_with_name = substr($field, 0, strlen($field)-3).'_nombre';
-            if (isset($item_data->$field_with_name) and (!is_null($item_data->$field_with_name))) {
-              $dato = '['.$item_data->$field.'] '.OdaUtils::nombrePersona($item_data->$field_with_name);
+          if (str_ends_with(haystack: $field, needle: '_id')) {
+            $field_with_name = substr(string: $field, offset: 0, length: strlen(string: $field)-3).'_nombre';
+            if (isset($item_data->$field_with_name) and (!is_null(value: $item_data->$field_with_name))) {
+              $dato = '['.$item_data->$field.'] '.OdaUtils::nombrePersona(string: $item_data->$field_with_name);
             } else {
               $dato = '['.$item_data->$field.'] '.$item_data->$field;
             }
@@ -47,14 +58,14 @@
         }
 
         $arrBody = [$lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar, ...$arrFields];
-        $tabla->addRow($arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"']);
+        $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"']);
       }
       echo $tabla;
       echo "<h4>Total Registros: $tot_regs</h4>";
     }
     require('indexFooter.phtml');
   } catch (\Throwable $th) {
-    OdaFlash::error($page_action.PHP_EOL.$th, true, __CLASS__.'->'.__FUNCTION__.', Line: '.__LINE__);
+    OdaFlash::error(msg: $page_action.PHP_EOL.$th, audit: true, rastreo: __CLASS__.'->'.__FUNCTION__.', Line: '.__LINE__);
   }
   ?>
 </div>

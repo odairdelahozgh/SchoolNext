@@ -23,7 +23,7 @@ class RegistrosGenController extends RestController
     */
    public function get_singleuuid(string $uuid) {
       /*
-      $record = (new RegistrosGen())->getByUUID($uuid);
+      $record = (new RegistrosGen)->getByUUID($uuid);
       if (isset($record)) {
          $this->data = $record;
       } else {
@@ -38,7 +38,7 @@ class RegistrosGenController extends RestController
     */
     public function get_singleid(int $id) {
       try {
-        $record = (new RegistrosGen())::get($id);
+        $record = (new RegistrosGen)::get($id);
         if (isset($record)) {
           $this->data = $record;
         } else {
@@ -60,7 +60,7 @@ class RegistrosGenController extends RestController
          $this->data["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id] = $reg;
       }
       /*
-      $this->data = (new RegistrosGen())->getRegistrosAnnio($annio);
+      $this->data = (new RegistrosGen)->getRegistrosAnnio($annio);
       */
    }
    

@@ -1,0 +1,9 @@
+<?php
+$writer = new XLSXWriter();
+$writer->writeSheetHeader(sheet_name: 'Sheet1', header_types: $header);
+//OdaUtils::ver_array($data);
+
+foreach($data as $row) {  
+  $writer->writeSheetRow(sheet_name: 'Sheet1', row: $row);
+}
+$writer->writeToFile( filename: $filename );

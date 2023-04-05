@@ -1,2 +1,21 @@
 <footer class="w3-margin-top">
 </footer>
+
+<?= tag::js("tabs_h");?>
+
+<script> 
+  const ranges = document.querySelectorAll('input[type="range"]');
+  const valores = document.querySelectorAll('input[type="number"][id*="notas_definitiva"]');
+  for (let i = 0; i < ranges.length; i++) {
+    ranges[i].addEventListener('input', (event) => {
+      valores[i].value = event.target.value;
+    });
+  }
+  
+  for (let i = 0; i < valores.length; i++) {
+    valores[i].addEventListener('input', (event) => {
+      ranges[i].value = event.target.value;
+    });
+  }
+
+</script>

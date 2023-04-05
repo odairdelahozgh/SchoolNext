@@ -8,13 +8,13 @@ trait RangoTraitSetUp {
   
   use TraitUuid, TraitForms;
   
-  public function validar($input_post) {
-    Session::set('error_validacion', '');
+  public function validar($input_post): bool {
+    Session::set(index: 'error_validacion', value: '');
     try{
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
+      //validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       return true;
     } catch(NestedValidationException $exception) {
-      Session::set('error_validacion', $exception->getFullMessage());
+      Session::set(index: 'error_validacion', value: $exception->getFullMessage());
       return false;
     }
   } //END-validar
@@ -23,29 +23,44 @@ trait RangoTraitSetUp {
    * CONFIGURACIÓN DEL MODELO
    */
   private function setUp() {
-
+    // 'id', 'nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg', 
+    // 'created_by', 'updated_by', 'created_at', 'updated_at'
     self::$_fields_show = [
-      'all'     => ['id', 'uuid', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
-      'index'   => ['is_active', 'nombre', 'created_at', 'updated_at'],
-      'create'  => ['id', 'uuid', ],
-      'edit'    => ['id', 'uuid',  'is_active']
+      'all'     => ['id', 'nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg', 'created_by', 'updated_by', 'created_at', 'updated_at'],
+      'index'   => ['id', 'nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg'],
+      'create'  => ['nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg'],
+      'edit'    => ['nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg'],
     ];
   
     self::$_attribs = [
-      'id'       => 'required',
-      'uuid'     => 'required',
+      'id'      => 'required',
+      'nombre'  => 'required',
+      'lim_inf' => 'required',
+      'lim_sup' => 'required',
     ];
   
     self::$_defaults = [
-      'is_active'       => 1,
+      'lim_inf'  => 0,
+      'lim_sup'  => 0,
+      'color_rango' => '',
+      'color_texto' => '',
+      'color_backg' => '',
     ];
   
     self::$_helps = [
-      'is_active'    => 'Indica si está activo el registro.',
+      'color_rango' => 'nombre del color',
+      'color_texto' => 'nombre del color',
+      'color_backg' => 'nombre del color',
     ];
   
     self::$_labels = [
-      'is_active'       => 'Está Activo? ',
+      'nombre'      => 'Nombre del Rango',
+      'lim_inf'     => 'Límite Inferior',
+      'lim_sup'     => 'Límite Superior',
+      'color_rango' => 'Color del Rango',
+      'color_texto' => 'Color de Texto',
+      'color_backg' => 'Color de Fondo',
+
       'created_at'      => 'Creado el',
       'created_by'      => 'Creado por',
       'updated_at'      => 'Actualizado el',

@@ -1,8 +1,16 @@
 <?php
 
 class OdaTags {
-
-   // HELPERS PARA TABLAS
+  
+   /**
+    * Crea un tag HTML
+    * */
+    public static function createTag(string $tag, string|null $content = null, string|array $attrs = ''): string {
+      if (is_array(value: $attrs)) { $attrs = self::getAttrs(params: $attrs); }
+      if (is_null(value: $content)) { return "<$tag $attrs/>"; }
+      return "<$tag $attrs>$content</$tag>";
+   }
+   
    public static function multiTags( $tag='span', $data=array(), $attrs='' ) {
       if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
       $tags='';
@@ -10,7 +18,6 @@ class OdaTags {
       return $tags;
    } // END-multiTags
 
-   // HELPERS PARA LINKS    
    public static function getAttrs($params) {
        if (!is_array($params)) {
            return (string)$params;
@@ -100,7 +107,7 @@ class OdaTags {
    }
  
   /**
-   * dlist: DEscription Lists
+   * dlist: Description Lists
    * @source https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting
    */
   public static function dlist(array $arr_description, array|string $attrs = 'class="w3-ul w3-card-4 w3-hoverable"') {
@@ -152,4 +159,33 @@ class OdaTags {
     return "<div class=\"w3-bar\">$btns</div>";
    }
 
+   public static function dataList(string $id='list', $arrValores=[]) {
+    $opts = '';
+    foreach ($arrValores as $key => $value) { $opts .= "<option value=\"$value\"></option>"; }
+    return "<datalist id=\"$id\">$opts</datalist>";
+   }
+
+   
+
+  /**
+   * Crea un Input 'Range'
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
+   * @example echo OdaForm::inputRango(id: 'ir1', caption: 'Rango de Valores', value: 5, min:0, max=10, step=1)
+   */
+  public static function inputRango(string $id_name, string $caption='', int $value=0, int $min=0, int $max=100, int $step=1) {
+    return ($min<=$value && $value<=$max) ?
+          "<input type=\"range\" id=\"range_$id_name\" name=\"range\" min=\"$min\" max=\"$max\" value=\"$value\" step=\"$step\">"
+           : "inputRange : valor fuera de rango" ;
+  } // END-inputRango
+
+  public static function inputRangoJs ($range_id) {
+    return 
+    "const range = document.getElementById(\"range_$range_id\");
+     const valor = document.getElementById(\"notas_definitiva_$range_id\");
+    
+    range.addEventListener('input', (event) => {
+      valor.value = event.target.value;
+    });";
+  }
+  
 } // END-OdaTag

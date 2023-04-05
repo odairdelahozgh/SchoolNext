@@ -8,13 +8,12 @@ trait PeriodoTraitSetUp {
   
   use TraitUuid, TraitForms;
   
-  public function validar($input_post) {
-    Session::set('error_validacion', '');
+  public function validar($input_post): bool {
+    Session::set(index: 'error_validacion', value: '');
     try{
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       return true;
     } catch(NestedValidationException $exception) {
-      Session::set('error_validacion', $exception->getFullMessage());
+      Session::set(index: 'error_validacion', value: $exception->getFullMessage());
       return false;
     }
   } //END-validar
@@ -22,18 +21,24 @@ trait PeriodoTraitSetUp {
   /**
    * CONFIGURACIÓN DEL MODELO
    */
-  private function setUp() {
-
+  private function setUp(): void {
+    // 'id', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'created_by', 'updated_by', 'created_at', 'updated_at', 'mes_req_boletin'
     self::$_fields_show = [
-      'all'     => ['id', 'uuid', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
-      'index'   => ['is_active', 'nombre', 'updated_at'],
-      'create'  => ['id', 'uuid', ],
-      'edit'    => ['id', 'uuid',  'is_active']
+      'all'     => ['id', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'created_by', 'updated_by', 'created_at', 'updated_at', 'mes_req_boletin'],
+      'index'   => ['id', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day'],
+      'create'  => ['periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'mes_req_boletin'],
+      'edit'    => ['periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'mes_req_boletin'],
     ];
-  
+    
     self::$_attribs = [
-      'id'       => 'required',
-      'uuid'     => 'required',
+      'periodo'       => 'required', 
+      'fecha_inicio'  => 'required', 
+      'fecha_fin'     => 'required', 
+      'f_ini_logro'   => 'required', 
+      'f_fin_logro'   => 'required', 
+      'f_ini_notas'   => 'required', 
+      'f_fin_notas'   => 'required', 
+      'f_open_day'    => 'required',
     ];
   
     self::$_defaults = [
@@ -53,25 +58,6 @@ trait PeriodoTraitSetUp {
     ];
   
     self::$_placeholders = [
-    ];
-  
-    // numeric, int, maxlength, length, range, select, email, url, ip, required, alphanum, alpha, date, pattern, decimal, equal
-    self::$_rules_validators = [
-        /*
-        'NombreCompleto' => [
-				  'required' => [ 'error' => 'Indique su nombre.' ],
-				  'alpha'    => [ 'error' => 'Nombre incompleto o incorrecto.' ]
-			  ],
-			  'Email' => [
-				  'required' => [ 'error' => 'Indique su email.' ],
-				  'email'    => [ 'error' => 'Email incorrecto.' ]
-			  ],
-			  'Movil' => [
-				  'required' => [ 'error' => 'Indique su teléfono / móvil.' ],
-				  'length'   => [ 'min' => '9', 'max' => '17', 'error' => 'Teléfono / móvil incorrecto' ],
-          'pattern'  => [ 'regexp' => '/^\+(?:[0-9] ?){6,14}[0-9]$/', 'error'  => 'Teléfono incorrecto. ejemplo. +34 862929929']
-        ], 
-        */
     ];
 
   }

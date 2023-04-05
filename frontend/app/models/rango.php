@@ -6,7 +6,7 @@
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
 
- /* 
+/* 
   'id', 'nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg', 
   'created_by', 'updated_by', 'created_at', 'updated_at'
 */
@@ -17,7 +17,7 @@ class Rango extends LiteRecord {
 
   public function __construct() {
     parent::__construct();
-    self::$table = Config::get('tablas.rango');
+    self::$table = Config::get(var: 'tablas.rango');
     $this->setUp();
   } //END-__construct
 
@@ -28,23 +28,30 @@ class Rango extends LiteRecord {
     '80-89'  => 'Alto',
     '90-94'  => 'Alto +',
     '95-100' => 'Superior',
-  );
+  );//aRangos
   protected static $aRangosColores = array(
-    'Bajo'     => 'w3-red',
-    'Básico'   => 'w3-orange',
-    'Básico +' => 'w3-yellow',
-    'Alto'     => 'w3-light-blue',
-    'Alto +'   => 'w3-blue',
-    'Superior' => 'w3-green',
-  );
+    'Bajo'     => 'red',
+    'Básico'   => 'orange',
+    'Básico +' => 'yellow',
+    'Alto'     => 'light-blue',
+    'Alto +'   => 'blue',
+    'Superior' => 'green',
+  );//aRangosColores
+  protected static $aRangosLimiteInf = array(
+    '1'  => 'Bajo',
+    '60' => 'Básico',
+    '70' => 'Básico +',
+    '80' => 'Alto',
+    '90' => 'Alto +',
+    '95' => 'Superior',
+  );//aRangosLimiteInf
 
-  //====================
-  public static function getRango($valor=0) {
+  public static function getRango($valor=0): string {
     if ($valor==0)  { return ''; }
-    if ($valor<0)   { return _Icons::solid('face-frown','w3-large').'Rango no válido: Inferior a Cero'; }
-    if ($valor>100) { return _Icons::solid('face-frown','w3-large').'Rango no válido: Superior a 100'; }
+    if ($valor<0)   { return _Icons::solid(icon: 'face-frown',size: 'w3-large').'Rango no válido: Inferior a Cero'; }
+    if ($valor>100) { return _Icons::solid(icon: 'face-frown',size: 'w3-large').'Rango no válido: Superior a 100'; }
     foreach (self::$aRangos as $key => $rango) {
-      $aPartes = explode('-', $key);
+      $aPartes = explode(separator: '-', string: $key);
       if ( ($valor>=$aPartes[0]) && ($valor<=$aPartes[1]) ) {
         return $rango;
       }
@@ -52,9 +59,9 @@ class Rango extends LiteRecord {
   } //END-getRango
   
   //====================
-  public static function getColorRango($valor=0)  {
-    $rango = self::getRango($valor);
-    if (array_key_exists($rango, self::$aRangosColores)) {
+  public static function getColorRango($valor=0): string  {
+    $rango = self::getRango(valor: $valor);
+    if (array_key_exists(key: $rango, array: self::$aRangosColores)) {
       return self::$aRangosColores[$rango];
     } else {
       return 'w3-aqua w3-border-theme';

@@ -197,16 +197,15 @@ abstract class Upload {
      * @return string|false Nombre de archivo generado o FALSE si falla
      */
     public function saveRandom($subcarpeta) {
+      // Genera el nombre de archivo
+      $name = md5(time()).rand(1,100);
 
-        // Genera el nombre de archivo
-        $name = md5(time()).rand(1,100);
+      // Guarda el archivo
+      if ($this->save($subcarpeta.'/'.$name)) {
+        return $name . $this->_getExtension();
+      }
 
-        // Guarda el archivo
-        if ($this->save($subcarpeta.'/'.$name)) {
-            return $name . $this->_getExtension();
-        }
-
-        return FALSE;
+      return FALSE;
     }
 
     /**

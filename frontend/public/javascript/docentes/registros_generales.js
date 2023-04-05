@@ -10,10 +10,12 @@ function show_lista_estudiantes() {
   w3.hide('#form_edit');
 }
 
+
 function show_new_form(estudiante_nombre, estudiante_id, grado_id, salon_id, user_id) {
   var dt = new Date();
   const frm = document.getElementById("frm_new");
   document.getElementById("nombre_estud_new").innerHTML = estudiante_nombre;
+
   frm.registrosgens_estudiante_id.value = estudiante_id;
   frm.registrosgens_annio.value = dt.getFullYear();
   frm.registrosgens_grado_id.value = grado_id;
@@ -32,13 +34,14 @@ function show_new_form(estudiante_nombre, estudiante_id, grado_id, salon_id, use
 function show_edit_form(reg_id, estudiante) {
   let ruta_load_data = document.getElementById('public_path').innerHTML.trim()+'api/registros_gen/singleid/'+reg_id;
   let ruta_edit = document.getElementById('public_path').innerHTML.trim()+'admin/registros_gen/edit_ajax/'+reg_id;
+  
   fetch(ruta_load_data)
   .then((res) => res.json())
   .then(datos => {
     document.getElementById("nombre_estud_edit").innerHTML = estudiante;
     const frm = document.getElementById("frm_edit");
-    frm.action = ruta_edit;
     
+    frm.action = ruta_edit;
     frm.registrosgens_id.value = datos.id;
     frm.registrosgens_uuid.value = datos.uuid;
     frm.registrosgens_estudiante_id.value = datos.estudiante_id;

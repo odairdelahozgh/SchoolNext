@@ -33,14 +33,15 @@ function show_edit_form(reg_id, estudiante) {
   console.clear();
   let ruta_load_data = document.getElementById('public_path').innerHTML.trim()+'api/registros_desemp_acad/singleid/'+reg_id;
   let ruta_edit = document.getElementById('public_path').innerHTML.trim()+'admin/registros_desemp_acad/edit_ajax/'+reg_id;
+
   fetch(ruta_load_data)
   .then((res) => res.json())
   .then(datos => {
     document.getElementById("nombre_estud_edit").innerHTML = estudiante;
     console.log(datos);
     const frm = document.getElementById("frm_edit");
+  
     frm.action = ruta_edit;
-
     frm.registrodesempacads_id.value = datos.id;
     frm.registrodesempacads_uuid.value = datos.uuid;
     frm.registrodesempacads_estudiante_id.value = datos.estudiante_id;

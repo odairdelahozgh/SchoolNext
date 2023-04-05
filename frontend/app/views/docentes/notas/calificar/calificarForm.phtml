@@ -1,41 +1,42 @@
 <?php
-  $model = new Nota;
-  $myForm = new OdaForm($model, 'admin/notas/save');
+  $max_lenght = ' maxlength="'.strlen(string: $arrData['max_indic']).'" size="'.(strlen(string: $arrData['max_indic'])-1).'"' ;
+  $min_max    = ' min="'.$arrData['min_indic'].'" max="'.$arrData['max_indic'].'" ';
+  $pattern    = ' pattern="[0-9]{'.strlen(string: $arrData['max_indic']).'}"';
   
-  $arr_campos = [
-    'definitiva' => 'text',
-    'plan_apoyo' => 'text',  
-    'nota_final' => '',
-    'i01' => 'text', 
-    'i02' => 'text', 
-    'i03' => 'text', 
-    'i04' => 'text', 
-    'i05' => 'text', 
-    'i06' => 'text', 
-    'i07' => 'text', 
-    'i08' => 'text', 
-    'i09' => 'text', 
-    'i10' => 'text',
-  ];
+  $frm = '';
+ /* 
+  <td align="center" width="10%" rowspan="3">
+  <img alt="Foto 1962" height="100" src="/uploads/student/1962.png" width="80">
+  <input type="checkbox" checked="checked" name="califica_3266" id="3266"></td>
+ */
+  $slider_def = OdaTags::inputRango(id_name: $reg_nota->id, value: $reg_nota->definitiva, min: 0, max: 100, step: 1);
+  $field_def = $reg_nota->fieldForm('definitiva', $min_max.$max_lenght.$pattern);
 
-  foreach ($arr_campos as $key => $campo) {
-    $myForm->addInput2(field: $key.'_'.$reg_nota->id, inline:true);
-  }
-  return $myForm->getFields($reg_nota->estudiante_nombre);
- 
-  
-  /*
-  
-  $myForm->addHiddens('id, uuid, annio, periodo_id, grado_id, salon_id, asignatura_id, estudiante_id, 
-  i11, i12, i13, i14, i15, i16, i17, i18, i19, i20, 
-  i21, i22, i23, i24, i25, i26, i27, i28, i29, i30,
-  i31, i32, i33, i34, i35, i36, i37, i38, i39, i40, 
-  asi_desempeno, asi_activ_profe, asi_activ_estud, asi_fecha_entrega, is_asi_validar_ok, 
-  asi_calificacion, is_asi_ok_dirgrupo, is_asi_ok_coord, asi_link_externo1, asi_link_externo2, 
-  paf_link_externo1, paf_link_externo2, profesor_id, 
-  paf_temas, paf_acciones, paf_activ_estud, paf_activ_profe, paf_fecha_entrega, 
-  is_paf_ok_coord, is_paf_validar_ok, is_paf_ok_dirgrupo, paf_num_envios, 
-  ausencias, inthoraria, created_at, updated_at, created_by, updated_by');
-  */
+  $frm .= "<tr class=\"\">";
+  $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->getFoto(), attrs: 'rowspan="3"');
+  $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->estudiante_nombre."<br>$info_indic", attrs: 'colspan="4"');
+  $frm .= OdaTags::createTag(tag: 'td', content: '');
+  $frm .= OdaTags::createTag(tag: 'td', content: $slider_def.'<br>Nota:' . $field_def, attrs: 'colspan="3"');
+  $frm .= OdaTags::createTag(tag: 'td', content: 'P.A.<br>'.$reg_nota->plan_apoyo);
+  $frm .= OdaTags::createTag(tag: 'td', content: 'N.F.<br>'.$reg_nota->nota_final);
+  $frm .= '</tr>';
 
+  $fields['f2'] = ['i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10'];
+  $fields['f3'] = ['i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20'];
+
+  $frm .= "<tr class=\"\">";
+  foreach ($fields['f2'] as $key => $campo) { 
+    $field = $reg_nota->fieldForm($campo, $min_max.$max_lenght.$pattern.' class="color-input"');
+    $frm .= OdaTags::createTag(tag:'td', content:$field);
+  }//foreach
+  $frm .= '</tr>';
+
+  $frm .= "<tr class=\"\">";
+  foreach ($fields['f3'] as $key => $campo) { 
+    $field = $reg_nota->fieldForm($campo, $min_max.$max_lenght.$pattern.' class="color-input"');
+    $frm .= OdaTags::createTag(tag:'td', content:$field);
+  }//foreach
+  $frm .= '</tr>';
+
+  return $frm;
 ?>

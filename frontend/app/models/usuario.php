@@ -23,6 +23,12 @@ class Usuario extends LiteRecord {
     self::$table = Config::get('tablas.usuario');
     $this->setUp();
   } //END-__construct
-
-
+  
+  public function misGrupos() {
+    $user_id = Session::get('id');
+    if (false !== ( (new Salon)::first('Select t.id from sweb_salones as t where t.director_id=? or t.codirector_id=?', [$user_id, $user_id]) ) ) {
+      return (new Salon)::filter('WHERE is_active=1 AND director_id=? OR codirector_id=?', [$user_id, $user_id]) ;
+    }
+    return [];
+  }
 } //END-CLASS

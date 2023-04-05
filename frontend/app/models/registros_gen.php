@@ -3,7 +3,7 @@
 use Mpdf\Tag\Select;
 
 /**
- * Modelo RegistrosGen * 
+ * Modelo RegistrosGen
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
@@ -86,7 +86,7 @@ class RegistrosGen extends LiteRecord {
     ]);
     return true;
   } //END-updatePhoto 
-
+  
   public function uploadPhoto($imageField)  {
     $file = Upload::factory($imageField, 'file');
     $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg'));

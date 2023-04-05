@@ -1,11 +1,12 @@
 <div class="w3-container">
    <?= View::flash(); ?>
-   <?= View::Encab($controller_name, 'Utilidades de Kumbia', ''); ?>
+   <?= View::Encab(page_module: $controller_name, page_action: 'Utilidades de Kumbia', breadcrumb: ''); ?>
 </div>
 
 <?php 
-  $good = '<span class="w3-text-green">'._Icons::solid('face-smile').'</span>';
-  $bad  = '<span class="w3-text-red">'._Icons::solid('face-frown').'</span>';
+  $good = '<span class="w3-text-green">'._Icons::solid(icon: 'face-smile').'</span>';
+  $bad  = '<span class="w3-text-red">'._Icons::solid(icon: 'face-frown').'</span>';
+
   $mode = PRODUCTION ? 'Producciónn' : 'Desarrollo';
   if (!$timezone = date_default_timezone_get()) {
     $timezone = 'No se ha especificado un Timezone.';
@@ -17,11 +18,11 @@
     <div class="w3-half">
       <?php
         $tabla = new OdaTable(theme: 'dark');
-        $tabla->setCaption('General');
-        $tabla->setHead(['Ip Actual', OdaUtils::getIp()]);
-        $tabla->addRow(['Modo', $mode]);
-        $tabla->addRow(['Zona Horaria', $timezone]);
-        $tabla->addRow([]);
+        $tabla->setCaption(caption: 'General');
+        $tabla->setHead(data_head: ['Ip Actual', OdaUtils::getIp()]);
+        $tabla->addRow(data: ['Modo', $mode]);
+        $tabla->addRow(data: ['Zona Horaria', $timezone]);
+        $tabla->addRow(data: []);
         echo $tabla;
       ?>
     </div>
@@ -29,11 +30,11 @@
     <div class="w3-half">
     <?php
         $tabla = new OdaTable(theme: 'dark');
-        $tabla->setCaption('Frameworks');
-        $tabla->setHead(['Framework','Version']);
-        $tabla->addRow(['KumbiaPHP', KUMBIA_VERSION]);
-        $tabla->addRow(['W3 CSS', '4.15 Dec 2020']);
-        $tabla->addRow(['W3 JS', '1.04 April 2019']);
+        $tabla->setCaption(caption: 'Frameworks');
+        $tabla->setHead(data_head: ['Framework','Version']);
+        $tabla->addRow(data: ['KumbiaPHP', KUMBIA_VERSION]);
+        $tabla->addRow(data: ['W3 CSS', '4.15 Dec 2020']);
+        $tabla->addRow(data: ['W3 JS', '1.04 April 2019']);
         echo $tabla;
     ?>
     </div>
@@ -47,11 +48,11 @@
     <div class="w3-half">
       <?php
         $tabla = new OdaTable(theme: 'dark');
-        $tabla->setCaption('Configuración de PHP');
-        $tabla->setHead(['Config','Obligatorio','Servidor','Diagnóstico']);
+        $tabla->setCaption(caption: 'Configuración de PHP');
+        $tabla->setHead(data_head: ['Config','Obligatorio','Servidor','Diagnóstico']);
 
-        $ver_compare = version_compare(PHP_VERSION, '7.4.1') >= 0;
-        $tabla->addRow(['php version', '>=7.4.1', phpversion(), ($ver_compare ? $good : $bad)]);
+        $ver_compare = version_compare(version1: PHP_VERSION, version2: '7.4.1') >= 0;
+        $tabla->addRow(data: ['php version', '>=7.4.1', phpversion(), ($ver_compare ? $good : $bad)]);
         
         
         $tabla->addRow(['magic quotes gpc', '??', (ini_get('magic_quotes_gpc')?'ON':'OFF'), '??']);
@@ -71,7 +72,7 @@
         $tabla->addRow(['register globals', '??', (ini_get('register_globals')?'ON':'OFF'), '??']);
         $tabla->addRow(['session auto_start', '??', (ini_get('session.auto_start')?'ON':'OFF'), '??']);
         $tabla->addRow(['utf8_decode()', '??', (function_exists('utf8_decode')?'ON':'OFF'), '??']);
-        $tabla->addRow(['exec()', '??', (ini_get('exec')?'ON':'OFF'), '??']);
+        $tabla->addRow(data: ['exec()', '??', (ini_get('exec')?'ON':'OFF'), '??']);
         echo $tabla;
       ?>
     </div>
@@ -81,27 +82,36 @@
         $tabla->setCaption('Extensiones PHP');
         $tabla->setHead(['Extension','Obligatorio','Servidor','Diagnóstico']);
 
-        $diag = (extension_loaded('pdo_mysql')) ? $good : $bad;
-        $tabla->addRow(['pdo_mysql', 'SI', (extension_loaded('pdo_mysql')?'ON':'OFF'), $diag]);
-        
-        $diag = (extension_loaded('json')) ? $good : $bad;
-        $tabla->addRow(['json', 'SI', (extension_loaded('json') ? phpversion('json') : 'OFF'), $diag]);
+        $Extensiones = [
+          'pdo_mysql'=>'SI',
+          'json'=>'SI',
+          'gd'=>'SI',
+          'mbstring'=>'SI',
+          'curl'=>'SI',
+          'ctype'=>'SI',
+          'session'=>'SI',
+          'apc'=>'NO',
+          'date'=>'SI',
+          'dom'=>'SI',
+          'iconv'=>'SI',
+          'pcre'=>'SI',
+          'reflection'=>'SI',
+          'bitset'=>'NO',
+          'simplexml'=>'SI',
+          'xml'=>'SI',
+          'xsl'=>'SI',
+          'xlswriter'=>'SI',
+        ];
 
-        $tabla->addRow(['gd', 'SI', (extension_loaded('gd')?'ON':'OFF'), '']);
-        $tabla->addRow(['mbstring', 'SI', (extension_loaded('mbstring')?'ON':'OFF'), '']);
-        $tabla->addRow(['curl', 'SI', (extension_loaded('curl')?'ON':'OFF'), '']);
-        $tabla->addRow(['ctype', 'SI', (extension_loaded('ctype')?'ON':'OFF'), '']);
-        $tabla->addRow(['session', 'SI', (extension_loaded('session')?'ON':'OFF'), '']);
-        $tabla->addRow(['apc', 'NO', (extension_loaded('apc')?'ON':'OFF'), '']);
-        $tabla->addRow(['date', 'SI', (extension_loaded('date')?'ON':'OFF'), '']);
-        $tabla->addRow(['dom', 'SI', (extension_loaded('dom')?'ON':'OFF'), '']);
-        $tabla->addRow(['iconv', 'SI', (extension_loaded('iconv')?'ON':'OFF'), '']);
-        $tabla->addRow(['pcre', 'SI', (extension_loaded('pcre')?'ON':'OFF'), '']);
-        $tabla->addRow(['reflection', 'SI', (extension_loaded('reflection')?'ON':'OFF'), '']);
-        $tabla->addRow(['bitset', 'NO', (extension_loaded('bitset')?'ON':'OFF'), '']);
-        $tabla->addRow(['simplexml', 'SI', (extension_loaded('SimpleXML')?'ON':'OFF'), '']);
-        $tabla->addRow(['xml', 'SI', (extension_loaded('xml')?'ON':'OFF'), '']);
-        $tabla->addRow(['xsl', '', (extension_loaded('xsl')?'ON':'OFF'), '']);
+        foreach ($Extensiones as $ext_name => $req) {
+          if (extension_loaded(extension: $ext_name)) {
+            $diag = ('SI'==$req) ? $good : $bad;
+            $tabla->addRow(data: [$ext_name, $req, 'ON', $diag]);
+          } else {
+            $diag = ('NO'==$req) ? $good : $bad ;
+            $tabla->addRow(data: [$ext_name, $req, 'OFF', $diag]);
+          }
+        }
         echo $tabla;
       ?>
     </div>

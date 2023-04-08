@@ -6,7 +6,6 @@ frontend/public/files/upload/*
 frontend/public/files/download/*
 
 frontend/app/libs/fpdf/*
-frontend/app/help/*
 frontend/app/temp/*
 
 vendor/Kumbia/ActiveRecord/

@@ -85,8 +85,8 @@ trait NotaTraitSetUp {
       'id'       => 'required',
       'uuid'     => 'required', 
 
-      'definitiva'   => ' min="0" max="100" maxlength="3" size="2" pattern="[0-9]{3}" ',
-      'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="2" pattern="[0-9]{3}" ',
+      'definitiva'   => ' min="0" max="100" maxlength="3" size="3" pattern="^[0-9]$|^[1-9][0-9]$|^(100)$" ',
+      'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" pattern="^[0-9]$|^[1-9][0-9]$|^(100)$" ',
     ];
   
     self::$_defaults = [

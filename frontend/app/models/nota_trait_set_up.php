@@ -7,14 +7,13 @@ use Respect\Validation\Exceptions\NestedValidationException;
 trait NotaTraitSetUp {
   
   use TraitUuid, TraitForms, NotaTraitProps, NotaTraitLinks;
-  
 
-  public function validar($input_post) {
-    Session::set('error_validacion', '');
+  public function validar($input_post): bool {
+    Session::set(index: 'error_validacion', value: '');
     try{
       return true;
     } catch(NestedValidationException $exception) {
-      Session::set('error_validacion', $exception->getFullMessage());
+      Session::set(index: 'error_validacion', value: $exception->getFullMessage());
       return false;
     }
   } //END-validar
@@ -85,8 +84,8 @@ trait NotaTraitSetUp {
       'id'       => 'required',
       'uuid'     => 'required', 
 
-      'definitiva'   => ' min="0" max="100" maxlength="3" size="3" pattern="^[0-9]$|^[1-9][0-9]$|^(100)$" ',
-      'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" pattern="^[0-9]$|^[1-9][0-9]$|^(100)$" ',
+      'definitiva'   => ' min="0" max="100" maxlength="3" size="3" ',
+      'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" ',
     ];
   
     self::$_defaults = [

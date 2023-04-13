@@ -77,13 +77,13 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   
 
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
-     $DQL = new OdaDql(self::$class_name);
-     $DQL->select($select)
-         ->orderBy(self::$order_by_default);
-    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
-    if (!is_null($estado))   { 
-      $DQL->where('t.is_active=?')
-      ->setParams([$estado]);
+     $DQL = new OdaDql(_from: self::$class_name);
+     $DQL->select(select: $select)
+         ->orderBy(sort: self::$order_by_default);
+    if (!is_null(value: $order_by)) { $DQL->orderBy(sort: $order_by); }
+    if (!is_null(value: $estado))   { 
+      $DQL->where(where: 't.is_active=?')
+      ->setParams(params: [$estado]);
     }
     return $DQL->execute();
   } // END-getList

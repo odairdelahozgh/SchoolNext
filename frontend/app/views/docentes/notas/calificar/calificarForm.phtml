@@ -1,16 +1,13 @@
 <?php
   
   // fila #1
-  $frm .= "<tr class=\"\">";  
+  $frm = "<tr class=\"\">";  
   $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->getFoto(), attrs: 'rowspan="3"');
   $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->estudiante_nombre."<br>$info_indic", attrs: 'colspan="4"');
   $frm .= OdaTags::createTag(tag: 'td', content: '');
   
-  $max_lenght = ' maxlength="3" size="3"' ;
-  $min_max = ' min="0" max="100" ';
-  $pattern_definitiva    = ' pattern="\b([0-9]|[1-9][0-9]|100)\b"';
   $slider_definitiva = OdaTags::inputRango(id_name: $reg_nota->id, value: $reg_nota->definitiva, min: 0, max: 100, step: 1);
-  $field_definitiva = $reg_nota->fieldForm('definitiva', $min_max .$max_lenght .$pattern_definitiva);
+  $field_definitiva = $reg_nota->fieldForm('definitiva');
 
   $frm .= OdaTags::createTag(tag: 'td', content: $slider_definitiva.'<br>Nota:' . $field_definitiva, attrs: 'colspan="3"');
   $frm .= OdaTags::createTag(tag: 'td', content: 'P.A.<br>'.$reg_nota->plan_apoyo);

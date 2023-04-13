@@ -14,9 +14,9 @@
 
   $info_indic = OdaTags::createTag(tag:'span', content:"$forta $debil $recom", attrs:'class="w3-small"');
   
-
-  $tabla = Form::open().'<table>';
+  $tabla = Form::open(action: "admin/notas/guardarCalificaciones/{$arrData['Periodo']}/{$arrData['Salon']->id}/{$arrData['Asignatura']->id}").'<table>';
   $tabla .= '<tr> <td colspan="11"><hr></td><tr>';
+  $tabla .= '<tr> <td colspan="11">'.Form::submit(text: 'Guardar').'</td><tr>';
   foreach ($data as $reg_nota) {
     $tabla .= require('calificarForm.phtml');
     $tabla .= '<tr> <td colspan="11"><hr></td><tr>';

@@ -58,6 +58,7 @@ trait NotaTraitSetUp {
     self::$_widgets = [
       'definitiva'   => 'number',
       'plan_apoyo'   => 'number',
+
       'i01'   => 'number', 
       'i02'   => 'number', 
       'i03'   => 'number', 
@@ -84,7 +85,7 @@ trait NotaTraitSetUp {
       'id'       => 'required',
       'uuid'     => 'required', 
 
-      'definitiva'   => ' min="0" max="100" maxlength="3" size="3" ',
+      'definitiva'   => ' min="0" max="100" ',
       'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" ',
     ];
   

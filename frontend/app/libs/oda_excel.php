@@ -7,7 +7,7 @@
 class OdaExcel extends XLSXWriter {
 
   private function getFileName(string $name) {
-    return 'files/download/xlsx-'.$name.'.xlsx';
+    return 'files/download/'.$name.'.xlsx';
   }
 
   public function ejemplo1(): void {
@@ -30,14 +30,16 @@ class OdaExcel extends XLSXWriter {
       array('x601',602,603,604,605,606,'2018-06-07','2018-06-08'),
       array('x701',702,703,704,705,706,'2018-07-07','2018-07-08'),
     );
+    
     $writer = new XLSXWriter();
     
     $writer->writeSheetHeader(sheet_name: 'Sheet1', header_types: $header);
-    foreach($rows as $row)
+    foreach($rows as $row) {
       $writer->writeSheetRow(sheet_name: 'Sheet1', row: $row);
+    }
     
     //$writer->writeSheet($rows,'Sheet1', $header); //or write the whole sheet in 1 call
-    $writer->writeToFile( filename: $this->getFileName(name: __FUNCTION__) );
+      $writer->writeToFile( filename: $this->getFileName(name: __FUNCTION__) );
     //$writer->writeToStdOut();
     //echo $writer->writeToString();
 

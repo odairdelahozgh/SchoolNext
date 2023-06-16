@@ -86,8 +86,8 @@ class OdaUtils extends Util {
   /**
      * Obtiene el nombre del mes (valor numérico)
      */
-    public static function nombreMes(int $mes=0): string {
-        return match($mes) {
+    public static function nombreMes(int $mes=0, $abrev=false): string {
+        $nombre_mes = match($mes) {
             1       => 'Enero',
             2       => 'Febrero',
             3       => 'Marzo',
@@ -102,6 +102,7 @@ class OdaUtils extends Util {
             12      => 'Diciembre',
             default => 'Mes no existe',
         };
+        return (($abrev) ? substr($nombre_mes, offset: 0, length: 3) : $nombre_mes );
     } // END-nombreMes
 
 

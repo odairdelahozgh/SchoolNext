@@ -40,6 +40,20 @@ class SecretariaController extends AppController
       Redirect::toAction('listadoEstudActivos');
     } // END-actualizarPago
     
+
+    public function setMesPago(int $estudiante_id, int $mes) {
+      $this->page_action = 'Actualizar Mes Pagado Estudiante';
+      $Estud = (new Estudiante)->get(pk: $estudiante_id);
+      if ($Estud->setMesPago(estudiante_id: $estudiante_id, mes: $mes)) {
+        OdaFlash::valid(msg: "$this->page_action: $Estud");
+      } else {
+        OdaFlash::error(msg: "$this->page_action: $Estud", audit: true);
+      }
+      Redirect::toAction(action: 'listadoEstudActivos');
+    } // END-setMesPago
+    
+
+
     /**
      * Activar un Estudiante
      */

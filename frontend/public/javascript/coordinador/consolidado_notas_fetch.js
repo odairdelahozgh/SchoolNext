@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function traer_data(id) {
 let ruta = document.getElementById('public_path');
+let theme = document.getElementById('theme');
+
 fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
   .then((res) => res.json())
   
@@ -30,12 +32,12 @@ fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
 
           for (let estudiante in datos[salon]) {  
               let arrEstudiante = estudiante.split(";"); //nombre;abrev 
-              output += '<tr><td colspan=10>'+arrEstudiante[0]+'</td></tr>';
+              output += '<tr class="w3-theme-'+theme.toString().substr(0, 1)+'5"><td colspan=10>'+arrEstudiante[0]+'</td></tr>';
               cont = 1;
               for (let periodo in datos[salon][estudiante]) { 
                   // fila de titulos de materia
                   if (cont==1) {
-                      output += '<tr><td>P</td>'; 
+                      output += '<tr class="w3-theme-d3"><td>P</td>'; 
                       for (let asignatura in datos[salon][estudiante][periodo]) {   
                           var arrAsignatura = asignatura.split(";"); //nombre;abrev 
                           output += '<td>' + arrAsignatura[1] + '</td>';
@@ -45,7 +47,7 @@ fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
                   }
 
 
-                  output += '<tr><td>'+periodo+'</td>'; 
+                  output += '<tr class="w3-theme-l3"><td>'+periodo+'</td>'; 
                   for (let asignatura in datos[salon][estudiante][periodo]) {  
                       nota = datos[salon][estudiante][periodo][asignatura];
                       var arrNotas = datos[salon][estudiante][periodo][asignatura].split(";"); //definitiva;planapoyo;final;desempeno

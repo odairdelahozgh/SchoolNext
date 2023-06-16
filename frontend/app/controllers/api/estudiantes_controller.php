@@ -16,7 +16,7 @@ class EstudiantesController extends RestController
    public function get_all() {
       $this->data = (new Estudiante)->getListActivos();
    }
-
+      
    /**
     * Devuelve el estudiante buscado por UUID
     * @link ../api/estudiantes/singleuuid/3b22fefc7f6afa79c54f
@@ -42,5 +42,14 @@ class EstudiantesController extends RestController
          $this->error('El registro buscado no existe', 404);
       }
    }
+
+   /**
+    * Obtiene todos los registros de estudiantes
+    * @link ../api/estudiantes/info_contacto_padres
+    */
+    public function get_info_contacto_padres() {
+      $this->data = (new Estudiante)->getInfoContactoPadres(log: true);
+   }
+   
 
 }

@@ -30,7 +30,7 @@ abstract class ScaffoldController extends AdminController
   }//END-exportPdf
 
   public function exportCsv() {
-    $this->filename = OdaUtils::getSlug("listado-de-$this->controller_name");
+    $this->filename = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
     View::select(null, "csv");
   }//END-exportCsv
@@ -41,69 +41,17 @@ abstract class ScaffoldController extends AdminController
     View::select(view: null, template: "xml");
   }//END-exportXml
   
-  public function exportXls() {
-    try {
-      $config = ['path' => VENDOR_PATH.'viest'];
-      OdaLog::debug(msg: VENDOR_PATH.'viest');
-      $excel  = new \Vtiful\Kernel\Excel(config: $config);
 
-      // fileName will automatically create a worksheet, 
-      // you can customize the worksheet name, the worksheet name is optional
-      $filePath = $excel->fileName(fileName: 'tutorial01.xlsx', sheetName: 'sheet1')
-        ->header(header: ['Item', 'Cost'])
-        ->data(data: [
-            ['Rent', 1000],
-            ['Gas',  100],
-            ['Food', 300],
-            ['Gym',  50],
-        ])
-      ->output();
-    } catch (\Throwable $th) {
-      OdaLog::debug(msg: $th->getMessage());
-      throw $th;
-    }
-    
-    
-    View::select(view: null, template: null);
-  }//END-exportXls
-
-
-
-  public function exportXls2(): void { //EXCEL
+  public function exportXls(): void { //EXCEL
+    View::select(view: "export_xls_$this->controller_name", template: 'xls');
     $this->Modelo = new $this->nombre_modelo();
     $this->filename = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
-    
-    $registros = (new $this->nombre_modelo())->getList(estado:1);
-
-    $this->header =[
-      'Id'            =>'string',//text
-      'Nombre Salón'  =>'string',//text
-      'Grado'         =>'integer',
-      '1'             =>  '',
-      '2'             =>  '',
-      '3'             =>  '',
-      '4'             =>  '',
-    ];
-
-    foreach ($registros as $item) {
-      $columnas = [];
-      foreach ($this->Modelo->getFieldsShow(show: 'index') as $key => $col) {
-        $columnas[] =  $item->$col;
-      }
-      $this->data[] = $columnas;
-    }
-
-    $writer = new XLSXWriter();
-    $writer->writeSheetHeader(sheet_name: 'Sheet1', header_types: $this->header);
-    //OdaUtils::ver_array($data);
-
-    foreach($this->data as $row) {  
-      $writer->writeSheetRow(sheet_name: 'Sheet1', row: $row);
-    }
-    //$writer->writeToFile( filename: $this->filename );
-    View::select(view: null, template: null);
-    //View::select(view: null, template: "xls");
+    $this->registros = (new $this->nombre_modelo())->getList(estado:1);
+    $this->header =[];
   }//END-exportXls
+
+
+
 
   /**
    * admin/.../index

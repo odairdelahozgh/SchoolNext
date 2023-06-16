@@ -8,19 +8,19 @@ class AuthController extends AdminController
 {
     //public $theme="w3-theme-dark-grey";
 
-    public function index() {
-        Redirect::toAction('login');
+    public function index(): void {
+        Redirect::toAction(action: 'login');
     }
 
-    public function login() {
+    public function login(): void {
         $this->page_title = 'Login';
-        View::template('login');
-        if((new User)->login()) { Redirect::to('index'); }
+        View::template(template: 'login');
+        if((new User)->login()) { Redirect::to(route: 'index'); }
     } 
 
-    public function logout() {
+    public function logout(): void {
       (new User)->logout();
-      Redirect::toAction('login');
+      Redirect::toAction(action: 'login');
     }
 
 }

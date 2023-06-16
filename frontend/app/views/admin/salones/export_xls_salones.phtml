@@ -1,3 +1,29 @@
 <?php 
+  $header = [
+    'Activo'      => 'integer', 
+    'Salón'       => 'string', 
+    'Grado'       => 'string', 
+    'Director'    => 'integer', 
+    'Codirector'  => 'integer', 
+    'Estudiantes' => 'integer', 
+  ];
+
+  $fileds_names = [
+    'Activo'      => 'is_active', 
+    'Salón'       => 'nombre', 
+    'Grado'       => 'grado_nombre', 
+    'Director'    => 'director_id', 
+    'Codirector'  => 'codirector_id', 
+    'Estudiantes' => 'tot_estudiantes',
+  ];
+  //OdaUtils::ver_array(var: $fileds_names);
+  foreach ($registros as $item) {
+    $columnas = [];
+    foreach ($header as $key => $dato) {
+      $campo = $fileds_names[$key];
+      $columnas[] =  ('integer'==$dato) ? (int)$item->$campo : $item->$campo;
+    }
+    $data[] = $columnas;
+  }
 
 ?>

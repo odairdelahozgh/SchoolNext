@@ -1,9 +1,13 @@
 <?php
+// TEMPLATE PARA GENERAR ARCHIVOS DE 
+// EXCEL (.xlsx)
+
+//OdaUtils::ver_array($data);
 $writer = new XLSXWriter();
 $writer->writeSheetHeader(sheet_name: 'Sheet1', header_types: $header);
-//OdaUtils::ver_array($data);
-
 foreach($data as $row) {  
   $writer->writeSheetRow(sheet_name: 'Sheet1', row: $row);
 }
-$writer->writeToFile( filename: $filename );
+
+$writer->setTitle(title: 'Titulo');
+$writer->writeToFile( filename: 'files/download/'.$filename.'.xlsx' );

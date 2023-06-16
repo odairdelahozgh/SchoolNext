@@ -6,10 +6,10 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait EstudianteTraitSetUp {
   
-  use TraitUuid, TraitForms, EstudianteTraitProps, EstudianteTraitLinks;
+  use TraitUuid, TraitForms, EstudianteTraitProps, EstudianteTraitLinks, EstudianteTraitDatosPadres;
   
-  public function validar($input_post) {
-    Session::set('error_validacion', '');
+  public function validar($input_post): bool {
+    Session::set(index: 'error_validacion', value: '');
     try{
       //validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       //validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_debe_preicfes']);
@@ -27,7 +27,7 @@ trait EstudianteTraitSetUp {
       
       return true;
     } catch(NestedValidationException $exception) {
-      Session::set('error_validacion', $exception->getFullMessage());
+      Session::set(index: 'error_validacion', value: $exception->getFullMessage());
       return false;
     }
   } //END-validar

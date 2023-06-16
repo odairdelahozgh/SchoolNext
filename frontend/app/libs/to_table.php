@@ -1,8 +1,6 @@
 <?php
 
-namespace Adagio\Table;
-
-class Table
+class toTable
 {
     /**
      *
@@ -71,9 +69,9 @@ class Table
 
     public function show($value)
     {
-        if (is_array($value)) {
-            return '['.implode(', ', array_map([$this, 'show'], $value)).']';
-        } elseif (is_bool($value)) {
+        if (is_array(value: $value)) {
+            return '['.implode(', ', array_map(callback: [$this, 'show'], array: $value)).']';
+        } elseif (is_bool(value: $value)) {
             return $value ? 'true' : 'false';
         } else {
             return $value;

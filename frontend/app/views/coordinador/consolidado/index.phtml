@@ -1,5 +1,5 @@
 <div class="w3-panel">
-    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+    <?= View::Encab(page_module: $controller_name, page_action: $page_action, breadcrumb: $breadcrumb); ?>
     <?= View::flash(); ?>
 </div>
 
@@ -16,9 +16,10 @@
     <div id="resultados">
     </div>
 
-
 </div>
+
   <!-- BEGIN BASE JS -->
   <?php
-  echo Tag::js('coordinador/consolidado_notas_fetch', false);
+  echo Tag::js(src: 'coordinador/consolidado_notas_fetch', cache: false);
   ?>  
+

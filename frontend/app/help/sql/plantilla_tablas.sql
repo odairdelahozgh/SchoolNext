@@ -35,9 +35,9 @@ CREATE TABLE snxt_plantilla (
   is_active tinyint(1) NOT NULL DEFAULT '1',
   orden bigint(20) DEFAULT NULL,
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
-  created_by bigint(20) DEFAULT NULL,
+  created_by bigint(20) DEFAULT 1,
   updated_at datetime DEFAULT CURRENT_TIMESTAMP,
-  updated_by bigint(20) DEFAULT NULL
+  updated_by bigint(20) DEFAULT 1
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --

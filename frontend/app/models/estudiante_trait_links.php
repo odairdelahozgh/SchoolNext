@@ -16,4 +16,17 @@ trait EstudianteTraitLinks {
     return '<div class="w3-show-inline-block"><div class="w3-bar">'.$btns.'</div></div>';
   }
 
+
+  public function link_SetMesPagosTodos(): string {
+    $lnk='Establecer Mes de Pago a:<br>';
+    for ($i=2; $i<=11; $i++) { 
+      $nombre_mes = "[$i] ".OdaUtils::nombreMes(mes: $i, abrev: true);
+      $lnk .= '<span class="w3-tag w3-blue w3-round">' .Html::linkAction(action: "setMesPago/$this->id/$i", text: "$nombre_mes"). '</span>&nbsp &nbsp';
+    }
+    return $lnk;
+  } //END-link_SetMesPagosTodos
+
+
+
+
 } //END-TraitLinksOlds

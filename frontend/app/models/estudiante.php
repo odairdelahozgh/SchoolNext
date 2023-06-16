@@ -270,16 +270,27 @@ class Estudiante extends LiteRecord {
    * 
    */
   public function setActualizarPago(int $estudiante_id): bool {
-    $RegEstud = (new Estudiante)->get($estudiante_id);
+    $RegEstud = (new Estudiante)->get(pk: $estudiante_id);
     if ($RegEstud) {
-      $periodo_actual = (int)Config::get('config.academic.periodo_actual');
+      $periodo_actual = (int)Config::get(var: 'config.academic.periodo_actual');
       $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[$periodo_actual];
+      $RegEstud->annio_pagado = (int)Config::get(var: 'config.academic.annio_actual');
       $RegEstud->save();
       return true;
     }
     return false;
   } // END-setActualizarPago 
  
-
+  public function setMesPago(int $estudiante_id, int $mes): bool {
+    $RegEstud = (new Estudiante)->get(pk: $estudiante_id);
+    if ($RegEstud) {
+      $RegEstud->mes_pagado = $mes;
+      $RegEstud->annio_pagado = (int)Config::get(var: 'config.academic.annio_actual');
+      $RegEstud->save();
+      return true;
+    }
+    return false;
+  } // END-setActualizarMesPago 
+ 
 
 }//END-CLASS

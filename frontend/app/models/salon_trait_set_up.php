@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait SalonTraitSetUp {
   
-  use TraitUuid, TraitForms;
+  use TraitUuid, TraitForms, SalonTraitCallBacks;
   
   public function __toString() { return $this->nombre; } 
 
@@ -29,8 +29,8 @@ trait SalonTraitSetUp {
       'all'      => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at'],
       'index'    => ['is_active', 'nombre', 'grado_nombre', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'],
       'create'   => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
-      'edit'     => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
-      'editUuid' => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
+      'edit'     => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
+      'editUuid' => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
     ];
   
     self::$_attribs = [
@@ -51,7 +51,6 @@ trait SalonTraitSetUp {
       'print_state5'    => 'En Calificación',
       'print_state'     => 'En Calificación',
       'is_ready_print'  => 0,
-
       'is_active'       => 1,
     ];
   

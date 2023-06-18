@@ -6,7 +6,8 @@ frontend/public/files/upload/*
 frontend/public/files/download/*
 
 frontend/app/libs/fpdf/*
-frontend/app/temp/*
+frontend/app/temp/logs/*
+frontend/app/temp/mpdf/*
 
 vendor/Kumbia/ActiveRecord/
 
@@ -38,5 +39,3 @@ core20/*
 .scannerwork
 sonar-project.properties
 desktop.ini
-
-vendor/Kumbia/Kumbia/ActiveRecord/

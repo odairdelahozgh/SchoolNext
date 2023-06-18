@@ -1,6 +1,7 @@
 <?php
 /**
- * Modelo EjemploBase * 
+ * Modelo EjemploBase 
+ *  
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord

@@ -13,6 +13,7 @@
  */
 
 use Kumbia\ActiveRecord\LiteRecord as ORM;
+require_once "enums.php";
 
 class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 { 
@@ -109,11 +110,11 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     return $ico.$estado;
   }
 
-  // public function is_active_f2(bool $show_ico=false, string $attr="w3-small"): string {
-  //   $estado = Estado::tryFrom((int)$this->is_active) ?? Estado::Inactivo;
-
+   public function is_active_enum(bool $show_ico=false, string $attr="w3-small"): string {
+     $estado = Estado::tryFrom((int)$this->is_active) ?? Estado::Inactivo;
   //   return '<span class="w3-text-'.$estado->color().'">'. (($show_ico) ? $estado->ico().' '.$estado->label() : $estado->label()).'</span>';
-  // }
+    return '<span class="'.$attr.' w3-text-'.$estado->color().'">'. (($show_ico) ? $estado->ico().' '.$estado->label() : $estado->label()).'</span>';
+   }
 
   /**
    * Activar un registro.
@@ -154,9 +155,9 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   /**
    * Devuelve un numero convertido en letras
    */
-  public function aLetras(int $val_num): string {
+  public function valor_letras(int $val_num): string {
     return strtolower(OdaUtils::getNumeroALetras($val_num));
-  } //END-aLetras
+  } //END-valor_letras
 
       
 } //END-CLASS

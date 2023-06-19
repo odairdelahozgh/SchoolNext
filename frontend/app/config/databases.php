@@ -26,7 +26,7 @@ return [
         //'dsn' => '', // Cadena de conexión a la base de datos
         //'pdo' => 'On', // activar conexiones PDO (On/Off); descomentar para usar
         ],
-    'production' => [
+    'production_oda' => [  // hosting odair
         'host'     => 'localhost', //  ip o nombre del host de la base de datos
         'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
         'password' => 'p#1pp#P0qGg;', //  clave del usuario de la base de datos
@@ -35,6 +35,16 @@ return [
         'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
         //'dsn' => '', // cadena de conexión a la base de datos
         //'pdo' => 'On',  //  activar conexiones PDO (OnOff); descomentar para usar
+        ],
+        'production' => [  // hosting windsor
+            'host'     => 'localhost', //  ip o nombre del host de la base de datos
+            'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
+            'password' => 'b*~xK@5U0W[&', //  clave del usuario de la base de datos
+            'name'     => 'windsor1_schoolnext', // nombre de la base de datos
+            'type'     => 'mysql', // tipo de motor de base de datos (mysql, pgsql o sqlite)
+            'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
+            //'dsn' => '', // cadena de conexión a la base de datos
+            //'pdo' => 'On',  //  activar conexiones PDO (OnOff); descomentar para usar
         ],
 ];
 

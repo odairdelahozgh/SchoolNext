@@ -49,8 +49,8 @@ return [
       'logo'            => 'ws_logo.png',
       'logo_resolucion' => 'ws_logo.png',
       
-      'direccion'       => 'Calle 9A #5-22 Barrio Novalito',
-      'telefono_fijo'   => '605 589 7997',
+      'direccion'       => 'Kilometro 2.5 via Rio Seco - Valledupar, Cesar',
+      'telefono_fijo'   => '(+601) 794-4484',
       'telefono_movil'  => '(+57) 317 370 4197',
       'email'           => 'windsorschoolvalledupar@gmail.com',
       'dominio'         => 'windsorschool.edu.co',

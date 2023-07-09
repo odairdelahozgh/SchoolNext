@@ -17,16 +17,17 @@ require_once CORE_PATH . 'kumbia/controller.php';
  */
 abstract class AdminController extends Controller
 {
-    public $page_action = '';
-    public $page_title  = 'Titulo Pagina';
-    public $breadcrumb  = 'Inicio';
+    public string $page_action = '';
+    public string $page_title  = 'Titulo Pagina';
+    public string $breadcrumb  = 'Inicio';
 
-    public $theme       = 'dark';
-    public $themei      = 'd';
-    public $user_id     = 0;
+    public string $theme       = 'dark';
+    public string $themei      = 'd';
+    public string $user_id     = 0;
+    public string $user_name     = '';
 
-    public $page_module = '';
-    public $id_instit   = '';
+    public string $page_module = '';
+    public string $id_instit   = '';
     
     public array  $arrData = [];
     public object $Modelo;
@@ -35,18 +36,17 @@ abstract class AdminController extends Controller
     public array  $fieldsToHidden = [];
     public string $nombre_post   = '';
     public string $nombre_modelo = '';
-    
 
     final protected function initialize()
     {
       $this->user_id = Session::get('id');
+      $this->user_name = Session::get('username');
       $this->id_instit = Config::get('config.institution.id_name');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
       $this->themei = substr($this->theme,0,1);
 
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
       $this->nombre_post   = strtolower(OdaUtils::pluralize( $this->nombre_modelo ));
-      //OdaLog::alert("$this->nombre_post : $this->nombre_modelo");
     }
 
     final protected function finalize() {

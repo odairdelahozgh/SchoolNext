@@ -1,11 +1,11 @@
 <?php
-// UUID: Universally Unique IDentifier
 trait TraitUuid {
-
+  
   /**
    * UUID Generator Optimized
+   * UUID: Universally Unique IDentifier
    */
-  public function UUIDReal(int $lenght=20):string {
+  public function UUIDReal(int $lenght=36): string {
     if ($lenght <= parent::$lim_tam_campo_uuid) {
       if (function_exists("random_bytes")) {
         $bytes = random_bytes(ceil($lenght / 2));
@@ -15,49 +15,35 @@ trait TraitUuid {
         throw new Exception("no cryptographically secure random function available");
       }
     } else {
-      throw new Exception("lenght must be <= 36");
+      throw new Exception('lenght must be <= '.parent::$lim_tam_campo_uuid);
     }
     return substr(bin2hex($bytes), 0, $lenght);
   }//END-UUIDReal
   
+  public function setUUID(int $lenght=20) {
+    $this->uuid = $this->UUIDReal($lenght); // Asigna un numero UUID
+  } //END-setUUID
   
-  /**
-   * Devuelve un Registro por su UUID.
-   */
   public static function getByUUID(string $uuid, string $fields = '*') {
     $sql = "SELECT $fields FROM ".static::getSource().' WHERE uuid = ?';
-    return static::query($sql, [$uuid])->fetch();
+    return static::query($sql, [$uuid])->fetch(); // Devuelve un Registro por su UUID.
+  } //END-getByUUID
+
+  public static function deleteByUUID(string $uuid): bool {
+    $source  = static::getSource(); // Elimina un registro por su UUID.
+    return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
+  } //END-deleteByUUID
+
+
+  public function setUUID_All_ojo(int $long=20) { // Instancia UUID de todos
+  $Todos = $this::all();
+  foreach ($Todos as $reg) {
+    
+    $uuid = $this->UUIDReal($long);
+    $reg->update(['uuid'=>$uuid, 'is_active'=>1]);
+    //}
   }
 
-/*   public static function get_uuid(string $uuid, string $fields = '*') {
-    return self::get_uuid($uuid, $fields); // BORRAR ...se mantiene por compatiblidad.
-  } */
-  
-
-  /**
-   * Elimina un registro por su UUID.
-   */
-  public static function deleteByUUID(string $uuid): bool {
-    $source  = static::getSource();
-    return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
-  } //END-deleteUUID
-
-/*   public static function deleteUUID(string $uuid): bool {
-    return self::deleteByUUID($uuid); // BORRAR ...se mantiene por compatiblidad.
-  } */
-
-  
-  /**
-   * Rellena el campo UUID de todos los registros del modelo
-   */
-  public function setUUID_All_ojo(int $long=20) {
-    $Todos = $this::all();
-    foreach ($Todos as $reg) {
-      if ( (is_null($reg->uuid)) or (0==strlen($reg->uuid)) ) {
-        $reg->uuid = $this->UUIDReal($long);
-        $reg->update();
-      }
-    }
   } //END-setUUID_All_ojo
 
 

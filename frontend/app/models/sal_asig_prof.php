@@ -30,9 +30,9 @@ class SalAsigProf extends LiteRecord {
       ->select('t.*, s.nombre as salon, a.nombre as asignatura, s.grado_id, g.nombre as grado')
       ->concat(['u.nombres','u.apellido1', 'u.apellido2'], 'profesor')
       ->leftJoin('salon', 's')
-      ->leftJoin('grado', 'g', condition:'s.grado_id=g.id')
+      ->leftJoin('grado', 'g', 's.grado_id=g.id')
       ->leftJoin('asignatura', 'a')
-      ->leftJoin('usuario', 'u', condition:'t.user_id=u.id')
+      ->leftJoin('usuario', 'u', 't.user_id=u.id')
       ->where('s.is_active=1')
       ->orderBy('profesor, asignatura, salon');
 
@@ -50,7 +50,7 @@ class SalAsigProf extends LiteRecord {
   public function getStats(int $user_id) {
     $DQL = (new OdaDql(__CLASS__))
       ->addSelect('DISTINCT s.grado_id, t.salon_id, t.asignatura_id, ga.intensidad')
-      ->leftJoin('salon', 's', condition:'t.salon_id')
+      ->leftJoin('salon', 's', 't.salon_id')
       ->where('s.is_active=1');
     if ($user_id<>1) {
         $DQL->andWhere('t.user_id=?');

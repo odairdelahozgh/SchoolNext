@@ -38,63 +38,55 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   
   public function _beforeCreate() { // ANTES de Crear el Registro
     $ahora = date('Y-m-d H:i:s', time());
-    $this->created_by = self::$session_user_id;
-    $this->updated_by = self::$session_user_id;
-    $this->created_at = $ahora;
-    $this->updated_at = $ahora;
-    if (property_exists($this, 'is_active')) {
-      $this->is_active = 1;
+    if (property_exists($this, 'is_active'))  { $this->is_active = 1; }
+    if (property_exists($this, 'uuid')) { 
+      if (method_exists($this, 'setUUID')) { $this->uuid = $this->setUUID(); }
     }
-    if (property_exists($this, 'uuid')) {
-      if (method_exists($this, 'UUIDReal')) {
-        $this->uuid = $this->UUIDReal();
-      }
-    }
+    if (property_exists($this, 'created_by')) { $this->created_by = self::$session_user_id; }
+    if (property_exists($this, 'created_at')) { $this->created_at = $ahora; }
+    if (property_exists($this, 'updated_by')) { $this->updated_by = self::$session_user_id; }
+    if (property_exists($this, 'updated_at')) { $this->updated_at = $ahora; }
   } // END-_beforeCreate
   
-  public function _afterCreate() { // DESPUÉS de CREAR el Registro
-  } // END-_afterUpdate
-
   public function _beforeUpdate() { // ANTES de actualizar el registro
+    $ahora = date('Y-m-d H:i:s', time());
     if (property_exists($this, "is_active")) {
-      if (is_null($this->is_active)) { 
-        $this->is_active = 0; 
-      }
+      if (is_null($this->is_active)) { $this->is_active = 0; }
     }
-
     if (property_exists($this, 'uuid')) {
-      if (method_exists($this, 'UUIDReal')) {
-        if (strlen($this->uuid)==0) { 
-          $this->uuid = $this->UUIDReal(); 
-        }
+      if (method_exists($this, 'setUUID')) { 
+        if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->uuid = $this->setUUID(); }
       }
     }
-    $this->updated_by = self::$session_user_id;
-    $this->updated_at = date('Y-m-d H:i:s', time());
+    if (property_exists($this, 'updated_by')) { $this->updated_by = self::$session_user_id; }
+    if (property_exists($this, 'updated_at')) { $this->updated_at = $ahora; }
   } // END-_beforeCreate
-
+  
   public function _afterUpdate() { // DESPUÉS de ACTUALIZAR el Registro
+  } // END-_afterUpdate
+  
+  public function _afterCreate() { // DESPUÉS de CREAR el Registro
   } // END-_afterUpdate
   
 
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
      $DQL = new OdaDql(_from: self::$class_name);
-     $DQL->select(select: $select)
-         ->orderBy(sort: self::$order_by_default);
-    if (!is_null(value: $order_by)) { $DQL->orderBy(sort: $order_by); }
+     $DQL->select( $select)
+         ->orderBy( self::$order_by_default);
+    if (!is_null(value: $order_by)) { $DQL->orderBy( $order_by); }
     if (!is_null(value: $estado))   { 
-      $DQL->where(where: 't.is_active=?')
+      $DQL->where( 't.is_active=?')
       ->setParams(params: [$estado]);
     }
     return $DQL->execute();
   } // END-getList
 
   public function getListActivos(string $select='*', string|bool $order_by=null): array|string {
-    return $this->getList(estado: 1, select: $select, order_by: $order_by);
+    return $this->getList(1,  $select, $order_by);
   } //END-getListActivos
 
   public function getListInactivos(string $select='*', string|bool $order_by=null): array|string {
-    return $this->getList(estado: 0, select: $select, order_by: $order_by);
+    return $this->getList(0,  $select, $order_by);
   } //END-getListInactivos
 
 
@@ -112,9 +104,14 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 
    public function is_active_enum(bool $show_ico=false, string $attr="w3-small"): string {
      $estado = Estado::tryFrom((int)$this->is_active) ?? Estado::Inactivo;
-  //   return '<span class="w3-text-'.$estado->color().'">'. (($show_ico) ? $estado->ico().' '.$estado->label() : $estado->label()).'</span>';
-    return '<span class="'.$attr.' w3-text-'.$estado->color().'">'. (($show_ico) ? $estado->ico().' '.$estado->label() : $estado->label()).'</span>';
+    return '<span class="'.$attr.' w3-text-'.$estado->color().'">'. (($show_ico) ? $estado->label_ico() : $estado->label()).'</span>';
    }
+
+   
+   public function nombre_mes_enum(int $mes): string {
+    $nombre_mes = Mes::tryFrom(value: $mes) ?? Mes::Enero;
+   return $nombre_mes->label();
+  }
 
   /**
    * Activar un registro.

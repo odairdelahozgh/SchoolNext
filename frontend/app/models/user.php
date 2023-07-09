@@ -132,7 +132,7 @@ class User extends ActiveRecord
         }
 
         if ($auth->getError()) { 
-          OdaFlash::error($auth->getError()); 
+          OdaFlash::warning($auth->getError());
         }
         return false;
     }

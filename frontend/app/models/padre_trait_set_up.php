@@ -6,17 +6,17 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait PadreTraitSetUp {
   
-  use TraitUuid, TraitForms;
+  use TraitUuid, TraitForms, PadreTraitEstudiantes;
   
-  public function validar($input_post) {
-    Session::set('error_validacion', '');
+  public function validar($input_post): bool {
+    Session::set(index: 'error_validacion', value: '');
     try{
       validar::alnum()->noWhitespace()->length(3, 20)->assert($input_post['username']);
       validar::email()->assert($input_post['email']);
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
+      validar::number()->length(1)->min(0)->max(1)->assert(input: $input_post['is_active']);
       return true;
     } catch(NestedValidationException $exception) {
-      Session::set('error_validacion', $exception->getFullMessage());
+      Session::set(index: 'error_validacion', value: $exception->getFullMessage());
       return false;
     }
   } //END-validar
@@ -64,7 +64,6 @@ trait PadreTraitSetUp {
       'nombres'    => 'Nombre(s):',
       'apellido1'  => 'Primer Apellido:',
       'apellido2'  => 'Segundo Apellido:',
-      'fecha_nac'  => 'Fecha Nacimiento:',
       
       'direccion'  => 'Dirección:',
       'cargo'      => 'Cargo:',

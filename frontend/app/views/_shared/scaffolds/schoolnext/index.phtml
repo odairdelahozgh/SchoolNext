@@ -4,6 +4,7 @@
     require('indexHeader.phtml');
 
     echo OdaForm::inputSearch();
+
     if ($tot_regs = count(value: $data)) {
       $tabla = new OdaTable();
       $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels]);
@@ -65,7 +66,7 @@
     }
     require('indexFooter.phtml');
   } catch (\Throwable $th) {
-    OdaFlash::error(msg: $page_action.PHP_EOL.$th, audit: true, rastreo: __CLASS__.'->'.__FUNCTION__.', Line: '.__LINE__);
+    OdaFlash::error($th);
   }
   ?>
 </div>

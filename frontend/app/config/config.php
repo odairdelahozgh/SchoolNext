@@ -2,7 +2,7 @@
 /**
  * KumbiaPHP Web Framework
  * Parámetros de configuracion de la aplicacion
- *  @example 
+ *  @example (int)Config::get(var: 'academic.periodo_actual');
  */
 
 $year = date('Y');
@@ -24,18 +24,22 @@ return [
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2023,
-      'periodo_actual' => 1,
+      'periodo_actual' => 2,
+    ],
+    'boletines' => [
+      'imprimir_plan_apoyo' => false,
+      'imprimir_nota'       => false,
     ],
     'construxzion' => [
       'name'      => 'ConstruxZion Soft CO',
       'ceo'       => 'Odair De La Hoz Rojas',
-      'email'     => 'odairdelahoz@gmail.com',
       'twitter'   => 'https://twitter.com/construxzion',
       'copy'      => "Copyright © $year",
       'copy_text' => "Todos los Derechos Reservados",
       'telefono'  => '+573017153066',
       'whatsapp'  => '+573017153066',
       'email'     => 'admin@windsorschool.edu.co',
+      'app_name'  => APP_NAME,
     ],
     'institution' => [
       'nombre'          => 'Windsor School',
@@ -54,6 +58,7 @@ return [
       'telefono_movil'  => '(+57) 317 370 4197',
       'email'           => 'windsorschoolvalledupar@gmail.com',
       'dominio'         => 'windsorschool.edu.co',
+      'website'         => 'https://www.windsorschool.edu.co',
       
       'rector'          => 'Miriam Casadiego Ríos',
       'rector_cc'       => '57401865',

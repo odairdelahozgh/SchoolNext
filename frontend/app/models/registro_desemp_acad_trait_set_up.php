@@ -31,7 +31,7 @@ trait RegistroDesempAcadTraitSetUp {
       // }
       return true;
     } catch (\Throwable $th) {
-      OdaFlash::error($th, true);
+      OdaFlash::error($th);
     }
   } //END-validar
 

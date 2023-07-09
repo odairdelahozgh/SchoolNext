@@ -10,64 +10,124 @@ class NotasController extends ScaffoldController
   function guardarCalificaciones(int $periodo, int $salon_id, int $asignatura_id) {
     $this->page_action = "Notas Guardadas";
     $redirect = "docentes/listNotas/$asignatura_id/$salon_id";
+
+/*     var_dump(array_filter($_POST, function($k) {
+      return $k == 'notas';
+      }, ARRAY_FILTER_USE_KEY)); */
+
+    // echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+
     try {
-
-      if (Input::hasPost(var: $this->nombre_post)) {
-        $NotasAll = Input::post(var: $this->nombre_post);
-        //$a = OdaUtils::ver_array($NotasAll);
-        foreach ($NotasAll as $key => $nota) {
-          $codigo_id = (int)substr(string: $key, offset: strpos(haystack: $key, needle: "_") + 1);
-          echo "$codigo_id: $key =  $nota".'<hr/>';
-          OdaLog::debug(msg: "$periodo / $salon_id / $asignatura_id : $key - $codigo_id");
-          
-          //OdaLog::debug(msg: "Key: $codigo_id : $a", name_log: __CLASS__.'-'.__FUNCTION__);
-        //   $objNota = (new Nota())::get($codigo_id);
-          
-        //   $objNota->update(data: [
-        //     //((condition) ? a : b)
-        //     'definitiva'  => ((!is_null($nota->{'notas_definitiva_'.$codigo_id})) ? $nota->{'notas_definitiva_'.$codigo_id} : 0),
-        //     'plan_apoyo'  => ((!is_null($nota->{'notas_plan_apoyo_'.$codigo_id})) ? $nota->{'notas_definitiva_'.$codigo_id} : 0),
-        //     'nota_final'  => ((!is_null($nota->{'notas_nota_final_'.$codigo_id})) ? $nota->{'notas_definitiva_'.$codigo_id} : 0),
-        //     'profesor_id' => Session::get('id'),
-            
-        //     'i01' => $nota->{'notas_i01_'.$codigo_id},
-        //     'i02' => $nota->{'notas_i02_'.$codigo_id},
-        //     'i03' => $nota->{'notas_i03_'.$codigo_id},
-        //     'i04' => $nota->{'notas_i04_'.$codigo_id},
-        //     'i05' => $nota->{'notas_i05_'.$codigo_id},
-        //     'i06' => $nota->{'notas_i06_'.$codigo_id},
-        //     'i07' => $nota->{'notas_i07_'.$codigo_id},
-        //     'i08' => $nota->{'notas_i08_'.$codigo_id},
-        //     'i09' => $nota->{'notas_i09_'.$codigo_id},
-        //     'i10' => $nota->{'notas_i10_'.$codigo_id},
-
-        //     'i11' => $nota->{'notas_i11_'.$codigo_id},
-        //     'i12' => $nota->{'notas_i12_'.$codigo_id},
-        //     'i13' => $nota->{'notas_i13_'.$codigo_id},
-        //     'i14' => $nota->{'notas_i14_'.$codigo_id},
-        //     'i15' => $nota->{'notas_i15_'.$codigo_id},
-        //     'i16' => $nota->{'notas_i16_'.$codigo_id},
-        //     'i17' => $nota->{'notas_i17_'.$codigo_id},
-        //     'i18' => $nota->{'notas_i18_'.$codigo_id},
-        //     'i19' => $nota->{'notas_i19_'.$codigo_id},
-        //     'i20' => $nota->{'notas_i20_'.$codigo_id},
-
-        //     'is_paf_validar_ok' => 1,
-        // ]);
+      $cnt_success = 0;
+      $cnt_fails = 0;
+      if (Input::hasPost($this->nombre_post)) {
+        $Post = Input::post($this->nombre_post);
+        $notas = [];
+        foreach ($Post as $field_name => $value) {
+          $codigo_id = (int)substr(string: $field_name, offset: strpos(haystack: $field_name, needle: "_") + 1);
+          $notas[$codigo_id][$field_name] = $value;
         }
-        OdaFlash::valid(msg: "$this->page_action :: post = $this->nombre_post");
+
+        $Modelo = (new $this->nombre_modelo());
+        foreach ($notas as $id => $registro) {
+          // PREPARA EL REGISTRO INDIVIDUAL DE NOTAS
+          $data = [];
+          foreach ($registro as $field_name_id => $value) {
+            $long = strlen($field_name_id) - (strlen($id)+1);
+            $field_name = substr($field_name_id,0, $long);
+            $data[$field_name] = "$value";
+          }
+          $data = array_unique($data); //Elimina duplicados.
+          //asort($data); // FALTA ORDENARLOS
+          
+          $data['nota_final'] = ($data['nota_final']==0) ? $data['definitiva'] : $data['nota_final'] ;
+          
+          // ACTUALIZACIÓN DE CADA REGISTRO
+          $adicionales =[];
+          $adicionales['updated_at']= date('Y-m-d H:i:s', time());
+          $adicionales['updated_by']= $this->user_id;
+
+          $DQL = new OdaDql($Modelo::class);
+          $DQL->update($data)
+              ->addUpdate($adicionales)
+              ->where("t.id=?")->setParams([$id]);
+
+          OdaLog::debug("[$id]: ".implode(', ',$data).PHP_EOL.$DQL->render().PHP_EOL.$DQL->getParams());
+          
+          $success = (new Nota())::query($DQL->render(), [$id])->rowCount() > 0;
+          //if ($success) { $cnt_success += 1;}
+          if (!$success) { $cnt_fails += 1;}
+          
+        } //end-foreach-notas
+        
+        //if ($cnt_fails) { OdaFlash::warning("$this->page_action"); }
+        //OdaLog::debug("[$id]: ".implode(', ',array_keys($data)));
+        
       }
       return Redirect::to(route: $redirect);
 
-      
-
     } catch (\Throwable $th) {
-      OdaFlash::error(msg: "$this->page_action - ".$th->getMessage(), audit: true);
-      OdaLog::debug(msg: $th, name_log: __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to(route: $redirect);
     }
 
 
   }//END-guardarNotas()
+
+  public function exportBoletinEstudiantePdf(int $periodo_id, string $estudiante_uuid, TBoletin $tipo_boletin=TBoletin::Boletin): void {
+    $this->arrData['Periodo'] = $periodo_id;
+    $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
+    $this->arrData['Estud'] = $Estud;
+    $Salon = (new Salon())::get($Estud->salon_id);
+    $this->arrData['Salon'] = $Salon;
+    $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
+    
+    $this->arrData['Docentes'] = [];
+    foreach ((new Empleado())->getList() as $empleado) {
+      $this->arrData['Docentes'][$empleado->id] = $empleado;
+    }
+
+    $this->data = (new Nota())->getByPeriodoEstudiante($periodo_id, $Estud->id);
+    $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
+    foreach ($Indicadores as $key => $indic) {
+      $val = strtoupper(substr($indic->valorativo,0,1));
+      $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.trim($indic->concepto);
+    }
+    $this->file_tipo = $tipo_boletin->label();
+    $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Estud-periodo-$periodo_id");
+    $this->file_title = $tipo_boletin->label()." de Notas $Estud";
+    
+    View::select(view: "boletines.pdf", template: null);
+  } //END-exportBoletinEstudiantePdf
+
+  public function exportBoletinSalonPdf(int $periodo_id, string $salon_uuid, TBoletin $tipo_boletin = TBoletin::Boletin): void {
+    
+    $this->arrData['Periodo'] = $periodo_id;
+    $Salon = (new Salon())->getByUUID($salon_uuid);
+
+    $this->arrData['Salon'] = $Salon;
+    $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
+    
+    $this->arrData['Docentes'] = [];
+    foreach ((new Empleado())->getList() as $empleado) {
+      $this->arrData['Docentes'][$empleado->id] = $empleado;
+    }
+
+    $this->data = (new Nota())->getByPeriodoSalon($periodo_id, $Salon->id);
+    $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
+    foreach ($Indicadores as $key => $indic) {
+      $val = strtoupper(substr($indic->valorativo,0,1));
+      $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
+    }
+    
+    // PARA LA GENERACIÓN DE ARCHIVOS
+    $this->file_tipo = $tipo_boletin->label();
+    $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Salon-periodo-$periodo_id");
+    $this->file_title = $tipo_boletin->label() .' de ' .$Salon;
+
+    View::select(view: "boletines.pdf", template: null);
+  } //END-exportBoletinSalonPdf
+
+
 
 } // END CLASS

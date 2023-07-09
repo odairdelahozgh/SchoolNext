@@ -107,7 +107,7 @@ class OdaUtils extends Util {
 
 
     public static function ver_array(array $var) {
-        return '<pre>' .print_r($var).'</pre>';
+        return '<pre>' .print_r($var).'<br>'.count($var).'</pre>';
     }
 
     /**
@@ -375,6 +375,13 @@ class OdaUtils extends Util {
   public static function linkTelefono(string $telefono, string $caption='link Llamada', $show_tel=false): string {
     $text = ($show_tel) ? $telefono : '' ;
     return "$text <a title=\"$caption\" href=\"tel:$telefono\">"._Icons::solid(icon: 'square-phone', size: 'w3-large').'</a>';
+  }
+
+  public static function linkToSupportWhatsApp(string $uuid_error): string {
+    $telefono = Config::get('config.construxzion.whatsapp');
+    $username = Session::get('username');
+    $date = date('Y-m-d H:i a', time());
+    return "<a title=\"Link a Soporte técnico\" href=\"https://api.whatsapp.com/send?phone=573017153066&text=%F0%9F%9B%91%20SchoolNext%20%0AEXCEPCI%C3%93N%20INTERNA%20CAPTURADA%3A%20*$uuid_error*%0A%0Ausuario%3A%20*$username*%20%0Afecha%3A%20*$date*\" target=\"_blank\">$uuid_error</a>";
   }
 
 

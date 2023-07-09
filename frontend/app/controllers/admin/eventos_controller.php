@@ -7,5 +7,4 @@
   
 class EventosController extends ScaffoldController
 {
-
 } // END CLASS

@@ -1,8 +1,7 @@
 <?php
 trait EstudianteTraitProps {
 
-  protected static $default_foto_estud = '';
-  protected static $default_foto_estud_circle = '';
+  protected static $default_foto_estud = 'upload/estudiantes/user.png';
 
   public function __toString() { return $this->getNombreCompleto(sanear:true, mayuscula:false).' '.$this->getCodigo(); }
   public function getCodigo() { return '[Cod: '.$this->id.']'; }
@@ -18,10 +17,10 @@ trait EstudianteTraitProps {
     if ($mayuscula) { $nombre_completo = strtoupper($nombre_completo); }
     return $nombre_completo;
   } //getNombreCompleto
+
   public function isPazYSalvo(): bool {
     $periodo = (int)Config::get(var: 'config.academic.periodo_actual');
     $annio = (int)Config::get(var: 'config.academic.annio_actual');
-
     // cambiar por match expres
     if ($periodo==1 and $this->mes_pagado>=4 and $this->annio_pagado==$annio)  { return true; }
     if ($periodo==2 and $this->mes_pagado>=6 and $this->annio_pagado==$annio) { return true; }
@@ -36,14 +35,14 @@ trait EstudianteTraitProps {
     return $ico.(($this->email_instit) ? $this->email_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit : 'No tiene usuario en MS TEAMS'); 
   }
   
-  public function getFoto($max_width=80) { 
-    //return OdaTags::img(src: "upload/estudiantes/$this->id.png/", alt: $this->id, 
-    return OdaTags::img(src: IMG_ESTUDIANTES_PATH."$this->id.png", alt: $this->id, 
-      attrs: "class=\"w3-round\" style=\"width:100%;max-width:".$max_width."px\"", 
-      err_message: self::$default_foto_estud);
+  public function getFoto($max_width=80, $class='w3-round') { 
+    $defa = OdaTags::img(src: self::$default_foto_estud, attrs: "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"");
+    return OdaTags::img(src: "upload/estudiantes/$this->id.png", alt: $this->id, attrs: "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"", err_message: $defa);
   }
 
-  public function getFotoCircle($max_width=80) { return OdaTags::img("upload/estudiantes/$this->id.png",$this->id, "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud_circle); }
+  public function getFotoCircle($max_width=80) { 
+    return $this->getFoto(max_width: $max_width, class: 'w3-circle');
+  }
   public function isNuevo() { 
     $fecha_lim = (string)(Date('Y')-1).'-10-01';
     return ( (substr($this->created_at, 0,10)>=$fecha_lim ) ? true : false);

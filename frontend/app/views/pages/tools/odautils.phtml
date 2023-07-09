@@ -6,7 +6,11 @@
 
 <div class="w3-container">
 <?php
+
+try {
+  //code...
   
+
   $tabla = new OdaTable(searchCol: [1,2], showTotalRegs: true);
   $tabla->setHead(data_head: ['Clase', 'M&eacute;todos'], arr_attrs_th: ['style="width:50%"', 'style="width:50%"']);
   
@@ -87,10 +91,10 @@
     ['OdaAjax', 'OdaJs', 'OdaTags'], 
     ['OdaLog', 'OdaFlash', 'Html'],           
     ['OdaTable', 'OdaTabs', ''],
-    ['OdaPdfm', 'OdaPdf', 'OdaExcel'],        
+    ['', 'OdaPdf', 'OdaExcel'],        
     ['Breadcrumb', 'I18n', 'Css'],
-    ['ModelForm', '', ''],                    
-    ['KumbiaRouter', 'KumbiaRest', 'KumbiaView'], 
+    ['ModelForm', '', ''],
+    ['KumbiaRouter', '', 'KumbiaView'], 
     ['KumbiaException', 'Router', 'Console'], 
     ['SimpleAcl', 'Acl2', 'Auth2Odair'],
     ['Filter', 'Input', 'Redirect'],          
@@ -98,32 +102,94 @@
     ['Validate', 'Validations', ''],
     //['', '', ''],
   ];
+  
+  $arrClassManuales = [
+    //'controller' => ['','',],
+    'admin_controller' => [
+      '$page_action','$page_title','$breadcrumb',
+      '$theme','$themei','$user_id','$user_name',
+      '$page_module','$id_instit','public array  $arrData','public object $Modelo',
+      'public array  $fieldsToShow','public array  $fieldsToShowLabels','public array  $fieldsToHidden',
+      '$nombre_post','$nombre_modelo',],
+      
+      'app_controller' => [
+        '$page_action','$page_title','$breadcrumb',
+        '$theme','$themei','$user_id','$user_name','$_data_count',
+        '$page_module','$id_instit','public array  $arrData','public object $Modelo',
+        'public array  $fieldsToShow','public array  $fieldsToShowLabels','public array  $fieldsToHidden',
+        '$nombre_post','$nombre_modelo',
+      ],
+  ];
+  
 
-  echo '<div class="w3-row">';
-  echo OdaForm::inputSearch();
+  foreach ($arrClassManuales as $class_name => $propiedades) {
+    $str_props = '';
+    foreach ($propiedades as $prop) {
+      $prop_nombre = "<span class=\"w3-tag w3-teal\">$prop</span>";
+      $str_props .= $prop_nombre.', ';
+    }
+    $tabla->addRow([$class_name, '<b>Propiedades</b><br>'.$str_props], attrs_td:['class="searchTdata"', 'class="searchTdata"']);
+  }
 
-  foreach ($arrClassNames as $fila) {    
+
+  //
+  function class_tags($elemento) { return "<span class=\"w3-tag\">$elemento</span>"; }
+  $elements_searchs = '';
+  foreach ($arrClassNames as $fila) { 
+      $a = array_map("class_tags", $fila);
+      $elements_searchs .= (empty($a)) ? '' :  implode(' ', $a).' ';
+
     $Columnas = [];
     foreach ($fila as $key => $class_name) { // las tres clases en cada fila
-      $methods = '';
       if ($class_name) {
-         try {
+
+        $vars = '';
+        try { // PROPIEDADES
+          $class_vars = get_class_vars(get_class(new $class_name()));
+          foreach ($class_vars as $name => $value) { 
+            $vars .= "<span class=\"w3-tag w3-teal\">$name : $value, </span> ";
+          }
+          if ($vars) { 
+            $tabla->addRow([$class_name, '<b>Propiedades</b><br>'.$vars], attrs_td:['class="searchTdata"', 'class="searchTdata"']);
+          }
+        } catch (\Throwable $th) {
+          OdaFlash::warning($th);
+        }
+
+        $methods = '';
+        try { // MÉTODOS DE LACLASE
           $metodos_clase = get_class_methods(new $class_name());
           foreach ($metodos_clase as $key => $nombre_metodo) {
             $methods .= ($key+1).".  $class_name::$nombre_metodo()<br>";
-            $tabla->addRow([$class_name,"<strong class=\"w3-white w3-text-red\">&nbsp&nbsp$nombre_metodo()&nbsp&nbsp</strong>"], attrs_td:['class="searchTdata"', 'class="searchTdata"']);
-          }  
+            $metodo_nombre = "<strong class=\"w3-white w3-text-red\">&nbsp&nbsp$nombre_metodo()&nbsp&nbsp</strong>";
+            $tabla->addRow([$class_name, $metodo_nombre], attrs_td:['class="searchTdata"', 'class="searchTdata"']);
+          }
         } catch (\Throwable $th) {
-          $tabla->addRow([$class_name,"Error: no es posible cargar los métodos de esta clase. $th "]);
+          $tabla->addRow([$class_name,"Error: no es posible cargar los métodos de esta clase."]);
           $methods .= "Error en $class_name $th"; //throw $th;
         }
         $Columnas[$key] = "<h3>$class_name</h3> <br> $methods";
+
       } else {
         $Columnas[($key+1).$class_name] = "<hr>";
       }  
     }
   }
-  echo $tabla;
+
+  echo 
+    '<div class="w3-row">'
+      .$elements_searchs
+      .OdaForm::inputSearch()
+      .$tabla
+    .'</div>';
+
+
+  } catch (\Throwable $th2) {
+    OdaFlash::error($th2);
+  } finally {
+
+  }
+
 ?>
 </div>
 

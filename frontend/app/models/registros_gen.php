@@ -28,11 +28,11 @@ class RegistrosGen extends LiteRecord {
   public function getRegistrosProfesor(int $user_id) {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, s.nombre as salon_nombre')
-        ->concat(concat:['e.nombres','e.apellido1','e.apellido2'], alias: 'estudiante_nombre')
-        ->concat(concat:['u.nombres','u.apellido1','u.apellido2'], alias: 'usuario_nombre')
-        ->leftJoin(table_singular:'estudiante', alias:'e')
-        ->leftJoin(table_singular:'salon', alias:'s')
-        ->leftJoin(table_singular:'usuario', alias:'u', condition:'t.created_by=u.id');
+        ->concat(['e.nombres','e.apellido1','e.apellido2'],  'estudiante_nombre')
+        ->concat(['u.nombres','u.apellido1','u.apellido2'],  'usuario_nombre')
+        ->leftJoin('estudiante', 'e')
+        ->leftJoin('salon', 's')
+        ->leftJoin('usuario', 'u', 't.created_by=u.id');
     if ($user_id<>1) {
       $DQL->where("t.created_by=?");
       $DQL->setParams([$user_id]);
@@ -120,7 +120,7 @@ class RegistrosGen extends LiteRecord {
       $RegSalonNuevo = (new Salon)->first("SELECT id, grado_id FROM ".Config::get('tablas.salones')." WHERE id=?", [$nuevo_salon_id]);
       $this::query("UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id])->rowCount() > 0;
     } catch (\Throwable $th) {
-      OdaLog::error($th);
+      OdaLog::error($th, Session::get('username'));
     }
   } //END-cambiarSalonEstudiante
 

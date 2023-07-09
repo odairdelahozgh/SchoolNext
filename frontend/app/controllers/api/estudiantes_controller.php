@@ -35,7 +35,7 @@ class EstudiantesController extends RestController
     * @link ../api/estudiantes/singleid/775
     */
     public function get_singleid(int $id) {
-      $record = (new Estudiante)->getById($id);
+      $record = (new Estudiante)->get(pk: $id);
       if (isset($record)) {
          $this->data = $record;
       } else {

@@ -10,16 +10,15 @@ trait GradoTraitSetUp {
   
   public function _beforeCreate() { // ANTES de CREAR el Registro
     parent::_beforeCreate();
-    $this->abrev = strtoupper($this->abrev);
+    $this->abrev = strtoupper(trim($this->abrev));
     $this->matricula_palabras = $this->valor_letras($this->valor_matricula);
     $this->pension_palabras = $this->valor_letras($this->valor_pension);
-    $this->uuid = $this->UUIDReal();
   }
  
  //=============
   public function _beforeUpdate() { // ANTES de ACTUALIZAR el Registro
     parent::_beforeUpdate();
-    if (strlen($this->uuid)==0) { $this->uuid = $this->UUIDReal(); }
+    $this->abrev = strtoupper(trim($this->abrev));
     $this->matricula_palabras = $this->valor_letras($this->valor_matricula);
     $this->pension_palabras = $this->valor_letras($this->valor_pension);
   }

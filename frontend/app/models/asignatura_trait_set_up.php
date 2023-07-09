@@ -7,7 +7,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait AsignaturaTraitSetUp {
   
-  use TraitUuid, TraitForms;
+  use TraitUuid, TraitForms, AsignaturaTraitProps;
 
   public function validar($input_post) {
     try{
@@ -36,7 +36,7 @@ trait AsignaturaTraitSetUp {
       */
       return true;
     } catch (\Throwable $th) {
-      OdaFlash::error($th, true, 'Model:'.__CLASS__.'->'.__FUNCTION__.'() Line:'.__LINE__);
+      OdaFlash::error($th);
     }
   } //END-validar
 

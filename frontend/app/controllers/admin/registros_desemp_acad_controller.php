@@ -22,12 +22,12 @@ class RegistrosDesempAcadController extends ScaffoldController
       $Registro = new RegistroDesempAcad();
             
       if (!Input::hasPost(var: $post_name)) {
-        OdaFlash::error(msg: "$this->page_action - No coincide post [$post_name]", audit: true);
+        OdaFlash::warning("$this->page_action - No coincide post [$post_name]");
         return Redirect::to(route: $redirect);
       }
 
       if (!$Registro->validar(input_post: Input::post(var: $post_name))) {
-        OdaFlash::error(msg: "$this->page_action. ".Session::get(index: 'error_validacion'), audit: true);
+        OdaFlash::warning("$this->page_action. ".Session::get(index: 'error_validacion'));
         return Redirect::to(route: $redirect);
       }
       
@@ -36,13 +36,12 @@ class RegistrosDesempAcadController extends ScaffoldController
         Input::delete();
       } else {
         $this->data = Input::post(var: $post_name);
-        OdaFlash::error(msg: "$this->page_action. No Creó el Registro.", audit: true);
+        OdaFlash::warning("$this->page_action. No Creó el Registro.");
       }
       return Redirect::to(route: $redirect);
 
     } catch (\Throwable $th) {
-      OdaFlash::error(msg: $this->page_action, audit: true);
-      OdaLog::debug(msg: $th, name_log: __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
     }
     
   } //END-create_ajax()
@@ -61,12 +60,12 @@ class RegistrosDesempAcadController extends ScaffoldController
       $Registro = (new RegistroDesempAcad())::get($id);
       
       if (!Input::hasPost($post_name)) {
-        OdaFlash::error("$this->page_action - No coincide post [$post_name]", true);
+        OdaFlash::warning("$this->page_action - No coincide post [$post_name]");
         return Redirect::to($redirect);
       }
 
       if (!$Registro->validar(Input::post($post_name))) {
-        OdaFlash::error("$this->page_action. ".Session::get('error_validacion'), true);
+        OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
         return Redirect::to($redirect);
       }
 
@@ -75,13 +74,12 @@ class RegistrosDesempAcadController extends ScaffoldController
         Input::delete();
       } else{
         $this->data = Input::post($post_name);
-        OdaFlash::error("$this->page_action. Falló operación guardar.", true);
+        OdaFlash::warning("$this->page_action. Falló operación guardar.");
       }
       return Redirect::to($redirect);
       
     } catch (\Throwable $th) {
-      OdaFlash::error($this->page_action, true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to($redirect);
     }
   } //END-edit_ajax()

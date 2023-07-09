@@ -62,11 +62,11 @@ class Salon extends LiteRecord {
   public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
     $DQL = new OdaDql(__CLASS__);
     $DQL->select("t.*, g.nombre AS grado_nombre")
-        ->concat(concat: ['ud.nombres', 'ud.apellido1', 'ud.apellido2'], alias:'director_nombre')
-        ->concat(concat: ['uc.nombres', 'uc.apellido1', 'uc.apellido2'], alias:'codirector_nombre')
-        ->leftJoin('grado',   alias:'g')
-        ->leftJoin('usuario', alias:'ud', condition:'t.director_id = ud.id')
-        ->leftJoin('usuario', alias:'uc', condition:'t.codirector_id = uc.id')
+        ->concat( ['ud.nombres', 'ud.apellido1', 'ud.apellido2'], 'director_nombre')
+        ->concat( ['uc.nombres', 'uc.apellido1', 'uc.apellido2'], 'codirector_nombre')
+        ->leftJoin('grado',   'g')
+        ->leftJoin('usuario', 'ud', 't.director_id = ud.id')
+        ->leftJoin('usuario', 'uc', 't.codirector_id = uc.id')
         ->orderBy(self::$order_by_default);
 
     if (!is_null($estado)) { $DQL->andWhere("t.is_active=$estado"); }
@@ -78,15 +78,6 @@ class Salon extends LiteRecord {
     return $DQL->execute();
   }
 
-
-   /**
-   * Saber si un profesor es director de grupo o no.
-   * ¿ y si es director o codirector de varios salones ?
-   */
-  public function isDirector(int $user_id): bool { 
-    return (false !== ( (new Salon)::first('Select t.id from sweb_salones as t where t.director_id=? or t.codirector_id=?', [$user_id, $user_id]) ) );
-  } //END-isDirector
-
-
+  
 
 } //END-CLASS

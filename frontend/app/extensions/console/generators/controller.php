@@ -42,7 +42,7 @@ class <?=$class?>Controller extends AppController
     */
   public function nombre_action(){
     OdaLog::info('ojo info',  'mensaje ojo'); // tipos: [warning, error, debug, info]
-    OdaFlash::valid(msg: 'mensaje', $audit: TRUE); // tipos: [valid, error, warning, info]
+    OdaFlash::valid('mensaje', $audit: TRUE); // tipos: [valid, error, warning, info]
   }
 
   

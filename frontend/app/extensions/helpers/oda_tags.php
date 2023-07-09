@@ -1,7 +1,23 @@
 <?php
 
 class OdaTags {
-  
+    
+    /**
+     * Incluye un archivo javascript
+     *
+     * @param string $src archivo javascript
+     * @param boolean $cache indica si se usa cache de navegador
+     */
+    public static function js_module($src, $cache = TRUE)
+    {
+        $src = "javascript/$src.js";
+        if (!$cache) {
+            $src .= '?nocache=' . uniqid();
+        }
+        return '<script type="text/javascript" src="' . PUBLIC_PATH . $src . '"  type="module"></script>';
+    }
+
+
    /**
     * Crea un tag HTML
     * */
@@ -154,7 +170,7 @@ class OdaTags {
    public static function buttonBars(array $arrButtons=[]) {
     $btns = '';
     foreach ($arrButtons as $key => $button) {
-      $btns .= "<button id=\"btn1\" class=\"w3-button w3-theme\" onclick=\"".$button['action']."\">".$button['caption']."</button>";
+      $btns .= "<div class=\"w3-bar-item\"><button id=\"btn1\" class=\"w3-button w3-theme\" onclick=\"".$button['action']."\">".$button['caption']."</button></div>";
     }
     return "<div class=\"w3-bar\">$btns</div>";
    }

@@ -33,16 +33,13 @@ class Nota extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-  public function __toString() {
-    return $this->annio.'-'.$this->periodo_id.'-'.$this->salon_id.'-'.$this->asignatura_id.'-'.$this->estudiante_id.'-'.$this->definitiva;
-  }
 
   
   public function setUpdateCalificacion() {
     try {
       $this::query("UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id])->rowCount() > 0;
     } catch (\Throwable $th) {
-      OdaLog::error($th);
+      OdaLog::error($th, Session::get('username'));
     }
   } //END-setCalificacion
 
@@ -53,7 +50,7 @@ class Nota extends LiteRecord {
       $RegSalonNuevo = (new Salon)->first("SELECT id, grado_id FROM ".Config::get('tablas.salones')." WHERE id=?", [$nuevo_salon_id]);
       $this::query("UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id])->rowCount() > 0;
     } catch (\Throwable $th) {
-      OdaLog::error($th);
+      OdaLog::error($th, Session::get('username'));
     }
   } //END-cambiarSalonEstudiante
 
@@ -66,10 +63,10 @@ class Nota extends LiteRecord {
         ->addSelect('s.nombre as salon_nombre')
         ->addSelect('g.nombre as grado_nombre')
         ->addSelect('a.nombre as asignatura_nombre')
-        ->leftJoin(table_singular:'estudiante', alias:'e')
-        ->leftJoin(table_singular:'salon', alias:'s')
-        ->leftJoin(table_singular:'grado', alias:'g')
-        ->leftJoin(table_singular:'asignatura', alias:'a')
+        ->leftJoin('estudiante', 'e')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g')
+        ->leftJoin('asignatura', 'a')
         ->where('t.salon_id=17')
         ->orderBy(self::$order_by_default);
 
@@ -77,6 +74,38 @@ class Nota extends LiteRecord {
    return $DQL->execute();
 //    return (new Nota)::all("SELECT count(t.id) as cnt, t.*  FROM sweb_notas as t GROUP BY t.id, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id HAVING count(id)>0");
  } // END-getList
+
+
+   
+  public function getByPeriodoEstudiante(int $periodo_id, int $estudiante_id): array|string {
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
+          t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
+          t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
+        ->leftJoin('asignatura', 'a')
+        ->leftJoin('estudiante', 'e')
+        ->where('t.periodo_id=? AND t.estudiante_id=?')
+        ->orderBy('a.nombre')
+        ->setParams([$periodo_id, $estudiante_id]);
+    return $DQL->execute();
+  } // END-getByPeriodoEstudiante
+
+  public function getByPeriodoSalon(int $periodo_id, int $salon_id): array|string {
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
+          t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
+          t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
+        ->leftJoin('asignatura', 'a')
+        ->leftJoin('estudiante', 'e')
+        ->where('t.periodo_id=? AND t.salon_id=?')
+        ->orderBy('estudiante_nombre, a.nombre')
+        ->setParams([$periodo_id, $salon_id]);
+    return $DQL->execute();
+  } // END-getByPeriodoEstudiante
 
 
   //====================
@@ -88,22 +117,21 @@ class Nota extends LiteRecord {
       WHERE n.salon_id=? 
       ORDER BY n.periodo_id, e.apellido1, e.apellido2, e.nombres",  array($salon_id)
     );
-  } //END-getNotasSalonAsignatura
+  } //END-getNotasSalon
 
 
   //====================
   public function getNotasSalonAsignatura(int $salon_id, int $asignatura_id, $annio=null) {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
 
-    return (new Nota)->all(
-      "SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
+    return (new Nota)->all("SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
       FROM $tbl_notas as n
       LEFT JOIN sweb_estudiantes AS e ON n.estudiante_id = e.id
       WHERE n.salon_id=? AND n.asignatura_id=?
       ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
       array((int)$salon_id, (int)$asignatura_id)
     );
-  } //END-getNotasSalonAsignatura
+  } //END-
 
   //====================
   public static function getNotasSalonAsignaturaPeriodos(int $salon_id, int $asignatura_id, array $periodos=[], $annio=null) {
@@ -115,7 +143,7 @@ class Nota extends LiteRecord {
       s.nombre as salon_nombre, a.nombre as asignatura_nombre
       FROM $tbl_notas as t
       LEFT JOIN sweb_estudiantes AS e ON t.estudiante_id = e.id
-      LEFT JOIN sweb_salones AS s     ON t.estudiante_id = s.id
+      LEFT JOIN sweb_salones AS s ON t.estudiante_id = s.id
       LEFT JOIN sweb_asignaturas AS a ON t.estudiante_id = a.id
 
       WHERE t.periodo_id IN($str_p) AND t.salon_id=? AND t.asignatura_id=?
@@ -142,9 +170,9 @@ class Nota extends LiteRecord {
     $aResult = [];
 
     $sql = "SELECT N.annio AS annio, N.periodo_id AS periodo_id, N.grado_id AS grado_id,
-    N.salon_id AS salon_id, N.asignatura_id AS asignatura_id, N.estudiante_id AS estudiante_id,
+    N.salon_id AS salon_id, N.asignatura_id AS asignatura_id, N.estudiante_id AS estudiante_id, E.uuid AS estudiante_uuid,
     concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante,
-    G.nombre AS grado, S.nombre AS salon, A.nombre AS asignatura, A.abrev AS asignatura_abrev,
+    G.nombre AS grado, S.nombre AS salon, S.uuid AS salon_uuid, A.nombre AS asignatura, A.abrev AS asignatura_abrev,
     N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final,
     IF(N.nota_final<0, \"Error Nota Final <0\", IF(N.nota_final<60, \"Bajo\", IF(N.nota_final<70, \"Basico\", 
     IF(N.nota_final<80, \"Basico +\", IF(N.nota_final<90, \"Alto\", IF(N.nota_final<95, \"Alto +\", 
@@ -161,7 +189,7 @@ class Nota extends LiteRecord {
 
     $registros = static::query($sql)->fetchAll();
     foreach ($registros as $reg) {
-      $aResult["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
+      $aResult["$reg->salon;$reg->salon_id;$reg->salon_uuid"]["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
     }
     return $aResult;
   } //END-getVistaNotasTodasExportar
@@ -172,7 +200,7 @@ class Nota extends LiteRecord {
     $DQL = (new OdaDql(__CLASS__))
     ->select('t.periodo_id, a.nombre as asignatura_nombre')
     ->addSelect('round(AVG(if(t.nota_final>0, t.nota_final, t.definitiva)), 2) as avg')
-    ->leftJoin(table_singular:'asignatura', alias:'a')
+    ->leftJoin('asignatura', 'a')
     ->where('t.asignatura_id NOT IN (30,35,36,37,38,39,40) AND t.periodo_id = ? AND t.salon_id = ?')
     ->groupBy('t.periodo_id, a.nombre')
     ->setParams([$periodo_id, $salon_id]);

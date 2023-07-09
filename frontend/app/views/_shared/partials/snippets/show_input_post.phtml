@@ -1,0 +1,22 @@
+<?php
+
+$vacío = $post = array();
+  
+foreach ($_POST as $nombre_variable => $nombre_valor) {
+    if (empty($nombre_valor)) {
+        $vacío[$nombre_variable] = $nombre_valor;
+    } else {
+        $post[$nombre_variable] = $nombre_valor;
+    }
+}
+
+print "<pre>";
+if (empty($vacío)) {
+    print "Ninguno de los valores de POST esta vacío, se envió:\n";
+    var_dump($post);
+} else {
+    print "Tenemos " . count($vacío) . " valores vacíos\n";
+    print "Registrados:\n"; var_dump($post);
+    print "Vacíos:\n";  var_dump($vacío);
+    exit;
+}

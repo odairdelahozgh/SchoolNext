@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait UsuarioTraitSetUp {
   
-  use TraitUuid, TraitForms;
+  use TraitUuid, TraitForms, UsuarioTraitProps;
   
   public function validar($input_post) {
     Session::set('error_validacion', '');

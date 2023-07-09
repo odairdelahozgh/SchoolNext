@@ -11,16 +11,6 @@ use Mpdf\Mpdf;
 class DocentesController extends AppController
 {
 
-  public function example1() {
-    View::select(null, null);
-    $mpdf = new Mpdf(['tempDir' => APP_PATH . '/temp']);
-    $mpdf->WriteHTML('¡Hola KumbiaPHP!');
-    $mpdf->Output();
-  }
-
-  /**
-   * Método Index
-   */
   public function index() {
       $this->page_action = 'M&oacute;dulo Docentes';
       $this->data = (new Evento)->getEventosDashboard();
@@ -30,7 +20,7 @@ class DocentesController extends AppController
   /**
    * $data: Carga Académica de Profesor
    */
-  public function carga() {
+  public function carga(): void {
     $this->page_action = 'Carga Acad&eacute;mica';
     $this->data = (new SalAsigProf)->getCarga($this->user_id);
   }//END-carga
@@ -39,7 +29,7 @@ class DocentesController extends AppController
   /**
    * $data: ASIGNAR Carga Académica de Profesor
    */
-  public function asignar_carga() {
+  public function asignar_carga(): void {
     $this->page_action = 'Asignar Carga Acad&eacute;mica';
     $usuario = $this->user_id;
 
@@ -49,13 +39,13 @@ class DocentesController extends AppController
     }
     $this->data = (new SalAsigProf)->getCarga($this->user_id); // siempre la carga del usuario logeado
     $this->arrData[0] = $usuario;
-  }//END-carga
+  } //END-asignar_carga
 
 
   /**
    * Método Dirección de Grupo
    */
-  public function direccion_grupo() {
+  public function direccion_grupo(): void {
     $this->page_action = 'Direcci&oacute;n de Grupo';
     View::select('direccionDeGrupo/index');
     
@@ -69,7 +59,7 @@ class DocentesController extends AppController
       //$this->a_prom_p[$i]  = array_prom_key($a_regs, 'avg' );
     }
 
-    if (Session::get('es_director')) {
+    if (Session::get(index: 'es_director')) {
       # code...
     }
 
@@ -78,21 +68,21 @@ class DocentesController extends AppController
   /**
    * registros_observaciones/list
    */
-  public function registros_observaciones() {
+  public function registros_observaciones(): void {
     $this->page_action = 'Registros de Observaciones Generales';
     $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
     $this->arrData = ['estudiantes' => $estudiantes];
-    $this->data = (new RegistrosGen)->getRegistrosProfesor(Session::get('id'));
+    $this->data = (new RegistrosGen)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
     View::select('registrosObservGenerales/index');
   }//END-registros_observaciones
   /**
    * registros_desemp_acad
    */
-  public function registros_desemp_acad() {
+  public function registros_desemp_acad(): void {
     $this->page_action = 'Registros de Desempeño Académico';
     $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
     $this->arrData = ['estudiantes' => $estudiantes];
-    $this->data = (new RegistroDesempAcad)->getRegistrosProfesor(Session::get('id'));
+    $this->data = (new RegistroDesempAcad)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
     View::select('registrosDesempAcad/index');
   }//END-registros_observaciones
 
@@ -100,7 +90,7 @@ class DocentesController extends AppController
   /**
    * indicadores/list
    */
-  public function listIndicadores(int $grado_id, int $asignatura_id) {
+  public function listIndicadores(int $grado_id, int $asignatura_id): void {
     $this->page_action = 'Indicadores de Logro';
 
     $RegGrado = (new Grado)->get($grado_id);
@@ -116,102 +106,117 @@ class DocentesController extends AppController
     $this->data = $arrIndic; 
     */
     //View::select('indicadores/list');
-    View::select('indicadores/index');
+    View::select(view: 'indicadores/index');
   }//END-indicadores
 
 
   /**
    * notas/list
    */
-  public function listNotas(int $asignatura_id, int $salon_id) {
-    $this->page_action = 'Notas del Sal&oacute;n';
-    //$this->breadcrumb->addCrumb(key:1, title:'Carga', url:'docentes/carga');
-    
-    $this->Asignatura = (new Asignatura)->get($asignatura_id);
-    $this->Salon = (new Salon)->get($salon_id);
+  public function listNotas(int $asignatura_id, int $salon_id): void {
+    try {
+      
+      $this->page_action = 'Notas del Sal&oacute;n';
+      //$this->breadcrumb->addCrumb(key:1, title:'Carga', url:'docentes/carga');
+      
+      $this->Asignatura = (new Asignatura)->get($asignatura_id);
+      $this->Salon = (new Salon)->get($salon_id);
+  
+      // limitar el numero de periodos
+      $periodo_actual = (int)Config::get(var: 'config.academic.periodo_actual');
+      $arr_periodos = range(start: 1, end: $periodo_actual);
+      $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
 
-    // limitar el numero de periodos
-    $periodo_actual = (int)Config::get('config.academic.periodo_actual');
-    $arr_periodos = range(1, $periodo_actual);
-    $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
-    
-    $arrNotas = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
+      $this->data = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
+      foreach ($Notas as $key => $nota) {
+        //echo $nota." ---- $nota->periodo_id<br>";
+        array_push($this->data[$nota->periodo_id], $nota);
+      }
 
-    foreach ($Notas as $key => $nota) {
-      array_push($arrNotas[$nota->periodo_id], $nota);
+      $this->_data_count = count($Notas);
+      if (0==$this->_data_count) { 
+        OdaFlash::info('No hay registros para mostrar.');
+      }
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th, true);
     }
-    $this->data = $arrNotas;
-    View::select('notas/list');
+    View::select(view: 'notas/list');
   }//END-notas
 
 
   /**
    * notas/notasCalificar
    */
-  public function notasCalificar(int $periodo_id, int $salon_id, int $asignatura_id) {
-    $this->page_action = 'Calificar Notas del Sal&oacute;n';
-    $RegSalon = (new Salon)->get($salon_id);
-    $RegPeriodo =(new Periodo)->get($periodo_id);
-    $RegAsignatura = (new Asignatura)->get($asignatura_id);
+  public function notasCalificar(int $periodo_id, int $salon_id, int $asignatura_id): void {
+    try {
+      $this->page_action = 'Calificar Notas del Sal&oacute;n';
+      $RegSalon = (new Salon)->get($salon_id);
+      $RegPeriodo =(new Periodo)->get($periodo_id);
+      $RegAsignatura = (new Asignatura)->get($asignatura_id);
 
-    $Nota = new Nota();
-    $this->data = $Nota->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
-    $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
-    
-    $regs_min = min($RegsIndicad);
-    $regs_max = max($RegsIndicad);
+      $Nota = new Nota();
+      $this->data = $Nota->getNotasSalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
+      $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
+      
+      $regs_min = min($RegsIndicad);
+      $regs_max = max($RegsIndicad);
 
-    $min_fortaleza = min(array_filter($RegsIndicad, function ($element) {
-      return $element->valorativo == 'Fortaleza';
-    }));
-    $max_fortaleza = max(array_filter($RegsIndicad, function ($element) {
-      return $element->valorativo == 'Fortaleza';
-    }));
-    
-    $min_debilidad = min(array_filter($RegsIndicad, function ($element) {
-      return $element->valorativo == 'Debilidad';
-    }));
-    $max_debilidad = max(array_filter($RegsIndicad, function ($element) {
-      return $element->valorativo == 'Debilidad';
-    }));
+      $min_fortaleza = min(array_filter(array: $RegsIndicad, callback: function ($element): bool {
+        return $element->valorativo == 'Fortaleza';
+      }));
+      $max_fortaleza = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+        return $element->valorativo == 'Fortaleza';
+      }));
+      
+      $min_debilidad = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+        return $element->valorativo == 'Debilidad';
+      }));
+      $max_debilidad = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+        return $element->valorativo == 'Debilidad';
+      }));
 
-    $min_recomendacion = min(array_filter($RegsIndicad, function ($element) {
-      return $element->valorativo == 'Recomendación';
-    }));
-    $max_recomendacion = max(array_filter($RegsIndicad, function ($element) {
-      return $element->valorativo == 'Recomendación';
-    }));
+      $min_recomendacion = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+        return $element->valorativo == 'Recomendación';
+      }));
+      $max_recomendacion = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+        return $element->valorativo == 'Recomendación';
+      }));
 
-    
-    $this->fieldsToShow = $Nota::getFieldsShow('calificar');
-    $this->arrData = [
-      'Periodo'           => $RegPeriodo,
-      'Asignatura'        => $RegAsignatura,
-      'Salon'             => $RegSalon,
-      'Indicadores'       => $RegsIndicad,
-      'annio_actual'      => (int)Config::get('config.academic.annio_actual'),
-      'periodo_actual'    => (int)Config::get('config.academic.periodo_actual'),
-      'min_fortaleza'     =>$min_fortaleza,
-      'max_fortaleza'     =>$max_fortaleza,
-      'min_debilidad'     =>$min_debilidad,
-      'max_debilidad'     =>$max_debilidad,
-      'min_recomendacion' =>$min_recomendacion,
-      'max_recomendacion' =>$max_recomendacion,
-      'min_indic' => $regs_min,
-      'max_indic' => $regs_max,
-      'cnt_indicador'   =>count($RegsIndicad),
-    ];
-    View::select('notas/calificar/index');
+      
+      $this->fieldsToShow = $Nota::getFieldsShow(show: 'calificar');
+      $this->arrData = [
+        'Periodo'           => $RegPeriodo,
+        'Asignatura'        => $RegAsignatura,
+        'Salon'             => $RegSalon,
+        'Indicadores'       => $RegsIndicad,
+        'annio_actual'      => (int)Config::get(var: 'config.academic.annio_actual'),
+        'periodo_actual'    => (int)Config::get(var: 'config.academic.periodo_actual'),
+        'min_fortaleza'     =>$min_fortaleza,
+        'max_fortaleza'     =>$max_fortaleza,
+        'min_debilidad'     =>$min_debilidad,
+        'max_debilidad'     =>$max_debilidad,
+        'min_recomendacion' =>$min_recomendacion,
+        'max_recomendacion' =>$max_recomendacion,
+        'min_indic' => $regs_min,
+        'max_indic' => $regs_max,
+        'cnt_indicador'   =>count(value: $RegsIndicad),
+      ];
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    View::select(view: 'notas/calificar/index');
   }//END-notas
 
 
   /**
    * 
    */
-  public function perfilUsuario() {
+  public function perfilUsuario(): void {
     $this->page_action = 'Perfil del Usuario';
     //$this->data = (array)(new Usuario())::get($this->user_id);
-    View::select('perfilUsuario/index');
+    View::select(view: 'perfilUsuario/index');
   }//END-perfilUsuario
 
 

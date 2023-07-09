@@ -31,7 +31,7 @@ class View extends KumbiaView
   /**
    * ODAIR: Método para mostrar los headers de cada vista
    */
-  public static function Encab($page_module, $page_action, $breadcrumb) { 
+  public static function Encab($page_module, $page_action, $breadcrumb='') { 
     return self::partial('snippets/encab', '', array('page_module'=>$page_module, 'page_action'=>$page_action, 'breadcrumb'=>$breadcrumb));
   }
 

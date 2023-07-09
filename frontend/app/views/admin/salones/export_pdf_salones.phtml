@@ -1,7 +1,6 @@
 <?php 
-
   $tabla = new OdaTable(theme:'light', _attrs: 'class="w3-table w3-striped w3-border w3-bordered"');
-  $tabla->setCaption($pdf_title);
+  $tabla->setCaption($file_title);
   $tabla->setHead(
     data_head: ['Id', 'Salon', 'Grado', 'Director'],
     arr_attrs_th:['class="w3-theme"', 'class="w3-theme"', 'class="w3-theme"', 'class="w3-theme"']

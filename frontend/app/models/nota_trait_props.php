@@ -3,13 +3,21 @@
  * Summary of NotaTraitProps
  */
 trait NotaTraitProps {
-  /*
-  */
-  public function getFoto() { 
-    return $this->estudiante_id.'<br>'.OdaTags::img(src: "upload/estudiantes/$this->estudiante_id.png", alt: $this->estudiante_id,
-            attrs: "class=\"w3-round\" style=\"width:100%;max-width:80px\"", err_message: "[sin foto]");
+
+  public function __toString() {
+    return $this->id.'-'.$this->annio.'-'.$this->periodo_id.'-'.$this->salon_id.'-'.$this->asignatura_id.'-'.$this->estudiante_id.'-'.$this->definitiva;
   }
   
+  public function getFoto() { 
+    return $this->estudiante_id.'<br>'.OdaTags::img(src: "upload/estudiantes/$this->estudiante_id.png", alt: $this->estudiante_id,
+            attrs: "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
+  }
+  
+  public static function imgTablaRango(): string {
+    return OdaTags::img(src: "upload/asignaturas/rangos.png", alt: 'imagen rangos',
+            attrs: "style=\"width:100%;max-width:214px\"", err_message: "[sin foto]");
+  }
+
   //====================
   public function verNota(): string {
     $color = (new Rango)::getColorRango(valor: $this->nota_final);
@@ -25,9 +33,9 @@ trait NotaTraitProps {
   public function fieldForm(string $field_name, string $attr=''): string {
     $attribs = ($this->getAttrib(field: $field_name)) ? $this->getAttrib(field: $field_name) : $attr ;
     return Form::input(
-      type:  $this->getWidget(field: $field_name),
+      type:  $this->getWidget($field_name),
       field: 'notas.'.$field_name.'_'.$this->id, 
-      attrs: $attribs . $this->getPlaceholder(field: $field_name),
+      attrs: $attribs . $this->getPlaceholder($field_name),
       value: $this->$field_name,
     );
   }//END-fieldForm

@@ -57,9 +57,9 @@ class CoordinadorController extends AppController
     $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [$estudiante_id]);
     
     if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_en_notas) ) {
-      OdaFlash::valid("$this->page_action: $Estud]", true);
+      OdaFlash::valid("$this->page_action: $Estud]");
     } else {
-      OdaFlash::error("$this->page_action: $Estud]", true);
+      OdaFlash::warning("$this->page_action: $Estud]");
     }
     return Redirect::to('coordinador/index');//pendiente la redirección..
   }

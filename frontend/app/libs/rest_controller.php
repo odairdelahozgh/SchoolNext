@@ -25,15 +25,16 @@ abstract class RestController extends KumbiaRest {
      * ****************************************
      */
     final protected function initialize() {
-        $user = isset($_SERVER['PHP_AUTH_USER']) ? filter_var($_SERVER['PHP_AUTH_USER']) : null;
-        $pass = isset($_SERVER['PHP_AUTH_PW']) ? filter_var($_SERVER['PHP_AUTH_PW']) : null;
-        if (isset($this->users[$user]) && ($this->users[$user] == $pass)) {
-            return true;
-        } else {
-            $this->data = $this->error("Fail authentication", 401);
-            header('WWW-Authenticate: Basic realm="Private Area"');
-            return false;
-        }
+      return true;
+        // $user = isset($_SERVER['PHP_AUTH_USER']) ? filter_var($_SERVER['PHP_AUTH_USER']) : null;
+        // $pass = isset($_SERVER['PHP_AUTH_PW']) ? filter_var($_SERVER['PHP_AUTH_PW']) : null;
+        // if (isset($this->users[$user]) && ($this->users[$user] == $pass)) {
+        //   return true;
+        // } else {
+        //   $this->data = $this->error("Fail authentication", 401);
+        //   header('WWW-Authenticate: Basic realm="Private Area"');
+        //   return false;
+        // }
     }
 
     final protected function finalize() {

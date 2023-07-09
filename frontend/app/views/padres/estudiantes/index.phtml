@@ -1,0 +1,17 @@
+<?= View::Encab(page_module: $controller_name, page_action: $page_action, breadcrumb: $breadcrumb); ?>
+<?php View::flash(); ?>
+
+<div class="w3-container">
+  <div class="w3-row">
+
+    <div class="w3-quarter">
+      <?= require "side_bar.php" ?>
+    </div>
+
+    <div id="capa_datos" class="w3-threequarter">
+    </div>
+
+  </div>
+</div>
+
+<?=Tag::js(src: "padres/traer_datos_estudiante", cache: false); ?>

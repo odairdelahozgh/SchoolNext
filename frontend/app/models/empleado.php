@@ -28,7 +28,7 @@ class Empleado extends LiteRecord {
   public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) { 
     $DQL = new OdaDql('usuario');
     $DQL->select("t.*")
-      ->concat(concat: ['t.apellido1', 't.apellido2', 't.nombres'], alias:'nombre')
+      ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'usuario_nombre')
       ->where('t.username<>t.documento')
       ->orderBy(self::$order_by_default);
 
@@ -51,7 +51,7 @@ public function setPassDocente() {
     //$rec_count = $this::query("UPDATE ".self::$table." SET password=? WHERE id=? ", [$password_salt, $this->id])->rowCount();
     //OdaFlash::info("\nUsername: $this->username \nId: $this->id \nDocumento: $this->documento \nPassword:  $pass \nSALT: $this->salt \nPassword SALT $password_salt \nAfect: $rec_count", true);
   } catch (\Throwable $th) {
-    OdaLog::error($th);
+    OdaFlash::error($th);
   }
 
 } //END-setPassword

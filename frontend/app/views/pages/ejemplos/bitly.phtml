@@ -1,5 +1,5 @@
 <?php
-  require 'vendor/autoload.php';
+require_once VENDOR_PATH . 'autoload.php';
   //use Codehaveli\Bitly;
   //use Codehaveli\Exceptions\BitlyErrorException;
 
@@ -16,6 +16,6 @@ try {
   
   //Bitly::init($accessToken, $guid);
 } catch (\Throwable $th) {
-  OdaFlash::error($th, true) ;
+  OdaFlash::error($th) ;
 }
 ?>

@@ -40,8 +40,8 @@ const SCHOOLWEB_PUBLIC_PATH = 'https://schoolweb.windsorschool.edu.co/';
 
 // =======================
 // DESARROLLO LOCAL
-const PRODUCTION = false;
-error_reporting(E_ALL ^ E_STRICT);ini_set('display_errors', 'On');
+const PRODUCTION = true;
+//error_reporting(E_ALL ^ E_STRICT);ini_set('display_errors', 'On');
 define('APP_PATH', dirname(__DIR__).'/app/');
 define('CORE_PATH', dirname(dirname(APP_PATH)).'/core/');
 define('PUBLIC_PATH', substr($_SERVER['SCRIPT_NAME'], 0, -9)); // - index.php string[9]
@@ -49,7 +49,7 @@ $url = $_SERVER['PATH_INFO'] ?? '/';
 
 define('VENDOR_PATH', APP_PATH.'../vendor/');
 const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public';
-const SCHOOLWEB_PUBLIC_PATH = 'D:\windsortemp\web';
+const SCHOOLWEB_PUBLIC_PATH = 'https://windsortemp.schoolnext.space/';;
 
 
 const APP_NAME= "SchoolNEXT>>";

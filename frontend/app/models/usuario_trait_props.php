@@ -28,7 +28,7 @@ trait UsuarioTraitProps {
   /*
    * Devuelve una composición del nombre completo del usuario
    */
-  public function getNombreCompleto($orden='a1 a2, n') {
+  public function getNombreCompleto($orden='a1 a2, n'): array|string {
     return str_replace( array('n', 'a1', 'a2'),
             array($this->nombres, $this->apellido1, $this->apellido2), $orden);
   }

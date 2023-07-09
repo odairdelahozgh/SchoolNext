@@ -18,8 +18,6 @@ class Asignatura extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-  public function __toString() { return $this->nombre; }
-
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, a.nombre AS area_nombre')

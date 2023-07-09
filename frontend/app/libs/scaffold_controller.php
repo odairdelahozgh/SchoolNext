@@ -7,48 +7,54 @@ require_once VENDOR_PATH.'autoload.php';
  * @category Kumbia
  * @package Controller
  */
+
+ require_once "enums.php";
+
 abstract class ScaffoldController extends AdminController
 {
   public string $scaffold = 'schoolnext'; // en views/_shared/scaffolds/
   public string $model = ''; //Nombre del modelo en CamelCase
   
-  public string $pdf_fileName = '';
-  public string $pdf_title = '';
-  public bool $pdf_download = false;
-    
+  // PARA LA GENERACIÓN DE ARCHIVOS
+  public $archivoPDF = null;
+  public ?string $file_tipo = null;
+  public ?string $file_name = null;
+  public ?string $file_title = null;
+  public bool $file_download = true;
+
   public function info($view) {
     View::response($view);
-  }//END-info
-
+  } //END-info
+  
   public function exportPdf() {
-    View::template('pdf/mpdf');
-    $this->pdf_fileName = OdaUtils::getSlug("listado-de-$this->controller_name");
-    $this->pdf_title = "Listado de $this->controller_name";
+    $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name");
+    $this->file_title = "Listado de $this->controller_name";
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
-    $this->pdf_download = false;    
+    $this->file_download = false;
     View::select(view: "export_pdf_$this->controller_name", template: 'pdf/mpdf');
-  }//END-exportPdf
+  } //END-exportPdf
 
   public function exportCsv() {
-    $this->filename = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
+    $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
     View::select(null, "csv");
-  }//END-exportCsv
+  } //END-exportCsv
   
   public function exportXml() {
-    $this->filename = OdaUtils::getSlug("listado-de-$this->controller_name");
+    $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name");
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
     View::select(view: null, template: "xml");
-  }//END-exportXml
+  } //END-exportXml
   
 
   public function exportXls(): void { //EXCEL
     View::select(view: "export_xls_$this->controller_name", template: 'xls');
     $this->Modelo = new $this->nombre_modelo();
-    $this->filename = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
+    $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
+    $this->data = (new $this->nombre_modelo())->getList(estado:1);
     $this->registros = (new $this->nombre_modelo())->getList(estado:1);
     $this->header =[];
-  }//END-exportXls
+  } //END-exportXls
 
 
 
@@ -76,7 +82,7 @@ abstract class ScaffoldController extends AdminController
 
       if (Input::hasPost($this->nombre_post)) {
         if (!$this->Modelo->validar(Input::post($this->nombre_post))) {
-          OdaFlash::error("$this->page_action. ".Session::get('error_validacion'), true);
+          OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
           return Redirect::to($redirect);
         }
   
@@ -85,15 +91,14 @@ abstract class ScaffoldController extends AdminController
           Input::delete();
           return Redirect::to();
         } else {
-          OdaFlash::error("$this->page_action - No Creó el Registro.", true);
+          OdaFlash::warning("$this->page_action - No Creó el Registro.");
           $this->data = Input::post($this->nombre_post);
           return Redirect::to($redirect);
         }
       }
 
     } catch (\Throwable $th) {
-      OdaFlash::error("$this->page_action - ".$th->getMessage(), true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to($redirect);
     }
 
@@ -112,12 +117,12 @@ abstract class ScaffoldController extends AdminController
       $Registro = new $this->nombre_modelo();
 
       if (!Input::hasPost($this->nombre_post)) {
-        OdaFlash::error("$this->page_action - No coincide post [$this->nombre_post]", true);
+        OdaFlash::warning("$this->page_action - No coincide post [$this->nombre_post]");
         return Redirect::to($redirect);
       }
 
       if (!$Registro->validar(Input::post($this->nombre_post))) {
-        OdaFlash::error("$this->page_action. ".Session::get('error_validacion'), true);
+        OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
         return Redirect::to($redirect);
       }
 
@@ -126,13 +131,12 @@ abstract class ScaffoldController extends AdminController
         Input::delete();
       } else {
         $this->data = Input::post($this->nombre_post);
-        OdaFlash::error("$this->page_action - No Creó el Registro.", true);
+        OdaFlash::warning("$this->page_action - No Creó el Registro.");
       }
       return Redirect::to($redirect);
 
     } catch (\Throwable $th) {
-      OdaFlash::error("$this->page_action - ".$th->getMessage(), true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to($redirect);
     }
 
@@ -159,17 +163,16 @@ abstract class ScaffoldController extends AdminController
             OdaFlash::valid("$this->page_action $id");
             return Redirect::to();
           }
-          OdaFlash::error("$this->page_action. Guardar.", true);
+          OdaFlash::warning("$this->page_action. Guardar.");
           return Redirect::to($redirect);
         } else {
-          OdaFlash::error("$this->page_action. ".Session::get('error_validacion'), true);
+          OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
           return Redirect::to($redirect);
         }
       }
 
     } catch (\Throwable $th) {
-      OdaFlash::error("$this->page_action - ".$th->getMessage(), true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to();
     }
   }//END-edit
@@ -192,14 +195,13 @@ abstract class ScaffoldController extends AdminController
           OdaFlash::valid("$this->page_action: $uuid");
           return Redirect::to();
         }
-        OdaFlash::error($this->page_action, true);
+        OdaFlash::warning($this->page_action);
         return Redirect::to();
       }
       View::select('edit');
 
     } catch (\Throwable $th) {
-      OdaFlash::error("$this->page_action - ".$th->getMessage(), true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
     }
   }//END-
 
@@ -216,12 +218,12 @@ abstract class ScaffoldController extends AdminController
       $Registro = (new $this->nombre_modelo())::get($id);
 
       if (!Input::hasPost($this->nombre_post)) {
-        OdaFlash::error("$this->page_action - No coincide post [$this->nombre_post]", true);
+        OdaFlash::warning("$this->page_action - No coincide post [$this->nombre_post]");
         return Redirect::to($redirect);
       }
 
       if (!$Registro->validar(Input::post($this->nombre_post))) {
-        OdaFlash::error("$this->page_action. ".Session::get('error_validacion'), true);
+        OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
         return Redirect::to($redirect);
       }
 
@@ -229,13 +231,12 @@ abstract class ScaffoldController extends AdminController
         OdaFlash::valid($this->page_action);
       } else {
         $this->data = Input::post($this->nombre_post);
-        OdaFlash::error("$this->page_action - No actualizó el Registro.", true);
+        OdaFlash::warning("$this->page_action - No actualizó el Registro.");
       }
       return Redirect::to($redirect);
 
     } catch (\Throwable $th) {
-      OdaFlash::error("$this->page_action - ".$th->getMessage(), true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to($redirect);
     }
 
@@ -252,15 +253,14 @@ abstract class ScaffoldController extends AdminController
     try {
       $Registro = new $this->nombre_modelo();
       if ( $Registro::delete($id) ) {
-        OdaFlash::valid("$this->page_action: $id", true);
+        OdaFlash::valid("$this->page_action: $id");
       } else {
-        OdaFlash::error("$this->page_action: $id", true);
+        OdaFlash::warning("$this->page_action: $id");
       }
       return Redirect::to($redirect);
 
     } catch (\Throwable $th) {
-      OdaFlash::error("$this->page_action - ".$th->getMessage(), true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to($redirect);
     }
 
@@ -279,14 +279,13 @@ abstract class ScaffoldController extends AdminController
       if ( $Registro::deleteByUUID($uuid)) {
         OdaFlash::valid("$this->page_action: $uuid");
       } else {
-        OdaFlash::error("$this->page_action: $uuid", true);
+        OdaFlash::warning("$this->page_action: $uuid");
         return;
       }
       return Redirect::to($redirect);
 
     } catch (\Throwable $th) {
-      OdaFlash::error("$this->page_action - ".$th->getMessage(), true);
-      OdaLog::debug($th, __CLASS__.'-'.__FUNCTION__);
+      OdaFlash::error($th);
       return Redirect::to("$redirect");
     }
   }//END-delUuid

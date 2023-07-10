@@ -10,28 +10,24 @@
   <div id="list_index">
     <?php
       require('indexHeader.phtml');
-
-      if ( isset($data) & (count($data)==0) ) {
-        Flash::valid('<h3>Atenci&oacute;n!</h3><p>No hay registros para mostrar.</p>');
-      } else {
-        $tabla = new OdaTable(showTotalRegs: true);
-        $tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
-        foreach($data as $key => $reg) {
-          $estudiante = ucwords(OdaUtils::sanearString($reg->estudiante_nombre))." $reg->salon_nombre [$reg->salon_id]";
-          $btn_edit = '';
-          // "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
-          
-          $data_row = array(
-            $reg.$btn_edit,
-            $estudiante,
-            OdaUtils::TIPO_REG_OBSERV[$reg->tipo_reg].'<br>' .OdaUtils::truncate($reg->asunto, 150),
-            $reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
-            $reg->director.'<br>'.$reg->getFotoDirector(),
-          );
-          $tabla->addRow(data: $data_row, attrs_td:['','class="searchTdata"','class="searchTdata"']);
-        } //END-FOR
-        echo $tabla;
-      }//END-IF
+      
+      $tabla = new OdaTable(showTotalRegs: true);
+      $tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
+      foreach($data as $key => $reg) {
+        $estudiante = ucwords(OdaUtils::sanearString($reg->estudiante_nombre))." $reg->salon_nombre [$reg->salon_id]";
+        $btn_edit = '';
+        // "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
+         
+        $data_row = array(
+          $reg.$btn_edit,
+          $estudiante,
+          OdaUtils::TIPO_REG_OBSERV[$reg->tipo_reg].'<br>' .OdaUtils::truncate($reg->asunto, 150),
+          $reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
+          $reg->director.'<br>'.$reg->getFotoDirector(),
+        );
+        $tabla->addRow(data: $data_row, attrs_td:['','class="searchTdata"','class="searchTdata"']);
+      } //END-FOR
+      echo $tabla;
 
       require('indexFooter.phtml');
     ?>

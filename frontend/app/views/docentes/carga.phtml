@@ -1,16 +1,16 @@
 <div class="w3-container"> 
   <?= View::flash().View::Encab($controller_name, $page_action, $breadcrumb) ?> 
 </div>
-<?php 
 
+<?php 
+// PENDIENTE PROGRAMAR ::
+// Estadísticas de avance de la digitación de notas 
 ?>
+
 <div class="w3-row">
+  
   <div class="w3-container w3-twothird">
     <?php
-    $tot_regs = count($data);
-    if ($tot_regs==0) {
-      Flash::valid('<h3>Atención!</h3><p>No hay registros para mostrar.</p>');
-    } else {
       echo OdaForm::inputSearch();
       $tabla = new OdaTable(showTotalRegs: true);
       $tabla->setHead("*Asignatura, *Salon, Indicadores, Notas", 
@@ -20,18 +20,16 @@
       foreach($data as $key => $carga) {
         $d1 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');
         $d1 .= (($user_id==1) ? "<br> [$carga->profesor]" :'');
-
         $d2 = $carga->salon . ' ' .(($user_id==1) ? "[$carga->salon_id]" :'');
-        
         $d3 = OdaTags::link("docentes/listIndicadores/$carga->grado_id/$carga->asignatura_id", 'Indicadores');
         $d4 = OdaTags::link("docentes/listNotas/$carga->asignatura_id/$carga->salon_id", 'Notas');
         $tabla->addRow( data: [$d1, $d2, $d3, $d4], attrs_td:['class="searchTdata"','class="searchTdata"']);
       }
       echo $tabla;
       echo Tag::js("table_filter");
-    }
     ?>
   </div>
+
   <div class="w3-container w3-rest">
     <?php 
       echo OdaTags::linkExterno(
@@ -42,4 +40,3 @@
   </div>
 
 </div>
-

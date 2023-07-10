@@ -10,33 +10,28 @@
   <div id="list_index">
     <?php
     require('indexHeader.phtml');
-    
-    if ( isset($data) & (count($data)==0) ) {
-      Flash::valid('<h3>Atenci&oacute;n!</h3><p>No hay registros para mostrar.</p>');
-    } else {
-      $tabla = new OdaTable(showTotalRegs: true);
-      $tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
-      foreach($data as $key => $reg) {
-        $estudiante = ucwords(OdaUtils::sanearString($reg->estudiante_nombre))." $reg->salon_nombre [$reg->salon_id]";
 
-        $btn_edit = '';
-        if ( ('sin evidencia'===$reg->getFotoAcudiente()) || ('sin evidencia'===$reg->getFotoDirector()) ) {
-          $btn_edit = "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
-        }
+    $tabla = new OdaTable(showTotalRegs: true);
+    $tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
+    foreach($data as $key => $reg) {
+      $estudiante = ucwords(OdaUtils::sanearString($reg->estudiante_nombre))." $reg->salon_nombre [$reg->salon_id]";
+      $btn_edit = '';
+      if ( ('sin evidencia'===$reg->getFotoAcudiente()) || ('sin evidencia'===$reg->getFotoDirector()) ) {
+        $btn_edit = "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
+      }
 
-        $data_row = array(
-            $reg.$btn_edit,
-            $estudiante,
-          'F: '.OdaUtils::truncate($reg->fortalezas, 50)
-          .'<br>D: '.OdaUtils::truncate($reg->dificultades, 50)
-          .'<br>C: '.OdaUtils::truncate($reg->compromisos, 50),
-          $reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
-          $reg->director.'<br>'.$reg->getFotoDirector(),
-        );
-        $tabla->addRow(data: $data_row, attrs_td:['','class="searchTdata"','class="searchTdata"']);
-      } //END-FOR
-      echo $tabla;
-    }//END-IF
+      $data_row = array(
+        $reg.$btn_edit,
+        $estudiante,
+        'F: '.OdaUtils::truncate($reg->fortalezas, 50)
+        .'<br>D: '.OdaUtils::truncate($reg->dificultades, 50)
+        .'<br>C: '.OdaUtils::truncate($reg->compromisos, 50),
+        $reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
+        $reg->director.'<br>'.$reg->getFotoDirector(),
+      );
+      $tabla->addRow(data: $data_row, attrs_td:['','class="searchTdata"','class="searchTdata"']);
+    } //END-FOR
+    echo $tabla;
 
     require('indexFooter.phtml');
     ?>

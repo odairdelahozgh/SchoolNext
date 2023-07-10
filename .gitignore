@@ -8,6 +8,7 @@ frontend/public/files/download/*
 frontend/app/libs/fpdf/*
 frontend/app/temp/logs/*
 frontend/app/temp/mpdf/*
+frontend/app/temp/cache/*
 
 vendor/Kumbia/ActiveRecord/
 

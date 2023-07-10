@@ -17,43 +17,53 @@ require_once CORE_PATH . 'kumbia/controller.php';
  */
 abstract class AdminController extends Controller
 {
-    public string $page_action = '';
-    public string $page_title  = 'Titulo Pagina';
-    public string $breadcrumb  = 'Inicio';
+  public string $page_action = '';
+  public string $page_title = 'Titulo Pagina';
+  public string $breadcrumb = 'Inicio';
 
-    public string $theme       = 'dark';
-    public string $themei      = 'd';
-    public string $user_id     = 0;
-    public string $user_name     = '';
+  public string $theme = 'dark';
+  public string $themei = 'd';
+  public ?int $user_id = 0;
+  public ?string $user_name = '';
 
-    public string $page_module = '';
-    public string $id_instit   = '';
-    
-    public array  $arrData = [];
-    public object $Modelo;
-    public array  $fieldsToShow = [];
-    public array  $fieldsToShowLabels = [];
-    public array  $fieldsToHidden = [];
-    public string $nombre_post   = '';
-    public string $nombre_modelo = '';
+  public string $page_module = '';
+  public string $id_instit = '';
+  
+  public array  $arrData = [];
+  public object $Modelo;
+  public array  $fieldsToShow = [];
+  public array  $fieldsToShowLabels = [];
+  public array  $fieldsToHidden = [];
+  public string $nombre_post = '';
+  public string $nombre_modelo = '';
 
-    final protected function initialize()
-    {
+  final protected function initialize()
+  {
+    try {
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');
       $this->id_instit = Config::get('config.institution.id_name');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
       $this->themei = substr($this->theme,0,1);
-
+      
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
       $this->nombre_post   = strtolower(OdaUtils::pluralize( $this->nombre_modelo ));
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
 
-    final protected function finalize() {
-        //$this->page_title = trim($this->page_title).' | '.APP_NAME;
-        $this->page_action = (!$this->page_action) ? $this->action_name : $this->page_action;
-        $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .APP_NAME;
-        
+  } //END-initialize
+
+  
+  final protected function finalize() {
+    try {
+      $this->page_action = (!$this->page_action) ? $this->action_name : $this->page_action;
+      $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .APP_NAME;
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
+  } //END-finalize
 
 }

@@ -41,8 +41,7 @@ class OdaDql {
   public function execute(bool $write_log = false): array|string {
     try {
       if ($write_log) {
-        OdaLog::debug($this->render());
-        OdaLog::debug('Params: ' .$this->getParams());
+        OdaLog::debug($this->render().PHP_EOL.'Params: ' .$this->getParams());
       }
       return (new $this->_from)->all($this->render(), $this->_params);
     } catch (\Throwable $th) {
@@ -53,8 +52,7 @@ class OdaDql {
   public function executeFirst(bool $write_log = false): array|string {
     try {
       if ($write_log) {
-        OdaLog::debug($this->render());
-        OdaLog::debug('Params: ' .$this->getParams());
+        OdaLog::debug($this->render().PHP_EOL.'Params: ' .$this->getParams());
       }
       return (new $this->_from)->first($this->render(), $this->_params);
     } catch (\Throwable $th) {

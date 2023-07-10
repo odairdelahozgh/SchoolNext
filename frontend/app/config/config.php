@@ -9,7 +9,7 @@ $year = date('Y');
 
 return [
     'application' => [
-        'production' => true,
+        'production' => false,
         'database' => 'development',
         'dbdate' => 'YYYY-MM-DD',
         'debug' => 'On',

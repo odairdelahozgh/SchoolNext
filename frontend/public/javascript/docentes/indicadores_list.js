@@ -85,16 +85,21 @@ function traer_data(periodo_id, grado_id, asignatura_id) {
   const capa_datos = document.getElementById("capa_datos");
   getData(periodo_id, grado_id, asignatura_id).then(res => {
     const elements = res.reduce((acc, data) => acc + template(data, periodo_id, grado_id, asignatura_id), "");
-    const tabla = `
-      <div class="w3-panel">
-        <button class="w3-button w3-circle w3-green" onclick="show_new_form(`+periodo_id+`, `+grado_id+`, `+asignatura_id+`)">+</button>
-      </div>`
-      +`<table id="myTable" class="w3-table w3-responsive w3-striped w3-border w3-bordered">
+    const boton_add = `
+    <div class="w3-panel">
+      <button class="w3-button w3-circle w3-green" onclick="show_new_form(`+periodo_id+`, `+grado_id+`, `+asignatura_id+`)">+P`+periodo_id+`</button>
+    </div>`;
+    const tabla = boton_add
+          + `<table id="myTable" class="w3-table w3-responsive w3-striped w3-border w3-bordered">
         <tbody id="searchBody"></tbody>
           ${elements}
       </table>
     `;
+
     capa_datos.innerHTML = tabla;
+    if (res.length==0) {
+      capa_datos.innerHTML = boton_add + '<br>No hay registros para mostrar';
+    }
   });
 } //END-traer_data
 

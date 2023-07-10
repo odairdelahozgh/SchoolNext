@@ -9,8 +9,8 @@ trait NotaTraitProps {
   }
   
   public function getFoto() { 
-    return $this->estudiante_id.'<br>'.OdaTags::img(src: "upload/estudiantes/$this->estudiante_id.png", alt: $this->estudiante_id,
-            attrs: "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
+    $e_id = $this->estudiante_id;
+    return 'CE'.$e_id.'<br>'.OdaTags::img("upload/estudiantes/$e_id.png", $e_id, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
   }
   
   public static function imgTablaRango(): string {
@@ -30,10 +30,10 @@ trait NotaTraitProps {
 
   private static $arrExcepProm = array(30,35,36,37,38,39,40);
   
-  public function fieldForm(string $field_name, string $attr=''): string {
+  public function fieldForm(string $field_name, string $attr='', string|bool $type=null): string {
     $attribs = ($this->getAttrib(field: $field_name)) ? $this->getAttrib(field: $field_name) : $attr ;
     return Form::input(
-      type:  $this->getWidget($field_name),
+      type:  ((!is_null($type)) ? 'hidden' : $this->getWidget($field_name)),
       field: 'notas.'.$field_name.'_'.$this->id, 
       attrs: $attribs . $this->getPlaceholder($field_name),
       value: $this->$field_name,

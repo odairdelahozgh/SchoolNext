@@ -67,6 +67,22 @@ class Indicador extends LiteRecord {
     return $DQL->execute();
   } // END-getByPeriodoGradoAsignatura
 
+  public function getByGradoAsignatura(int $grado_id, int $asignatura_id): array|string {
+    try {
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
+          ->where('t.grado_id=? AND t.asignatura_id=?')
+          ->leftJoin('grado', 'g')
+          ->leftJoin('asignatura', 'a')
+          ->orderBy(self::$order_by_default)
+          ->setParams([$grado_id, $asignatura_id]);
+      return $DQL->execute();
+
+    }
+    catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } // END-getByGradoAsignatura
 
   /**
    * Regresa Lista de indicadores filtrada

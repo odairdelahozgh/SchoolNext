@@ -29,6 +29,7 @@ class Empleado extends LiteRecord {
     $DQL = new OdaDql('usuario');
     $DQL->select("t.*")
       ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'usuario_nombre')
+      ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'nombre')
       ->where('t.username<>t.documento')
       ->orderBy(self::$order_by_default);
 

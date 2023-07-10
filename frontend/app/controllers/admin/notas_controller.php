@@ -11,11 +11,11 @@ class NotasController extends ScaffoldController
     $this->page_action = "Notas Guardadas";
     $redirect = "docentes/listNotas/$asignatura_id/$salon_id";
 
-/*     var_dump(array_filter($_POST, function($k) {
+     var_dump(array_filter($_POST, function($k) {
       return $k == 'notas';
-      }, ARRAY_FILTER_USE_KEY)); */
+      }, ARRAY_FILTER_USE_KEY));
 
-    // echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+    //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
 
     try {
       $cnt_success = 0;
@@ -47,13 +47,16 @@ class NotasController extends ScaffoldController
           $adicionales['updated_at']= date('Y-m-d H:i:s', time());
           $adicionales['updated_by']= $this->user_id;
 
+          OdaLog::debug("[$id]: ".implode(', ',$data));
           $DQL = new OdaDql($Modelo::class);
           $DQL->update($data)
-              ->addUpdate($adicionales)
-              ->where("t.id=?")->setParams([$id]);
-
-          OdaLog::debug("[$id]: ".implode(', ',$data).PHP_EOL.$DQL->render().PHP_EOL.$DQL->getParams());
+          ->addUpdate($adicionales)
+          ->where("t.id=?")
+          ->setParams([$id])
+          ->execute(true);
           
+          
+          //OdaLog::debug("[$id]: ".implode(', ',$data).PHP_EOL.$DQL->render().PHP_EOL.$DQL->getParams());
           $success = (new Nota())::query($DQL->render(), [$id])->rowCount() > 0;
           //if ($success) { $cnt_success += 1;}
           if (!$success) { $cnt_fails += 1;}
@@ -71,8 +74,8 @@ class NotasController extends ScaffoldController
       return Redirect::to(route: $redirect);
     }
 
-
   }//END-guardarNotas()
+
 
   public function exportBoletinEstudiantePdf(int $periodo_id, string $estudiante_uuid, TBoletin $tipo_boletin=TBoletin::Boletin): void {
     $this->arrData['Periodo'] = $periodo_id;
@@ -99,6 +102,7 @@ class NotasController extends ScaffoldController
     
     View::select(view: "boletines.pdf", template: null);
   } //END-exportBoletinEstudiantePdf
+
 
   public function exportBoletinSalonPdf(int $periodo_id, string $salon_uuid, TBoletin $tipo_boletin = TBoletin::Boletin): void {
     

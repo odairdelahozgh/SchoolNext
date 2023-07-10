@@ -6,7 +6,7 @@
   */
 
 require_once APP_PATH . '../vendor/autoload.php';
-use Mpdf\Mpdf;
+//use Mpdf\Mpdf;
 
 class DocentesController extends AppController
 {
@@ -15,14 +15,16 @@ class DocentesController extends AppController
       $this->page_action = 'M&oacute;dulo Docentes';
       $this->data = (new Evento)->getEventosDashboard();
   }//END-index
-    
 
-  /**
-   * $data: Carga Académica de Profesor
-   */
-  public function carga(): void {
-    $this->page_action = 'Carga Acad&eacute;mica';
-    $this->data = (new SalAsigProf)->getCarga($this->user_id);
+
+  public function carga(): void { // Carga Académica de Profesor
+    try {
+      $this->page_action = 'Carga Acad&eacute;mica';
+      $this->data = (new SalAsigProf)->getCarga($this->user_id);
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
   }//END-carga
 
   
@@ -30,15 +32,20 @@ class DocentesController extends AppController
    * $data: ASIGNAR Carga Académica de Profesor
    */
   public function asignar_carga(): void {
-    $this->page_action = 'Asignar Carga Acad&eacute;mica';
-    $usuario = $this->user_id;
-
-    if (1==$usuario) { // admin
-      $sap = (new SalAsigProf)::first("SELECT sap.user_id as ultimo_user_id FROM ".Config::get('tablas.salon_asignat_profe')." AS sap WHERE sap.id =(SELECT MAX(sapm.id) as max  FROM ".Config::get('tablas.salon_asignat_profe')." AS sapm)");
-      $usuario = $sap->ultimo_user_id;
+    try {
+      $this->page_action = 'Asignar Carga Acad&eacute;mica';
+      $usuario = $this->user_id;
+  
+      if (1==$usuario) { // admin
+        $sap = (new SalAsigProf)::first("SELECT sap.user_id as ultimo_user_id FROM ".Config::get('tablas.salon_asignat_profe')." AS sap WHERE sap.id =(SELECT MAX(sapm.id) as max  FROM ".Config::get('tablas.salon_asignat_profe')." AS sapm)");
+        $usuario = $sap->ultimo_user_id;
+      }
+      $this->data = (new SalAsigProf)->getCarga($this->user_id); // siempre la carga del usuario logeado
+      $this->arrData[0] = $usuario;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    $this->data = (new SalAsigProf)->getCarga($this->user_id); // siempre la carga del usuario logeado
-    $this->arrData[0] = $usuario;
   } //END-asignar_carga
 
 
@@ -46,66 +53,77 @@ class DocentesController extends AppController
    * Método Dirección de Grupo
    */
   public function direccion_grupo(): void {
-    $this->page_action = 'Direcci&oacute;n de Grupo';
-    View::select('direccionDeGrupo/index');
-    
-    $this->data = (new usuario)->misGrupos();
-    
-    for ($i=1; $i <=5 ; $i++) { 
-      $a_regs = (new Nota)::getNotasPromAnnioPeriodoSalon($i, $this->data[0]->id);
-      foreach ($a_regs as $key => $value) {
-        $this->arrData[$value->asignatura_nombre][$i]['avg'] = $value->avg;
+    try {
+      $this->page_action = 'Direcci&oacute;n de Grupo';
+      $this->data = (new usuario)->misGrupos();
+      for ($i=1; $i <=5 ; $i++) { 
+        $a_regs = (new Nota)::getNotasPromAnnioPeriodoSalon($i, $this->data[0]->id);
+        foreach ($a_regs as $key => $value) {
+          $this->arrData[$value->asignatura_nombre][$i]['avg'] = $value->avg;
+        }
+        //$this->a_prom_p[$i]  = array_prom_key($a_regs, 'avg' );
       }
-      //$this->a_prom_p[$i]  = array_prom_key($a_regs, 'avg' );
-    }
+      
+      // if (Session::get(index: 'es_director')) {
+        //   # code...
+        // }
+      } catch (\Throwable $th) {
+        OdaFlash::error($th);
+      }
 
-    if (Session::get(index: 'es_director')) {
-      # code...
-    }
-
+      View::select('direccionDeGrupo/index');
   }//END-direccion_grupo
 
-  /**
-   * registros_observaciones/list
-   */
+
   public function registros_observaciones(): void {
-    $this->page_action = 'Registros de Observaciones Generales';
-    $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
-    $this->arrData = ['estudiantes' => $estudiantes];
-    $this->data = (new RegistrosGen)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
+    try {
+      $this->page_action = 'Registros de Observaciones Generales';
+      $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
+      $this->arrData = ['estudiantes' => $estudiantes];
+
+      $this->data = (new RegistrosGen)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
     View::select('registrosObservGenerales/index');
   }//END-registros_observaciones
-  /**
-   * registros_desemp_acad
-   */
-  public function registros_desemp_acad(): void {
-    $this->page_action = 'Registros de Desempeño Académico';
-    $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
-    $this->arrData = ['estudiantes' => $estudiantes];
-    $this->data = (new RegistroDesempAcad)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
-    View::select('registrosDesempAcad/index');
-  }//END-registros_observaciones
-
-
-  /**
-   * indicadores/list
-   */
-  public function listIndicadores(int $grado_id, int $asignatura_id): void {
-    $this->page_action = 'Indicadores de Logro';
-
-    $RegGrado = (new Grado)->get($grado_id);
-    $RegAsignatura = (new Asignatura)->get($asignatura_id);
-    $this->arrData = ['grado' => $RegGrado, 'asignatura' => $RegAsignatura];
-
-    /* 
-    $indicadores = (new Indicador)->getListIndicadores($asignatura_id, $grado_id);
-    $arrIndic = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
-    foreach ($indicadores as $indic) {
-      array_push($arrIndic[$indic->periodo_id], $indic);
+  
+  
+  public function registros_desemp_acad(): void {  // Registros de desempeño academico
+    try {
+      $this->page_action = 'Registros de Desempeño Académico';
+      $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
+      $this->arrData = ['estudiantes' => $estudiantes];
+      
+      $this->data = (new RegistroDesempAcad)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    $this->data = $arrIndic; 
-    */
-    //View::select('indicadores/list');
+
+    View::select('registrosDesempAcad/index');
+  } //END-registros_observaciones
+
+
+  public function listIndicadores(int $grado_id, int $asignatura_id): void {
+    try {
+      $this->page_action = 'Indicadores de Logro';
+      $RegGrado = (new Grado)->get($grado_id);
+      $RegAsignatura = (new Asignatura)->get($asignatura_id);
+      $this->arrData = ['grado' => $RegGrado, 'asignatura' => $RegAsignatura];
+    
+      $this->data = [0]; 
+    }
+    catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    // $arrIndic = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
+    // foreach ($indicadores as $indic) {
+    //   array_push($arrIndic[$indic->periodo_id], $indic);
+    // }
+    //$this->data = $arrIndic;
+
     View::select(view: 'indicadores/index');
   }//END-indicadores
 
@@ -114,8 +132,7 @@ class DocentesController extends AppController
    * notas/list
    */
   public function listNotas(int $asignatura_id, int $salon_id): void {
-    try {
-      
+    try {  
       $this->page_action = 'Notas del Sal&oacute;n';
       //$this->breadcrumb->addCrumb(key:1, title:'Carga', url:'docentes/carga');
       
@@ -125,22 +142,21 @@ class DocentesController extends AppController
       // limitar el numero de periodos
       $periodo_actual = (int)Config::get(var: 'config.academic.periodo_actual');
       $arr_periodos = range(start: 1, end: $periodo_actual);
-      $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
 
+      $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
       $this->data = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
       foreach ($Notas as $key => $nota) {
         //echo $nota." ---- $nota->periodo_id<br>";
         array_push($this->data[$nota->periodo_id], $nota);
       }
-
+      
       $this->_data_count = count($Notas);
-      if (0==$this->_data_count) { 
-        OdaFlash::info('No hay registros para mostrar.');
-      }
+      if (0==$this->_data_count) { OdaFlash::info('No hay registros para mostrar.'); }
       
     } catch (\Throwable $th) {
       OdaFlash::error($th, true);
     }
+
     View::select(view: 'notas/list');
   }//END-notas
 

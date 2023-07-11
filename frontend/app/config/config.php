@@ -25,6 +25,7 @@ return [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2023,
       'periodo_actual' => 2,
+      'asignar_carga' => ['*'],
     ],
     'boletines' => [
       'imprimir_plan_apoyo' => false,

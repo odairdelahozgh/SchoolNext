@@ -6,19 +6,13 @@ trait NotaTraitProps {
 
   public function __toString() {
     return $this->id.'-'.$this->annio.'-'.$this->periodo_id.'-'.$this->salon_id.'-'.$this->asignatura_id.'-'.$this->estudiante_id.'-'.$this->definitiva;
-  }
-  
-  public function getFoto() { 
-    $e_id = $this->estudiante_id;
-    return 'CE'.$e_id.'<br>'.OdaTags::img("upload/estudiantes/$e_id.png", $e_id, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
-  }
-  
-  public static function imgTablaRango(): string {
-    return OdaTags::img(src: "upload/asignaturas/rangos.png", alt: 'imagen rangos',
-            attrs: "style=\"width:100%;max-width:214px\"", err_message: "[sin foto]");
-  }
+  }  
 
-  //====================
+  public function getFoto(bool $show_cod=true) { return Estudiante::getFotoEstud(id: $this->estudiante_id, show_cod: $show_cod, sexo:''); }
+  
+  public static function imgTablaRango(): string { return OdaTags::img(src: "upload/asignaturas/rangos.png", attrs: "style=\"width:100%;max-width:214px\""); }
+
+  
   public function verNota(): string {
     $color = (new Rango)::getColorRango(valor: $this->nota_final);
     $rango = (new Rango)::getRango(valor: $this->nota_final);
@@ -28,8 +22,10 @@ trait NotaTraitProps {
             </span> $plan_apoyo ";
   }
 
+
   private static $arrExcepProm = array(30,35,36,37,38,39,40);
   
+
   public function fieldForm(string $field_name, string $attr='', string|bool $type=null): string {
     $attribs = ($this->getAttrib(field: $field_name)) ? $this->getAttrib(field: $field_name) : $attr ;
     return Form::input(
@@ -39,5 +35,6 @@ trait NotaTraitProps {
       value: $this->$field_name,
     );
   }//END-fieldForm
+
 
 } //END-TraitProps

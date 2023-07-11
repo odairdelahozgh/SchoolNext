@@ -35,17 +35,20 @@ class Estudiante extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-  /**
-   * Devuelve lista de todos los Registros.
-   */
+  
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
-    $DQL = $this->DQL;
-    $DQL->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'estudiante_nombre')
-        ->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'nombre');
-    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
-    if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
-    return $DQL->execute();
-  } // END-getListEstudiantes
+    try {
+      $DQL = $this->DQL;
+      $DQL->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'estudiante_nombre')
+          ->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'nombre');
+      if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+      if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } // END-getList
 
   /**
    * Devuelve lista de todos los Registros.
@@ -58,9 +61,11 @@ class Estudiante extends LiteRecord {
           ->concat(explode(',', $orden), 'nombre');
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
       if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
-      return $DQL->execute(true);
+      return $DQL->execute();
+
     } catch (\Throwable $th) {
-      throw $th;
+      //throw $th;
+        OdaFlash::error($th);
     }
   } // END-getListEstudiantes.
 
@@ -73,25 +78,26 @@ class Estudiante extends LiteRecord {
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email');
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
       if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
-      return $DQL->execute(true);
+      return $DQL->execute();
+
     } catch (\Throwable $th) {
       throw $th;
     }
   } // END-getListSecretaria
 
 
-  public function getListContabilidad(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
+  public function getListContabilidad(string $orden='a1,a2,n') {
     try {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
           ->concat(explode(',', $orden), 'nombre')
-          ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email');
-      if (!is_null($order_by)) { $DQL->orderBy($order_by); }
-      if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
-      return $DQL->execute(true);
+          ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
+          ->addSelect('de.deudor, de.codeudor, de.codeudor_cc, de.resp_pago_ante_dian');
+      return $DQL->execute();
+      
     } catch (\Throwable $th) {
-      throw $th;
+        OdaFlash::error($th);
     }
   } // END-getListContabilidad
 
@@ -104,9 +110,10 @@ class Estudiante extends LiteRecord {
           ->concat(explode(',', $orden), 'nombre')
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
           ->orderBy('g.orden,s.nombre,'.$orden);
-      return $DQL->execute(true);
+      return $DQL->execute();
+
     } catch (\Throwable $th) {
-      throw $th;
+      OdaFlash::error($th);
     }
   } // END-getListSicologia
 
@@ -120,29 +127,31 @@ class Estudiante extends LiteRecord {
           ->concat(explode(',', $orden), 'nombre')
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
           ->orderBy('g.orden,s.nombre,'.$orden);
-      return $DQL->execute(true);
+      return $DQL->execute();
 
     } catch (\Throwable $th) {
-      throw $th;
+      OdaFlash::error($th);
     }
   } // END-getListEnfermeria
 
 
   public function getListPadres(int $user_id, string $orden='a1,a2,n'): array|string {
     try {
-      $lista = (array)(new EstudiantePadres)->getHijos($user_id);
+      $lista = (new EstudiantePadres)->getHijos($user_id);
       $filtro = implode(',', $lista);
+      //OdaLog::debug("user_id:$user_id - filtro: $filtro");
 
-      $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
+      $DQL = $this->DQL;
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
           ->concat(explode(',', $orden), 'nombre')
-          ->orderBy('g.orden,s.nombre,'.$orden)
-          ->andWhere("t.id IN ($filtro)");
-      return $DQL->execute(true);
+          ->andWhere("t.id IN ($filtro)")
+          ->orderBy('g.orden,s.nombre,'.$orden);
+
+      return $DQL->execute();
 
     } catch (\Throwable $th) {
-      throw $th;
+      OdaFlash::error($th);
     }
   } // END-getListPadres
 

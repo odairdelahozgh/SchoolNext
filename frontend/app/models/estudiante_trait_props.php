@@ -2,6 +2,8 @@
 trait EstudianteTraitProps {
 
   protected static $default_foto_estud = 'upload/estudiantes/user.png';
+  protected static $default_foto_estud_f = 'upload/estudiantes/user_f.png';
+  protected static $default_foto_estud_m = 'upload/estudiantes/user_m.png';
 
   public function __toString() { return $this->getNombreCompleto(sanear:true, mayuscula:false).' '.$this->getCodigo(); }
   public function getCodigo() { return '[Cod: '.$this->id.']'; }
@@ -35,14 +37,41 @@ trait EstudianteTraitProps {
     return $ico.(($this->email_instit) ? $this->email_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit : 'No tiene usuario en MS TEAMS'); 
   }
   
-  public function getFoto($max_width=80, $class='w3-round') { 
-    $defa = OdaTags::img(src: self::$default_foto_estud, attrs: "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"");
-    return OdaTags::img(src: "upload/estudiantes/$this->id.png", alt: $this->id, attrs: "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"", err_message: $defa);
-  }
 
-  public function getFotoCircle($max_width=80) { 
-    return $this->getFoto(max_width: $max_width, class: 'w3-circle');
-  }
+  public static function getFotoEstud(int $id, int $max_width=80, string $class='w3-round', bool $show_cod=true, string $sexo='m'): string { 
+    $cod_id  = ($show_cod) ? 'est-'.$id.'<br>' : '' ;
+    
+    $img_default = match(strtolower(substr(trim($sexo),0,1))) {
+      'm'  => self::$default_foto_estud_m,
+      'f'  => self::$default_foto_estud_f,
+      default => self::$default_foto_estud,
+    };
+    $foto_default = OdaTags::img(
+        src:          $img_default, 
+        alt:          $id,
+        attrs:        "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"",
+        err_message:  'no image'
+    );
+
+    return $cod_id .OdaTags::img(
+      src: "upload/estudiantes/$id.png", 
+      alt: $id, 
+      attrs: "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"",
+      err_message: $foto_default
+    );
+  } //END-getFotoEstud
+
+
+  public function getFoto(int $max_width=80, bool $show_cod=true) { 
+    return self::getFotoEstud($this->id, $max_width, 'w3-round', $show_cod, $this->sexo);
+  } //END-getFoto
+
+
+  public function getFotoCircle(int $max_width=80, bool $show_cod=true) { 
+    return self::getFotoEstud($this->id, $max_width, 'w3-circle', $show_cod, $this->sexo);
+  } //END-getFotoCircle
+
+
   public function isNuevo() { 
     $fecha_lim = (string)(Date('Y')-1).'-10-01';
     return ( (substr($this->created_at, 0,10)>=$fecha_lim ) ? true : false);

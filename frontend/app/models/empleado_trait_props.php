@@ -5,7 +5,7 @@ trait EmpleadoTraitProps {
   protected static $default_foto_estud_circle = '';
 
   public function __toString() { return $this->getNombreCompleto(sanear:true, mayuscula:false).' '.$this->getCodigo().' '.$this->isNuevo(); }
-  public function getCodigo() { return '[Cod: '.$this->id.']'; }
+  public function getCodigo() { return '['.$this->documento.']'; }
   public function getApellidos() { return $this->apellido1.' '.$this->apellido2; }
 
   public function getNombreCompleto($orden='a1 a2, n', $sanear=true, $mayuscula=false) {
@@ -25,13 +25,16 @@ trait EmpleadoTraitProps {
     return $ico.(($this->usuario_instit) ? $this->usuario_instit.'@'.Config::get('config.institution.dominio').'<br>Clave: '.$this->clave_instit : 'No tiene usuario en plataforma'); 
   }
   
-  public function getFoto($max_width=80) { 
-    //return OdaTags::img(src: "upload/estudiantes/$this->id.png/", alt: $this->id, 
-    return OdaTags::img(src: IMG_ESTUDIANTES_PATH."$this->id.png", alt: $this->id, 
-      attrs: "class=\"w3-round\" style=\"width:100%;max-width:".$max_width."px\"", 
-      err_message: self::$default_foto_estud);
-  }
-  public function getFotoCircle($max_width=80) { return OdaTags::img("upload/estudiantes/$this->id.png",$this->id, "class=\"w3-circle w3-bar-item\" style=\"width:100%;max-width:$max_width px\"", self::$default_foto_estud_circle); }
+    
+  public static function getFotoEmpleado(int $documento, int $max_width=80, string $class='w3-round', bool $show_cod=true) { 
+    return Usuario::getFotoUser(id: $documento, max_width: $max_width, class: $class, show_cod: $show_cod);
+  } //END-getFotoEmpleado
+  
+  
+  public function getFoto(int $max_width=80, bool $show_cod=true) { return self::getFotoEmpleado(documento: $this->documento, show_cod: $show_cod); }
+  
+  public function getFotoCircle(int $max_width=80, bool $show_cod=true) { return self::getFotoEmpleado(documento: $this->documento, class: 'w3-circle', show_cod: $show_cod); }
+  
 
   public function isNuevo() { 
     $fecha_lim = (string)(Date('Y')-1).'-10-01';

@@ -10,8 +10,7 @@ class TestController extends AppController
     // $this->parameters, $this->limit_params, $this->scaffold, $this->data
     
     public function index() {
-      $this->page_title = 'Inicio';
-      $this->page_action = 'M&oacute;dulo Test';
+      $this->page_action = 'Inicio';
     }
     
 } // END CLASS

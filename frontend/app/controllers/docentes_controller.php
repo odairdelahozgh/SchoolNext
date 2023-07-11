@@ -12,8 +12,8 @@ class DocentesController extends AppController
 {
 
   public function index() {
-      $this->page_action = 'M&oacute;dulo Docentes';
-      $this->data = (new Evento)->getEventosDashboard();
+    $this->page_action = 'Inicio';
+    $this->data = (new Evento)->getEventosDashboard();
   }//END-index
 
 
@@ -112,8 +112,6 @@ class DocentesController extends AppController
       $RegGrado = (new Grado)->get($grado_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
       $this->arrData = ['grado' => $RegGrado, 'asignatura' => $RegAsignatura];
-    
-      $this->data = [0]; 
     }
     catch (\Throwable $th) {
       OdaFlash::error($th);
@@ -134,7 +132,6 @@ class DocentesController extends AppController
   public function listNotas(int $asignatura_id, int $salon_id): void {
     try {  
       $this->page_action = 'Notas del Sal&oacute;n';
-      //$this->breadcrumb->addCrumb(key:1, title:'Carga', url:'docentes/carga');
       
       $this->Asignatura = (new Asignatura)->get($asignatura_id);
       $this->Salon = (new Salon)->get($salon_id);
@@ -144,14 +141,13 @@ class DocentesController extends AppController
       $arr_periodos = range(start: 1, end: $periodo_actual);
 
       $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
+      if (0==count($Notas)) { OdaFlash::info('No hay registros para mostrar.'); }
+
       $this->data = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
       foreach ($Notas as $key => $nota) {
         //echo $nota." ---- $nota->periodo_id<br>";
         array_push($this->data[$nota->periodo_id], $nota);
       }
-      
-      $this->_data_count = count($Notas);
-      if (0==$this->_data_count) { OdaFlash::info('No hay registros para mostrar.'); }
       
     } catch (\Throwable $th) {
       OdaFlash::error($th, true);

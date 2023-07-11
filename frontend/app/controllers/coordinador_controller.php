@@ -52,7 +52,7 @@ class CoordinadorController extends AppController
    * Cambiar de salón a un estudiante
    */
   public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {
-    $this->page_action = 'Cambiar de Salón a Estudiante';
+    //$this->page_action = 'Cambiar de Salón a Estudiante';
 
     $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [$estudiante_id]);
     

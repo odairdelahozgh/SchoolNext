@@ -9,15 +9,20 @@ class SicologiaController extends AppController
 {
     
     public function index() {
-      $this->page_action = 'M&oacute;dulo Sicolog&iacute;a';
+      $this->page_action = 'Inicio';
       $this->data = (new Evento)->getEventosDashboard();
     }
     
     public function estudiantes() {
-      $this->page_title = 'Estudiantes Activos';
-      $this->data = (new Estudiante)->getListSicologia(estado:1);
+      $this->page_action = 'Estudiantes Activos';
+      try {
+        $this->data = (new Estudiante)->getListSicologia();
+      
+      } catch (\Throwable $th) {
+        OdaFlash::error($th);
+      }
       View::select('estudiantes/index');
-    }
+    } //END-estudiantes
     
 
 } // END CLASS

@@ -13,13 +13,12 @@ class EnfermeriaController extends AppController
     // $this->limit_params, $scaffold, $data
     
     public function index() {
-      $this->page_title = 'Inicio';
-      $this->page_action = 'M&oacute;dulo Enfermer&iacute;a';
+      $this->page_action = 'Inicio';
     }
 
     
     public function estudiantes() {
-      $this->page_title = 'Estudiantes Activos';
+      $this->page_action = 'Estudiantes Activos';
       $this->data= (new Estudiante)->getList();
       View::template('list_details');
     }

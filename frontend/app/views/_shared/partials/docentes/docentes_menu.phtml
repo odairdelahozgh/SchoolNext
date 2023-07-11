@@ -7,6 +7,9 @@
     $links_docente .= OdaTags::linkBarItem('docen-reg-desemp-acad', 'Reg Academicos', 'clipboard');
     $links_docente .= OdaTags::linkBarItem('docen-dir-grupo', 'Mi Grupo', 'clipboard');
   }
+
+  //$asignar_carga  = Config::get(var: 'config.academic.asignar_carga');
+  // PENDIENTE FILTRO CARGA ACADEMICA
   $links_docente .= OdaTags::linkBarItem('docen-asignar-carga', 'Asignar Carga', 'gear');
 ?>
 
@@ -16,7 +19,7 @@
 
 <?php if(Session::get('roll')=='coordinadores'): ?>
    <details class="w3-padding">
-      <summary> <u>Coordinación</u> </summary>
+      <summary> <u>Coordinaci&oacute;n</u> </summary>
       <?php View::partial("coordinador/coordinador_menu") ?>
    </details>     
 <?php endif; ?>

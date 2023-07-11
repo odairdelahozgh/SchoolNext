@@ -19,7 +19,6 @@
       if ( ('sin evidencia'===$reg->getFotoAcudiente()) || ('sin evidencia'===$reg->getFotoDirector()) ) {
         $btn_edit = "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
       }
-
       $data_row = array(
         $reg.$btn_edit,
         $estudiante,

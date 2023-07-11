@@ -1,5 +1,8 @@
 <h2>Agregando Nuevo Registro</h2>
 <?php
+$message = Config::get('messages.comprimir_imagenes');
+$msg_info = OdaTags::createTag('div', $message, 'class="w3-panel w3-theme-l2"');
+
 $model = new RegistroDesempAcad();
 $fieldsToHidden = $model::getFieldsHidden('create');
 $titulo = '<h3 id="nombre_estud_new"></h3>';
@@ -21,5 +24,5 @@ $myForm = new OdaForm($model, 'admin/registros_desemp_acad/create_ajax', multipa
   
   $myForm->addHiddens(implode(",", $fieldsToHidden));
   
-  return "<div class=\"w3-container\">$titulo $myForm</div>";
+  return "<div class=\"w3-container\">$msg_info $titulo $myForm</div>";
 ?>

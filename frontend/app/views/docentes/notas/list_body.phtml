@@ -23,7 +23,8 @@
                            ." [$nota->salon_nombre] [$nota->asignatura_nombre]"
                            .'</br>'.$nota->verNota();
                            
-              $fila1=array($nota->getFoto(), $nom_estud);
+              $fila1=array(
+                $info_reg = '<br>'.$nota->getFoto().'<br>Reg-'.$nota->id, $nom_estud);
               $t1=($themei=='d'?'d1':'l1');      $t2=($themei=='d'?'d2':'l3');
               $attr = "id=\"$nota->id-1\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
               $attrs_td = array('class="w3-center" rowspan="3"' , 'colspan="10"');

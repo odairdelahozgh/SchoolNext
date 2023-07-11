@@ -13,36 +13,42 @@
         'class="w3-theme"', 
         ['style="width:10%;"','style="width:50%;"','style="width:40%;"']
       );
-      foreach($data as $key => $Estud) {
-         $col1 = $Estud->salon_nombre .'<br/>' 
-                .$Estud->is_active_f() .'<br/>'
-                .$Estud->getFoto() .'<br/>' 
-                .$Estud->documento .'<br/>';
-         
-         $lnk_act_pago = '';
-         if(!$Estud->isPazYSalvo()) {
-            $lnk_act_pago = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
-         }
-         
-         $nombre = $Estud;
-         $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>'
-                 ."<span class=\"w3-large w3-blue\">$nombre</span><br>"
-                 .$Estud->getCuentaInstit().'<br/>'
-                 .'<b>'.$Estud->getPagoPension().'</b><br>'
-                 .$lnk_act_pago.'<br/>';
-         $col3 =  "<b>Padre</b>: $Estud->padre [$Estud->padre_id].<br>"
-                 ."<b>Madre</b>: $Estud->madre [$Estud->madre_id].<br>"
-                 ."<b>Deudor</b>: $Estud->deudor.<br>"
-                 .(($Estud->codeudor_cc) ? "<b>Codeudor</b>: $Estud->codeudor. CC: $Estud->codeudor_cc<br>" : '')
-                 ."<b>Responsable DIAN</b>: $Estud->resp_pago_ante_dian" ;
-         $data=[$col1, $col2, $col3];
-         $tabla->addRow(
-            data: $data, 
-            attrs_td: ['class="searchTdata w3-center"', 'class="searchTdata"']
-         );
-      }
-      echo $tabla;
-   ?>   
+
+try {
+  //OdaLog::debug("mensaje","rastreo");
+
+  foreach($data as $key => $Estud) {
+    $col1 = $Estud->salon_nombre .'<br/>' 
+    .$Estud->getFoto() .'<br/>' 
+    .$Estud->documento .'<br/>';
+    
+    $lnk_act_pago = '';
+    if(!$Estud->isPazYSalvo()) {
+      $lnk_act_pago = '<span class="w3-tag w3-green w3-round">' .Html::linkAction("actualizarPago/$Estud->id/", 'Poner al Dia '._Icons::solid('coins', 'w3-large')). '</span><br/>';
+    }
+    
+    $nombre = $Estud;
+    $col2 = 'Grado: '.$Estud->grado_nombre.'<br/>'
+    ."<span class=\"w3-large w3-blue\">$nombre</span><br>"
+    .$Estud->getCuentaInstit().'<br/>'
+    .'<b>'.$Estud->getPagoPension().'</b><br>'
+    .$lnk_act_pago.'<br/>';
+    $col3 =  "<b>Padre</b>: $Estud->padre [$Estud->padre_id].<br>"
+    ."<b>Madre</b>: $Estud->madre [$Estud->madre_id].<br>"
+    ."<b>Deudor</b>: $Estud->deudor.<br>"
+    .(($Estud->codeudor_cc) ? "<b>Codeudor</b>: $Estud->codeudor. CC: $Estud->codeudor_cc<br>" : '')
+    ."<b>Responsable DIAN</b>: $Estud->resp_pago_ante_dian" ;
+    $data=[$col1, $col2, $col3];
+    $tabla->addRow(
+      data: $data, 
+      attrs_td: ['class="searchTdata w3-center"', 'class="searchTdata"']
+    );
+  }
+  echo $tabla;
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}      
+  ?>   
 </div>
 
 <?= Tag::js("table_filter"); ?>

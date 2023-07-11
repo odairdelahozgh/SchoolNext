@@ -40,10 +40,11 @@ class OdaDql {
     
   public function execute(bool $write_log = false): array|string {
     try {
-      if ($write_log) {
+      if ($write_log) { 
         OdaLog::debug($this->render().PHP_EOL.'Params: ' .$this->getParams());
       }
       return (new $this->_from)->all($this->render(), $this->_params);
+
     } catch (\Throwable $th) {
       OdaLog::error($th);
     }

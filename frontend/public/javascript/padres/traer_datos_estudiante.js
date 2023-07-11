@@ -24,21 +24,22 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
       
       let bloques = datos_estud;
 
-      if (1==2) { // validar si está activo matriculas
-        bloques += proceso_matriculas;
-      }
-      if (1==2) { // validar si está activo seguimientos
-        bloques += seguimientos;
-      }
-      if (1==1) { // validar si está activo boletines
-        bloques += boletines;
-      }
-      if (1==1) { // validar si está activo planes_apoyo
-        bloques += planes_apoyo;
-      }
-      if (1==2) { // validar si está activo reconocimientos
-        bloques += reconocimientos;
-      }
+      
+      const ver_matriculas = document.getElementById('ver_matriculas').value;
+      if (1==ver_matriculas) { bloques += proceso_matriculas; }
+
+      const ver_seguimientos = document.getElementById('ver_seguimientos').value;
+      if (1==ver_seguimientos) { bloques += seguimientos; }
+
+      const ver_boletines = document.getElementById('ver_boletines').value;
+      if (1==ver_boletines) { bloques += boletines; }
+      
+      const ver_planes_apoyo = document.getElementById('ver_planes_apoyo').value;
+      if (1==ver_planes_apoyo) { bloques += planes_apoyo; }
+      
+      const ver_reconocimientos = document.getElementById('ver_reconocimientos').value;
+      if (1==ver_reconocimientos) { bloques += reconocimientos; }
+      
       capa_datos.innerHTML = bloques;
   });
 } //END-traer_data
@@ -95,11 +96,24 @@ function template_seguimientos(data, ruta) {
 
 function template_boletines(data, ruta, periodo) {
   let links = '';
+  let mes_req = [];
+  mes_req[1] = 4;
+  mes_req[2] = 6;
+  mes_req[3] = 9;
+  mes_req[4] = 11;
+  mes_req[5] = 11;
+
   for (var i= 1; i<=periodo; i++) {
-    links +=  `
-    <a href="${ruta}admin/notas/exportBoletinEstudiantePdf/${i}/${data.uuid}" 
-      class="w3-btn w3-black" target="_blank"><i class="fa-solid fa-file-pdf"></i> Boletin p${i}</a>
-    `;
+    if (data.mes_pagado>=mes_req[i]) {
+      links +=  `
+      <a href="${ruta}admin/notas/exportBoletinEstudiantePdf/${i}/${data.uuid}" 
+        class="w3-btn w3-blue" alt="Descarga PDF" target="_blank"><i class="fa-solid fa-file-pdf"></i> Boletin p${i}</a>
+      `;
+    } else {
+      links +=  `
+      <span class="w3-btn w3-grey" title="bloqueado"> <i class="fa-solid fa-file-pdf"></i> Boletin p${i} </span>
+      `;
+    }
   }
   return `
     <div class="w3-container">
@@ -129,6 +143,7 @@ function template_boletines(data, ruta, periodo) {
 
 function template_planes_apoyo(data, ruta, periodo) {
   let links = '';
+  // Temporal
   //https://windsortemp.schoolnext.space/index.php/+/notas/PlanesApoyoFinalPadresPDF?id=11164
   for (var i= 1; i<=periodo; i++) {
     links +=  `

@@ -55,7 +55,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     }
     if (property_exists($this, 'uuid')) {
       if (method_exists($this, 'setUUID')) { 
-        if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->uuid = $this->setUUID(); }
+        if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setUUID(); }
       }
     }
     if (property_exists($this, 'updated_by')) { $this->updated_by = self::$session_user_id; }

@@ -29,7 +29,7 @@ class NotasController extends ScaffoldController
           }
         }//end-foreach
 
-        $Modelo = (new $this->nombre_modelo());
+        
         foreach ($notas as $id => $registro) { // PREPARA EL REGISTRO INDIVIDUAL DE NOTAS
           $data_temp = [];
           foreach ($registro as $field_name_id => $value) {
@@ -37,65 +37,99 @@ class NotasController extends ScaffoldController
             $field_name = substr($field_name_id,0, $long);
             $data_temp[$field_name] = "$value";
           }
-
+          $dt_debug = '';
+          //if (4138==$id) {
+          //  $dt_debug .= 'Data Temp: '.implode(', ', $data_temp).PHP_EOL;
+          //  $dt_debug .= 'Data Temp keys: '.implode(', ', array_keys($data_temp)).PHP_EOL.PHP_EOL;
+          //}
           
-          OdaLog::debug('Data temp:   '.implode(', ', $data_temp));
-          OdaLog::debug('llaves: '.implode(', ', array_keys($data_temp)));
-
-          $data_unicos = array_unique($data_temp);
-          OdaLog::debug('Data unicos: '.implode(', ', $data_unicos));
-          OdaLog::debug('llaves: '.implode(', ', array_keys($data_unicos)));
-
-          //asort($data); // FALTA ORDENARLOS
-
-          
-          //----------------------------------------------------------------
-          // # contar cuántos indicadores quedaron, toca rellenar hasta 20
           $cnt_num_ind = 0;
-          foreach ($data_unicos as $key => $value) { 
-            if (str_starts_with($key, 'i0')) {
-              $cnt_num_ind +=1;
-              $index = ($cnt_num_ind<10) ? 'i0'.$cnt_num_ind : 'i'.$cnt_num_ind;
-              $data[$index] = $value;
-            } else {
+          $data_indicadores = [];
+          $data = [];
+          foreach ($data_temp as $key => $value) { 
+            if (str_starts_with($key, 'i')) { // campos de indicadores
+              if (strlen($value)>0) { // indicadores validos
+                $cnt_num_ind +=1;
+                $index = ($cnt_num_ind<10) ? 'i0'.$cnt_num_ind : 'i'.$cnt_num_ind;
+                $data_indicadores[$index] = $value;
+              }
+            } else {  // campos que no son indicadores
               $data[$key] = $value;
             }
           }
-          OdaLog::debug('Cnt: '.$cnt_num_ind);
+          // if (4138==$id) {
+          //   $dt_debug .= 'Data indicadores: '.implode(', ', $data_indicadores).PHP_EOL;
+          //   $dt_debug .= 'Data indicadores keys: '.implode(', ', array_keys($data_indicadores)).PHP_EOL.PHP_EOL;
+          //   $dt_debug .= 'Data: '.implode(', ', $data).PHP_EOL.PHP_EOL;
+          // }
 
-          for ($i=($cnt_num_ind+1); $i<=(20-$cnt_num_ind); $i++) { 
-            $index = ($i<10) ? 'i0'.$i : 'i'.$i;
-            $data[$index] = '';
+          $data_indicadores = array_unique($data_indicadores); // elimina indicadores duplicados
+          // if (4138==$id) {
+          //   $dt_debug .= 'Data indicadores sin duplicados : '.implode(', ', $data_indicadores).PHP_EOL;
+          //   $dt_debug .= 'Data indicadores sin duplicados keys: '.implode(', ', array_keys($data_indicadores)).PHP_EOL.PHP_EOL;
+          // }
+
+          sort($data_indicadores, SORT_NUMERIC); // los ordena
+          // if (4138==$id) {
+          //   $dt_debug .= 'Data indicadores sin duplicados y ordenados: '.implode(', ', $data_indicadores).PHP_EOL;
+          //   $dt_debug .= 'Data indicadores sin duplicados y ordenados keys: '.implode(', ', array_keys($data_indicadores)).PHP_EOL.PHP_EOL;
+          // }
+          
+          $cnt_num_ind = 0;
+          foreach ($data_indicadores as $value) { 
+            $cnt_num_ind +=1;
+            $index = ($cnt_num_ind<10) ? 'i0'.$cnt_num_ind : 'i'.$cnt_num_ind;
+            $data[$index] = $value;
           }
-          OdaLog::debug('Data final: '.implode(', ', $data));
-          OdaLog::debug('llaves: '.implode(', ', array_keys($data)));
-          OdaLog::debug('--------------------------------');
-          //----------------------------------------------------------------
+          // if (4138==$id) {
+          //   $dt_debug .= 'Data : '.implode(', ', $data).PHP_EOL;
+          //   $dt_debug .= 'Data keys: '.implode(', ', array_keys($data)).PHP_EOL.PHP_EOL;
+          // }
 
-          //$data_depurada['nota_final'] = ($data_depurada['nota_final']==0) ? $data_depurada['definitiva'] : $data_depurada['nota_final'] ;          
+          $cnt_num_ind +=1;
+          for ($i=$cnt_num_ind; $i<=20; $i++) { // COMPLETA LOS INDICADORES EN BLANCO
+            $index = ($i<10) ? 'i0'.$i : 'i'.$i;
+            $data[$index] = ' ';
+          }
+          // if (4138==$id) {
+          //   $dt_debug .= 'Data FINAL: '.implode(', ', $data).PHP_EOL;
+          //   $dt_debug .= 'Data FINAL keys: '.implode(', ', array_keys($data)).PHP_EOL.PHP_EOL;
+          // }
+
+          //if (4138==$id) {
+          //  OdaLog::debug(str_repeat('-', 15).PHP_EOL.$dt_debug);
+          //}
           $adicionales =[];
           $adicionales['updated_at']= date('Y-m-d H:i:s', time());
           $adicionales['updated_by']= $this->user_id;
+          
+          
+          $data['nota_final'] = (0==$data['nota_final']) ? $data['definitiva'] : $data['nota_final'] ;
 
+          $Modelo = (new $this->nombre_modelo());
           $DQL = new OdaDql($Modelo::class);
           $DQL->update($data)
           ->addUpdate($adicionales)
           ->where("t.id=?")
           ->setParams([$id])
-          ->execute(true);
+          ->execute();
+
+          // if (4138==$id) {
+          //   OdaLog::debug(str_repeat('=', 15).PHP_EOL.$DQL->render());
+          // }
           //$success = (new Nota())::query($DQL->render(), [$id])->rowCount() > 0;
           //if (!$success) { $cnt_fails += 1;}
           
           //OdaLog::debug("[$id]: ".implode(', ',$data).PHP_EOL.$DQL->render().PHP_EOL.$DQL->getParams());
         } //end-foreach-notas
         //if ($cnt_fails) { OdaFlash::warning("$this->page_action"); }
+
       }
-      return Redirect::to(route: $redirect);
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);
-      return Redirect::to(route: $redirect);
     }
+    return Redirect::to(route: $redirect);
 
   }//END-guardarNotas()
 

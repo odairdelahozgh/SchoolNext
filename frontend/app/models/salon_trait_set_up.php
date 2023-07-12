@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait SalonTraitSetUp {
   
-  use TraitUuid, TraitForms, SalonTraitCallBacks, SalonTraitProps;
+  use TraitUuid, TraitForms, SalonTraitCallBacks, SalonTraitProps, SalonTraitLinks;
   
   public function validar($input_post) {
     Session::set('error_validacion', '');

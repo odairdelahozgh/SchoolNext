@@ -22,14 +22,14 @@ class EstudiantePadres extends LiteRecord {
     $DQL = new OdaDql(_from: __CLASS__);
     $DQL->select( 't.dm_user_id as id')
         ->where( 't.estudiante_id=?')->setParams(params: [$estudiante_id]);
-    return $DQL->execute(write_log: true);
+    return $DQL->execute();
   } //END-getPadres
   
   public function getHijos(int $padre_id): array {
     $DQL = new OdaDql(_from: __CLASS__);
     $DQL->select('t.estudiante_id as id')
         ->where('t.dm_user_id=?')->setParams(params: [$padre_id]);
-    return $DQL->execute(write_log: true);
+    return $DQL->execute();
   } //END-getHijos
   
   

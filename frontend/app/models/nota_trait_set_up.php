@@ -52,12 +52,13 @@ trait NotaTraitSetUp {
       'create'    => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
       'edit'      => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
       'editUuis'  => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
-      'calificar' => ['definitiva', 'plan_apoyo', 'i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10', 'i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20'],
+      'calificar' => ['definitiva', 'plan_apoyo', 'nota_final', 'i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10', 'i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20'],
     ];
   
     self::$_widgets = [
       'definitiva'   => 'number',
       'plan_apoyo'   => 'number',
+      'nota_final'   => 'number',
 
       'i01'   => 'number', 
       'i02'   => 'number', 
@@ -87,6 +88,7 @@ trait NotaTraitSetUp {
 
       'definitiva'   => ' min="0" max="100" ',
       'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" ',
+      'nota_final'   => ' min="0" max="100" maxlength="3" size="3" readonly',
     ];
   
     self::$_defaults = [

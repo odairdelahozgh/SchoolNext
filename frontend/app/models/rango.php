@@ -30,12 +30,12 @@ class Rango extends LiteRecord {
     '95-100' => 'Superior',
   );//aRangos
   protected static $aRangosColores = array(
-    'Bajo'     => 'red',
-    'Básico'   => 'orange',
-    'Básico +' => 'yellow',
-    'Alto'     => 'light-blue',
-    'Alto +'   => 'blue',
-    'Superior' => 'green',
+    'Bajo'     => 'w3-red',
+    'Básico'   => 'w3-orange',
+    'Básico +' => 'w3-yellow',
+    'Alto'     => 'w3-light-blue',
+    'Alto +'   => 'w3-blue',
+    'Superior' => 'w3-green',
   );//aRangosColores
   protected static $aRangosLimiteInf = array(
     '1'  => 'Bajo',

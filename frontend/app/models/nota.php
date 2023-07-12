@@ -208,7 +208,7 @@ class Nota extends LiteRecord {
     // foreach ($registros as $reg) {
     //   $aResult["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
     // }
-    return $DQL->execute(true);
+    return $DQL->execute();
   }//END-getNotasPromAnnioPeriodoSalon
 
 

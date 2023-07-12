@@ -24,30 +24,31 @@ $archivoPDF = new MpdfBoletines([
 $Asignat = new Asignatura();
 $pivote_estudiante = 0;
 $pivote_materia = 0;
+$img_rango_notas = (new Nota())::imgTablaRango();
 
 $t_materia = new OdaTable();
 foreach ($data as $key => $nota) {
 
   // CAMBIO DE ESTUDIANTE
-  if (($pivote_estudiante <> $nota->estudiante_id) && ($key<>0)) {
-        if ($key>0) {
-          $Params = [
-            (new Nota())::imgTablaRango(),
-            $arrData['Salon']->getImgFirmaDirector(),
-            ($arrData['Docentes'][$arrData['Salon']->director_id] ?? '..'),
-          ];
-          $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params));
-        }
-
+  if ($pivote_estudiante <> $nota->estudiante_id) {
+    if ($key>0) { // antes de añadoir la pagina nueva del siguiete estudiante
+      $Params_pie = [ $img_rango_notas,
+        $arrData['Salon']->getImgFirmaDirector(),
+        ($arrData['Docentes'][$arrData['Salon']->director_id] ?? '..'),
+      ];
+      $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
+    }
+    
     $archivoPDF->AddPage();
-    $Params = [
+    
+    $Params_encab = [
       $nota->estudiante_nombre,
       $arrData['Periodo'],
       $annio,
       $arrData['Salon']->nombre,
     ];
-    $archivoPDF->WriteHTML($archivoPDF->encabezadoBloqueBoletines($Params));
-  }
+    $archivoPDF->WriteHTML($archivoPDF->encabezadoBloqueBoletines($Params_encab));
+  }//end-pivote estudiante (nuevo boletín)
 
   // CAMBIO DE MATERIA
   if ($pivote_materia <> $nota->asignatura_id) {
@@ -92,12 +93,11 @@ foreach ($data as $key => $nota) {
   
 }
 
-$Params = [
-  (new Nota())::imgTablaRango(),
+$Params_pie = [ $img_rango_notas,
   $arrData['Salon']->getImgFirmaDirector(),
   ($arrData['Docentes'][$arrData['Salon']->director_id] ?? '..'),
 ];
-$archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params));
+$archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
 
 $archivoPDF->showWatermarkText = true;
 $archivoPDF->SetWatermarkText($file_title);

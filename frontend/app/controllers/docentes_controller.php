@@ -171,29 +171,32 @@ class DocentesController extends AppController
       $this->data = $Nota->getNotasSalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
       
-      $regs_min = min($RegsIndicad);
-      $regs_max = max($RegsIndicad);
-
-      $min_fortaleza = min(array_filter(array: $RegsIndicad, callback: function ($element): bool {
-        return $element->valorativo == 'Fortaleza';
-      }));
-      $max_fortaleza = max(array_filter(array: $RegsIndicad, callback: function ($element) {
-        return $element->valorativo == 'Fortaleza';
-      }));
-      
-      $min_debilidad = min(array_filter(array: $RegsIndicad, callback: function ($element) {
-        return $element->valorativo == 'Debilidad';
-      }));
-      $max_debilidad = max(array_filter(array: $RegsIndicad, callback: function ($element) {
-        return $element->valorativo == 'Debilidad';
-      }));
-
-      $min_recomendacion = min(array_filter(array: $RegsIndicad, callback: function ($element) {
-        return $element->valorativo == 'Recomendación';
-      }));
-      $max_recomendacion = max(array_filter(array: $RegsIndicad, callback: function ($element) {
-        return $element->valorativo == 'Recomendación';
-      }));
+      $min_fortaleza = 0;
+      if ($RegsIndicad) {
+        $regs_min = min($RegsIndicad) ?? 0;
+        $regs_max = max($RegsIndicad) ?? 0;
+        
+        $min_fortaleza = min(array_filter(array: $RegsIndicad, callback: function ($element): bool {
+          return $element->valorativo == 'Fortaleza';
+        }));
+        $max_fortaleza = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Fortaleza';
+        }));
+        
+        $min_debilidad = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Debilidad';
+        }));
+        $max_debilidad = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Debilidad';
+        }));
+        
+        $min_recomendacion = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Recomendación';
+        }));
+        $max_recomendacion = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Recomendación';
+        }));
+      }
 
       
       $this->fieldsToShow = $Nota::getFieldsShow(show: 'calificar');

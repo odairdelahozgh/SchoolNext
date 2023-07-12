@@ -70,6 +70,7 @@ trait NotaTraitSetUp {
       'i08'   => 'number', 
       'i09'   => 'number', 
       'i10'   => 'number', 
+
       'i11'   => 'number', 
       'i12'   => 'number', 
       'i13'   => 'number', 
@@ -80,15 +81,59 @@ trait NotaTraitSetUp {
       'i18'   => 'number', 
       'i19'   => 'number', 
       'i20'   => 'number', 
+      
+      'i21'   => 'number', 
+      'i22'   => 'number', 
+      'i23'   => 'number', 
+      'i24'   => 'number', 
+      'i25'   => 'number', 
+      'i26'   => 'number', 
+      'i27'   => 'number', 
+      'i28'   => 'number', 
+      'i29'   => 'number', 
+      'i30'   => 'number', 
     ];
 
     self::$_attribs = [
       'id'       => 'required',
       'uuid'     => 'required', 
 
-      'definitiva'   => ' min="0" max="100" ',
+      'definitiva'   => ' min="0" max="100" maxlength="3" size="3" ',
       'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" ',
-      'nota_final'   => ' min="0" max="100" maxlength="3" size="3" readonly',
+      'nota_final'   => ' min="0" max="100" maxlength="3" size="3" ',
+      
+      'i01'   => ' maxlength="4" size="4" ',
+      'i02'   => ' maxlength="4" size="4" ',
+      'i03'   => ' maxlength="4" size="4" ',
+      'i04'   => ' maxlength="4" size="4" ',
+      'i05'   => ' maxlength="4" size="4" ',
+      'i06'   => ' maxlength="4" size="4" ',
+      'i07'   => ' maxlength="4" size="4" ',
+      'i08'   => ' maxlength="4" size="4" ',
+      'i09'   => ' maxlength="4" size="4" ',
+      'i10'   => ' maxlength="4" size="4" ',
+
+      'i11'   => ' maxlength="4" size="4" ',
+      'i12'   => ' maxlength="4" size="4" ',
+      'i13'   => ' maxlength="4" size="4" ',
+      'i14'   => ' maxlength="4" size="4" ',
+      'i15'   => ' maxlength="4" size="4" ',
+      'i16'   => ' maxlength="4" size="4" ',
+      'i17'   => ' maxlength="4" size="4" ',
+      'i18'   => ' maxlength="4" size="4" ',
+      'i19'   => ' maxlength="4" size="4" ',
+      'i20'   => ' maxlength="4" size="4" ',
+      
+      'i21'   => ' maxlength="4" size="4" ',
+      'i22'   => ' maxlength="4" size="4" ',
+      'i23'   => ' maxlength="4" size="4" ',
+      'i24'   => ' maxlength="4" size="4" ',
+      'i25'   => ' maxlength="4" size="4" ',
+      'i26'   => ' maxlength="4" size="4" ',
+      'i27'   => ' maxlength="4" size="4" ',
+      'i28'   => ' maxlength="4" size="4" ',
+      'i29'   => ' maxlength="4" size="4" ',
+      'i30'   => ' maxlength="4" size="4" ',
     ];
   
     self::$_defaults = [

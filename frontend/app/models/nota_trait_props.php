@@ -27,9 +27,9 @@ trait NotaTraitProps {
   
 
   public function fieldForm(string $field_name, string $attr='', string|bool $type=null): string {
-    $attribs = ($this->getAttrib(field: $field_name)) ? $this->getAttrib(field: $field_name) : $attr ;
+    $attribs = ($attr) ? $attr : $this->getAttrib(field: $field_name) ;
     return Form::input(
-      type:  ((!is_null($type)) ? 'hidden' : $this->getWidget($field_name)),
+      type:  ((!is_null($type)) ? $type : $this->getWidget($field_name)),
       field: 'notas.'.$field_name.'_'.$this->id, 
       attrs: $attribs . $this->getPlaceholder($field_name),
       value: $this->$field_name,

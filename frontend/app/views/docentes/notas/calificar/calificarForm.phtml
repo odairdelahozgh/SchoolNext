@@ -9,12 +9,11 @@
   
   $slider_definitiva = OdaTags::inputRango(id_name: $reg_nota->id, value: $reg_nota->definitiva, min: 0, max: 100, step: 1);
   $field_definitiva = $reg_nota->fieldForm('definitiva');
-  $field_nota_final = '';
-  //$field_nota_final = $reg_nota->fieldForm(field_name: 'nota_final');
-  //$field_nota_final = $reg_nota->fieldForm(field_name: 'nota_final', type:'hidden');
-  //$field_nota_final = $reg_nota->fieldForm(field_name: 'nota_final');
+  $field_plan_apoyo = $reg_nota->fieldForm(field_name: 'plan_apoyo', type:'hidden');
+  $field_nota_final = $reg_nota->fieldForm(field_name: 'nota_final', type:'hidden');
 
-  $frm .= OdaTags::createTag(tag: 'td', content: $slider_definitiva.'<br>Nota:'.$field_definitiva.$field_nota_final, attrs: 'colspan="3"');
+  $las_notas = $field_definitiva.$field_plan_apoyo.$field_nota_final;
+  $frm .= OdaTags::createTag(tag: 'td', content: $slider_definitiva.'<br>Nota:'.$las_notas, attrs: 'colspan="3"');
   $frm .= OdaTags::createTag(tag: 'td', content: 'P.A.<br>'.$reg_nota->plan_apoyo);
   $frm .= OdaTags::createTag(tag: 'td', content: 'N.F.<br>'.$reg_nota->nota_final);
   $frm .= '</tr>';

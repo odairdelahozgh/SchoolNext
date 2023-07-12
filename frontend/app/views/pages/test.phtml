@@ -8,4 +8,7 @@ try {
   $a = $ucase();
 } catch (\Throwable $th) {
   OdaFlash::error($th);
+  OdaFlash::warning($th->getMessage());
+  OdaFlash::valid($th->getMessage());
+  OdaFlash::info($th->getMessage());
 }

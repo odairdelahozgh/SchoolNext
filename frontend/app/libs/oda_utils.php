@@ -367,12 +367,12 @@ class OdaUtils extends Util {
       return $cadena;
     } // END-pluralize
 
-  public static function linkWhatsApp(string $telefono, string $caption='link WhatsApp', $show_tel=false) {
+  public static function linkWhatsApp(string $telefono, string $caption='(click) Escribirle al WhatsApp ahora', $show_tel=false) {
     $text = ($show_tel) ? $telefono : '' ;
     return "$text <a title=\"$caption\" href=\"whatsapp://send?phone=$telefono\">"._Icons::brands(icon: 'whatsapp', size: 'w3-large').'</a>';
   }
 
-  public static function linkTelefono(string $telefono, string $caption='link Llamada', $show_tel=false): string {
+  public static function linkTelefono(string $telefono, string $caption='(click) Llamarle ahora', $show_tel=false): string {
     $text = ($show_tel) ? $telefono : '' ;
     return "$text <a title=\"$caption\" href=\"tel:$telefono\">"._Icons::solid(icon: 'square-phone', size: 'w3-large').'</a>';
   }
@@ -381,7 +381,7 @@ class OdaUtils extends Util {
     $telefono = Config::get('config.construxzion.whatsapp');
     $username = Session::get('username');
     $date = date('Y-m-d H:i a', time());
-    return "<a title=\"Link a Soporte técnico\" href=\"https://api.whatsapp.com/send?phone=573017153066&text=%F0%9F%9B%91%20SchoolNext%20%0AEXCEPCI%C3%93N%20INTERNA%20CAPTURADA%3A%20*$uuid_error*%0A%0Ausuario%3A%20*$username*%20%0Afecha%3A%20*$date*\" target=\"_blank\">$uuid_error</a>";
+    return "<a title=\"Escribir por WhatsApp a Soporte técnico\" href=\"https://api.whatsapp.com/send?phone=573017153066&text=%F0%9F%9B%91%20SchoolNext%20%0AEXCEPCI%C3%93N%20INTERNA%20CAPTURADA%3A%20*$uuid_error*%0A%0Ausuario%3A%20*$username*%20%0Afecha%3A%20*$date*\" target=\"_blank\">$uuid_error</a>";
   }
 
 

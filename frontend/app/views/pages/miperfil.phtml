@@ -9,8 +9,8 @@
   <div class="w3-row w3-center">
     <div class="w3-card-4 w3-dark-grey">
       <div class="w3-container w3-center">
-      <?= OdaTags::img_docente(Session::get('documento'), Session::get('sexo'), Session::get('id'),'class="w3-circle w3-margin-right" style="width:100px"') ?>
         <h3><?= $Usuario->getNombreCompleto() ?></h3>
+        <?= $Usuario->getFoto(show_cod: false) ?>
         <h4><?= $Usuario->cargo ?></h4>
       </div>
     </div>

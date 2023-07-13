@@ -9,15 +9,15 @@
   
   <div id="list_index">
     <?php
+    try {
+      //OdaLog::debug("mensaje","rastreo");
       require('indexHeader.phtml');
       
       $tabla = new OdaTable(showTotalRegs: true);
       $tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
       foreach($data as $key => $reg) {
         $estudiante = ucwords(OdaUtils::sanearString($reg->estudiante_nombre))." $reg->salon_nombre [$reg->salon_id]";
-        $btn_edit = '';
-        // "<br><button id=\"id_btn_edit\" class=\"w3-btn w3-green\" onclick=\"show_edit_form($reg->id, '$estudiante')\">". _Icons::solid('pen-to-square') ." Editar</button>";
-         
+        $btn_edit = $reg->lnkEditRegistro($estudiante);
         $data_row = array(
           $reg.$btn_edit,
           $estudiante,
@@ -30,6 +30,10 @@
       echo $tabla;
 
       require('indexFooter.phtml');
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
     ?>
   </div>
 </div>

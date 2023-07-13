@@ -157,9 +157,6 @@ class DocentesController extends AppController
   }//END-notas
 
 
-  /**
-   * notas/notasCalificar
-   */
   public function notasCalificar(int $periodo_id, int $salon_id, int $asignatura_id): void {
     try {
       $this->page_action = 'Calificar Notas del Sal&oacute;n';
@@ -225,9 +222,136 @@ class DocentesController extends AppController
   }//END-notas
 
 
-  /**
-   * 
-   */
+  public function notasCalificarSeguimientos(int $periodo_id, int $salon_id, int $asignatura_id): void {
+    try {
+      $this->page_action = 'Seguimientos Intermedios del Sal&oacute;n';
+      $RegSalon = (new Salon)->get($salon_id);
+      $RegPeriodo =(new Periodo)->get($periodo_id);
+      $RegAsignatura = (new Asignatura)->get($asignatura_id);
+
+      $Nota = new Nota();
+      $this->data = $Nota->getNotasSalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
+      $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
+      
+      $min_fortaleza = 0;
+      if ($RegsIndicad) {
+        $regs_min = min($RegsIndicad) ?? 0;
+        $regs_max = max($RegsIndicad) ?? 0;
+        
+        $min_fortaleza = min(array_filter(array: $RegsIndicad, callback: function ($element): bool {
+          return $element->valorativo == 'Fortaleza';
+        }));
+        $max_fortaleza = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Fortaleza';
+        }));
+        
+        $min_debilidad = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Debilidad';
+        }));
+        $max_debilidad = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Debilidad';
+        }));
+        
+        $min_recomendacion = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Recomendación';
+        }));
+        $max_recomendacion = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Recomendación';
+        }));
+      }
+
+      
+      $this->fieldsToShow = $Nota::getFieldsShow(show: 'calificar');
+      $this->arrData = [
+        'Periodo'           => $RegPeriodo,
+        'Asignatura'        => $RegAsignatura,
+        'Salon'             => $RegSalon,
+        'Indicadores'       => $RegsIndicad,
+        'annio_actual'      => (int)Config::get(var: 'config.academic.annio_actual'),
+        'periodo_actual'    => (int)Config::get(var: 'config.academic.periodo_actual'),
+        'min_fortaleza'     =>$min_fortaleza,
+        'max_fortaleza'     =>$max_fortaleza,
+        'min_debilidad'     =>$min_debilidad,
+        'max_debilidad'     =>$max_debilidad,
+        'min_recomendacion' =>$min_recomendacion,
+        'max_recomendacion' =>$max_recomendacion,
+        'min_indic' => $regs_min,
+        'max_indic' => $regs_max,
+        'cnt_indicador'   =>count(value: $RegsIndicad),
+      ];
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    View::select(view: 'notas/seguimientos/index');
+  }//END-
+  
+
+  
+  public function notasCalificarPlanesApoyo(int $periodo_id, int $salon_id, int $asignatura_id): void {
+    try {
+      $this->page_action = 'Calificar Planes de Apoyo del Sal&oacute;n';
+      $RegSalon = (new Salon)->get($salon_id);
+      $RegPeriodo =(new Periodo)->get($periodo_id);
+      $RegAsignatura = (new Asignatura)->get($asignatura_id);
+
+      $Nota = new Nota();
+      $this->data = $Nota->getNotasSalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
+      $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
+      
+      $min_fortaleza = 0;
+      if ($RegsIndicad) {
+        $regs_min = min($RegsIndicad) ?? 0;
+        $regs_max = max($RegsIndicad) ?? 0;
+        
+        $min_fortaleza = min(array_filter(array: $RegsIndicad, callback: function ($element): bool {
+          return $element->valorativo == 'Fortaleza';
+        }));
+        $max_fortaleza = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Fortaleza';
+        }));
+        
+        $min_debilidad = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Debilidad';
+        }));
+        $max_debilidad = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Debilidad';
+        }));
+        
+        $min_recomendacion = min(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Recomendación';
+        }));
+        $max_recomendacion = max(array_filter(array: $RegsIndicad, callback: function ($element) {
+          return $element->valorativo == 'Recomendación';
+        }));
+      }
+
+      
+      $this->fieldsToShow = $Nota::getFieldsShow(show: 'calificar');
+      $this->arrData = [
+        'Periodo'           => $RegPeriodo,
+        'Asignatura'        => $RegAsignatura,
+        'Salon'             => $RegSalon,
+        'Indicadores'       => $RegsIndicad,
+        'annio_actual'      => (int)Config::get(var: 'config.academic.annio_actual'),
+        'periodo_actual'    => (int)Config::get(var: 'config.academic.periodo_actual'),
+        'min_fortaleza'     =>$min_fortaleza,
+        'max_fortaleza'     =>$max_fortaleza,
+        'min_debilidad'     =>$min_debilidad,
+        'max_debilidad'     =>$max_debilidad,
+        'min_recomendacion' =>$min_recomendacion,
+        'max_recomendacion' =>$max_recomendacion,
+        'min_indic' => $regs_min,
+        'max_indic' => $regs_max,
+        'cnt_indicador'   =>count(value: $RegsIndicad),
+      ];
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    View::select(view: 'notas/planes_apoyo/index');
+  }//END-
+  
   public function perfilUsuario(): void {
     $this->page_action = 'Perfil del Usuario';
     //$this->data = (array)(new Usuario())::get($this->user_id);

@@ -36,14 +36,27 @@ trait TraitUuid {
 
 
   public function setUUID_All_ojo(int $long=20) { // Instancia UUID de todos
-  $Todos = $this::all();
-  foreach ($Todos as $reg) {
+    try {
+      $Todos = $this::all();
+      $RG = new RegistrosGen();
+      
+      $DQL = new OdaDql($RG);
+      OdaLog::debug($DQL);
+      
+      // foreach ($Todos as $reg) {
+      //   $new_uuid = $this->UUIDReal($long);
+      //   if ( is_null($reg->uuid) or (0==strlen($reg->uuid)) ) { 
+      //     $DQL->update(['uuid'=>$new_uuid])
+      //     ->where('t.id=?', $reg->id)
+      //     //->execute(true)
+      //     ;
+      //     OdaLog::debug(self::$class_name .$DQL);
+      //   }
+      // }
     
-    $uuid = $this->UUIDReal($long);
-    $reg->update(['uuid'=>$uuid, 'is_active'=>1]);
-    //}
-  }
-
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
   } //END-setUUID_All_ojo
 
 

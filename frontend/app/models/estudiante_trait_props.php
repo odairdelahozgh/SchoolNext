@@ -24,11 +24,11 @@ trait EstudianteTraitProps {
     $periodo = (int)Config::get(var: 'config.academic.periodo_actual');
     $annio = (int)Config::get(var: 'config.academic.annio_actual');
     // cambiar por match expres
-    if ($periodo==1 and $this->mes_pagado>=4 and $this->annio_pagado==$annio)  { return true; }
-    if ($periodo==2 and $this->mes_pagado>=6 and $this->annio_pagado==$annio) { return true; }
-    if ($periodo==3 and $this->mes_pagado>=9 and $this->annio_pagado==$annio) { return true; }
-    if ($periodo==4 and $this->mes_pagado>=11 and $this->annio_pagado==$annio and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
-    if ($periodo==5 and $this->mes_pagado>=11 and $this->annio_pagado==$annio and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
+    if ($periodo==1 and $this->mes_pagado>=parent::LIM_PAGO_PERIODOS[1] and $this->annio_pagado==$annio)  { return true; }
+    if ($periodo==2 and $this->mes_pagado>=parent::LIM_PAGO_PERIODOS[2] and $this->annio_pagado==$annio) { return true; }
+    if ($periodo==3 and $this->mes_pagado>=parent::LIM_PAGO_PERIODOS[3] and $this->annio_pagado==$annio) { return true; }
+    if ($periodo==4 and $this->mes_pagado>=parent::LIM_PAGO_PERIODOS[4] and $this->annio_pagado==$annio and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
+    if ($periodo==5 and $this->mes_pagado>=parent::LIM_PAGO_PERIODOS[5] and $this->annio_pagado==$annio and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
     return false;
   }
   public function isPazYSalvoIco() { return ($this->isPazYSalvo()) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small'); }

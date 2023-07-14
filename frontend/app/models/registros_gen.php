@@ -115,15 +115,13 @@ class RegistrosGen extends LiteRecord {
   } // END-getRegistrosAnnio
     
 
-  public function cambiarSalonEstudiante(int $nuevo_salon_id, int $estudiante_id) {
+  public function cambiarSalonEstudiante(int $nuevo_salon_id, int $nuevo_grado_id, int $estudiante_id) {
     try {
-      $RegSalonNuevo = (new Salon)->first("SELECT id, grado_id FROM ".Config::get('tablas.salones')." WHERE id=?", [$nuevo_salon_id]);
-      $this::query("UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id])->rowCount() > 0;
+      $this::query("UPDATE ".self::$table." SET salon_id=$nuevo_salon_id, grado_id=$nuevo_grado_id WHERE estudiante_id=$estudiante_id")->rowCount() > 0;
     } catch (\Throwable $th) {
-      OdaLog::error($th, Session::get('username'));
+      OdaLog::error($th);
     }
   } //END-cambiarSalonEstudiante
-
 
 
 } //END-CLASS

@@ -17,14 +17,30 @@ trait EstudianteTraitLinks {
   }
 
 
-  public function link_SetMesPagosTodos(): string {
+  public function lnk_SetMesPagosTodos(): string {
     $lnk='Establecer Mes de Pago a:<br>';
     for ($i=2; $i<=11; $i++) { 
       $nombre_mes = "[$i] ".OdaUtils::nombreMes(mes: $i, abrev: true);
       $lnk .= '<span class="w3-tag w3-blue w3-round">' .Html::linkAction(action: "setMesPago/$this->id/$i", text: "$nombre_mes"). '</span>&nbsp &nbsp';
     }
+    return $lnk.'<br>';
+  } //END-lnk_SetMesPagosTodos
+
+  
+
+  public function lnk_SetPonerAldia(): string {
+    $lnk ='';
+    if(!$this->isPazYSalvo()) {
+      $lnk .= '<span class="w3-tag w3-green w3-round">' 
+        .Html::linkAction(
+            action: "actualizarPago/$this->id/", 
+            text: 'Poner al Dia ('.$this->nombre_mes_enum(self::LIM_PAGO_PERIODOS[self::$_periodo_actual]).') '._Icons::solid('coins', 'w3-large'))
+      .'</span>';
+      return $lnk.'<br>';
+    }
     return $lnk;
-  } //END-link_SetMesPagosTodos
+  } //END-lnk_SetPonerAldia
+
 
 
 

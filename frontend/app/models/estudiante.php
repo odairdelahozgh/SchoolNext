@@ -16,13 +16,15 @@ class Estudiante extends LiteRecord {
 
   use EstudianteTraitSetUp;
   
-  const LIM_PAGO_PERIODOS = [ 1 => 4, 2 => 6, 3 => 9, 4 => 11, 5 => 11 ];
+  //private static int $periodo_actual = 0 ;
+
   private mixed $DQL = null;
 
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.estudiante');
     self::$order_by_default = 's.nombre_salon,t.apellido2,t.apellido1,t.nombres';
+    //self::$periodo_actual = Config::get(var: 'config.academic.periodo_actual');
 
     $this->DQL = (new OdaDql(__CLASS__))
       ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
@@ -50,9 +52,22 @@ class Estudiante extends LiteRecord {
     }
   } // END-getList
 
-  /**
-   * Devuelve lista de todos los Registros.
-   */
+  public function getListBySalon(string $orden='a1,a2,n', string $select='*') {
+    try {
+      $DQL = $this->DQL;
+      $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
+      $DQL->concat(explode(',', $orden), 'estudiante_nombre')
+          ->concat(explode(',', $orden), 'nombre')
+          ->andWhere('');
+
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } // END-getList
+
+  
   public function getListEstudiantes(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
     try {
       $DQL = $this->DQL;
@@ -217,21 +232,22 @@ class Estudiante extends LiteRecord {
    */
   public function setCambiarSalon(int $estudiante_id, int $nuevo_salon_id, bool $cambiar_en_notas=true): bool {
     try {
-      $RegSalonNew = (new Salon)->get($nuevo_salon_id);
+      $RegSalonNew = (new Salon)::get($nuevo_salon_id);
       if ($RegSalonNew) {
-          $RegEstud = (new Estudiante)->get($estudiante_id);
+          $RegEstud = (new Estudiante)::get($estudiante_id);
           $RegEstud->salon_id  = $RegSalonNew->id;
           $RegEstud->grado_mat = $RegSalonNew->grado_id;
           $RegEstud->save();
           if ($cambiar_en_notas) {
-            (new Nota)->cambiarSalonEstudiante($nuevo_salon_id, $estudiante_id);
-            (new RegistrosGen)->cambiarSalonEstudiante($nuevo_salon_id, $estudiante_id);
-            (new RegistroDesempAcad)->cambiarSalonEstudiante($nuevo_salon_id, $estudiante_id);
+            (new Nota)->cambiarSalonEstudiante($nuevo_salon_id, $RegSalonNew->grado_id, $estudiante_id);
+            (new RegistrosGen)->cambiarSalonEstudiante($nuevo_salon_id, $RegSalonNew->grado_id, $estudiante_id);
+            (new RegistroDesempAcad)->cambiarSalonEstudiante($nuevo_salon_id, $RegSalonNew->grado_id, $estudiante_id);
           }
           return true; // para acá
       }
+      
     } catch (\Throwable $th) {
-      OdaLog::error($th, Session::get('username'));
+      OdaLog::error($th);
     }
     return false;
   } //END-setCambiarSalon
@@ -242,9 +258,9 @@ class Estudiante extends LiteRecord {
   public function setActualizarPago(int $estudiante_id): bool {
     $RegEstud = (new Estudiante)->get($estudiante_id);
     if ($RegEstud) {
-      $periodo_actual = (int)Config::get(var: 'config.academic.periodo_actual');
-      $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[$periodo_actual];
-      $RegEstud->annio_pagado = (int)Config::get(var: 'config.academic.annio_actual');
+      //$periodo_actual = (int)Config::get(var: 'config.academic.periodo_actual');
+      $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[self::$_periodo_actual];
+      $RegEstud->annio_pagado = self::$_annio_actual;
       $RegEstud->save();
       return true;
     }
@@ -255,7 +271,7 @@ class Estudiante extends LiteRecord {
     $RegEstud = (new Estudiante)->get($estudiante_id);
     if ($RegEstud) {
       $RegEstud->mes_pagado = $mes;
-      $RegEstud->annio_pagado = (int)Config::get(var: 'config.academic.annio_actual');
+      $RegEstud->annio_pagado = self::$_annio_actual;
       $RegEstud->save();
       return true;
     }

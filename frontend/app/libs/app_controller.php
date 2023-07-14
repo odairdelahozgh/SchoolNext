@@ -27,8 +27,8 @@ abstract class AppController extends Controller
 
   
 	// ACL (Access Control List) permisos
-	public $acl; //variable objeto ACL
-	public $userRol = ""; //variable con el rol del usuario autenticado en la aplicación
+	public $_acl; //variable objeto ACL
+	public $_userRol = ""; //variable con el rol del usuario autenticado en la aplicación
 
   
   // PARA LA GENERACIÓN DE ARCHIVOS
@@ -55,7 +55,7 @@ abstract class AppController extends Controller
       if (!Session::get('usuario_logged')) {
         Redirect::to("auth/login");
         return false;
-      } 
+      }
       
       //if(Auth::is_valid()) $this->userRol = Auth::get("rol");
       $this->data = [0];

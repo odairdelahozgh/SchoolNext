@@ -17,21 +17,24 @@ require_once "enums.php";
 
 class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 { 
-  protected static $session_user_id = 0;
-  protected static $session_username = '';
+  protected static $_user_id = 0;
+  protected static $_username = '';
   protected static $lim_tam_campo_uuid = 36;
   protected static $tam_campo_uuid = 30;    
   protected static $order_by_default = 't.id';
   protected static $class_name = __CLASS__;
-
+  protected static $_periodo_actual = 0;
+  protected static $_annio_actual = 0;
+  const LIM_PAGO_PERIODOS = [ 1=>4, 2=>6, 3=>9, 4=>11, 5=>11 ];
   const SEXO          = ['M'=>'Masculino', 'F'=>'Femenino'];
   const IS_ACTIVE     = [0 =>'Inactivo', 1=>'Activo'];
   const ICO_IS_ACTIVE = [0=>'face-frown', 1=>'face-smile'];
 
-  public function __construct(protected int $periodo_actual=0) {
-    self::$session_user_id = Session::get('id');
-    self::$session_username = Session::get('username');
-    $periodo_actual = config::get('config.periodo_actual');
+  public function __construct() {
+    self::$_user_id = Session::get('id');
+    self::$_username = Session::get('username');
+    self::$_periodo_actual = Session::get('periodo');
+    self::$_annio_actual = Session::get('annio');
   } // END-__construct
   
   public function __toString() { return $this->id; }
@@ -42,9 +45,9 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     if (property_exists($this, 'uuid')) { 
       if (method_exists($this, 'setUUID')) { $this->uuid = $this->setUUID(); }
     }
-    if (property_exists($this, 'created_by')) { $this->created_by = self::$session_user_id; }
+    if (property_exists($this, 'created_by')) { $this->created_by = self::$_user_id; }
     if (property_exists($this, 'created_at')) { $this->created_at = $ahora; }
-    if (property_exists($this, 'updated_by')) { $this->updated_by = self::$session_user_id; }
+    if (property_exists($this, 'updated_by')) { $this->updated_by = self::$_user_id; }
     if (property_exists($this, 'updated_at')) { $this->updated_at = $ahora; }
   } // END-_beforeCreate
   
@@ -58,7 +61,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
         if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setUUID(); }
       }
     }
-    if (property_exists($this, 'updated_by')) { $this->updated_by = self::$session_user_id; }
+    if (property_exists($this, 'updated_by')) { $this->updated_by = self::$_user_id; }
     if (property_exists($this, 'updated_at')) { $this->updated_at = $ahora; }
   } // END-_beforeCreate
   

@@ -9,69 +9,69 @@ class SecretariaController extends AppController
 {  
 
   public function index() {
-    $this->page_action = 'Inicio';
-    try {
-      $this->data = (new Evento)->getEventosDashboard();
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
+  $this->page_action = 'Inicio';
+  try {
+    $this->data = (new Evento)->getEventosDashboard();
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
   } //END-index
   
   public function listadoEstudActivos() {
-    try {
-      $this->page_action = 'Listado de Estudiantes Activos';
-      $this->data = (new Estudiante)->getListSecretaria(estado:1);
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-    View::select('estudiantes/estud_list_activos');
+  try {
+    $this->page_action = 'Listado de Estudiantes Activos';
+    $this->data = (new Estudiante)->getListSecretaria(estado:1);
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  View::select('estudiantes/estud_list_activos');
   } // END-listadoEstudActivos
   
   public function listadoEstudInactivos() {
-    try {
-      $this->page_action = 'Listado de Estudiantes Inactivos';
-      $this->data = (new Estudiante)->getListSecretaria(estado:0);
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-    View::select('estudiantes/estud_list_inactivos');
+  try {
+    $this->page_action = 'Listado de Estudiantes Inactivos';
+    $this->data = (new Estudiante)->getListSecretaria(estado:0);
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  View::select('estudiantes/estud_list_inactivos');
   } // END-listadoEstudInactivos
   
   
   public function actualizarPago(int $estudiante_id) { // Actualizar Mes Pagado de un Estudiante
-    try {
-      $this->page_action = 'Actualizar Mes Pagado Estudiante';
-      $Estud = (new Estudiante)->get($estudiante_id);
-      if ($Estud->setActualizarPago($estudiante_id)) {
-      OdaFlash::valid("$this->page_action: $Estud");
-      } else {
-      OdaFlash::warning("$this->page_action: $Estud");
-      }
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
+  try {
+    $this->page_action = 'Actualizar Mes Pagado Estudiante';
+    $Estud = (new Estudiante)->get($estudiante_id);
+    if ($Estud->setActualizarPago($estudiante_id)) {
+    OdaFlash::valid("$this->page_action: $Estud");
+    } else {
+    OdaFlash::warning("$this->page_action: $Estud");
     }
-    Redirect::toAction('listadoEstudActivos');
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  Redirect::toAction('listadoEstudActivos');
   } // END-actualizarPago
   
 
   public function setMesPago(int $estudiante_id, int $mes) {
-    try {
-      $this->page_action = 'Actualizar Mes Pagado Estudiante';
-      $Estud = (new Estudiante)->get($estudiante_id);
-      if ($Estud->setMesPago(estudiante_id: $estudiante_id, mes: $mes)) {
-      OdaFlash::valid("$this->page_action: $Estud");
-      } else {
-      OdaFlash::warning("$this->page_action: $Estud");
-      }
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
+  try {
+    $this->page_action = 'Actualizar Mes Pagado Estudiante';
+    $Estud = (new Estudiante)->get($estudiante_id);
+    if ($Estud->setMesPago(estudiante_id: $estudiante_id, mes: $mes)) {
+    OdaFlash::valid("$this->page_action: $Estud");
+    } else {
+    OdaFlash::warning("$this->page_action: $Estud");
     }
-    Redirect::toAction(action: 'listadoEstudActivos');
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  Redirect::toAction(action: 'listadoEstudActivos');
   } // END-setMesPago
   
 
@@ -80,19 +80,19 @@ class SecretariaController extends AppController
    * Activar un Estudiante
    */
   public function activarEstudiante(int $estudiante_id) {
-    try {
-      $this->page_action = 'Activar Estudiante';
-      $Estud = (new Estudiante)->get($estudiante_id);
-      if ($Estud->setActivar()) {
-      OdaFlash::valid("$this->page_action: $Estud");
-      } else {
-      OdaFlash::warning("$this->page_action: $Estud");
-      }
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
+  try {
+    $this->page_action = 'Activar Estudiante';
+    $Estud = (new Estudiante)->get($estudiante_id);
+    if ($Estud->setActivar()) {
+    OdaFlash::valid("$this->page_action: $Estud");
+    } else {
+    OdaFlash::warning("$this->page_action: $Estud");
     }
-    Redirect::toAction('listadoEstudInactivos');
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  Redirect::toAction('listadoEstudInactivos');
   } // END-activarEstudiante
   
 
@@ -100,24 +100,24 @@ class SecretariaController extends AppController
    * Editar un Registro de Estudiante: estudiantes/estud_edit_activos
    */
   public function editarEstudActivos(int $id) {
-    try {
-      $this->page_action = 'Editar Registro de Estudiante';
-      $obj_estudiante = new Estudiante;
-      if (Input::hasPost('estudiante')) { // se verifica si se ha enviado el formulario (submit)
-        if ($obj_estudiante->update(Input::post('estudiante'))) {
-          OdaFlash::valid("$this->page_action: $obj_estudiante");
-          return Redirect::to(); // enrutando por defecto al index del controller
-        }
-        OdaFlash::warning("$this->page_action: $obj_estudiante");
-        return;
-      }
-      // Aplicando la autocarga de objeto, para comenzar la edici&oacute;n
-      $this->estudiante = $obj_estudiante->get($id);
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
+  try {
+    $this->page_action = 'Editar Registro de Estudiante';
+    $obj_estudiante = new Estudiante;
+    if (Input::hasPost('estudiante')) { // se verifica si se ha enviado el formulario (submit)
+    if ($obj_estudiante->update(Input::post('estudiante'))) {
+      OdaFlash::valid("$this->page_action: $obj_estudiante");
+      return Redirect::to(); // enrutando por defecto al index del controller
     }
-    View::select('estudiantes/estud_edit_activos');
+    OdaFlash::warning("$this->page_action: $obj_estudiante");
+    return;
+    }
+    // Aplicando la autocarga de objeto, para comenzar la edici&oacute;n
+    $this->estudiante = $obj_estudiante->get($id);
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  View::select('estudiantes/estud_edit_activos');
   } // END-editarEstudActivos
 
 
@@ -139,14 +139,14 @@ class SecretariaController extends AppController
 
 
   public function historico_notas() { // Al index de Historico notas
-    try {
-      $this->page_action = 'Hist&oacute;rico de Notas';
-      $this->data = (new NotaHist() )->getTotalAnniosPeriodosSalones();
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-    View::select('historico_notas/index');
+  try {
+    $this->page_action = 'Hist&oacute;rico de Notas';
+    $this->data = (new NotaHist() )->getTotalAnniosPeriodosSalones();
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  View::select('historico_notas/index');
   } //END-historico_notas
 
 

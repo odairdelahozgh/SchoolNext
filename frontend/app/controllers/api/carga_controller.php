@@ -30,7 +30,7 @@ class CargaController extends RestController
       ]);
       $this->data = (new SalAsigProf())->getCarga($profesor_id);
     } catch (\Throwable $th) {
-      OdaLog::error($th, Session::get('username'));
+      OdaLog::error($th);
     }
 
   }//END-get_all

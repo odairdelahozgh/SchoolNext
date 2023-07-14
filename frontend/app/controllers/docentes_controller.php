@@ -48,10 +48,7 @@ class DocentesController extends AppController
     }
   } //END-asignar_carga
 
-
-  /**
-   * Método Dirección de Grupo
-   */
+  
   public function direccion_grupo(): void {
     try {
       $this->page_action = 'Direcci&oacute;n de Grupo';

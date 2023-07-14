@@ -8,9 +8,12 @@
     $links_docente .= OdaTags::linkBarItem('docen-dir-grupo', 'Mi Grupo', 'clipboard');
   }
 
-  //$asignar_carga  = Config::get(var: 'config.academic.asignar_carga');
-  // PENDIENTE FILTRO CARGA ACADEMICA
-  $links_docente .= OdaTags::linkBarItem('docen-asignar-carga', 'Asignar Carga', 'gear');
+  if (1<>(int)Session::get('id')) {
+    if (1==(int)Session::get('periodo')) { $links_docente .= OdaTags::linkBarItem('docen-asignar-carga', 'Asignar Carga', 'gear'); }
+  } else {
+    $links_docente .= OdaTags::linkBarItem('docen-asignar-carga', 'Asignar Carga', 'gear');
+  }
+  
 ?>
 
 <div class="w3-bar-block">

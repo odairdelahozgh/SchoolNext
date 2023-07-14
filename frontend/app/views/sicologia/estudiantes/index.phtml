@@ -31,7 +31,7 @@
       require('indexFooter.phtml');
 
     } catch (\Throwable $th) {
-      OdaLog::error($th, Session::get('username'));
+      OdaLog::error($th);
       echo $th;
      }
    ?>

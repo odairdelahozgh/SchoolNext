@@ -32,10 +32,18 @@
 
   <div class="w3-container w3-rest">
     <?php 
+    try {
+      OdaLog::debug("mensaje","rastreo");
+      $periodo = Config::get('config.academic.periodo_actual');
+      $user = Session::get('id');
       echo OdaTags::linkExterno(
-        url: "https://windsortemp.schoolnext.space/index.php/+/sAP/ListasClaseProfesorPDF?user_id=22800", 
-        text: 'Listas de Clase P1',
+        url: "https://windsortemp.schoolnext.space/index.php/+/sAP/ListasClaseProfesorPDF?user_id=$user", 
+        text: "Listas de Clase P$periodo",
         attrs: 'class="w3-button w3-green"' );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
     ?>
   </div>
 

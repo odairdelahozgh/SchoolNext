@@ -3,15 +3,17 @@
 
 <div class="w3-container">
   <div class="w3-row">
-
     <div class="w3-quarter">
       <?= require "side_bar.php" ?>
     </div>
-
     <div id="capa_datos" class="w3-threequarter">
+      <div class="w3-container" id="info_estudiante"></div>
+      <div class="w3-container" id="proceso_matriculas"></div>
+      <div class="w3-container" id="seguimientos"></div>
+      <div class="w3-container" id="boletines"></div>
+      <div class="w3-container" id="planes_apoyo"></div>
+      <div class="w3-container" id="reconocimientos"></div>
     </div>
-
   </div>
 </div>
-
 <?=Tag::js(src: "padres/traer_datos_estudiante", cache: false); ?>

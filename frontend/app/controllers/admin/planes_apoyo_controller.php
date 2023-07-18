@@ -7,8 +7,6 @@
   
 class PlanesApoyoController extends ScaffoldController
 {
-
-
   function guardarPlanesApoyo(int $periodo, int $salon_id, int $asignatura_id) {
     //$this->page_action = "Notas Guardadas";
     $redirect = "docentes/listNotas/$asignatura_id/$salon_id";

@@ -52,18 +52,23 @@ class DocentesController extends AppController
   public function direccion_grupo(): void {
     try {
       $this->page_action = 'Direcci&oacute;n de Grupo';
-      $this->data = (new usuario)->misGrupos();
-      for ($i=1; $i <=5 ; $i++) { 
+      $periodo = Session::get('periodo');
+
+      $this->data = (new usuario)->misGrupos(); //($this->user_id
+
+      for ($i=1; $i <=$periodo ; $i++) { 
         $a_regs = (new Nota)::getNotasPromAnnioPeriodoSalon($i, $this->data[0]->id);
         foreach ($a_regs as $key => $value) {
           $this->arrData[$value->asignatura_nombre][$i]['avg'] = $value->avg;
         }
         //$this->a_prom_p[$i]  = array_prom_key($a_regs, 'avg' );
       }
+
+      $this->buttons = [];
+      foreach ($this->data as $key => $salon) {
+        $this->buttons[$key] = ['caption'=>$salon, 'action'=>"traer_data($salon->id)"];
+      }
       
-      // if (Session::get(index: 'es_director')) {
-        //   # code...
-        // }
       } catch (\Throwable $th) {
         OdaFlash::error($th);
       }
@@ -131,18 +136,17 @@ class DocentesController extends AppController
       $this->page_action = 'Notas del Sal&oacute;n';
       
       $this->Asignatura = (new Asignatura)->get($asignatura_id);
-      $this->Salon = (new Salon)->get($salon_id);
+      $this->Salon= (new Salon)->get($salon_id);
   
-      // limitar el numero de periodos
-      $periodo_actual = (int)Config::get(var: 'config.academic.periodo_actual');
-      $arr_periodos = range(start: 1, end: $periodo_actual);
+      $arr_periodos = range(start: 1, end: $this->_periodo_actual);
 
       $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
-      if (0==count($Notas)) { OdaFlash::info('No hay registros para mostrar.'); }
+      if (0==count($Notas)) { 
+        OdaFlash::info('No hay registros para mostrar.');
+      }
 
       $this->data = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
       foreach ($Notas as $key => $nota) {
-        //echo $nota." ---- $nota->periodo_id<br>";
         array_push($this->data[$nota->periodo_id], $nota);
       }
       

@@ -51,7 +51,7 @@ class PlanesApoyoController extends RestController
 
   public function get_by_estudiante_periodo(int $estudiante_id, int $periodo_id) {
     try {
-      $record = (new PlanesApoyo)::getByEstudiantePeriodo($estudiante_id, $periodo_id);
+      $record = (new PlanesApoyo)->getByEstudiantePeriodo($estudiante_id, $periodo_id);
       
       if (isset($record)) {
         $this->data = $record;

@@ -3,7 +3,7 @@ return [
   'matriculas' => false,
   'seguimientos' => false,
   'boletines' => true,
-  'planes_apoyo' => false,
+  'planes_apoyo' => true,
   'reconocimientos' => false,
 ];
 

@@ -24,12 +24,17 @@ return [
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2023,
-      'periodo_actual' => 2,
+      'periodo_actual' => 3,
       'asignar_carga' => ['*'],
     ],
     'boletines' => [
       'imprimir_plan_apoyo' => false,
       'imprimir_nota'       => false,
+    ],
+    'calificaiones' => [
+      'periodos_excep' => '2',
+      'salones_excep'  => '05-B',
+      'usuarios_excep' => '',
     ],
     'construxzion' => [
       'name'      => 'ConstruxZion Soft CO',

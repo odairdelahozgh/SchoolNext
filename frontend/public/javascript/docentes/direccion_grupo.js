@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('btn-1').click();
+  document.getElementById('btn-0').click();
 });
 
 

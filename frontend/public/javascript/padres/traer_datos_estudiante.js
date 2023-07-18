@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
   console.clear();
-  document.getElementById('btn1').click();
+  document.getElementById('btn-0').click();
 });
 
-function traer_data(estudiante_id, salon_nombre, periodo_actual) {
+function traer_data(estudiante_id, salon_nombre, periodo) {
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   console.clear();
   // ========================================================================      
@@ -15,9 +15,10 @@ function traer_data(estudiante_id, salon_nombre, periodo_actual) {
   });
 
   // ========================================================================      
-  //const ver_planes_apoyo = document.getElementById('ver_planes_apoyo').value;
+  const periodo_planes_apoyo = document.getElementById('periodo_planes_apoyo').value;
+  console.log('Periodo: '+periodo_planes_apoyo);
   if (1==document.getElementById('ver_planes_apoyo').value) { 
-    getDataPlanesApoyo(ruta_base, estudiante_id, periodo_actual)
+    getDataPlanesApoyo(ruta_base, estudiante_id, periodo_planes_apoyo)
     .then(res => {
       const elements = res.reduce((acc, data) => acc + template_planes_apoyo(ruta_base, data), "");
       const botones = elements;
@@ -33,7 +34,8 @@ function traer_data(estudiante_id, salon_nombre, periodo_actual) {
         <div>
           <h2 class="w3-panel w3-theme w3-round-xlarge">Planes de Apoyo</h2>
           <span class="w3-text-blue">No tiene Planes de Apoyo en el presente periodo</span>
-        </div>`; }
+        </div>`; 
+      }
     });
   }
   
@@ -41,9 +43,12 @@ function traer_data(estudiante_id, salon_nombre, periodo_actual) {
 
 } //END-traer_data
 
+
+
+
 function getDataPlanesApoyo(ruta_base, estudiante_id, periodo_id) {
   ruta = ruta_base+'api/planes_apoyo/by_estudiante_periodo/'+estudiante_id+'/'+periodo_id;
-  //console.log(ruta);
+  console.log(ruta);
   return fetch(ruta).then(res => res.json() );
 }//END-getDataPlanesApoyo
 

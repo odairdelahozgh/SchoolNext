@@ -1,7 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.clear();
-  document.getElementById('salon-1').click();
+  document.getElementById('btn-0').click();
 });
 
 
@@ -17,7 +16,7 @@ fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
       console.log(datos);
 
       let plantilla_tabla = 
-        '<table id="myTable" class="w3-table w3-responsive w3-bordered">'
+        '<table id="myTable"class="w3-table w3-responsive w3-bordered">'
         + '<caption id="tcaption" class="w3-left-align w3-bottombar w3-border-blue">TEXTCAPTION</caption>'
         + '<tbody id="tbody">TEXTBODY</tbody>'
         + '</table>'
@@ -26,8 +25,7 @@ fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
       let output = '';
       let caption = '';
 
-      for (let salon in datos) {  
-          //let arrSalon = salon.split(";");
+      for (let salon in datos) { 
           [salon_nombre, salon_id, salon_uuid] = salon.split(";");
           
           lnk_boletines_salon = '';
@@ -44,8 +42,7 @@ fetch(ruta.innerHTML.trim()+'api/notas/notas_salon/'+id)
               [estudiante_nombre, estudiante_id, estudiante_uuid]= estudiante.split(";");
               output += '<tr class="w3-theme-'+theme.toString().substr(0, 1)+'5"><td colspan=10>'+estudiante_nombre+'</td></tr>';
               cont = 1;
-              for (let periodo in datos[salon][estudiante]) { 
-                  // fila de titulos de materia
+              for (let periodo in datos[salon][estudiante]) { // fila de titulos de materia
                   if (cont==1) {
                       output += '<tr class="w3-theme-d3"><td>P</td>'; 
                       for (let asignatura in datos[salon][estudiante][periodo]) {

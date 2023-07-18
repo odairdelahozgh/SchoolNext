@@ -37,11 +37,28 @@ class OdaDql {
               . (empty($this->_where) ? '' : " WHERE $this->_where"),
     };
   } //END-render()
-    
+  
+  
+  public function renderlog(): string {
+    return match($this->_tipo_dql) {
+      TipoDql::Select => 'SELECT '.PHP_EOL
+              . ((empty($this->_select) or ('*'==$this->_select)) ? 't.*' : $this->_select).PHP_EOL
+              . " FROM $this->_from_source AS t".PHP_EOL
+              . implode(" ", $this->_joins).PHP_EOL
+              . (empty($this->_where) ? '' : " WHERE $this->_where ").PHP_EOL
+              . (empty($this->_group_by) ? '' : " GROUP BY $this->_group_by").PHP_EOL
+              . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by"),
+
+      TipoDql::Update => "UPDATE $this->_from_source AS t".PHP_EOL
+              . (empty($this->_sets) ? '-ERROR NO SET-' : " SET $this->_sets").PHP_EOL
+              . (empty($this->_where) ? '' : " WHERE $this->_where"),
+    };
+  } //END-renderlog()
+
   public function execute(bool $write_log = false): array|string {
     try {
       if ($write_log) { 
-        OdaLog::debug($this->render().PHP_EOL.'Params: ' .$this->getParams());
+        OdaLog::debug($this->renderlog().PHP_EOL.'Params: ' .$this->getParams());
       }
       return (new $this->_from)->all($this->render(), $this->_params);
 
@@ -53,7 +70,7 @@ class OdaDql {
   public function executeFirst(bool $write_log = false): array|string {
     try {
       if ($write_log) {
-        OdaLog::debug($this->render().PHP_EOL.'Params: ' .$this->getParams());
+        OdaLog::debug($this->renderlog().PHP_EOL.'Params: ' .$this->getParams());
       }
       return (new $this->_from)->first($this->render(), $this->_params);
     } catch (\Throwable $th) {

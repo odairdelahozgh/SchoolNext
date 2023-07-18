@@ -3,9 +3,40 @@
 </div>
 
 <?php
+function md5_hex_to_dec($hex_str)
+{
+    $arr = str_split($hex_str, 4);
+    foreach ($arr as $grp) {
+        $dec[] = str_pad(hexdec($grp), 5, '0', STR_PAD_LEFT);
+    }
+    return implode('', $dec);
+}
+
+function md5_dec_to_hex($dec_str)
+{
+    $arr = str_split($dec_str, 5);
+    foreach ($arr as $grp) {
+        $hex[] = str_pad(dechex($grp), 4, '0', STR_PAD_LEFT);
+    }
+    return implode('', $hex);
+}
+
 require_once VENDOR_PATH . 'autoload.php';
 try {
-  $a = $ucase();
+  //echo substr(bin2hex($bytes), 0, $lenght);
+  $entero =2359742;
+  echo "Entero: $entero<hr>";
+  
+  $md5 = md5($entero);
+  echo "entero($entero) a md5: $md5<hr>";
+
+  $dec = md5_hex_to_dec($md5);
+  echo "md5($md5) a decimal: $dec<hr>";
+  
+  $hex = md5_dec_to_hex($dec);
+  echo "decimal($dec) a hexadecimal: $hex";
+
+
 } catch (\Throwable $th) {
   OdaFlash::error($th);
   OdaFlash::warning($th->getMessage());

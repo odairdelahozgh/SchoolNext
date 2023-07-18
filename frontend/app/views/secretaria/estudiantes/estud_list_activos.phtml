@@ -26,9 +26,11 @@
          $col2 = 'Grado: '.$Estud->grado_nombre.'<br>' .$Estud .$Estud->isNuevoIco().'<br>'
                  .$Estud->getCuentaInstit(true).'<br><br>'
                  .$Estud->getPagoPension().'<br>'
-                 .$Estud->lnk_SetPonerAldia().'<br>'
-                 .$Estud->lnk_SetMesPagosTodos().'<br>'
-                 .$Estud->linkOld_BoletinPeriodo();
+                 .$Estud->getlnkSetPonerAldia().'<br>'
+                 .$Estud->getlnkSetMesPagosTodos().'<br>'
+                 .$Estud->getLnkBoletinesTodos()
+//                 .$Estud->linkOld_BoletinPeriodo()
+                 ;
 
          $col3  = $Estud->getSalonesCambiar('secretaria').'<br><br>'
                   .$Estud->madre.' ['.$Estud->madre_id.'] '

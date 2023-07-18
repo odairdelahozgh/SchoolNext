@@ -170,7 +170,7 @@ class OdaTags {
    public static function buttonBars(array $arrButtons=[]) {
     $btns = '';
     foreach ($arrButtons as $key => $button) {
-      $btns .= "<div class=\"w3-bar-item\"><button id=\"btn1\" class=\"w3-button w3-theme\" onclick=\"".$button['action']."\">".$button['caption']."</button></div>";
+      $btns .= "<div class=\"w3-bar-item\"><button id=\"btn-$key\" class=\"w3-button w3-theme\" onclick=\"".$button['action']."\">".$button['caption']."</button></div>";
     }
     return "<div class=\"w3-bar\">$btns</div>";
    }

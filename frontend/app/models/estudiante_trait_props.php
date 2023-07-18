@@ -8,6 +8,7 @@ trait EstudianteTraitProps {
   public function __toString() { return $this->getNombreCompleto(sanear:true, mayuscula:false).' '.$this->getCodigo(); }
   public function getCodigo() { return '[Cod: '.$this->id.']'; }
   public function getApellidos() { return $this->apellido1.' '.$this->apellido2; }
+  public function getNombre() { return $this->nombres.' '.$this->apellido1.' '.$this->apellido2; }
   public function getNombreCompleto($orden='a1 a2, n', $sanear=true, $mayuscula=false) {
     $nombre_completo = str_replace(
       array('n', 'a1', 'a2'),

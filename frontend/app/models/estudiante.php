@@ -278,5 +278,4 @@ class Estudiante extends LiteRecord {
     return false;
   } // END-setActualizarMesPago 
  
-
 }//END-CLASS

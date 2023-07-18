@@ -59,5 +59,16 @@ class SalAsigProf extends LiteRecord {
     return $DQL->execute();
   }//END-getStats
 
+//  public static function getProfesor(int $salon_id, int $asignatura_id): void {
+//    try {
+//       $sql = 'SELECT user_id FROM '.static::getSource().' WHERE salon_id=? AND asignatura_id=?';
+//       odalog::debug($sql);
+//       return static::query($sql, [$salon_id, $asignatura_id])->fetch();
 
+//    } catch (\Throwable $th) {
+//      OdaFlash::error($th);
+//    }
+//  } //END-getBySalonAsignatura
+ 
+ 
 } //END-CLASS

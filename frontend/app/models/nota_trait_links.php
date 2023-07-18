@@ -1,8 +1,7 @@
 <?php
 
 trait NotaTraitLinks {
-    /*
-    public function linkOld_BoletinPeriodo() {
+    public function linkOldPlanApoyoPeriodo() {
         $estud_id = $this->id;
         $salon_id = $this->salon_id;
         $url = Config::get('old.url_schoolweb');
@@ -16,5 +15,5 @@ trait NotaTraitLinks {
         }
         return '<div class="w3-show-inline-block"><div class="w3-bar">'.$btns.'</div></div>';
     }
-    */
+    
 }

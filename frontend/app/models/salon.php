@@ -18,7 +18,7 @@ class Salon extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.salon');
-    self::$order_by_default = 't.is_active DESC, t.nombre';
+    self::$order_by_default = 't.is_active DESC, t.position';
     $this->setUp();
   } //END-__construct
 
@@ -76,8 +76,33 @@ class Salon extends LiteRecord {
     }
     
     return $DQL->execute();
-  }
+  } //END-getList
 
   
+
+  public function getByCoordinador(int $user_id) { 
+    try {
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select("t.*, g.nombre AS grado_nombre")
+          ->concat( ['ud.nombres', 'ud.apellido1', 'ud.apellido2'], 'director_nombre')
+          ->concat( ['uc.nombres', 'uc.apellido1', 'uc.apellido2'], 'codirector_nombre')
+          ->leftJoin('grado',   'g')
+          ->leftJoin('seccion',   's', 'g.seccion_id = s.id')
+          ->leftJoin('usuario', 'ud', 't.director_id = ud.id')
+          ->leftJoin('usuario', 'uc', 't.codirector_id = uc.id')
+          ->orderBy(self::$order_by_default)
+          ->where("t.is_active=1");
+      
+      if ($user_id<>1) {
+        $DQL->andWhere("s.coordinador_id=?")
+          ->setParams([$user_id]);
+      }
+      return $DQL->execute();
+      //OdaLog::debug("mensaje","rastreo");
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getList
 
 } //END-CLASS

@@ -48,6 +48,7 @@ abstract class AppController extends Controller
   public ?int $user_id = 0;
   public ?string $user_name = '';
   public string $id_instit = '';
+  public int $_periodo_actual = 0;
 
   final protected function initialize() {
     try {
@@ -65,7 +66,8 @@ abstract class AppController extends Controller
       
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');
-      
+      $this->_periodo_actual = Config::get(var: 'config.academic.periodo_actual');
+
       //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
       $this->id_instit = Config::get('config.institution.id_name');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;

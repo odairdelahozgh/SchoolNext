@@ -8,48 +8,52 @@
   */
 class EstudiantesController extends RestController
 {
+  public function get_all() {
+    $this->data = (new Estudiante)->getListActivos();
+  } //END-get_all
+   
 
-   /**
-    * Obtiene todos los registros de estudiantes
-    * @link ../api/estudiantes/all
-    */
-   public function get_all() {
-      $this->data = (new Estudiante)->getListActivos();
-   }
-      
-   /**
-    * Devuelve el estudiante buscado por UUID
-    * @link ../api/estudiantes/singleuuid/3b22fefc7f6afa79c54f
-    */
-   public function get_singleuuid(string $uuid) {
+  public function get_singleuuid(string $uuid) {
+    try {
       $record = (new Estudiante)->getByUUID($uuid);
       if (isset($record)) {
-         $this->data = $record;
+        $this->data = $record;
       } else {
-         $this->error('El registro buscado no existe', 404);
+        $this->error('El registro buscado no existe', 404);
       }
-   }
+    
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 404);
+    }
+    
+  } //END-get_singleuuid
 
-   /**
-    * Devuelve el estudiante buscado por ID
-    * @link ../api/estudiantes/singleid/775
-    */
+
     public function get_singleid(int $id) {
-      $record = (new Estudiante)->get(pk: $id);
-      if (isset($record)) {
-         $this->data = $record;
-      } else {
-         $this->error('El registro buscado no existe', 404);
+      try {
+        $record = (new Estudiante)::get(pk: $id);
+        if (isset($record)) {
+          $this->data = $record;
+        } else {
+          $this->error('El registro buscado no existe', 404);
+        }
+        
+      } catch (\Throwable $th) {
+        OdaLog::error($th);
+        $this->error('EXCEPCION INTERNA CAPTURADA', 404);
       }
-   }
+   } //END-get_singleid
 
-   /**
-    * Obtiene todos los registros de estudiantes
-    * @link ../api/estudiantes/info_contacto_padres
-    */
+
     public function get_info_contacto_padres() {
-      $this->data = (new Estudiante)->getInfoContactoPadres(log: true);
-   }
+      try {
+        $this->data = (new Estudiante)->getInfoContactoPadres(log: true);
+        
+      } catch (\Throwable $th) {
+        OdaLog::error($th);
+      }
+   } //END-get_info_contacto_padres
    
 
 }

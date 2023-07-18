@@ -1,6 +1,6 @@
 <?php
 /**
-  * Controlador API ESTUDIANTES  
+  * Controlador API  
   * @category API
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   * @author odairdelahoz@gmail.com
@@ -10,7 +10,7 @@ class NotasController extends RestController
 {
 
    /**
-    * Obtiene todos los registros de estudiantes
+    * Obtiene todos los registros
     * @link /api/notas/all
     */
    public function get_all() {
@@ -35,7 +35,7 @@ class NotasController extends RestController
     * @link /api/notas/singleid/775
     */
     public function get_singleid(int $id) {
-      $record = (new Nota)->getById($id);
+      $record = (new Nota)::get($id);
       if (isset($record)) {
          $this->data = $record;
       } else {

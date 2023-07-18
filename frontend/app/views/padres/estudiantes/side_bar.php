@@ -1,25 +1,27 @@
 <?php
   try {
-/*     $salida = '<div class="w3-bar">';
-    foreach ($data as $key => $estud) {
-      $salida .= '<div class="w3-bar-item">
-            <span id="btn'.($key+1).'" class="w3-btn w3-large">'.$estud->getFotoCircle().' '.$estud->nombres.'</span>
-            </div>';
-    }
-    return $salida.'</div>'; */
+    
+    echo OdaForm::hidden(field: 'ver_matriculas', 
+      value: Config::get('padres.mostrar_matriculas'));
+    
+    echo OdaForm::hidden(field: 'ver_seguimientos', 
+      value: Config::get('padres.mostrar_seguimientos'));
 
-    $ver_matriculas = Config::get('padres.matriculas');
-    $ver_seguimientos = Config::get('padres.seguimientos');
-    $ver_boletines = Config::get('padres.boletines');
-    $ver_planes_apoyo = Config::get('padres.planes_apoyo');
-    $ver_reconocimientos = Config::get('padres.reconocimientos');
+    echo OdaForm::hidden(field: 'ver_boletines', 
+      value: Config::get('padres.mostrar_boletines'));
 
-    echo OdaForm::hidden(field: 'ver_matriculas', value:$ver_matriculas);
-    echo OdaForm::hidden(field: 'ver_seguimientos', value:$ver_seguimientos);
-    echo OdaForm::hidden(field: 'ver_boletines', value:$ver_boletines);
-    echo OdaForm::hidden(field: 'ver_planes_apoyo', value:$ver_planes_apoyo);
-    echo OdaForm::hidden(field: 'ver_reconocimientos', value:$ver_reconocimientos);
+    echo OdaForm::hidden(field: 'ver_planes_apoyo', 
+      value: Config::get('padres.mostrar_planes_apoyo'));
 
+    echo OdaForm::hidden(field: 'ver_reconocimientos', 
+      value: Config::get('padres.mostrar_reconocimientos'));
+
+    echo OdaForm::hidden(field: 'periodo_boletines',
+      value: Config::get('padres.periodo_boletines'));
+      
+    echo OdaForm::hidden(field: 'periodo_planes_apoyo',
+     value: Config::get('padres.periodo_planes_apoyo'));
+    
     $periodo = $arrData['periodo'];
     $buttons = [];
     if (count($data)>0) {

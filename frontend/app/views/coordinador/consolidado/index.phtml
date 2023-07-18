@@ -2,11 +2,11 @@
     <?= View::Encab(page_module: $controller_name, page_action: $page_action, breadcrumb: $breadcrumb); ?>
     <?= View::flash(); ?>
 </div>
-<div class="w3-panel">
+<div class="w3-container">
     <div  class="w3-bar">
         <?php 
         foreach ($data as $key => $salon) {
-            echo "<div id=\"salon-$salon->id\" onclick=\"traer_data($salon->id)\" class=\"w3-bar-item\">$salon</div>" ;
+            echo "<div id=\"btn-$key\" onclick=\"traer_data($salon->id)\" class=\"w3-bar-item\">$salon</div>" ;
         }
         ?>
     </div>

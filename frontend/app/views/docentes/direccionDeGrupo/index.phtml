@@ -2,14 +2,8 @@
   <?= View::Encab($controller_name, $page_action, $breadcrumb).View::flash() ?>
 </div>
 
+<?= OdaTags::buttonBars($buttons);?>
 <div class="w3-container">
-  <?php
-  $buttons = [];
-  foreach ($data as $key => $salon) {
-    $buttons[$key] = ['caption'=>$salon, 'action'=>"traer_data($salon->id)"];
-  }
-  echo OdaTags::buttonBars($buttons);
-  ?>
   <div id="resultados"></div>
 </div>
 

@@ -12,16 +12,33 @@
               action: "docentes/notasCalificar/$periodo/$Salon->id/$Asignatura->id", 
               text: 'Calificar', 
               icon: '', 
-              attrs: 'class="w3-button w3-green w3-round-large"'
-            );            
+              attrs: 'class="w3-button w3-pale-green w3-round-large"'
+            );
             
+            $btn_planes_apoyo = OdaTags::linkButton(
+              action: "docentes/notasCalificarPlanesApoyo/$periodo/$Salon->id/$Asignatura->id", 
+              text: 'Planes de Apoyo', 
+              icon: '', 
+              attrs: 'class="w3-button w3-pale-red w3-round-large"'
+            );
+
+            $btn_seguimientos = OdaTags::linkButton(
+              action: "docentes/notasCalificarSeguimientos/$periodo/$Salon->id/$Asignatura->id", 
+              text: 'Seguimientos', 
+              icon: '', 
+              attrs: 'class="w3-button w3-pale-blue w3-round-large"'
+            );
+
+            //$btn_seguimientos $btn_planes_apoyo
             $tabla = new OdaTable();
-            $tabla->setCaption("<span>PERIODO $periodo</span> <span>$btn_calificar</span>");
+            $tabla->setCaption("<span>PERIODO $periodo</span> <span>$btn_calificar </span>");
 
             foreach ($regs_periodo as $key => $nota) {
+              OdaLog::debug($nota);
+              //OdaLog::debug(explode(', ', array_keys((array)$nota) ));
               $t1=($themei=='d'?'d1':'l1');   $t2=($themei=='d'?'d2':'l3');
               $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre))
-                           ." [$nota->salon_nombre] [$nota->asignatura_nombre]"
+                           ." $nota->salon_nombre - $nota->asignatura_nombre - Periodo $periodo"
                            .'</br>'.$nota->verNota();
 
               $fila1=array($nota->getFoto().'<br>Reg-'.$nota->id, $nom_estud);

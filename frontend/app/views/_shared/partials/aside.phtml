@@ -23,10 +23,10 @@
   <hr/>
   <!-- USUARIO Y NOTIFICACIONES -->
   <div class="w3-container w3-row">
-    <div class="w3-quarter w3-padding">
+    <div class="w3-quarter w3-margin-right">
       <?= OdaTags::img_docente(Session::get('documento'), Session::get('sexo'), $user_id,'class="w3-circle w3-margin-right" style="width:46px"') ?>
     </div>
-    <div class="w3-auto w3-padding">
+    <div class="w3-auto">
       <?="[$user_id] $username<br>"?> <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
       <?= OdaTags::link($action='logout', $text='Salir', $attrs = '') ?> 
       <br/>

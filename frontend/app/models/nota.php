@@ -15,18 +15,19 @@
   
   /// seguimiento intermedio
   'i21', 'i22', 'i23', 'i24', 'i25', 'i26', 'i27', 'i28', 'i29', 'i30', 
+  'asi_desempeno', 'asi_activ_profe', 'asi_activ_estud', 'asi_fecha_entrega', 
+  'is_asi_validar_ok', 'asi_calificacion', 'is_asi_ok_dirgrupo', 'is_asi_ok_coord', 
+  'asi_link_externo1', 'asi_link_externo2', 
 
   /// planes de apoyo
   'i31', 'i32', 'i33', 'i34', 'i35', 'i36', 'i37', 'i38', 'i39', 'i40', 
-
-  'asi_desempeno', 'asi_activ_profe', 'asi_activ_estud', 'asi_fecha_entrega', 
-  'asi_link_externo1', 'asi_link_externo2', 'paf_link_externo1', 'paf_link_externo2', 
+  'paf_link_externo1', 'paf_link_externo2', 
   'paf_temas', 'paf_acciones', 'paf_activ_estud', 'paf_activ_profe', 'paf_fecha_entrega', 
   'is_paf_ok_coord', 'is_paf_validar_ok', 'is_paf_ok_dirgrupo', 'paf_num_envios', 
+
   'ausencias', 'inthoraria', 'created_at', 'updated_at', 'created_by', 'updated_by'
-  'is_asi_validar_ok', 'asi_calificacion', 'is_asi_ok_dirgrupo', 'is_asi_ok_coord', 
 */
-  
+
 class Nota extends LiteRecord {
 
   use NotaTraitSetUp;
@@ -173,14 +174,15 @@ class Nota extends LiteRecord {
   public static function getNotasConsolidado(int $salon_id) {
     $aResult = [];
 
-    $sql = "SELECT N.annio AS annio, N.periodo_id AS periodo_id, N.grado_id AS grado_id,
+    $sql = "SELECT N.id as id, N.uuid as uuid, N.annio AS annio, N.periodo_id AS periodo_id, N.grado_id AS grado_id,
     N.salon_id AS salon_id, N.asignatura_id AS asignatura_id, N.estudiante_id AS estudiante_id, E.uuid AS estudiante_uuid,
     concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante,
     G.nombre AS grado, S.nombre AS salon, S.uuid AS salon_uuid, A.nombre AS asignatura, A.abrev AS asignatura_abrev,
     N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final,
     IF(N.nota_final<0, \"Error Nota Final <0\", IF(N.nota_final<60, \"Bajo\", IF(N.nota_final<70, \"Basico\", 
     IF(N.nota_final<80, \"Basico +\", IF(N.nota_final<90, \"Alto\", IF(N.nota_final<95, \"Alto +\", 
-    IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno
+    IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno,
+    is_asi_validar_ok, is_paf_validar_ok
     
     FROM ((((sweb_notas N LEFT JOIN sweb_asignaturas A on(N.asignatura_id = A.id)) 
     LEFT JOIN sweb_estudiantes E on(N.estudiante_id = E.id)) 
@@ -193,7 +195,13 @@ class Nota extends LiteRecord {
 
     $registros = static::query($sql)->fetchAll();
     foreach ($registros as $reg) {
-      $aResult["$reg->salon;$reg->salon_id;$reg->salon_uuid"]["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
+      $asi  = ($reg->is_asi_validar_ok>=3) ? '1': '0' ;
+      $paf  = ($reg->is_paf_validar_ok>=3) ? '1': '0' ;
+      $aResult["$reg->salon;$reg->salon_id;$reg->salon_uuid"]
+              ["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid"]
+              ["$reg->periodo_id"]
+              ["$reg->asignatura;$reg->asignatura_abrev"] 
+      = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf";
     }
     return $aResult;
   } //END-getVistaNotasTodasExportar

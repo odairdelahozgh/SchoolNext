@@ -6,59 +6,65 @@ document.addEventListener('DOMContentLoaded', function () {
 function traer_data(estudiante_id, salon_nombre, periodo) {
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   console.clear();
+
   // ========================================================================      
-  const info_estudiante = document.getElementById("info_estudiante");
+  const div_info_estudiante = document.getElementById("info_estudiante");
   fetch(ruta_base+'api/estudiantes/singleid/'+estudiante_id)
   .then((res) => res.json())
-  .then(datos => {
-    info_estudiante.innerHTML = template_datos_estud(datos, ruta_base, salon_nombre);
+  .then(data_estudiante => {
+    
+    div_info_estudiante.innerHTML = template_datos_estud(data_estudiante, ruta_base, salon_nombre);
+    
+    // LINKS PARA DESCARGAR BOLETINES
+    const periodo_actual = document.getElementById('periodo').innerHTML.trim();
+    div_boletines = document.getElementById('boletines');
+    if (1==document.getElementById('ver_boletines').value) {
+      div_boletines.innerHTML = template_boletines(data_estudiante, ruta_base, periodo_actual);
+    }
+
   });
 
   // ========================================================================      
   const periodo_planes_apoyo = document.getElementById('periodo_planes_apoyo').value;
-  console.log('Periodo: '+periodo_planes_apoyo);
+  const div_planes_apoyo = document.getElementById('planes_apoyo');
   if (1==document.getElementById('ver_planes_apoyo').value) { 
     getDataPlanesApoyo(ruta_base, estudiante_id, periodo_planes_apoyo)
     .then(res => {
-      const elements = res.reduce((acc, data) => acc + template_planes_apoyo(ruta_base, data), "");
+      const elements = res.reduce((acc, data_planes_apoyo) => acc + template_planes_apoyo(ruta_base, data_planes_apoyo), "");
       const botones = elements;
 
       if (botones.length>0) { 
-        planes_apoyo.innerHTML = `
+        div_planes_apoyo.innerHTML = `
         <div>
           <h2 class="w3-panel w3-theme w3-round-xlarge">Planes de Apoyo</h2>
           ${botones}
         </div>`;
       } else { 
-        planes_apoyo.innerHTML =  `
+        div_planes_apoyo.innerHTML =  `
         <div>
           <h2 class="w3-panel w3-theme w3-round-xlarge">Planes de Apoyo</h2>
           <span class="w3-text-blue">No tiene Planes de Apoyo en el presente periodo</span>
         </div>`; 
       }
     });
-  }
+  } //IF
   
-
 
 } //END-traer_data
 
-
-
-
 function getDataPlanesApoyo(ruta_base, estudiante_id, periodo_id) {
   ruta = ruta_base+'api/planes_apoyo/by_estudiante_periodo/'+estudiante_id+'/'+periodo_id;
-  console.log(ruta);
   return fetch(ruta).then(res => res.json() );
 }//END-getDataPlanesApoyo
 
 function template_planes_apoyo(ruta_base, data) {
   let ruta_descarga_plan_apoyo  = ruta_base+'admin/planes_apoyo/exportPlanesApoyoEstudiantePdf/'+data.uuid;
+  console.log('periodo: '+data.periodo_id);
   return `
     <a href="${ruta_descarga_plan_apoyo}" 
        class="w3-btn w3-black" 
        target="_blank">
-       <i class="fa-solid fa-file-pdf"></i> P.A. ${data.asignatura_nombre} 
+       <i class="fa-solid fa-file-pdf"></i> P.A. ${data.asignatura_nombre} P${data.periodo_id}
     </a>
   `;
 } //END-template_planes_apoyo
@@ -74,23 +80,22 @@ function template_datos_estud(data, ruta, salon_nombre) {
 
     <div class="w3-container">
       <table class="w3-table">
-      <tr>
-      <td>Cuenta MS Teams:<br>
-      <span class="w3-text-blue">${data.email_instit}@windsorschool.edu.co</span><br>
-      Clave de Acceso: <span class="w3-text-blue">${data.clave_instit}</span>
-      </td>
-      <td></td>
-      <td>Última Referencia de Pago:<br>
-      Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado}
-      </td>
-      </tr>
+        <tr>
+          <td>Cuenta MS Teams:<br>
+            <span class="w3-text-blue">${data.email_instit}@windsorschool.edu.co</span><br>
+            Clave de Acceso: <span class="w3-text-blue">${data.clave_instit}</span>
+          </td>
+          <td>
+          </td>
+          <td>Última Referencia de Pago:<br> Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado} 
+          </td>
+        </tr>
       </table>
     </div>
 
     <footer class="w3-container w3-light-blue">
       <h5> notificaciones...</h5>
     </footer>
-
   </div>
   `;
 } //END-template_datos_estud
@@ -111,7 +116,8 @@ function template_seguimientos(data, ruta) {
   `;
 } //END-template_seguimientos
 
-function template_boletines(data, ruta, periodo) {
+
+function template_boletines(estudiante, ruta_base, periodo_actual) {
   let links = '';
   let mes_req = [];
   mes_req[1] = 4;
@@ -120,10 +126,10 @@ function template_boletines(data, ruta, periodo) {
   mes_req[4] = 11;
   mes_req[5] = 11;
 
-  for (var i= 1; i<=periodo; i++) {
-    if (data.mes_pagado>=mes_req[i]) {
+  for (var i= 1; i<=periodo_actual; i++) {
+    if (estudiante.mes_pagado>=mes_req[i]) {
       links +=  `
-      <a href="${ruta}admin/notas/exportBoletinEstudiantePdf/${i}/${data.uuid}" 
+      <a href="${ruta_base}admin/notas/exportBoletinEstudiantePdf/${i}/${estudiante.uuid}" 
       class="w3-btn w3-blue" alt="Descarga PDF" target="_blank"><i class="fa-solid fa-file-pdf"></i> Boletin p${i}</a>
       `;
     } else {
@@ -138,7 +144,8 @@ function template_boletines(data, ruta, periodo) {
   `;
 } //END-template_boletines
 
-function template_reconocimientos(data, ruta) {
+
+function template_reconocimientos(data, ruta_base) {
   return `
     <h2 class="w3-panel w3-theme w3-round-xlarge">Reconocimientos</h2>
   `;

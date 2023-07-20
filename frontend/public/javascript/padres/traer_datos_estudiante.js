@@ -58,7 +58,7 @@ function getDataPlanesApoyo(ruta_base, estudiante_id, periodo_id) {
 }//END-getDataPlanesApoyo
 
 function template_planes_apoyo(ruta_base, data) {
-  let ruta_descarga_plan_apoyo  = ruta_base+'admin/planes_apoyo/exportPlanesApoyoEstudiantePdf/'+data.uuid;
+  let ruta_descarga_plan_apoyo  = ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+data.uuid;
   console.log('periodo: '+data.periodo_id);
   return `
     <a href="${ruta_descarga_plan_apoyo}" 

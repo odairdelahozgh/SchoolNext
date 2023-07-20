@@ -58,7 +58,7 @@ function traer_data(salon_id) {
             [reg_id, reg_uuid, definitiva, plan_apoyo, nota_final, desempeno, is_asi_validar_ok, is_paf_validar_ok] = datos[salon][estudiante][periodo][asignatura].split(";");
           
             asi = (is_asi_validar_ok==1) ? '<span class="w3-border w3-green w3-tiny" title="Seguimiento Intermedio">S.I.</span>' : '';
-            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoEstudiantePdf/'+reg_uuid+'" class="w3-border w3-orange w3-tiny" target="_blank" title="Plan de Apoyo">P.A.</a>' : '';
+            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-border w3-orange w3-tiny" target="_blank" title="Plan de Apoyo">P.A.</a>' : '';
             br = ((asi.length+paf.length)>0) ? '<br>' : '';
             body_table += `<td>${nota_final} ${br} ${asi} ${paf}</td>`;
           }

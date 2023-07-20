@@ -1,0 +1,21 @@
+<div class="w3-container">
+   <?= View::flash(); ?>
+   <?= View::Encab($controller_name, $page_action); ?>
+</div>
+
+<div class="w3-container">
+<h1>HASH: xxh3 </h1>
+<?php
+  try {
+    $data = date('ymdhis');
+    $hash = hash("xxh3", $data, options: ["seed" => 2175]);
+    echo "data:$data : hash: $hash";
+    
+    echo '<br>'.OdaTags::linkExterno('https://php.watch/versions/8.1/xxHash', 'Help to HASH (xxh3)');
+    
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+?>
+
+</div>

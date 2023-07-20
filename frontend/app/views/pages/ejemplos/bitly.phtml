@@ -1,21 +1,29 @@
-<?php
-require_once VENDOR_PATH . 'autoload.php';
-  //use Codehaveli\Bitly;
-  //use Codehaveli\Exceptions\BitlyErrorException;
+<div class="w3-container">
+   <?= View::flash(); ?>
+   <?= View::Encab($controller_name, $page_action); ?>
+</div>
 
-try {
-  
-  // $bitly = new OdaBitlyV4();
-  // $bitly->make_bitly_url('https://php.watch/versions/8.0/named-parameters');
-  // echo $bitly;
-  
-  // First setup your credentials provided by Bitly
-  //$accessToken  = Config::get('config.bitly.access_token');
-  //$guid         = "o_4cv2olc2u0";
-  echo 'hola';
-  
-  //Bitly::init($accessToken, $guid);
-} catch (\Throwable $th) {
-  OdaFlash::error($th) ;
-}
+<div class="w3-container">
+<?php
+  require_once VENDOR_PATH . 'autoload.php';
+    //use Codehaveli\Bitly;
+    //use Codehaveli\Exceptions\BitlyErrorException;
+
+  try {
+    
+    // $bitly = new OdaBitlyV4();
+    // $bitly->make_bitly_url('https://php.watch/versions/8.0/named-parameters');
+    // echo $bitly;
+    
+    // First setup your credentials provided by Bitly
+    //$accessToken  = Config::get('config.bitly.access_token');
+    //$guid         = "o_4cv2olc2u0";
+    echo 'hola';
+    
+    //Bitly::init($accessToken, $guid);
+  } catch (\Throwable $th) {
+    OdaFlash::error($th) ;
+  }
 ?>
+
+</div>

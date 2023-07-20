@@ -17,18 +17,40 @@ require_once "enums.php";
 
 class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
 { 
-  protected static $_user_id = 0;
-  protected static $_username = '';
-  protected static $lim_tam_campo_uuid = 36;
-  protected static $tam_campo_uuid = 30;    
-  protected static $order_by_default = 't.id';
-  protected static $class_name = __CLASS__;
   protected static $_periodo_actual = 0;
   protected static $_annio_actual = 0;
+  protected static $_user_id = 0;
+  protected static $_username = '';
+
+  protected static $_tam_uuid_max  = 36;
+  protected static $_tam_uuid_defa = 24;
+  protected static $_order_by_defa = 't.id';
+  protected static $_class_name = __CLASS__;
+
+  /**
+   * @deprecated mejor usar  $_tam_uuid_max
+   */
+  protected static $lim_tam_campo_uuid = 36; /// esto se eliminará
+  
+  /**
+   * @deprecated mejor usar  $_tam_uuid_defa
+   */
+  protected static $tam_campo_uuid = 30;     /// esto se eliminará
+  
+  /**
+   * @deprecated mejor usar  $_order_by_defa
+   */
+  protected static $order_by_default = 't.id'; /// esto se eliminará
+  
+  /**
+   * @deprecated mejor usar $_class_name
+   */
+  protected static $class_name = __CLASS__; /// esto se eliminará
+  
   const LIM_PAGO_PERIODOS = [ 1=>4, 2=>6, 3=>9, 4=>11, 5=>11 ];
-  const SEXO          = ['M'=>'Masculino', 'F'=>'Femenino'];
-  const IS_ACTIVE     = [0 =>'Inactivo', 1=>'Activo'];
-  const ICO_IS_ACTIVE = [0=>'face-frown', 1=>'face-smile'];
+  const SEXO          = ['M'=>'Masculino', 'F'=>'Femenino']; /// esto se eliminará
+  const IS_ACTIVE     = [0 =>'Inactivo', 1=>'Activo']; /// esto se eliminará
+  const ICO_IS_ACTIVE = [0=>'face-frown', 1=>'face-smile']; /// esto se eliminará
 
   public function __construct() {
     self::$_user_id = Session::get('id');
@@ -42,8 +64,11 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   public function _beforeCreate() { // ANTES de Crear el Registro
     $ahora = date('Y-m-d H:i:s', time());
     if (property_exists($this, 'is_active'))  { $this->is_active = 1; }
+    // if (property_exists($this, 'uuid')) { 
+    //   if (method_exists($this, 'setUUID')) { $this->uuid = $this->setUUID(); }
+    // }
     if (property_exists($this, 'uuid')) { 
-      if (method_exists($this, 'setUUID')) { $this->uuid = $this->setUUID(); }
+      if (method_exists($this, 'setHash')) { $this->uuid = $this->setHash(); }
     }
     if (property_exists($this, 'created_by')) { $this->created_by = self::$_user_id; }
     if (property_exists($this, 'created_at')) { $this->created_at = $ahora; }
@@ -57,8 +82,11 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
       if (is_null($this->is_active)) { $this->is_active = 0; }
     }
     if (property_exists($this, 'uuid')) {
-      if (method_exists($this, 'setUUID')) { 
-        if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setUUID(); }
+      // if (method_exists($this, 'setUUID')) { 
+      //   if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setUUID(); }
+      // }
+      if (method_exists($this, 'setHash')) { 
+        if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setHash(); }
       }
     }
     if (property_exists($this, 'updated_by')) { $this->updated_by = self::$_user_id; }
@@ -73,9 +101,9 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   
 
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
-     $DQL = new OdaDql(_from: self::$class_name);
+     $DQL = new OdaDql(_from: self::$_class_name);
      $DQL->select( $select)
-         ->orderBy( self::$order_by_default);
+         ->orderBy( self::$_order_by_defa);
     if (!is_null(value: $order_by)) { $DQL->orderBy( $order_by); }
     if (!is_null(value: $estado))   { 
       $DQL->where( 't.is_active=?')

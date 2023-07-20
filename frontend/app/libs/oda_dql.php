@@ -97,7 +97,7 @@ class OdaDql {
     foreach ($arr_values as $key => $value) {
       if (!empty($value)) { $sets .= " t.$key='$value',"; }
     }
-    $this->_from_source = Config::get("tablas.nota");
+    //$this->_from_source = Config::get("tablas.grado");
     $this->_sets = substr($sets, 0, strlen($sets)-1);
     $this->_tipo_dql  = TipoDql::Update;
     return $this;

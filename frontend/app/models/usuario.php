@@ -46,7 +46,6 @@ class Usuario extends LiteRecord {
       // return [];
 
     //return $DQL->execute();
-    //OdaLog::debug("mensaje","rastreo");
 
   } catch (\Throwable $th) {
     OdaFlash::error($th);

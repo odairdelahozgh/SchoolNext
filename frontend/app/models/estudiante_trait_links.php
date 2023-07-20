@@ -26,20 +26,32 @@ trait EstudianteTraitLinks {
     }
   } //END-getLnkBoletinesTodos
 
-  // public function linkOldPlanApoyoId() {
-  //   $estud_id = $this->id;
-  //   $salon_id = $this->salon_id;
-  //   $url = Config::get('old.url_schoolweb');
-  //   $periodo_actual = Config::get('config.academic.periodo_actual');
-  //   $btns = '';
-  //   for ($i=1; $i<=$periodo_actual; $i++) { 
-  //       $href="$url/+/notas/PlanesApoyoFinalPadresPDF?id=1"";
-  //       $txt="P$i";
-  //       $attrs="class=\"w3-btn w3-round w3-padding-small w3-red\" target=\"_blank\" title=\"Descargar Boletín : Periodo $i\"";
-  //       $btns .= OdaTags::linkExterno($href, $txt, $attrs).'&ensp;';
-  //   }
-  //   return '<div class="w3-show-inline-block"><div class="w3-bar">'.$btns.'</div></div>';
-  // }
+
+  public function getLnkPlanApoyo(int $periodo): string {
+    try {
+      return OdaTags::linkButton (
+        //admin/planes_apoyo/exportPlanesApoyoEstudiantePdf/'+reg_uuid+'"
+        action: "admin/planes_apoyo/exportPlanesApoyoEstudiantePdf/$this->uuid", 
+        text: "Bolet&iacute;n P$periodo", 
+        attrs: " target=\"_blank\" class=\"w3-button w3-pale-red\"");
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getLnkBoletin
+  
+  public function getLnkPlanesApoyoTodos(): string {
+    try {
+      $lnk = '';
+      for ($i=1; $i<=self::$_periodo_actual; $i++) { 
+        $lnk .= $this->getLnkBoletin($i).'&nbsp;&nbsp;';
+      }
+      return $lnk;
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getLnkBoletinesTodos
 
 
   public function getlnkSetMesPagosTodos(): string {

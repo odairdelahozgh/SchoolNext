@@ -154,7 +154,6 @@ class Estudiante extends LiteRecord {
     try {
       $lista = (new EstudiantePadres)->getHijos($user_id);
       $filtro = implode(',', $lista);
-      //OdaLog::debug("user_id:$user_id - filtro: $filtro");
 
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL = $this->DQL;
@@ -256,26 +255,36 @@ class Estudiante extends LiteRecord {
    * 
    */
   public function setActualizarPago(int $estudiante_id): bool {
-    $RegEstud = (new Estudiante)->get($estudiante_id);
-    if ($RegEstud) {
-      //$periodo_actual = (int)Config::get(var: 'config.academic.periodo_actual');
-      $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[self::$_periodo_actual];
-      $RegEstud->annio_pagado = self::$_annio_actual;
-      $RegEstud->save();
-      return true;
+    try {
+      $RegEstud = (new Estudiante)->get($estudiante_id);
+      if ($RegEstud) {
+        $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[self::$_periodo_actual];
+        $RegEstud->annio_pagado = self::$_annio_actual;
+        $RegEstud->save();
+        return true;
+      }
+      return false;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    return false;
   } // END-setActualizarPago 
- 
+  
+
   public function setMesPago(int $estudiante_id, int $mes): bool {
-    $RegEstud = (new Estudiante)->get($estudiante_id);
-    if ($RegEstud) {
-      $RegEstud->mes_pagado = $mes;
-      $RegEstud->annio_pagado = self::$_annio_actual;
-      $RegEstud->save();
-      return true;
+    try {
+      $RegEstud = (new Estudiante)->get($estudiante_id);
+      if ($RegEstud) {
+        $RegEstud->mes_pagado = $mes;
+        $RegEstud->annio_pagado = self::$_annio_actual;
+        $RegEstud->save();
+        return true;
+      }
+      return false;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    return false;
-  } // END-setActualizarMesPago 
+  } // END-setMesPago 
  
 }//END-CLASS

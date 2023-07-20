@@ -98,7 +98,6 @@ class Salon extends LiteRecord {
           ->setParams([$user_id]);
       }
       return $DQL->execute();
-      //OdaLog::debug("mensaje","rastreo");
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);

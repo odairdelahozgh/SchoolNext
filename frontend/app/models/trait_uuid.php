@@ -20,6 +20,21 @@ trait TraitUuid {
     return substr(bin2hex($bytes), 0, $lenght);
   }//END-UUIDReal
   
+
+  public function xxh3Hash(): string {
+    try {
+      $data = date('ymdhis');
+      return hash("xxh3", $data, options: ["seed" => $this->id]);
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-xxh3Hash
+
+  public function setHash(): void {
+    $this->uuid = $this->xxh3Hash();
+  } //END-setHash
+
   public function setUUID(int $lenght=20) {
     $this->uuid = $this->UUIDReal($lenght); // Asigna un numero UUID
   } //END-setUUID
@@ -58,6 +73,17 @@ trait TraitUuid {
       OdaFlash::error($th);
     }
   } //END-setUUID_All_ojo
+
+
+  public function setUUID_All($tabla) { // Instancia UUID de todos
+    try {
+      
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-setUUID_All_ojo
+
 
 
 } //END-TraitUuid

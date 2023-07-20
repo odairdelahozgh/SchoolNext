@@ -172,5 +172,45 @@ class PlanesApoyoController extends ScaffoldController
     View::select(view: "planes_apoyo.pdf", template: null);
   } //END-exportPlanesApoyoEstudiantePdf
 
+  
+  public function exportPlanesApoyoRegistroPdf(string $plan_apoyo_uuid): void {
+    try {    
+      $PA = (new PlanesApoyo)::getByUUID($plan_apoyo_uuid);
+      
+      $Estud = (new Estudiante())::get($PA->estudiante_id);
+      $this->arrData['Estud'] = $Estud;
+      
+      //$this->arrData['Profesor'] = (new SalAsigProf())::getProfesor($PA->salon_id, $PA->asignatura_id);
+      //OdaLog::debug($this->arrData['Profesor']);
+      $Asign = (new Asignatura)::get($PA->asignatura_id);
+      $Salon = (new Salon)::get($PA->salon_id);
+      $this->arrData['Periodo'] = $PA->periodo_id;
+      $this->arrData['Asign'] = $Asign;
+      $this->arrData['Salon'] = $Salon;
+      $this->arrData['Grado'] = (new Grado)::get($PA->grado_id);
+      
+      $this->arrData['Docentes'] = [];
+      foreach ((new Empleado)->getList() as $empleado) {
+        $this->arrData['Docentes'][$empleado->id] = $empleado;
+      }
+      
+      $Indicadores = (new Indicador())->getByPeriodoGrado($PA->periodo_id, (int)$PA->grado_id);
+      foreach ($Indicadores as $key => $indic) {
+        $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = trim($indic->concepto);
+      }
+      $this->file_tipo = 'Plan de Apoyo';
+      $this->file_name = OdaUtils::getSlug("plan-apoyo-{$Estud}-periodo-{$PA->periodo_id}");
+      $this->file_title = "$this->file_tipo de $Estud";
+      
+      $this->data = $PA;
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    
+    View::select(view: "planes_apoyo.pdf", template: null);
+  } // END-exportPlanesApoyoRegistroPdf
+
+
 
 } // END CLASS

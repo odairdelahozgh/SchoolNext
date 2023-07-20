@@ -31,7 +31,6 @@ class CoordinadorController extends AppController
       try {
         $this->page_action = 'Consolidado de Notas';
         $this->data = (new Salon())->getByCoordinador(Session::get('id'));
-        //OdaLog::debug("mensaje","rastreo");
       
       } catch (\Throwable $th) {
         OdaFlash::error($th);

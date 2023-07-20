@@ -49,8 +49,8 @@ try {
   $attrs_td  = ['colspan="2"; width="50%";','width="35%"', 'width="15%"'];
   $fila = [
     $arrData['Estud'],
-    'Desempeño:' ,
-    'F. Evaluación::' ,
+    'Desempe&nacute;o:' ,
+    'F. Evaluaci&oacute;n::' ,
   ];
   $tabla->addRow(data: $fila, attrs: ['bgcolor="#B2BABB";'], attrs_td: $attrs_td);
   // --------------------------------
@@ -80,7 +80,6 @@ try {
     $titulo = '<hr><h4>TEMAS</h4>';
     $tabla->addRow(data: [$titulo], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->paf_temas], attrs_td: ['colspan="4"']);
-    OdaLog::debug($data->paf_temas);
   }
 
   // paf_acciones
@@ -88,7 +87,6 @@ try {
     $titulo = '<hr><h4>Acciones Realizadas</h4>';
     $tabla->addRow(data: [$titulo], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->paf_acciones], attrs_td: ['colspan="4"']);
-    OdaLog::debug($data->paf_acciones);
   }
 
   // paf_activ_profe
@@ -96,7 +94,6 @@ try {
     $titulo = '<hr><h4>Actividades realizadas por el profesor</h4>';
     $tabla->addRow(data: [$titulo], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->paf_activ_profe], attrs_td: ['colspan="4"']);
-    OdaLog::debug($data->paf_activ_profe);
   }
 
   // paf_activ_estud
@@ -104,7 +101,6 @@ try {
     $titulo = '<hr><h4>Actividades para el Estudiante</h4>';
     $tabla->addRow(data: [$titulo], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->paf_activ_estud], attrs_td: ['colspan="4"']);
-    OdaLog::debug($data->paf_activ_estud);
   }
 
   // paf_link_externo1
@@ -113,7 +109,6 @@ try {
     $tabla->addRow(data: [$titulo], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->paf_link_externo1], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->paf_link_externo2], attrs_td: ['colspan="4"']);
-    OdaLog::debug($data->paf_link_externo1.'<br>'.$data->paf_link_externo2);
   }
   
   $archivoPDF->WriteHTML($tabla);

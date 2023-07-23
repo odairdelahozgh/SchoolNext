@@ -6,7 +6,9 @@
 <div class="w3-container">
 <?php
 try {
+
   $Modelo = (new Grado());
+  
   foreach ($Modelo::all() as $key => $obj) {
     $uuid = $obj->xxh3Hash();
     

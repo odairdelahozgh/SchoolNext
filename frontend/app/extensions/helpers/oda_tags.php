@@ -19,7 +19,7 @@ class OdaTags {
 
 
    /**
-    * Crea un tag HTML
+    * @deprecated usar t
     * */
     public static function createTag(string $tag, string|null $content = null, string|array $attrs = ''): string {
       if (is_array(value: $attrs)) { $attrs = self::getAttrs(params: $attrs); }
@@ -27,6 +27,12 @@ class OdaTags {
       return "<$tag $attrs>$content</$tag>";
    }
    
+   public static function tag(string $tag, string|null $content = null, string|array $attrs = ''): string {
+    if (is_array(value: $attrs)) { $attrs = self::getAttrs(params: $attrs); }
+    if (is_null(value: $content)) { return "<$tag $attrs/>"; }
+    return "<$tag $attrs>$content</$tag>";
+ }
+
    public static function multiTags( $tag='span', $data=array(), $attrs='' ) {
       if (is_array($attrs)) { $attrs = self::getAttrs($attrs); }
       $tags='';
@@ -196,12 +202,23 @@ class OdaTags {
 
   public static function inputRangoJs ($range_id) {
     return 
-    "const range = document.getElementById(\"range_$range_id\");
-     const valor = document.getElementById(\"notas_definitiva_$range_id\");
+    "const rangeD = document.getElementById(\"range_$range_id\");
+     const valorD = document.getElementById(\"notas_definitiva_$range_id\");
+     const rangePA = document.getElementById(\"range_$range_id\");
+     const valorPA = document.getElementById(\"notas_plan_apoyo_$range_id\");
+     const rangeNF = document.getElementById(\"range_$range_id\");
+     const valorNF = document.getElementById(\"notas_nota_final_$range_id\");
     
-    range.addEventListener('input', (event) => {
-      valor.value = event.target.value;
-    });";
+    rangeD.addEventListener('input', (event) => {
+      valorD.value = event.target.value;
+    });
+    rangePA.addEventListener('input', (event) => {
+      valorPA.value = event.target.value;
+    });
+    rangeNF.addEventListener('input', (event) => {
+      valorNF.value = event.target.value;
+    });
+    ";
   }
   
 } // END-OdaTag

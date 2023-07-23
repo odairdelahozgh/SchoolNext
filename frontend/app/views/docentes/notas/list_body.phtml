@@ -1,45 +1,46 @@
 <div class="w3-margin-top">
 
    <?php
-      $result = '';
+      $result = "";
       $tabbuttons = '<div class="w3-bar w3-theme w3-card">';
       foreach ($data as $periodo => $regs_periodo) {
          if (isset($regs_periodo[0])) {
             $tabbuttons .= "<button class=\"w3-bar-item w3-mobile w3-button tablink w3-theme-action\" 
                               onclick=\"openTab(event,'p$periodo')\">Periodo $periodo</button>";
-            
+                              
+            $btn_seguimientos = OdaTags::linkButton(
+              action: "docentes/notasCalificarSeguimientos/$periodo/$Salon->id/$Asignatura->id", 
+              text: 'Seguimientos', 
+              icon: '', 
+              attrs: 'title="Ingresar SEGUIMIENTOS INTERMEDIOS" class="w3-button w3-small w3-pale-blue w3-round-large"'
+            );
+
             $btn_calificar = OdaTags::linkButton(
               action: "docentes/notasCalificar/$periodo/$Salon->id/$Asignatura->id", 
               text: 'Calificar', 
               icon: '', 
-              attrs: 'class="w3-button w3-pale-green w3-round-large"'
+              attrs: 'title="Ingresar NOTAS" class="w3-button w3-small w3-pale-green w3-round-large"'
             );
             
             $btn_planes_apoyo = OdaTags::linkButton(
               action: "docentes/notasCalificarPlanesApoyo/$periodo/$Salon->id/$Asignatura->id", 
               text: 'Planes de Apoyo', 
               icon: '', 
-              attrs: 'class="w3-button w3-pale-red w3-round-large"'
+              attrs: 'title="Ingresar PLANES DE APOYO" class="w3-button w3-small w3-pale-red w3-round-large"'
             );
 
-            $btn_seguimientos = OdaTags::linkButton(
-              action: "docentes/notasCalificarSeguimientos/$periodo/$Salon->id/$Asignatura->id", 
-              text: 'Seguimientos', 
-              icon: '', 
-              attrs: 'class="w3-button w3-pale-blue w3-round-large"'
-            );
 
-            //$btn_seguimientos $btn_planes_apoyo
+            $btn_seguimientos  = ''; // temporal
             $tabla = new OdaTable();
-            $tabla->setCaption("<span>PERIODO $periodo</span> <span>$btn_calificar </span>");
+            
+
+            $tabla->setCaption("<h2 class=\"\">[$Salon->nombre] $Asignatura->nombre PERIODO $periodo</h2> 
+            $btn_seguimientos &nbsp;&nbsp; $btn_calificar &nbsp;&nbsp; $btn_planes_apoyo<br><br>");
 
             foreach ($regs_periodo as $key => $nota) {
-              OdaLog::debug($nota);
-              //OdaLog::debug(explode(', ', array_keys((array)$nota) ));
               $t1=($themei=='d'?'d1':'l1');   $t2=($themei=='d'?'d2':'l3');
-              $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre))
-                           ." $nota->salon_nombre - $nota->asignatura_nombre - Periodo $periodo"
-                           .'</br>'.$nota->verNota();
+              $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre)." [$Salon->nombre]")
+                           ."</br>P$periodo:  $Asignatura->nombre ".$nota->verNota();
 
               $fila1=array($nota->getFoto().'<br>Reg-'.$nota->id, $nom_estud);
               $attr = "id=\"$nota->id-1\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';

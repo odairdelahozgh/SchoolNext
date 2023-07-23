@@ -46,28 +46,27 @@ return [
   'notas'               => 'sweb_notas',
   'notas_hist'          => 'sweb_notas_historia',
 
-  'periodo'               => 'sweb_periodos',
-  'periodos'              => 'sweb_periodos',
-
-  'rango'                 => 'sweb_rangos',
-  'rangos'                => 'sweb_rangos',
+  'periodo'              => 'sweb_periodos',
+  'periodos'             => 'sweb_periodos',
+  'rango'                => 'sweb_rangos',
+  'rangos'               => 'sweb_rangos',
   
-  'salon'                 => 'sweb_salones',
-  'salones'               => 'sweb_salones',
-  'sal_asig_prof'         => 'sweb_salon_asignat_profesor',
-  'salon_asignat_profe'   => 'sweb_salon_asignat_profesor',
-  'salones_asignat'       => 'sweb_salon_asignat',
+  'salon'                => 'sweb_salones',
+  'salones'              => 'sweb_salones',
+  'sal_asig_prof'        => 'sweb_salon_asignat_profesor',
+  'salon_asignat_profe'  => 'sweb_salon_asignat_profesor',
+  'salones_asignat'      => 'sweb_salon_asignat',
   
-  'seccion'               => 'sweb_secciones',
-  'secciones'             => 'sweb_secciones',
+  'seccion'              => 'sweb_secciones',
+  'secciones'            => 'sweb_secciones',
 
-  'tareas'                => 'snxt_tareas_sw',
-  'tarea'                 => 'snxt_tareas_sw',
+  'tareas'               => 'snxt_tareas_sw',
+  'tarea'                => 'snxt_tareas_sw',
 
-  'usuario'               => 'dm_user',
-  'usuarios'              => 'dm_user',
-  'usuarios_estudiantes'  => 'sweb_dmuser_estudiantes',
-  'usuarios_asignaturas'  => 'sweb_users_asignaturas',
-  'usuarios_secciones'    => 'sweb_users_secciones',
+  'usuario'              => 'dm_user',
+  'usuarios'             => 'dm_user',
+  'usuarios_estudiantes' => 'sweb_dmuser_estudiantes',
+  'usuarios_asignaturas' => 'sweb_users_asignaturas',
+  'usuarios_secciones'   => 'sweb_users_secciones',
   
 ];

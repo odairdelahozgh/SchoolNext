@@ -33,7 +33,6 @@
   <div class="w3-container w3-rest">
     <?php 
     try {
-      OdaLog::debug("mensaje","rastreo");
       $periodo = Config::get('config.academic.periodo_actual');
       $user = Session::get('id');
       echo OdaTags::linkExterno(

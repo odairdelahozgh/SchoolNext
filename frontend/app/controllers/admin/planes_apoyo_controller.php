@@ -7,124 +7,130 @@
   
 class PlanesApoyoController extends ScaffoldController
 {
-  function guardarPlanesApoyo(int $periodo, int $salon_id, int $asignatura_id) {
-    //$this->page_action = "Notas Guardadas";
+  function guardarPlanesApoyo(int $salon_id, int $asignatura_id) {
+    $this->page_action = "Guardar Planes de Apoyo";
     $redirect = "docentes/listNotas/$asignatura_id/$salon_id";
-
     //  var_dump(array_filter($_POST, function($k) {
     //   return $k == 'notas';
     //   }, ARRAY_FILTER_USE_KEY));
     //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
 
     try {
-      //$cnt_success = 0; 
-      $cnt_fails = 0;
-      if (Input::hasPost($this->nombre_post)) {
-        $Post = Input::post($this->nombre_post);
+      $post_name = 'planes_apoyo';
+      if (!Input::hasPost($post_name)) {
+        OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$this->nombre_post</b>, no llegó");
+      }
+
+      if (Input::hasPost($post_name)) {
+        $Post = Input::post($post_name); // vienen todos los registro mezclados
+        
+        // $notas = []; CONTIENE LA INFO ORGANIZADA REGISTRO POR REGISTRO
         $notas = [];
         foreach ($Post as $field_name => $value) {
-          $codigo_id = (int)substr(string: $field_name, offset: strpos(haystack: $field_name, needle: "_") + 1);
+          $codigo_id = (int)substr($field_name, strripos($field_name, "_") + 1);
           if ($codigo_id>0) { // evitar que se cuele una variable que no sea del registro de calificacion (formato "_$id")
             $notas[$codigo_id][$field_name] = $value;
-          }
+            if (str_starts_with($field_name, 'profesor_id')) {
+              if ( (is_null($value) or (0==$value)) and (1!=$this->user_id)) {
+                $notas[$codigo_id][$field_name] = $this->user_id; // reemplace el valor por el usuario actual
+              }
+            }
+            if (str_starts_with($field_name, 'paf_fecha_entrega')) {
+              if ( (is_null($value) or ('0000-00-00'==$value)) ) {
+                $notas[$codigo_id][$field_name] = ''; // reemplace el valor por el usuario actual
+              }
+            }
+          } // else { OdaLog::debug("excluidos $field_name"); }
         }//end-foreach
-
         
-        foreach ($notas as $id => $registro) { // PREPARA EL REGISTRO INDIVIDUAL DE NOTAS
+        
+        // ----------------------------------------------------------------
+        $INDEX_INDCI_INI = 31; $INDEX_INDCI_FIN = 40;  // INDICADORES DE PLANES DE APOYO 31=>40
+        foreach ($notas as $id => $registro) {
+
+           // PREPARA EL REGISTRO INDIVIDUAL DE NOTAS
           $data_temp = [];
           foreach ($registro as $field_name_id => $value) {
             $long = strlen($field_name_id) - (strlen($id)+1);
-            $field_name = substr($field_name_id,0, $long);
+            $field_name = substr($field_name_id,0,$long);
             $data_temp[$field_name] = "$value";
+
+            if (str_starts_with($field_name_id, 'profesor_id') & (0==$value) & (1!=$this->user_id) ) {
+              $data_temp[$field_name] = $this->user_id;
+            }
           }
-          $dt_debug = '';
-          //if (4138==$id) {
-          //  $dt_debug .= 'Data Temp: '.implode(', ', $data_temp).PHP_EOL;
-          //  $dt_debug .= 'Data Temp keys: '.implode(', ', array_keys($data_temp)).PHP_EOL.PHP_EOL;
-          //}
           
+          // ORGANIZA LOS INDICADORES
           $cnt_num_ind = 0;
           $data_indicadores = [];
           $data = [];
           foreach ($data_temp as $key => $value) { 
             if (str_starts_with($key, 'i')) { // campos de indicadores
               if (strlen($value)>0) { // indicadores validos
-                $cnt_num_ind +=1;
-                $index = ($cnt_num_ind<10) ? 'i0'.$cnt_num_ind : 'i'.$cnt_num_ind;
+                $index = 'i'.($INDEX_INDCI_INI + $cnt_num_ind); // PLANES DE APOYO VAN DESDE EL 31 AL 40
                 $data_indicadores[$index] = $value;
+                $cnt_num_ind +=1;
               }
             } else {  // campos que no son indicadores
               $data[$key] = $value;
             }
           }
-          // if (4138==$id) {
-          //   $dt_debug .= 'Data indicadores: '.implode(', ', $data_indicadores).PHP_EOL;
-          //   $dt_debug .= 'Data indicadores keys: '.implode(', ', array_keys($data_indicadores)).PHP_EOL.PHP_EOL;
-          //   $dt_debug .= 'Data: '.implode(', ', $data).PHP_EOL.PHP_EOL;
-          // }
-
-          $data_indicadores = array_unique($data_indicadores); // elimina indicadores duplicados
-          // if (4138==$id) {
-          //   $dt_debug .= 'Data indicadores sin duplicados : '.implode(', ', $data_indicadores).PHP_EOL;
-          //   $dt_debug .= 'Data indicadores sin duplicados keys: '.implode(', ', array_keys($data_indicadores)).PHP_EOL.PHP_EOL;
-          // }
-
-          sort($data_indicadores, SORT_NUMERIC); // los ordena
-          // if (4138==$id) {
-          //   $dt_debug .= 'Data indicadores sin duplicados y ordenados: '.implode(', ', $data_indicadores).PHP_EOL;
-          //   $dt_debug .= 'Data indicadores sin duplicados y ordenados keys: '.implode(', ', array_keys($data_indicadores)).PHP_EOL.PHP_EOL;
-          // }
-          
-          $cnt_num_ind = 0;
+          $data_indicadores = array_unique($data_indicadores); // Elimina indicadores duplicados
+          sort($data_indicadores, SORT_NUMERIC); // ordena los indicadores
+          $cnt_data_indic = count($data_indicadores); // cuenta de los indicadores que se ingresaron realmente
+          // GUARDA LOS INDICADORES REALES Y EN ORDEN
+          $indic_i = $INDEX_INDCI_INI;
           foreach ($data_indicadores as $value) { 
-            $cnt_num_ind +=1;
-            $index = ($cnt_num_ind<10) ? 'i0'.$cnt_num_ind : 'i'.$cnt_num_ind;
+            $index = "i{$indic_i}";
             $data[$index] = $value;
+            $indic_i +=1;
           }
-          // if (4138==$id) {
-          //   $dt_debug .= 'Data : '.implode(', ', $data).PHP_EOL;
-          //   $dt_debug .= 'Data keys: '.implode(', ', array_keys($data)).PHP_EOL.PHP_EOL;
-          // }
-
-          $cnt_num_ind +=1;
-          for ($i=$cnt_num_ind; $i<=20; $i++) { // COMPLETA LOS INDICADORES EN BLANCO
-            $index = ($i<10) ? 'i0'.$i : 'i'.$i;
-            $data[$index] = ' ';
+          // COMPLETA LOS INDICADORES EN BLANCO hasta $INDEX_INDCI_FIN
+          $indic_blank = $indic_i;
+          for ($i=$indic_blank; $i<=$INDEX_INDCI_FIN; $i++) {
+            $index = "i{$i}";
+            $data[$index] = '';
           }
-          // if (4138==$id) {
-          //   $dt_debug .= 'Data FINAL: '.implode(', ', $data).PHP_EOL;
-          //   $dt_debug .= 'Data FINAL keys: '.implode(', ', array_keys($data)).PHP_EOL.PHP_EOL;
-          // }
 
-          //if (4138==$id) {
-          //  OdaLog::debug(str_repeat('-', 15).PHP_EOL.$dt_debug);
-          //}
+          // SE ASEGURA DE QUE EL VALOR DEL CAMPO "nota_final" SEA CORRECTO
+          if ( (0==$data['nota_final']) or is_null($data['nota_final']) ) {
+            if ($data['nota_plan_apoyo']>0) {
+              $data['nota_final'] = $data['nota_plan_apoyo'];
+            } else {
+              $data['nota_final'] = $data['definitiva'];
+            }
+          }
+
+          // CALCULA EL ESTADO DEL REGISTRO (PARA LOS PDF)
+          $cnt_ok = 0;
+          $cnt_ok += ($cnt_data_indic>0) ? 1 : 0 ; // #1
+          if ($data['paf_fecha_entrega']) {
+            $month = (int)date('m', strtotime($data['paf_fecha_entrega']) );
+            $day   = (int)date('d', strtotime($data['paf_fecha_entrega']) );
+            $year  = (int)date('Y', strtotime($data['paf_fecha_entrega']));
+            $cnt_ok += (checkdate($month, $day, $year)) ? 1 : 0 ; // #2
+          }
+          $cnt_ok += (strlen($data['paf_temas'])>0) ? 1 : 0 ; // #3
+          $cnt_ok += (strlen($data['paf_activ_profe'])>0) ? 1 : 0 ; // #4
+          $cnt_ok += (strlen($data['paf_activ_estud'])>0) ? 1 : 0 ; // #5
+
+          // AGREGA CAMPOS ADICIONALES (DE CONTROL)
           $adicionales =[];
+          $adicionales['is_paf_validar_ok']= $cnt_ok;
           $adicionales['updated_at']= date('Y-m-d H:i:s', time());
           $adicionales['updated_by']= $this->user_id;
-          
-          
-          $data['nota_final'] = (0==$data['nota_final']) ? $data['definitiva'] : $data['nota_final'] ;
 
-          $Modelo = (new $this->nombre_modelo());
-          $DQL = new OdaDql($Modelo::class);
+          // UPDATE SQL PURO
+          $Modelo = (new PlanesApoyo());
+          $DQL = new OdaDql('PlanesApoyo');
           $DQL->update($data)
-          ->addUpdate($adicionales)
-          ->where("t.id=?")
-          ->setParams([$id])
-          ->execute();
+              ->addUpdate($adicionales)
+              ->where("t.id=?")
+              ->setParams([$id])
+              ->execute();
 
-          // if (4138==$id) {
-          //   OdaLog::debug(str_repeat('=', 15).PHP_EOL.$DQL->render());
-          // }
-          //$success = (new Nota())::query($DQL->render(), [$id])->rowCount() > 0;
-          //if (!$success) { $cnt_fails += 1;}
-          
-          //OdaLog::debug("[$id]: ".implode(', ',$data).PHP_EOL.$DQL->render().PHP_EOL.$DQL->getParams());
-        } //end-foreach-notas
-        //if ($cnt_fails) { OdaFlash::warning("$this->page_action"); }
-
-      }
+        } //END-FOREACH notas
+      } //END-IF Input::hasPost
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);

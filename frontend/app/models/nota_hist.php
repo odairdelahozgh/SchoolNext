@@ -65,7 +65,7 @@ class NotaHist extends LiteRecord {
   } //END-getNotasSalonAsignatura
 
   //====================
-  public static function getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $periodos=array(), $annio=null) {
+  public static function getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, $periodos=array(), $annio=null) {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $str_p = implode(',', $periodos);
     return (new Nota)->all(
@@ -76,7 +76,7 @@ class NotaHist extends LiteRecord {
       ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
       array((int)$salon_id, (int)$asignatura_id)
     );
-  } //END-getNotasSalonAsignaturaPeriodos
+  } //END-getBySalonAsignaturaPeriodos
 
   //====================
   public static function getVistaTotalAnniosPeriodosSalones() { // ojo :: pendiente eliminar

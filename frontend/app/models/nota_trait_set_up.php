@@ -60,6 +60,12 @@ trait NotaTraitSetUp {
       'plan_apoyo'   => 'number',
       'nota_final'   => 'number',
 
+      'paf_fecha_entrega' => 'date',
+      'paf_temas' => 'textarea',
+      'paf_acciones' => 'textarea',
+      'paf_activ_profe' => 'textarea',
+      'paf_activ_estud' => 'textarea',
+
       'i01'   => 'number', 
       'i02'   => 'number', 
       'i03'   => 'number', 
@@ -92,6 +98,17 @@ trait NotaTraitSetUp {
       'i28'   => 'number', 
       'i29'   => 'number', 
       'i30'   => 'number', 
+      
+      'i31'   => 'number', 
+      'i32'   => 'number', 
+      'i33'   => 'number', 
+      'i34'   => 'number', 
+      'i35'   => 'number', 
+      'i36'   => 'number', 
+      'i37'   => 'number', 
+      'i38'   => 'number', 
+      'i39'   => 'number', 
+      'i40'   => 'number', 
     ];
 
     self::$_attribs = [
@@ -101,6 +118,11 @@ trait NotaTraitSetUp {
       'definitiva'   => ' min="0" max="100" maxlength="3" size="3" ',
       'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" ',
       'nota_final'   => ' min="0" max="100" maxlength="3" size="3" ',
+
+      'paf_temas' => ' cols=35 rows=4 maxlength="1000" ',
+      'paf_acciones' => ' cols=35 rows=4 maxlength="1000" ',
+      'paf_activ_profe' => 'cols=35 rows=4 maxlength="1000" ',
+      'paf_activ_estud' => 'cols=35 rows=4 maxlength="1000" ',
       
       'i01'   => ' maxlength="4" size="4" ',
       'i02'   => ' maxlength="4" size="4" ',
@@ -134,6 +156,17 @@ trait NotaTraitSetUp {
       'i28'   => ' maxlength="4" size="4" ',
       'i29'   => ' maxlength="4" size="4" ',
       'i30'   => ' maxlength="4" size="4" ',
+      
+      'i31'   => ' maxlength="4" size="4" ',
+      'i32'   => ' maxlength="4" size="4" ',
+      'i33'   => ' maxlength="4" size="4" ',
+      'i34'   => ' maxlength="4" size="4" ',
+      'i35'   => ' maxlength="4" size="4" ',
+      'i36'   => ' maxlength="4" size="4" ',
+      'i37'   => ' maxlength="4" size="4" ',
+      'i38'   => ' maxlength="4" size="4" ',
+      'i39'   => ' maxlength="4" size="4" ',
+      'i40'   => ' maxlength="4" size="4" ',
     ];
   
     self::$_defaults = [
@@ -150,6 +183,16 @@ trait NotaTraitSetUp {
       'created_by'      => 'Creado por',
       'updated_at'      => 'Actualizado el',
       'updated_by'      => 'Actualizado por',
+
+      'definitiva'   => 'Definitiva',
+      'plan_apoyo'   => 'P. Apoyo',
+      'nota_final'   => 'N. Final',
+
+      'paf_temas' => 'Temas',
+      'paf_acciones' => 'Acciones',
+      'paf_activ_profe' => 'Actividades Profesor',
+      'paf_activ_estud' => 'Actividades Propuestas',
+
     ];
   
     self::$_placeholders = [

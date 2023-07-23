@@ -20,16 +20,16 @@
   'created_at', 'updated_at', 'created_by', 'updated_by'
 */
   
-class PlanesApoyo extends LiteRecord {
+class PlanesApoyo extends Nota {
 
-  use PlanesApoyoTraitSetUp;
+  use PlanesApoyoTraitProps;
 
-  public function __construct() {
-    parent::__construct();
-    self::$table = Config::get('tablas.nota');
-    self::$order_by_default = 't.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id';
-    $this->setUp();
-  } //END-__construct
+  // public function __construct() {
+  //   parent::__construct();
+  //   self::$table = Config::get('tablas.nota');
+  //   self::$_order_by_defa = 't.periodo_id DESC, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id';
+  //   $this->setUp();
+  // } //END-__construct
 
 
   
@@ -50,32 +50,29 @@ class PlanesApoyo extends LiteRecord {
  
  
 
-  
-  // public static function getByClave(string $registro_uuid) {
-  //   try {
-  //     $DQL = (new OdaDql(__CLASS__))
-  //       ->select('t.*')
-  //       ->addSelect('s.nombre as salon_nombre')
-  //       ->addSelect('g.nombre as grado_nombre')
-  //       ->addSelect('a.nombre as asignatura_nombre')
-  //       ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
-  //       //->concat(['u.nombres', 'u.apellido1', 'u.apellido2'], 'profesor_nombre')
+  public static function getBySalonAsignaturaPeriodos(int $salon_id, int $asignatura_id, array $periodos=[], $annio=null) {
+    try {
+      $str_p = implode(',', $periodos);
+      
+      $DQL = (new OdaDql(__CLASS__))
+      ->select('t.*')
+      ->addSelect('a.nombre as asignatura_nombre')
+      ->addSelect('s.nombre as salon_nombre')
+      ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
 
-  //       ->leftJoin('salon', 's')
-  //       ->leftJoin('grado', 'g', 't.salon_id=g.id')
-  //       ->leftJoin('asignatura', 'a')
-  //       ->leftJoin('estudiante', 'e')
-  //       //->leftJoin('usuario', 'u', 't.updated_by=u.id')
-  //       ->where("t.id=?")
-  //       ->setParams([$registro_uuid]);
-  //     return $DQL->execute(true);
+      ->leftJoin('asignatura', 'a')
+      ->leftJoin('salon', 's')
+      ->leftJoin('estudiante', 'e')
 
-  //   } catch (\Throwable $th) {
-  //     OdaFlash::error($th);
-  //   }
-    
-  // } //END-getByClave
- 
+      ->where("t.periodo_id IN($str_p) AND t.salon_id=? AND t.asignatura_id=?")
+      ->setParams([$salon_id, $asignatura_id])
+      ->orderBy('t.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres');
+    return $DQL->execute();
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getBySalonAsignaturaPeriodos
 
 
 } //END-CLASS

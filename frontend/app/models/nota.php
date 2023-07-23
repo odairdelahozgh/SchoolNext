@@ -35,7 +35,7 @@ class Nota extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.nota');
-    self::$order_by_default = 't.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id';
+    self::$_order_by_defa = 't.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres';
     $this->setUp();
   } //END-__construct
 
@@ -73,7 +73,7 @@ class Nota extends LiteRecord {
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
         ->where('t.salon_id=17')
-        ->orderBy(self::$order_by_default);
+        ->orderBy(self::$_order_by_defa);
 
    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
    return $DQL->execute();
@@ -138,8 +138,8 @@ class Nota extends LiteRecord {
     );
   } //END-
 
-  //====================
-  public static function getNotasSalonAsignaturaPeriodos(int $salon_id, int $asignatura_id, array $periodos=[], $annio=null) {
+  
+  public static function getBySalonAsignaturaPeriodos(int $salon_id, int $asignatura_id, array $periodos=[], $annio=null) {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $str_p = implode(',', $periodos);
 
@@ -152,7 +152,7 @@ class Nota extends LiteRecord {
       LEFT JOIN sweb_asignaturas AS a ON t.estudiante_id = a.id
 
       WHERE t.periodo_id IN($str_p) AND t.salon_id=? AND t.asignatura_id=?
-      ORDER BY t.annio, t.periodo_id, s.nombre, e.apellido1, e.apellido2, e.nombres",
+      ORDER BY t.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres",
       array($salon_id, $asignatura_id)
     );
   } //END-getNotasPeriodoSalonAsignatura

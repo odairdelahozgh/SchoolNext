@@ -5,8 +5,8 @@ trait EstudianteTraitLinks {
     try {
       return OdaTags::linkButton (
         action: "admin/notas/exportBoletinEstudiantePdf/$periodo/$this->uuid", 
-        text: "Bolet&iacute;n P$periodo", 
-        attrs: " target=\"_blank\" class=\"w3-button w3-pale-red\"");
+        text: "<i class=\"fa-solid fa-file-pdf\"></i> Bolet&iacute;n P$periodo", 
+        attrs: " target=\"_blank\" class=\"w3-btn w3-ripple w3-round-large w3-small\"");
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);
@@ -17,7 +17,7 @@ trait EstudianteTraitLinks {
     try {
       $lnk = '';
       for ($i=1; $i<=self::$_periodo_actual; $i++) { 
-        $lnk .= $this->getLnkBoletin($i).'&nbsp;&nbsp;';
+        $lnk .= $this->getLnkBoletin($i).'&nbsp;';
       }
       return $lnk;
 
@@ -29,11 +29,11 @@ trait EstudianteTraitLinks {
 
   public function getLnkPlanApoyo(int $periodo): string {
     try {
+      /// pensarlo mejor.. no está listo
       return OdaTags::linkButton (
-        //admin/planes_apoyo/exportPlanesApoyoEstudiantePdf/'+reg_uuid+'"
-        action: "admin/planes_apoyo/exportPlanesApoyoEstudiantePdf/$this->uuid", 
-        text: "Bolet&iacute;n P$periodo", 
-        attrs: " target=\"_blank\" class=\"w3-button w3-pale-red\"");
+        action: "admin/planes_apoyo/exportPlanesApoyoRegistroPdf/$this->uuid",
+        text: "<i class=\"fa-solid fa-file-pdf\"></i> P.A. P$periodo",
+        attrs: " target=\"_blank\" class=\"w3-btn w3-ripple w3-round-large w3-small\"");
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);
@@ -44,7 +44,7 @@ trait EstudianteTraitLinks {
     try {
       $lnk = '';
       for ($i=1; $i<=self::$_periodo_actual; $i++) { 
-        $lnk .= $this->getLnkBoletin($i).'&nbsp;&nbsp;';
+        $lnk .= $this->getLnkPlanApoyo($i).'&nbsp;';
       }
       return $lnk;
 

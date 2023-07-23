@@ -48,9 +48,9 @@ try {
   // --------------------------------
   $attrs_td  = ['colspan="2"; width="50%";','width="35%"', 'width="15%"'];
   $fila = [
-    $arrData['Estud'],
-    'Desempe&nacute;o:' ,
-    'F. Evaluaci&oacute;n::' ,
+    '<b>'.$arrData['Estud'].'</b>',
+    'Desempe&ntilde;o:' ,
+    'F. Evaluaci&oacute;n:' ,
   ];
   $tabla->addRow(data: $fila, attrs: ['bgcolor="#B2BABB";'], attrs_td: $attrs_td);
   // --------------------------------

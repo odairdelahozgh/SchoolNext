@@ -1,0 +1,1 @@
+ALTER TABLE `sweb_secciones` ADD `uuid` VARCHAR(36) NULL DEFAULT NULL AFTER `id`;

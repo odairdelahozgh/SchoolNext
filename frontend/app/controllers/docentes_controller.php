@@ -140,7 +140,7 @@ class DocentesController extends AppController
   
       $arr_periodos = range(start: 1, end: $this->_periodo_actual);
 
-      $Notas = (new Nota)->getNotasSalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
+      $Notas = (new Nota)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
       if (0==count($Notas)) { 
         OdaFlash::info('No hay registros para mostrar.');
       }
@@ -166,7 +166,7 @@ class DocentesController extends AppController
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
 
       $Nota = new Nota();
-      $this->data = $Nota->getNotasSalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
+      $this->data = $Nota->getBySalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
       
       $min_fortaleza = 0;
@@ -231,7 +231,7 @@ class DocentesController extends AppController
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
 
       $Nota = new Nota();
-      $this->data = $Nota->getNotasSalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
+      $this->data = $Nota->getBySalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
       
       $min_fortaleza = 0;
@@ -296,8 +296,8 @@ class DocentesController extends AppController
       $RegPeriodo =(new Periodo)->get($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
 
-      $Nota = new Nota();
-      $this->data = $Nota->getNotasSalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
+      $PA = new PlanesApoyo();
+      $this->data = $PA->getBySalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
       
       $min_fortaleza = 0;
@@ -328,7 +328,7 @@ class DocentesController extends AppController
       }
 
       
-      $this->fieldsToShow = $Nota::getFieldsShow(show: 'calificar');
+      $this->fieldsToShow = $PA::getFieldsShow(show: 'calificar');
       $this->arrData = [
         'Periodo'           => $RegPeriodo,
         'Asignatura'        => $RegAsignatura,

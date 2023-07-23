@@ -27,7 +27,7 @@
       <?= OdaTags::img_docente(Session::get('documento'), Session::get('sexo'), $user_id,'class="w3-circle w3-margin-right" style="width:46px"') ?>
     </div>
     <div class="w3-auto">
-      <?="[$user_id] $username<br>"?> <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
+      <?="$username<br>"?> <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
       <?= OdaTags::link($action='logout', $text='Salir', $attrs = '') ?> 
       <br/>
         <span class="w3-hover-text-<?=$theme?>"><?=_Icons::solid('envelope').'&nbsp;'; ?></span>

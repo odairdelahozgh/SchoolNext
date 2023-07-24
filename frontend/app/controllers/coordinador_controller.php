@@ -1,64 +1,73 @@
 <?php
 /**
-  * Controlador Coordinacion  * @category App
+  * Controlador Coordinacion  
+  * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
 class CoordinadorController extends AppController
 {
-    
-    protected function before_filter() {
-      // Si es AJAX enviar solo el view
-      if (Input::isAjax()) {
-          View::template(null);
-      }
-  }
-
-    // ===============
-    public function index() {
-      $this->page_action = 'M&oacute;dulo Coordinaci&oacute;n';
-    }
-    
-    // ===============
-    public function gestion_registros() {
-      $this->page_action = 'Gesti&oacute;n Registros';
-      $this->annios = range((int)Config::get('config.academic.annio_actual'), 2021, -1);
-      View::select('registros/index');
-    }
-
-    // ===============
-    //public function consolidado_notas() {
-    public function consolidado() {
-      try {
-        $this->page_action = 'Consolidado de Notas';
-        $this->data = (new Salon())->getByCoordinador(Session::get('id'));
-      
-      } catch (\Throwable $th) {
-        OdaFlash::error($th);
-      }
-      View::select('consolidado/index');
-    }
-
-    // ===============
-    public function notas_salon_json(int $salon_id) {
+  
+  protected function before_filter() {
+    // Si es AJAX enviar solo el view
+    if (Input::isAjax()) {
       View::template(null);
-      //View::select(null);
-      $notas = (new Nota())->getNotasSalon($salon_id);
-      return json_encode($notas);
     }
+  } //END-before_filter
 
-    // ===============
-    public function historico_notas() {
-      $this->page_action = 'Hist&oacute;rico de Notas';
-      $this->data = (new NotaHist() )->getTotalAnniosPeriodosSalones();
-      View::select('historico_notas/index');
+
+  public function index() {
+    $this->page_action = 'M&oacute;dulo Coordinaci&oacute;n';
+  } //END-index
+  
+
+  public function listadoEstudiantes() {
+    try {
+    $this->page_action = 'Listado de Estudiantes Activos';
+    $this->data = (new Estudiante)->getListSecretaria(estado:1);
+    
+    } catch (\Throwable $th) {
+    OdaFlash::error($th);
     }
+    View::select('estudiantes/index');
+  } // END-listadoEstudiantes
 
-  /**
-   * Cambiar de salón a un estudiante
-   */
+
+  public function gestion_registros() {
+    $this->page_action = 'Gesti&oacute;n Registros';
+    $this->annios = range((int)Config::get('config.academic.annio_actual'), 2021, -1);
+    View::select('registros/index');
+  } //END-gestion_registros
+
+  
+  public function consolidado() {
+    try {
+    $this->page_action = 'Consolidado de Notas';
+    $this->data = (new Salon())->getByCoordinador(Session::get('id'));
+    
+    } catch (\Throwable $th) {
+    OdaFlash::error($th);
+    }
+    View::select('consolidado/index');
+  } //END-consolidado_notas
+
+  
+  public function notas_salon_json(int $salon_id) {
+    View::template(null);
+    //View::select(null);
+    $notas = (new Nota())->getNotasSalon($salon_id);
+    return json_encode($notas);
+  } //END-notas_salon_json
+
+  
+  public function historico_notas() {
+    $this->page_action = 'Hist&oacute;rico de Notas';
+    $this->data = (new NotaHist() )->getTotalAnniosPeriodosSalones();
+    View::select('historico_notas/index');
+  } //END-historico_notas
+
+
   public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {
-    //$this->page_action = 'Cambiar de Salón a Estudiante';
-
+    $this->page_action = 'Cambiar de Salón a Estudiante';
     $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [$estudiante_id]);
     
     if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_en_notas) ) {
@@ -67,7 +76,8 @@ class CoordinadorController extends AppController
       OdaFlash::warning("$this->page_action: $Estud]");
     }
     return Redirect::to('coordinador/index');//pendiente la redirección..
-  }
+  } //END-cambiar_salon_estudiante
 
   
+
 } // END CLASS

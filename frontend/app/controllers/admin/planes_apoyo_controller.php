@@ -74,7 +74,6 @@ class PlanesApoyoController extends ScaffoldController
               }
             } else {  // campos que no son indicadores
               $data[$key] = $value;
-              OdaLog::debug("$key: $value");
             }
           }
           $data_indicadores = array_unique($data_indicadores); // Elimina indicadores duplicados

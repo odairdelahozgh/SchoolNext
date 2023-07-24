@@ -60,7 +60,7 @@
       $field = $RegPA->fieldForm(field_name: 'paf_temas', type: 'textarea');
       $frm .= $Tag::tag('td', $field, attrs: 'colspan="5"');
       
-      $field = $RegPA->fieldForm(field_name: 'paf_fecha_entrega');
+      $field = 'Fecha de entrega<br>' .$RegPA->fieldForm(field_name: 'paf_fecha_entrega');
       $frm .= $Tag::tag('td', $field, attrs: 'colspan="5"');
     $frm .= '</tr>';
     

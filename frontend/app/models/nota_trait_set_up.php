@@ -174,7 +174,9 @@ trait NotaTraitSetUp {
     ];
   
     self::$_helps = [
-      'is_active'    => 'Indica si está activo el registro.',
+      'is_active'       => 'Indica si está activo el registro.',
+      'paf_activ_profe' => 'máx. 1024 caracteres.',
+      'paf_activ_estud' => 'máx. 1024 caracteres.',
     ];
   
     self::$_labels = [
@@ -188,14 +190,17 @@ trait NotaTraitSetUp {
       'plan_apoyo'   => 'P. Apoyo',
       'nota_final'   => 'N. Final',
 
+      'paf_fecha_entrega' => 'Fecha de entrega',
       'paf_temas' => 'Temas',
       'paf_acciones' => 'Acciones',
-      'paf_activ_profe' => 'Actividades Profesor',
-      'paf_activ_estud' => 'Actividades Propuestas',
+      'paf_activ_profe' => 'Actividades Realizadas por el Profesor',
+      'paf_activ_estud' => 'Actividades para el Estudiante',
 
     ];
   
     self::$_placeholders = [
+      'paf_activ_profe' => 'Describa las actividades realizadas por el docente para apoyar al estudiante.',
+      'paf_activ_estud' => 'Describa la estrategia para la superacion de la dificultad.',
     ];
   
     // numeric, int, maxlength, length, range, select, email, url, ip, required, alphanum, alpha, date, pattern, decimal, equal

@@ -17,14 +17,14 @@
 
             $btn_calificar = OdaTags::linkButton(
               action: "docentes/notasCalificar/$periodo/$Salon->id/$Asignatura->id", 
-              text: 'Calificar', 
+              text: "Calificar P$periodo", 
               icon: '', 
               attrs: 'title="Ingresar NOTAS" class="w3-button w3-small w3-pale-green w3-round-large"'
             );
             
             $btn_planes_apoyo = OdaTags::linkButton(
               action: "docentes/notasCalificarPlanesApoyo/$periodo/$Salon->id/$Asignatura->id", 
-              text: 'Planes de Apoyo', 
+              text: "Planes de Apoyo P$periodo", 
               icon: '', 
               attrs: 'title="Ingresar PLANES DE APOYO" class="w3-button w3-small w3-pale-red w3-round-large"'
             );

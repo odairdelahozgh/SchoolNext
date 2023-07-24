@@ -1,6 +1,6 @@
 <?php
 /**
- * Modelo Estudiante * 
+ * Modelo Estudiante 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
@@ -15,16 +15,13 @@
 class Estudiante extends LiteRecord {
 
   use EstudianteTraitSetUp;
-  
-  //private static int $periodo_actual = 0 ;
 
   private mixed $DQL = null;
 
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.estudiante');
-    self::$order_by_default = 's.nombre_salon,t.apellido2,t.apellido1,t.nombres';
-    //self::$periodo_actual = Config::get(var: 'config.academic.periodo_actual');
+    self::$_order_by_defa = 'g.orden,s.nombre,t.apellido1,t.apellido2,t.nombres';
 
     $this->DQL = (new OdaDql(__CLASS__))
       ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
@@ -32,7 +29,7 @@ class Estudiante extends LiteRecord {
       ->leftJoin('salon', 's')
       ->leftJoin('grado', 'g', 's.grado_id=g.id')
       ->where('t.salon_id<>0 AND t.is_active=1')
-      ->orderBy('g.orden,s.nombre,t.apellido1,t.apellido2,t.nombres');
+      ->orderBy(self::$_order_by_defa);
 
     $this->setUp();
   } //END-__construct
@@ -52,6 +49,7 @@ class Estudiante extends LiteRecord {
     }
   } // END-getList
 
+  
   public function getListBySalon(string $orden='a1,a2,n', string $select='*') {
     try {
       $DQL = $this->DQL;
@@ -83,6 +81,21 @@ class Estudiante extends LiteRecord {
         OdaFlash::error($th);
     }
   } // END-getListEstudiantes.
+
+  // proyecto para reemplazar varios list, dependiendo del módulo desde donde se hace la llamada.
+  // public function getListByModulo(Modulo $modulo, string $orden='a1,a2,n') {
+  //   try {
+  //     $DQL = $this->DQL;
+  //     $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
+  //     $DQL->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'estudiante_nombre')
+  //         ->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'nombre');
+  //     return $DQL->execute();
+    
+  //   } catch (\Throwable $th) {
+  //     OdaFlash::error($th);
+  //   }
+  // } // END-getListByModulo
+
 
   public function getListSecretaria(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
     try {

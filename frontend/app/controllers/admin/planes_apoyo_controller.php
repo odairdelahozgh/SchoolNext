@@ -30,6 +30,7 @@ class PlanesApoyoController extends ScaffoldController
           $codigo_id = (int)substr($field_name, strripos($field_name, "_") + 1);
           if ($codigo_id>0) { // evitar que se cuele una variable que no sea del registro de calificacion (formato "_$id")
             $notas[$codigo_id][$field_name] = $value;
+
             if (str_starts_with($field_name, 'profesor_id')) {
               if ( (is_null($value) or (0==$value)) and (1!=$this->user_id)) {
                 $notas[$codigo_id][$field_name] = $this->user_id; // reemplace el valor por el usuario actual
@@ -50,12 +51,12 @@ class PlanesApoyoController extends ScaffoldController
 
            // PREPARA EL REGISTRO INDIVIDUAL DE NOTAS
           $data_temp = [];
-          foreach ($registro as $field_name_id => $value) {
+          foreach ($registro as $field_name_id => $value_temp) {
             $long = strlen($field_name_id) - (strlen($id)+1);
             $field_name = substr($field_name_id,0,$long);
-            $data_temp[$field_name] = "$value";
+            $data_temp[$field_name] = "$value_temp";
 
-            if (str_starts_with($field_name_id, 'profesor_id') & (0==$value) & (1!=$this->user_id) ) {
+            if (str_starts_with($field_name_id, 'profesor_id') & (0==$value_temp) & (1!=$this->user_id) ) {
               $data_temp[$field_name] = $this->user_id;
             }
           }
@@ -73,6 +74,7 @@ class PlanesApoyoController extends ScaffoldController
               }
             } else {  // campos que no son indicadores
               $data[$key] = $value;
+              OdaLog::debug("$key: $value");
             }
           }
           $data_indicadores = array_unique($data_indicadores); // Elimina indicadores duplicados

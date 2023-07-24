@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function traer_data(id) {
 let ruta = document.getElementById('public_path');
-fetch(ruta.innerHTML.trim()+'api/registros/reg_observ_annio/'+id)
+fetch(ruta.innerHTML.trim()+'api/registros_gen/reg_observ_annio/'+id)
   .then((res) => res.json())
   
   .then(datos => {

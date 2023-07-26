@@ -18,7 +18,7 @@ class Salon extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.salon');
-    self::$order_by_default = 't.is_active DESC, t.position';
+    self::$_order_by_defa = 't.is_active DESC, t.position';
     $this->setUp();
   } //END-__construct
 
@@ -67,7 +67,7 @@ class Salon extends LiteRecord {
         ->leftJoin('grado',   'g')
         ->leftJoin('usuario', 'ud', 't.director_id = ud.id')
         ->leftJoin('usuario', 'uc', 't.codirector_id = uc.id')
-        ->orderBy(self::$order_by_default);
+        ->orderBy(self::$_order_by_defa);
 
     if (!is_null($estado)) { $DQL->andWhere("t.is_active=$estado"); }
 
@@ -90,7 +90,7 @@ class Salon extends LiteRecord {
           ->leftJoin('seccion',   's', 'g.seccion_id = s.id')
           ->leftJoin('usuario', 'ud', 't.director_id = ud.id')
           ->leftJoin('usuario', 'uc', 't.codirector_id = uc.id')
-          ->orderBy(self::$order_by_default)
+          ->orderBy(self::$_order_by_defa)
           ->where("t.is_active=1");
       
       if ($user_id<>1) {

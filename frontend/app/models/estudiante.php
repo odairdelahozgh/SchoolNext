@@ -28,7 +28,8 @@ class Estudiante extends LiteRecord {
       ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
       ->leftJoin('salon', 's')
       ->leftJoin('grado', 'g', 's.grado_id=g.id')
-      ->where('t.salon_id<>0 AND t.is_active=1')
+      //->where('t.salon_id<>0 AND t.is_active=1')
+      ->where('t.is_active=1')
       ->orderBy(self::$_order_by_defa);
 
     $this->setUp();
@@ -82,19 +83,65 @@ class Estudiante extends LiteRecord {
     }
   } // END-getListEstudiantes.
 
-  // proyecto para reemplazar varios list, dependiendo del módulo desde donde se hace la llamada.
-  // public function getListByModulo(Modulo $modulo, string $orden='a1,a2,n') {
-  //   try {
-  //     $DQL = $this->DQL;
-  //     $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
-  //     $DQL->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'estudiante_nombre')
-  //         ->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'nombre');
-  //     return $DQL->execute();
+  //proyecto para reemplazar varios list, dependiendo del módulo desde donde se hace la llamada.
+  /**
+   * 'id', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 
+  * 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'uuid', 'documento', 'contabilidad_id', 
+  * 'nombres', 'apellido1', 'apellido2', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 
+  * 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 
+  * 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'
+  * 
+  */
+  public function getListActivosByModulo(Modulo $modulo = Modulo::Docen, string $orden='a1,a2,n', array|string $where = null) {
+    try {
+      
+      $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
+
+      $DQL = (new OdaDql(__CLASS__))
+        ->select('t.id, t.is_active, t.uuid, t.documento, t.salon_id')
+        ->concat(explode(',', $orden), 'estudiante_nombre')
+        ->concat(explode(',', $orden), 'nombre')
+        ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+
+        ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id=g.id')
+        ->where('t.is_active=1')
+        ->orderBy(self::$_order_by_defa);
+      
+      if ( (Modulo::Psico == $modulo) or (Modulo::Secre == $modulo) or (Modulo::Conta == $modulo) or (Modulo::Enfer == $modulo) ) {
+        $DQL->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email')
+            ->addSelect('de.padre, de.padre_id, de.padre_tel_1, de.padre_email');
+      }
+      
+      if (Modulo::Conta == $modulo) {
+        $DQL->addSelect('de.deudor, de.codeudor, de.codeudor_cc, de.resp_pago_ante_dian');
+      }
+
+      if (!is_null($where)) {
+        if (is_array($where)) {
+          $a_keys = array_keys($where);
+          $a_values = array_values($where);
+          $filtro = '';
+          foreach ($a_keys as $key => $value) {
+            $prefijo = (str_starts_with($value, 't.')) ? '' : 't.' ;
+            $filtro .= (0==$key) ? "{$prefijo}{$value}=?" : ", {$prefijo}{$value}=?";
+          }
+          $DQL->andWhere($filtro)
+              ->setParams($a_values);
+        } else {
+          $prefijo = (str_starts_with($where, 't.')) ? '' : 't.' ;
+          $filtro  = "{$prefijo}{$where}=?";
+          $DQL->andWhere($filtro); // el where viene listo
+        } 
+      }
+
+      return $DQL->execute(true);
     
-  //   } catch (\Throwable $th) {
-  //     OdaFlash::error($th);
-  //   }
-  // } // END-getListByModulo
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } // END-getListActivosByModulo
 
 
   public function getListSecretaria(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {

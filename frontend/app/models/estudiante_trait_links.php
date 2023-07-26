@@ -80,6 +80,18 @@ trait EstudianteTraitLinks {
 
 
 
+  public static function getLnkListaGenerica(string $salon_id): string {
+    try {
+      $RegSalon = (new Salon)::get($salon_id);
+      return OdaTags::linkButton (
+        action: "admin/estudiantes/exportEstudiantesBySalonPdf/$RegSalon->uuid", 
+        text: "<i class=\"fa-solid fa-file-pdf\"></i> Salon: $RegSalon->nombre", 
+        attrs: " target=\"_blank\" class=\"w3-btn w3-ripple w3-round-large w3-small\"");
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getLnkBoletin
 
 
 } //END-TraitLinksOlds

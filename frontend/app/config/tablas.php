@@ -62,7 +62,7 @@ return [
 
   'tareas'               => 'snxt_tareas_sw',
   'tarea'                => 'snxt_tareas_sw',
-
+  
   'usuario'              => 'dm_user',
   'usuarios'             => 'dm_user',
   'usuarios_estudiantes' => 'sweb_dmuser_estudiantes',

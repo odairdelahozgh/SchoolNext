@@ -369,12 +369,12 @@ class OdaUtils extends Util {
 
   public static function linkWhatsApp(string $telefono, string $caption='(click) Escribirle al WhatsApp ahora', $show_tel=false) {
     $text = ($show_tel) ? $telefono : '' ;
-    return "$text <a title=\"$caption\" href=\"whatsapp://send?phone=$telefono\">"._Icons::brands(icon: 'whatsapp', size: 'w3-large').'</a>';
+    return "$text <a title=\"$caption\" href=\"whatsapp://send?phone=57$telefono\">"._Icons::brands(icon: 'whatsapp', size: 'w3-large').'</a>';
   }
 
   public static function linkTelefono(string $telefono, string $caption='(click) Llamarle ahora', $show_tel=false): string {
     $text = ($show_tel) ? $telefono : '' ;
-    return "$text <a title=\"$caption\" href=\"tel:$telefono\">"._Icons::solid(icon: 'square-phone', size: 'w3-large').'</a>';
+    return "$text <a title=\"$caption\" href=\"tel:57$telefono\">"._Icons::solid(icon: 'square-phone', size: 'w3-large').'</a>';
   }
 
   public static function linkToSupportWhatsApp(string $uuid_error): string {

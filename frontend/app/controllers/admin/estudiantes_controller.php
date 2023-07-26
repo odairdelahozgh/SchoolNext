@@ -27,4 +27,18 @@ class EstudiantesController extends ScaffoldController
     View::select(view: "export_pdf_$this->controller_name", template: 'pdf/mpdf');
   } //END-exportPdf
 
+  public function exportEstudiantesBySalonPdf(string $salon_uuid) {
+    $RegSalon = (new Salon)::getByUUID($salon_uuid);
+    
+    $this->file_tipo = "Listado de $this->controller_name";
+    $this->file_title = "Listado de $this->controller_name de $RegSalon->nombre";
+    $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name-salon-$RegSalon->nombre");
+
+    $this->data = (new Estudiante)->getListActivosByModulo(modulo: Modulo::Secre, where: ['salon_id'=>$RegSalon->id]);
+    
+    View::select(view: "secre_pdf_estudiantes_by_salon", template: 'pdf/mpdf');
+
+  } //END-exportPdf
+
+
 } // END CLASS

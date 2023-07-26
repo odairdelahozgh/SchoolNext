@@ -46,4 +46,5 @@ class PagesController extends AppController
     public function index() {
     }
 
+
 } //END-CLASS

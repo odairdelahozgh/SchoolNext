@@ -54,13 +54,17 @@ function traer_data(salon_id) {
           body_table += '<tr class="w3-theme-l3"><td>'+lnk_boletin_estud_periodo+'</td>'; 
 
           for (let asignatura in datos[salon][estudiante][periodo]) {
-                        nota = datos[salon][estudiante][periodo][asignatura];
-                        [reg_id, reg_uuid, definitiva, plan_apoyo, nota_final, desempeno, is_asi_validar_ok, is_paf_validar_ok] = datos[salon][estudiante][periodo][asignatura].split(";");
+            nota = datos[salon][estudiante][periodo][asignatura];
+            [reg_id, reg_uuid, definitiva, plan_apoyo, nota_final, desempeno, is_asi_validar_ok, is_paf_validar_ok] = datos[salon][estudiante][periodo][asignatura].split(";");
                         
-                        asi = (is_asi_validar_ok==1) ? '<span class="w3-border w3-green w3-tiny">S.I.</span>' : '';
-                        paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-border w3-orange w3-tiny" target="_blank" title="Plan de Apoyo">P.A.</a>' : '';
-                        br = ((asi.length+paf.length)>0) ? '<br>' : '';
-                        body_table += `<td>${nota_final} ${br} ${asi} ${paf}</td>`;
+            asi = (is_asi_validar_ok==1) ? '<span class="w3-border w3-green w3-tiny">S.I.</span>' : '';
+            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-border w3-orange w3-tiny" target="_blank" title="Plan de Apoyo">P.A.</a>' : '';
+            br = ((asi.length+paf.length)>0) ? '<br>' : '';
+            let lleva_pa = '';
+            if (definitiva<60) {
+              lleva_pa = (plan_apoyo > 0) ? 'PA:'+plan_apoyo+'<br>' : 'PA:?<br>';
+            }
+            body_table += `<td class="w3-center">${lleva_pa} <strong>${nota_final}</strong> ${br} ${asi} ${paf}</td>`;
           }
           body_table += '</tr>';
         }

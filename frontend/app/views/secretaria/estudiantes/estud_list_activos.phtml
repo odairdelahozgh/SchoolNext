@@ -8,6 +8,10 @@
    
    <?php 
    try {
+      
+      foreach ($arrData['Salones'] as $key => $value) {
+        echo (new Estudiante)::getLnkListaGenerica($value->id) ;
+      }
 
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(

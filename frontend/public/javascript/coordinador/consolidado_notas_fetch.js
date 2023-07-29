@@ -13,7 +13,7 @@ function traer_data(salon_id) {
     let periodo_actual = document.getElementById('periodo').innerHTML.trim();
     let body_table = '';
     let caption = '';
-
+    let cnt_estudiantes = 1;
     for (let salon in datos) { 
       [salon_nombre, salon_id, salon_uuid] = salon.split(";");
       lnk_boletines_salon = 'Boletines:&nbsp;&nbsp;';
@@ -28,22 +28,28 @@ function traer_data(salon_id) {
       }
 
       caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_boletines_salon}<br><br>`;
-
+      let calc_prom;
       for (let estudiante in datos[salon]) {
         [estudiante_nombre, estudiante_id, estudiante_uuid]= estudiante.split(";");
-        body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+'5"><td colspan=10>'+estudiante_nombre+'</td></tr>';
-        cont = 1;
+        body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+'5"><td colspan=12><h3>INFOALUMNO</h3></td></tr>';
+        let cont = 1;
+        
+        let arrSumCols = [];
         for (let periodo in datos[salon][estudiante]) { // fila de titulos de materia
+          calc_prom = !is_prescolar(salon_nombre);
+
           if (cont==1) {
-            body_table += '<tr class="w3-theme-d3"><td>Per&iacute;odo</td>'; 
+            body_table += '<tr class="w3-theme-d3"><td>Per&iacute;odo</td>'+ ( (calc_prom) ? '<td class="w3-center">Prom</td>' : '');            
             for (let asignatura in datos[salon][estudiante][periodo]) {
               [asignatura_nombre, asignatura_abrev]= asignatura.split(";");
               body_table += '<td>' + asignatura_abrev + '</td>';
+              arrSumCols[asignatura_abrev] = [];
+              arrSumCols[asignatura_abrev]['cnt'] = 0;
+              arrSumCols[asignatura_abrev]['val'] = 0;
             }
             body_table += '</tr>';
             cont += 1;
           }
-
           lnk_boletin_estud_periodo =  `
             <a href="${ruta_base}admin/notas/exportBoletinEstudiantePdf/${periodo}/${estudiante_uuid}" 
             class="w3-btn w3-round-large w3-black w3-tiny" 
@@ -51,23 +57,85 @@ function traer_data(salon_id) {
             title="Descarga Boletin de ${estudiante_nombre} (Per&iacute;odo ${periodo})">
             <i class="fa-solid fa-file-pdf"></i>&nbsp;B P${periodo}</a>
           `;
-          body_table += '<tr class="w3-theme-l3"><td>'+lnk_boletin_estud_periodo+'</td>'; 
+          
+          
 
+          let fila = `<tr class="w3-theme-l3"><td>${lnk_boletin_estud_periodo}</td>` + ( (calc_prom) ? `<td class="w3-center"><br>PROM</td>` : ''); 
+          let suma = 0;
+          let elementos = 0;
+          
           for (let asignatura in datos[salon][estudiante][periodo]) {
+            [asignatura_nombre, asignatura_abrev]= asignatura.split(";");
             nota = datos[salon][estudiante][periodo][asignatura];
             [reg_id, reg_uuid, definitiva, plan_apoyo, nota_final, desempeno, is_asi_validar_ok, is_paf_validar_ok] = datos[salon][estudiante][periodo][asignatura].split(";");
-                        
-            asi = (is_asi_validar_ok==1) ? '<span class="w3-border w3-green w3-tiny">S.I.</span>' : '';
-            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-border w3-orange w3-tiny" target="_blank" title="Plan de Apoyo">P.A.</a>' : '';
+            
+            asi = (is_asi_validar_ok==1) ? '<span class="w3-badge w3-white w3-tiny">SI</span>' : '';
+            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">PA</a>' : '';
             br = ((asi.length+paf.length)>0) ? '<br>' : '';
             let lleva_pa = '';
             if (definitiva<60) {
               lleva_pa = (plan_apoyo > 0) ? 'PA:'+plan_apoyo+'<br>' : 'PA:?<br>';
+            } else {
+              lleva_pa = '<br>';
+            }            
+            fila += `<td class="w3-center w3-padding-small w3-small">${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0) + `${br} ${asi} ${paf}</td>`;
+            
+            if (parseInt(nota_final)>0) {
+              elementos += 1;
+              suma += parseInt(nota_final);
+              arrSumCols[asignatura_abrev]['cnt'] += 1;
+              arrSumCols[asignatura_abrev]['val'] += parseInt(nota_final);
             }
-            body_table += `<td class="w3-center">${lleva_pa} <strong>${nota_final}</strong> ${br} ${asi} ${paf}</td>`;
           }
-          body_table += '</tr>';
+          
+          
+          let avg = 0;
+          if (elementos>0) {
+            avg = suma / elementos;  
+          }
+          fila_nueva = fila.replace(/PROM/i, notaFormato(avg));
+          body_table += fila_nueva+  '</tr>';
         }
+        
+
+        // Agregar fila de promedios
+        let info_estudiante = '';
+        let avg_prom = 0;
+        if (!is_prescolar(salon_nombre)) {
+          let cnt_mat = 0;
+          let suma_prom = 0;
+          let promedio  = 0;
+          fila_proms = '<tr><td>Promedios</td>';
+          fila_proms += (calc_prom)?'<td class="w3-center">PROMTOT</td>':'';
+  
+          for (item in arrSumCols) {
+            cnt_mat += 1;
+            if (arrSumCols[item]['cnt'] > 0) {
+              promedio = arrSumCols[item]['val'] / arrSumCols[item]['cnt'];
+              fila_proms += `<td class="w3-center">`+notaFormato(promedio)+`</td>`;
+            } else {
+              promedio = 0;
+              fila_proms += `<td class="w3-center">${promedio}</td>`;
+            }
+            suma_prom += promedio;
+          }
+          fila_proms += '</tr>';
+  
+          avg_prom = (suma_prom/cnt_mat);
+          fila_nueva_proms = fila_proms.replace(/PROMTOT/i, notaFormato(avg_prom));
+          body_table += fila_nueva_proms;
+
+          info_estudiante = (`# ${cnt_estudiantes} - ${estudiante_nombre} `).toUpperCase() + '<span class="w3-tag w3-'+colorRango(avg_prom)+'">'+nombreRango(avg_prom)+'</span>';
+        } else {
+          info_estudiante = (`# ${cnt_estudiantes} - ${estudiante_nombre}`).toUpperCase();
+        }
+
+        body_table = body_table.replace(/INFOALUMNO/i, info_estudiante);
+        
+        //console.log('cnt_estudiantes '+cnt_estudiantes);
+        //console.table(arrSumCols);
+        cnt_estudiantes += 1;
+
       }
     }
         
@@ -83,4 +151,94 @@ function traer_data(salon_id) {
     );
 
 
+}
+
+function colorRango(valor) {
+  if (valor<0) {
+    return 'DeepPink';
+  } else {
+    if (valor<1) {
+      return 'black';
+    } else {
+      if (valor<60) {
+        return 'red';
+      } else { 
+        if (valor<70) {
+          return 'orange';
+        } else {
+          if (valor<80) {
+            return 'yellow';
+          } else {
+            if (valor<90) {
+              return 'light-blue';
+            } else {
+              if (valor<95) {
+                return 'blue';
+              } else {
+                if (valor<=100) {
+                  return 'green';
+                } else {
+                  return 'fuchsia';
+                } 
+              } 
+            } 
+          } 
+        } 
+      }
+    }
+  }
+
+} //END-colorRango
+
+
+function nombreRango(valor) {
+  if (valor<0) {
+    return 'error';
+  } else {
+    if (valor<1) {
+      return '';
+    } else {
+      if (valor<60) {
+        return 'Bajo';
+      } else { 
+        if (valor<70) {
+          return 'Básico';
+        } else {
+          if (valor<80) {
+            return 'Básico+';
+          } else {
+            if (valor<90) {
+              return 'Alto';
+            } else {
+              if (valor<95) {
+                return 'Alto+';
+              } else {
+                if (valor<=100) {
+                  return 'Superior';
+                } else {
+                  return 'error';
+                } 
+              } 
+            } 
+          } 
+        } 
+      }
+    }
+  }
+
+} //END-nombreRango
+
+
+function notaFormato(valor, brake = true, fixed =2) {
+  let valor_fixed = valor.toFixed(fixed);
+  let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed)+'"';
+  let nombre_rango = nombreRango(valor_fixed);
+  let nombre_rango_title = `title="${nombre_rango}"`;
+  let br = (brake) ? '<br>' : '';
+  return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}${nombre_rango}`;
+}
+
+function is_prescolar(nombre_salon) {
+  var regex = /(PV-A|PK-A|KD-A|TN-A)/;
+  return regex.test(nombre_salon);
 }

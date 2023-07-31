@@ -9,53 +9,51 @@
 class NotasController extends RestController
 {
 
-   /**
-    * Obtiene todos los registros
-    * @link /api/notas/all
-    */
-   public function get_all() {
-      $this->data = (new Nota)->all();
-   }
+  public function get_all() {
+    $this->data = (new Nota)->all();
+  } //END-get_all
 
-   /**
-    * Devuelve el registro de notas por UUID
-    * @link /api/notas/singleuuid/3b22fefc7f6afa79c54f
-    */
-   public function get_singleuuid(string $uuid) {
-      $record = (new Nota)->getByUUID($uuid);
-      if (isset($record)) {
-         $this->data = $record;
-      } else {
-         $this->error('El registro buscado no existe', 404);
-      }
-   }
-
-   /**
-    * Devuelve el registro de notas por ID
-    * @link /api/notas/singleid/775
-    */
-    public function get_singleid(int $id) {
-      $record = (new Nota)::get($id);
-      if (isset($record)) {
-         $this->data = $record;
-      } else {
-         $this->error('El registro buscado no existe', 404);
-      }
-   }
-
-  /**
-   * Devuelve el registro de notas del presente año de un salon
-   * @link /api/notas/notas_salon/1
-   */
-  public function get_notas_salon(int $salon_id) {
-    $record = (new Nota)->getNotasConsolidado($salon_id);
+  public function get_singleuuid(string $uuid) {
+    $record = (new Nota)->getByUUID($uuid);
     if (isset($record)) {
       $this->data = $record;
     } else {
       $this->error('El registro buscado no existe', 404);
     }
-  }//END-get_notas_salon
+  } //END-get_singleuuid
 
+  public function get_singleid(int $id) {
+    $record = (new Nota)::get($id);
+    if (isset($record)) {
+      $this->data = $record;
+    } else {
+      $this->error('El registro buscado no existe', 404);
+    }
+  } //END-get_singleid
+
+  public function get_notas_salon(int $salon_id, int $annio) {
+    $record = (new Nota)->getNotasConsolidado($salon_id, $annio);
+    if (isset($record)) {
+      $this->data = $record;
+    } else {
+      $this->error("Se se encontraron notas para el salon: $salon_id, en el año: $annio", 404);
+    }
+  } //END-get_notas_salon
+
+  public function get_notas_grado(int $grado_id, int $annio) {
+    try {
+      $record = (new Nota)->getNotasConsolidadoByGradoAnnio($grado_id, $annio);
+      if (isset($record)) {
+        $this->data = $record;
+      } else {
+        $this->error("No hay notas para el GRADO:$grado_id en el AÑO:$annio", 404);
+      }
+    
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 404);
+    }
+  }//END-get_notas_grado
 
   public function get_notasprom_periodo_salon(int $periodo_id, int $salon_id) {
     try {
@@ -63,12 +61,40 @@ class NotasController extends RestController
       if (isset($record)) {
         $this->data = $record;
       } else {
-        $this->error('El registro buscado no existe', 404);
+        $this->error("No se encontraron Notras Promedio para el periodo:$periodo_id del salon:$salon_id", 404);
       }
     } catch (\Throwable $th) {
       OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
     }
-  }//END-get_notasprom_periodo_salon
+  } //END-get_notasprom_periodo_salon
   
+  public function get_salones_annio(int $annio) {
+    try {
+      $record = (new Nota)->getSalonesByAnnio($annio);
+      if (isset($record)) {
+        $this->data = $record;
+      } else {
+        $this->error("No se encontraron SALONES en el AÑO $annio", 404);
+      }
 
-}
+    } catch (\Throwable $th) {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+    }
+  } //END-get_salones_annio
+
+  public function get_grados_annio(int $annio) {
+    try {
+      $record = (new Nota)->getGradosByAnnio($annio);
+      if (isset($record)) {
+        $this->data = $record;
+      } else {
+        $this->error("No se encontraron GRADOS en el AÑO $annio", 404);
+      }
+
+    } catch (\Throwable $th) {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+    }
+  } //END-get_grados_annio
+
+
+} //END-CLASS

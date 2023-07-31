@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
   console.clear();
-  document.getElementById('btn1').click();
+  document.getElementById('btn-1').click();
 });
 
 

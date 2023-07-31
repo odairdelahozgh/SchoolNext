@@ -9,6 +9,7 @@
 36				anarm				    32754582
 93				andresnc			  77195299
 22985			angieg  			  1192774284
+23034     arlyst          1065822078 Arlys Tapias (maths)
 42				armyvl				  49764815
 80				carlosmr			  1065658301
 5				  cenitcd				  21065965
@@ -44,7 +45,7 @@
 22840			luisgc				  1065830738
 87				luisnr				  1065580844
 89				marcelarc				1065653388
-22989     marisolcm       1065658933      Cudrys Moreno Marisol (0655)
+22989     marisolcm       1065658933      Cudrys Moreno Marisol (0655) se fue
 111				marymo				  57400715
 22977			mayhelvb				12646035
 105				miguelcm				1065659237

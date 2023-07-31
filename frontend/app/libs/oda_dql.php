@@ -186,4 +186,8 @@ class OdaDql {
   } //END-getParams
 
 
+  public function setFrom(string $nombre_tabla): void {
+    $this->_from_source = $nombre_tabla;
+  }
+  
 } // END-CLASS

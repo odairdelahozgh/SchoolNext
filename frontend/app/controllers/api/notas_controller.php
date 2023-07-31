@@ -31,12 +31,18 @@ class NotasController extends RestController
     }
   } //END-get_singleid
 
-  public function get_notas_salon(int $salon_id, int $annio) {
-    $record = (new Nota)->getNotasConsolidado($salon_id, $annio);
-    if (isset($record)) {
-      $this->data = $record;
-    } else {
-      $this->error("Se se encontraron notas para el salon: $salon_id, en el año: $annio", 404);
+  public function get_notas_salon(int $salon_id) {
+    try {
+      $record = (new Nota)->getNotasConsolidado($salon_id);
+      if (isset($record)) {
+        $this->data = $record;
+      } else {
+        $this->error("Se se encontraron notas para el salon: $salon_id", 404);
+      }
+      
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 404);
     }
   } //END-get_notas_salon
 

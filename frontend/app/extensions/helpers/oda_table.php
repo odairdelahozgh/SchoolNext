@@ -20,7 +20,8 @@ class OdaTable {
       private array $searchCol = [1],
       private bool $showTotalRegs = false,
    ) {
-    $this->theme = ($theme) ? $theme : Session::get('theme');
+    //$this->theme = ($theme) ? $theme : Session::get('theme');
+    $this->theme = Session::get('theme') ?? 'dark';
    }
 
    /**

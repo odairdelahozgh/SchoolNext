@@ -136,7 +136,7 @@ class Estudiante extends LiteRecord {
         } 
       }
 
-      return $DQL->execute(true);
+      return $DQL->execute();
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);

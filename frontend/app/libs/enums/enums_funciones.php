@@ -23,3 +23,29 @@
   } //END-forSelect
 
 } // END-TRAIT
+
+/*
+  enum Suit: string {
+    case Clubs = '♣';
+    case Diamonds = '♦';
+    case Hearts = '♥';
+    case Spades = '♠';
+  }
+  // ****************************
+  $clubs = Suit::from('♥');
+  var_dump($clubs); // enum(Suit::Hearts)
+  echo $clubs->name; // "Hearts";
+  echo $clubs->value; // "♥"
+  // ****************************
+  echo Suit::Clubs->name; // "Clubs"
+  echo Suit::Clubs->value; // "♣"
+  // ****************************
+  Suit::cases();
+  //->>  [Suit::Clubs, Suit::Diamonds, Suit::Hearts, Suit::Spaces]
+  // ****************************
+  $clubs = Suit::tryFrom('not-existing');
+  var_dump($clubs); // null
+  // ****************************
+  serialize(Suit::Clubs); ->> 'Suit:Clubs'
+
+ */

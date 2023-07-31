@@ -171,39 +171,50 @@ class Nota extends LiteRecord {
   
 
   //====================
-  public static function getNotasConsolidado(int $salon_id) {
-    $aResult = [];
-
-    $sql = "SELECT N.id as id, N.uuid as uuid, N.annio AS annio, N.periodo_id AS periodo_id, N.grado_id AS grado_id,
-    N.salon_id AS salon_id, N.asignatura_id AS asignatura_id, N.estudiante_id AS estudiante_id, E.uuid AS estudiante_uuid,
-    concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante,
-    G.nombre AS grado, S.nombre AS salon, S.uuid AS salon_uuid, A.nombre AS asignatura, A.abrev AS asignatura_abrev,
-    N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final,
-    IF(N.nota_final<0, \"Error Nota Final <0\", IF(N.nota_final<60, \"Bajo\", IF(N.nota_final<70, \"Basico\", 
-    IF(N.nota_final<80, \"Basico +\", IF(N.nota_final<90, \"Alto\", IF(N.nota_final<95, \"Alto +\", 
-    IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno,
-    is_asi_validar_ok, is_paf_validar_ok
+  public static function getNotasConsolidado(int $salon_id, $annio=null) {
+    try {
+      if (!is_null($annio)) {
+        $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+      } else {
+        $tbl_notas = 'sweb_notas';
+      }
+  
+      $aResult = [];
+  
+      $sql = "SELECT N.id as id, N.uuid as uuid, N.annio AS annio, N.periodo_id AS periodo_id, N.grado_id AS grado_id,
+      N.salon_id AS salon_id, N.asignatura_id AS asignatura_id, N.estudiante_id AS estudiante_id, E.uuid AS estudiante_uuid,
+      concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante,
+      G.nombre AS grado, S.nombre AS salon, S.uuid AS salon_uuid, A.nombre AS asignatura, A.abrev AS asignatura_abrev,
+      N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final,
+      IF(N.nota_final<0, \"Error Nota Final <0\", IF(N.nota_final<60, \"Bajo\", IF(N.nota_final<70, \"Basico\", 
+      IF(N.nota_final<80, \"Basico +\", IF(N.nota_final<90, \"Alto\", IF(N.nota_final<95, \"Alto +\", 
+      IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno,
+      is_asi_validar_ok, is_paf_validar_ok
+      
+      FROM (((($tbl_notas N LEFT JOIN sweb_asignaturas A on(N.asignatura_id = A.id)) 
+      LEFT JOIN sweb_estudiantes E on(N.estudiante_id = E.id)) 
+      LEFT JOIN sweb_salones S on(N.salon_id = S.id)) 
+      LEFT JOIN sweb_grados G on(N.grado_id = G.id)) 
+      
+      WHERE N.salon_id = $salon_id
+  
+      ORDER BY S.position,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
+  
+      $registros = static::query($sql)->fetchAll();
+      foreach ($registros as $reg) {
+        $asi  = ($reg->is_asi_validar_ok>=3) ? '1': '0' ;
+        $paf  = ($reg->is_paf_validar_ok>=3) ? '1': '0' ;
+        $aResult["$reg->salon;$reg->salon_id;$reg->salon_uuid"]
+                ["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid"]
+                ["$reg->periodo_id"]
+                ["$reg->asignatura;$reg->asignatura_abrev"] 
+        = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf";
+      }
+      return $aResult;
     
-    FROM ((((sweb_notas N LEFT JOIN sweb_asignaturas A on(N.asignatura_id = A.id)) 
-    LEFT JOIN sweb_estudiantes E on(N.estudiante_id = E.id)) 
-    LEFT JOIN sweb_salones S on(N.salon_id = S.id)) 
-    LEFT JOIN sweb_grados G on(N.grado_id = G.id)) 
-    
-    WHERE N.salon_id = $salon_id
-
-    ORDER BY S.position,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.abrev";
-
-    $registros = static::query($sql)->fetchAll();
-    foreach ($registros as $reg) {
-      $asi  = ($reg->is_asi_validar_ok>=3) ? '1': '0' ;
-      $paf  = ($reg->is_paf_validar_ok>=3) ? '1': '0' ;
-      $aResult["$reg->salon;$reg->salon_id;$reg->salon_uuid"]
-              ["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid"]
-              ["$reg->periodo_id"]
-              ["$reg->asignatura;$reg->asignatura_abrev"] 
-      = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf";
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    return $aResult;
   } //END-getVistaNotasTodasExportar
 
 
@@ -216,12 +227,70 @@ class Nota extends LiteRecord {
     ->where('t.asignatura_id NOT IN (30,35,36,37,38,39,40) AND t.periodo_id = ? AND t.salon_id = ?')
     ->groupBy('t.periodo_id, a.nombre')
     ->setParams([$periodo_id, $salon_id]);
-    
-    // foreach ($registros as $reg) {
-    //   $aResult["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
-    // }
     return $DQL->execute();
   }//END-getNotasPromAnnioPeriodoSalon
+
+  public static function getSalonesByAnnio(int $annio) {
+    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select('DISTINCT t.annio, t.salon_id, s.nombre AS salon_nombre, max(t.periodo_id) as max_periodos')
+        ->leftJoin('salon', 's')
+        ->groupBy('t.annio, t.salon_id')
+        ->orderBy('t.annio, s.nombre')
+        ->setFrom($tbl_notas);
+    return $DQL->execute();
+  }
+
+  public static function getGradosByAnnio(int $annio) {
+    try {
+      $tbl_notas = "sweb_notas_$annio";
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select('DISTINCT t.annio, t.grado_id, g.abrev AS grado_abrev, max(t.periodo_id) as max_periodos')
+          ->leftJoin('grado', 'g')
+          ->groupBy('t.annio, t.grado_id')
+          ->orderBy('t.annio, g.orden DESC')
+          ->setFrom($tbl_notas);
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }
+
+  
+  public static function getNotasConsolidadoByGradoAnnio(int $grado_id, int $annio) {
+    try {
+      $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+  
+      $aResult = [];
+      $sql = "SELECT N.id, N.annio AS annio, N.periodo_id AS periodo_id, 
+      N.grado_id AS grado_id, G.nombre AS grado_nombre, 
+      N.asignatura_id AS asignatura_id, A.nombre AS asignatura_nombre, A.abrev AS asignatura_abrev,
+      N.estudiante_id AS estudiante_id, concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante_nombre, E.uuid as estudiante_uuid,
+      N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final
+      FROM $tbl_notas N 
+      LEFT JOIN sweb_asignaturas A on N.asignatura_id = A.id
+      LEFT JOIN sweb_estudiantes E on N.estudiante_id = E.id
+      LEFT JOIN sweb_grados G on N.grado_id = G.id
+      
+      WHERE N.grado_id = $grado_id and N.asignatura_id<>30
+      ORDER BY g.orden,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
+  
+      $registros = static::query($sql)->fetchAll();
+      foreach ($registros as $reg) {
+        $aResult["$reg->grado_nombre;$reg->grado_id"]
+                ["$reg->estudiante_nombre;$reg->estudiante_id;$reg->estudiante_uuid"]
+                ["$reg->periodo_id"]
+                ["$reg->asignatura_nombre;$reg->asignatura_abrev"] 
+        = "$reg->id;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final";
+      }
+      return $aResult;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getVistaNotasTodasExportar
 
 
 

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function traer_data(salon_id) {
-  console.clear();
+  //console.clear();
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   let theme = document.getElementById('theme').innerHTML.trim();
   
@@ -14,6 +14,7 @@ function traer_data(salon_id) {
     let body_table = '';
     let caption = '';
     let cnt_estudiantes = 1;
+
     for (let salon in datos) { 
       [salon_nombre, salon_id, salon_uuid] = salon.split(";");
       lnk_boletines_salon = 'Boletines:&nbsp;&nbsp;';
@@ -28,18 +29,16 @@ function traer_data(salon_id) {
       }
 
       caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_boletines_salon}<br><br>`;
-      let calc_prom;
       for (let estudiante in datos[salon]) {
         [estudiante_nombre, estudiante_id, estudiante_uuid]= estudiante.split(";");
         body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+'5"><td colspan=12><h3>INFOALUMNO</h3></td></tr>';
-        let cont = 1;
         
+        let cont = 1;
         let arrSumCols = [];
         for (let periodo in datos[salon][estudiante]) { // fila de titulos de materia
-          calc_prom = !is_prescolar(salon_nombre);
 
           if (cont==1) {
-            body_table += '<tr class="w3-theme-d3"><td>Per&iacute;odo</td>'+ ( (calc_prom) ? '<td class="w3-center">Prom</td>' : '');            
+            body_table += '<tr class="w3-theme-d3"><td>Per&iacute;odo</td>'+ ( (!is_prescolar(salon_nombre)) ? '<td class="w3-center">Prom</td>' : '');            
             for (let asignatura in datos[salon][estudiante][periodo]) {
               [asignatura_nombre, asignatura_abrev]= asignatura.split(";");
               body_table += '<td>' + asignatura_abrev + '</td>';
@@ -58,9 +57,7 @@ function traer_data(salon_id) {
             <i class="fa-solid fa-file-pdf"></i>&nbsp;B P${periodo}</a>
           `;
           
-          
-
-          let fila = `<tr class="w3-theme-l3"><td>${lnk_boletin_estud_periodo}</td>` + ( (calc_prom) ? `<td class="w3-center"><br>PROM</td>` : ''); 
+          let fila = `<tr class="w3-theme-l3"><td>${lnk_boletin_estud_periodo}</td>` + ( (!is_prescolar(salon_nombre)) ? `<td class="w3-center"><br>PROMMAT</td>` : ''); 
           let suma = 0;
           let elementos = 0;
           
@@ -77,7 +74,7 @@ function traer_data(salon_id) {
               lleva_pa = (plan_apoyo > 0) ? 'PA:'+plan_apoyo+'<br>' : 'PA:?<br>';
             } else {
               lleva_pa = '<br>';
-            }            
+            }      
             fila += `<td class="w3-center w3-padding-small w3-small">${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0) + `${br} ${asi} ${paf}</td>`;
             
             if (parseInt(nota_final)>0) {
@@ -86,14 +83,13 @@ function traer_data(salon_id) {
               arrSumCols[asignatura_abrev]['cnt'] += 1;
               arrSumCols[asignatura_abrev]['val'] += parseInt(nota_final);
             }
-          }
-          
+          }          
           
           let avg = 0;
           if (elementos>0) {
             avg = suma / elementos;  
           }
-          fila_nueva = fila.replace(/PROM/i, notaFormato(avg));
+          fila_nueva = fila.replace(/PROMMAT/i, notaFormato(avg));
           body_table += fila_nueva+  '</tr>';
         }
         
@@ -106,7 +102,7 @@ function traer_data(salon_id) {
           let suma_prom = 0;
           let promedio  = 0;
           fila_proms = '<tr><td>Promedios</td>';
-          fila_proms += (calc_prom)?'<td class="w3-center">PROMTOT</td>':'';
+          fila_proms += (!is_prescolar(salon_nombre))?'<td class="w3-center">PROMTOT</td>':'';
   
           for (item in arrSumCols) {
             cnt_mat += 1;
@@ -131,9 +127,6 @@ function traer_data(salon_id) {
         }
 
         body_table = body_table.replace(/INFOALUMNO/i, info_estudiante);
-        
-        //console.log('cnt_estudiantes '+cnt_estudiantes);
-        //console.table(arrSumCols);
         cnt_estudiantes += 1;
 
       }
@@ -147,7 +140,7 @@ function traer_data(salon_id) {
       `;
     })
     .catch(
-        error => console.log(error)
+      error => document.querySelector('#resultados').innerHTML = error
     );
 
 
@@ -230,6 +223,7 @@ function nombreRango(valor) {
 
 
 function notaFormato(valor, brake = true, fixed =2) {
+  fixed =  (valor % 1 !== 0) ? fixed : 0;  
   let valor_fixed = valor.toFixed(fixed);
   let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed)+'"';
   let nombre_rango = nombreRango(valor_fixed);

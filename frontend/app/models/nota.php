@@ -275,7 +275,7 @@ class Nota extends LiteRecord {
       LEFT JOIN sweb_grados G on N.grado_id = G.id
       
       WHERE N.grado_id = $grado_id and N.asignatura_id<>30
-      ORDER BY g.orden,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
+      ORDER BY G.orden,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
   
       $registros = static::query($sql)->fetchAll();
       foreach ($registros as $reg) {

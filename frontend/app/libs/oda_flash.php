@@ -62,6 +62,7 @@ class OdaFlash {
                 class=\"w3-button w3-large w3-display-topright\">&times;</span>
                 <p>$icon $message</p>
               </div>";
+      //self::$_contentMsj[] = "<div class=\"alert alert-danger .has-icon\" role=\"alert\">$message</div>";
     } else {
       self::$_contentMsj[] = $name.': '.Filter::get($msg, 'striptags').PHP_EOL;      
     }

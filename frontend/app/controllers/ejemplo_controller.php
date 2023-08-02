@@ -12,7 +12,7 @@ class EjemploController extends AppController
   public function index() {
     try {
       $this->page_action = 'Sign In';
-      View::select('auth-signin-v1', 'looper/auth-signin-v1');
+      View::select('layout-pagenavs', 'looper/layout-pagenavs');
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);

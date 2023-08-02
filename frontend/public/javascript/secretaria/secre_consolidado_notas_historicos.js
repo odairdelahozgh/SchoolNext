@@ -2,12 +2,11 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('annio-0').click();
 });
 
-
 function traer_grados(annio) {
-  console.clear();
   document.querySelector('#grado').innerHTML = '';
   document.querySelector('#botones').innerHTML = '';
   document.querySelector('#resultados').innerHTML = '';
+
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   let url = ruta_base+'api/notas/grados_annio/'+annio;
   fetch(url)
@@ -22,8 +21,7 @@ function traer_grados(annio) {
                 </div>`;
     }
     html += '</div>';
-
-    document.querySelector('#grado').innerHTML = 'GRADOS DEL AÑO '+annio;
+    document.querySelector('#grado').innerHTML = 'GRADOS DEL AÑO ' + annio;
     document.querySelector('#botones').innerHTML = html;
     document.getElementById('grado-0').click();
 
@@ -48,14 +46,15 @@ function traer_data(grado_id, annio, max_periodo) {
     let cnt_estudiantes = 1;
 
     for (let grado in datos) { 
-      [grado_nombre, grado_id] = grado.split(";");
+      [grado_nombre, grado_id, grado_abrev] = grado.split(";");
       lnk_boletines_salon = 'Boletines:&nbsp;&nbsp;';
 
       caption = `<h2>GRADO: ${grado_nombre}</h2>`;
       for (let estudiante in datos[grado]) {
         [estudiante_nombre, estudiante_id, estudiante_uuid]= estudiante.split(";");
 
-        body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+'5"><td colspan=12><h3>INFOALUMNO</h3></td></tr>';
+        let info_estudiante = (`# ${cnt_estudiantes} ${estudiante_nombre} [${estudiante_id}] :: ${annio} - ${grado_abrev}`).toUpperCase()+'°';
+        body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+`5"><td colspan=12><h3>${info_estudiante}</h3></td></tr>`;
         
         let cont = 1;
         let arrSumCols = [];
@@ -90,7 +89,7 @@ function traer_data(grado_id, annio, max_periodo) {
             [asignatura_nombre, asignatura_abrev] = asignatura.split(";");
 
             [reg_id, definitiva, plan_apoyo, nota_final] = datos[grado][estudiante][periodo][asignatura].split(";");
-            fila += '<td class="w3-center w3-padding-small w3-small">' + notaFormato(parseInt(nota_final), true, 0) + '</td>';
+            fila += '<td class="w3-center w3-padding-small w3-small">' + notaFormato(parseInt(nota_final), asignatura_abrev, true, 0) + '</td>';
             
             if (parseInt(nota_final)>0) {
               elementos += 1;
@@ -104,15 +103,11 @@ function traer_data(grado_id, annio, max_periodo) {
           if (elementos>0) {
             avg = suma / elementos;  
           }
-          fila_nueva = fila.replace(/PROMMAT/i, notaFormato(avg));
+          fila_nueva = fila.replace(/PROMMAT/i, notaFormato(avg, asignatura_abrev));
           body_table += fila_nueva+  '</tr>';
         }
-        
-        let info_estudiante = '';
-        info_estudiante = (`# ${cnt_estudiantes} - ${estudiante_nombre}`).toUpperCase();
-        body_table = body_table.replace(/INFOALUMNO/i, info_estudiante);
-        cnt_estudiantes += 1;
 
+        cnt_estudiantes += 1;
       }
     }
         
@@ -131,87 +126,34 @@ function traer_data(grado_id, annio, max_periodo) {
 }
 
 function colorRango(valor) {
-  if (valor<0) {
-    return 'DeepPink';
-  } else {
-    if (valor<1) {
-      return 'black';
-    } else {
-      if (valor<60) {
-        return 'red';
-      } else { 
-        if (valor<70) {
-          return 'orange';
-        } else {
-          if (valor<80) {
-            return 'yellow';
-          } else {
-            if (valor<90) {
-              return 'light-blue';
-            } else {
-              if (valor<95) {
-                return 'blue';
-              } else {
-                if (valor<=100) {
-                  return 'green';
-                } else {
-                  return 'fuchsia';
-                } 
-              } 
-            } 
-          } 
-        } 
-      }
-    }
-  }
-
+  if (valor<0 || valor>100) { return 'DeepPink'; }
+  if (valor<1) { return 'black'; }  
+  if (valor<60) { return 'red'; }
+  if (valor<70) { return 'orange'; }
+  if (valor<80) { return 'yellow'; }
+  if (valor<90) { return 'light-blue'; }
+  if (valor<95) { return 'blue'; }
+  if (valor<=100) { return 'green'; }
 } //END-colorRango
 
-
 function nombreRango(valor) {
-  if (valor<0) {
-    return 'error';
-  } else {
-    if (valor<1) {
-      return '';
-    } else {
-      if (valor<60) {
-        return 'Bajo';
-      } else { 
-        if (valor<70) {
-          return 'Básico';
-        } else {
-          if (valor<80) {
-            return 'Básico+';
-          } else {
-            if (valor<90) {
-              return 'Alto';
-            } else {
-              if (valor<95) {
-                return 'Alto+';
-              } else {
-                if (valor<=100) {
-                  return 'Superior';
-                } else {
-                  return 'error';
-                } 
-              } 
-            } 
-          } 
-        } 
-      }
-    }
-  }
-
+  if (valor<0 || valor>100) { return 'err'; } 
+  if (valor<1) { return ''; }  
+  if (valor<60) { return 'Bajo'; }
+  if (valor<70) { return 'Bási'; }
+  if (valor<80) { return 'Bás+'; }
+  if (valor<90) { return 'Alto'; }
+  if (valor<95) { return 'Alt+'; }
+  if (valor<=100) { return 'Supe'; }
 } //END-nombreRango
 
 
-function notaFormato(valor, brake = true, fixed =2) {
+function notaFormato(valor, materia='', brake = true, fixed =2) {
   fixed =  (valor % 1 !== 0) ? fixed : 0;  
   let valor_fixed = valor.toFixed(fixed);
   let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed)+'"';
   let nombre_rango = nombreRango(valor_fixed);
-  let nombre_rango_title = `title="${nombre_rango}"`;
+  let nombre_rango_title = `title="${materia} ${valor} [${nombre_rango}]"`;
   let br = (brake) ? '<br>' : '';
   return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}${nombre_rango}`;
 }

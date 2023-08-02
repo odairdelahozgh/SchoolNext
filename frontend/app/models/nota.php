@@ -256,7 +256,7 @@ class Nota extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  }
+  } //END-getGradosByAnnio
 
   
   public static function getNotasConsolidadoByGradoAnnio(int $grado_id, int $annio) {
@@ -265,7 +265,7 @@ class Nota extends LiteRecord {
   
       $aResult = [];
       $sql = "SELECT N.id, N.annio AS annio, N.periodo_id AS periodo_id, 
-      N.grado_id AS grado_id, G.nombre AS grado_nombre, 
+      N.grado_id AS grado_id, G.nombre AS grado_nombre, G.abrev AS grado_abrev, 
       N.asignatura_id AS asignatura_id, A.nombre AS asignatura_nombre, A.abrev AS asignatura_abrev,
       N.estudiante_id AS estudiante_id, concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante_nombre, E.uuid as estudiante_uuid,
       N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final
@@ -274,12 +274,12 @@ class Nota extends LiteRecord {
       LEFT JOIN sweb_estudiantes E on N.estudiante_id = E.id
       LEFT JOIN sweb_grados G on N.grado_id = G.id
       
-      WHERE N.grado_id = $grado_id and N.asignatura_id<>30
+      WHERE N.grado_id = $grado_id and N.asignatura_id NOT IN (30, 35,36,37,38,39,40)
       ORDER BY G.orden,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
   
       $registros = static::query($sql)->fetchAll();
       foreach ($registros as $reg) {
-        $aResult["$reg->grado_nombre;$reg->grado_id"]
+        $aResult["$reg->grado_nombre;$reg->grado_id;$reg->grado_abrev"]
                 ["$reg->estudiante_nombre;$reg->estudiante_id;$reg->estudiante_uuid"]
                 ["$reg->periodo_id"]
                 ["$reg->asignatura_nombre;$reg->asignatura_abrev"] 
@@ -290,7 +290,7 @@ class Nota extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getVistaNotasTodasExportar
+  } //END-getNotasConsolidadoByGradoAnnio
 
 
 

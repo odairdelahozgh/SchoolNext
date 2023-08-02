@@ -1,0 +1,1 @@
+ALTER TABLE sweb_notas_2011 ADD uuid VARCHAR(36) NULL DEFAULT NULL AFTER plan_apoyo;

@@ -1,0 +1,50 @@
+<?php
+  $frm = '';
+
+  //if ($reg_nota->definitiva < 60) {
+    
+    // fila #1
+    $frm = "<tr class=\"\">";  
+    $info_reg = '<br>Reg #'.$reg_nota->id;
+    $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->getFoto().$info_reg, attrs: 'rowspan="3"');
+    $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->estudiante_nombre."<br>$info_indic", attrs: 'colspan="4"');
+    $frm .= OdaTags::createTag(tag: 'td', content: '');
+    
+    $slider_definitiva = OdaTags::inputRango(id_name: $reg_nota->id, value: $reg_nota->definitiva, min: 0, max: 100, step: 1);
+    $field_definitiva = $reg_nota->fieldForm('definitiva');
+    $field_plan_apoyo = $reg_nota->fieldForm(field_name: 'plan_apoyo', type:'hidden');
+    $field_nota_final = $reg_nota->fieldForm(field_name: 'nota_final', type:'hidden');
+  
+    $las_notas = $field_definitiva.$field_plan_apoyo.$field_nota_final;
+    $frm .= OdaTags::createTag(tag: 'td', content: $slider_definitiva.'<br>Nota:'.$las_notas, attrs: 'colspan="3"');
+    $frm .= OdaTags::createTag(tag: 'td', content: 'P.A.<br>'.$reg_nota->plan_apoyo);
+    $frm .= OdaTags::createTag(tag: 'td', content: 'N.F.<br>'.$reg_nota->nota_final);
+    $frm .= '</tr>';
+    
+  
+    // reglas para los indicadores
+    $patternInidisc  = ' pattern="/^('. implode('|', $arrData['Indicadores']) .')$/"';
+    $min_max  = ' min="'.$arrData['min_indic'].'" max="'.$arrData['max_indic'].'" ';
+    $max_lenght = ' maxlength="'.strlen($arrData['max_indic']).'" size="'.(strlen($arrData['max_indic'])).'"' ;
+    
+    // fila #2
+    $frm .= "<tr class=\"\">";
+    $fields['f2'] = ['i31', 'i32', 'i33', 'i34', 'i35', 'i36', 'i37', 'i38', 'i39', 'i40'];
+    foreach ($fields['f2'] as $key => $campo) { 
+      $field = $reg_nota->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
+      $frm .= OdaTags::createTag('td', $field);
+    }//foreach
+    $frm .= '</tr>';
+    
+    // // fila #3
+    // $frm .= "<tr class=\"\">";
+    // $fields['f3'] = ['i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20'];
+    // foreach ($fields['f3'] as $key => $campo) { 
+    //   $field = $reg_nota->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
+    //   $frm .= OdaTags::createTag('td', $field);
+    // }//foreach
+    // $frm .= '</tr>';
+  //}
+
+  return $frm;
+?>

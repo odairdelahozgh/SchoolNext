@@ -182,4 +182,35 @@ class NotasController extends ScaffoldController
 
 
 
+  public function exportBoletinEstudianteHistPdf(int $annio, int $periodo_id, string $estudiante_uuid): void {
+    $tipo_boletin = TBoletin::Boletin;
+    $this->arrData['Periodo'] = $periodo_id;
+
+    $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
+    $this->arrData['Estud'] = $Estud;
+    
+    $Salon = (new Salon())::get($Estud->salon_id);
+    $this->arrData['Salon'] = $Salon;
+    
+    //$this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
+    
+    $this->arrData['Docentes'] = [];
+    foreach ((new Empleado())->getList() as $empleado) {
+      $this->arrData['Docentes'][$empleado->id] = $empleado;
+    }
+
+    $this->data = (new Nota())->getByPeriodoEstudiante($periodo_id, $Estud->id);
+    $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
+    foreach ($Indicadores as $key => $indic) {
+      $val = strtoupper(substr($indic->valorativo,0,1));
+      $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.trim($indic->concepto);
+    }
+    $this->file_tipo = $tipo_boletin->label();
+    $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Estud-periodo-$periodo_id");
+    $this->file_title = $tipo_boletin->label()." de Notas $Estud";
+    
+    View::select(view: "boletines_hist.pdf", template: null);
+  } //END-exportBoletinEstudiantePdf
+
+
 } // END CLASS

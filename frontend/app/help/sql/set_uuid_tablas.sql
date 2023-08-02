@@ -1,1 +1,0 @@
-update sweb_estudiantes set uuid = (select md5(UUID()));

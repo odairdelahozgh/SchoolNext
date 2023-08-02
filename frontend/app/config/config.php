@@ -21,6 +21,10 @@ return [
         'breadcrumb' => false, // activa breadcrumb
         'routes' => '1',  // descomentar para activar routes en routes.php
     ],
+    'theme' => [
+      'admin'  => 'w3', //w3 looper
+      'users'  => 'w3',
+    ],
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2023,
@@ -31,9 +35,9 @@ return [
       'imprimir_plan_apoyo' => false,
       'imprimir_nota'       => false,
     ],
-    'calificaiones' => [
-      'periodos_excep' => '2',
-      'salones_excep'  => '05-B',
+    'calificaciones' => [
+      'periodos_excep' => '1',
+      'salones_excep'  => '11-A',
       'usuarios_excep' => '',
     ],
     'construxzion' => [
@@ -46,6 +50,7 @@ return [
       'whatsapp'  => '+573017153066',
       'email'     => 'admin@windsorschool.edu.co',
       'app_name'  => APP_NAME,
+      'app_description'  => 'SchoolNext>> Es una Aplicación Web Moderna para la Gestión de Instituciones Educativas de Colombia',
     ],
     'institution' => [
       'nombre'          => 'Windsor School',

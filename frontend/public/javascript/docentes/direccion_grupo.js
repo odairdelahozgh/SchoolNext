@@ -6,7 +6,8 @@ function traer_data(salon_id) {
   //console.clear();
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   let theme = document.getElementById('theme').innerHTML.trim();
-  
+  document.querySelector('#resultados').innerHTML = ''  ;
+
   fetch(ruta_base+'api/notas/notas_salon/'+salon_id)
   .then((res) => res.json())
   .then(datos => {
@@ -147,78 +148,26 @@ function traer_data(salon_id) {
 }
 
 function colorRango(valor) {
-  if (valor<0) {
-    return 'DeepPink';
-  } else {
-    if (valor<1) {
-      return 'black';
-    } else {
-      if (valor<60) {
-        return 'red';
-      } else { 
-        if (valor<70) {
-          return 'orange';
-        } else {
-          if (valor<80) {
-            return 'yellow';
-          } else {
-            if (valor<90) {
-              return 'light-blue';
-            } else {
-              if (valor<95) {
-                return 'blue';
-              } else {
-                if (valor<=100) {
-                  return 'green';
-                } else {
-                  return 'fuchsia';
-                } 
-              } 
-            } 
-          } 
-        } 
-      }
-    }
-  }
-
+  if (valor<0 || valor>100) { return 'DeepPink'; }
+  if (valor<1) { return 'black'; }  
+  if (valor<60) { return 'red'; }
+  if (valor<70) { return 'orange'; }
+  if (valor<80) { return 'yellow'; }
+  if (valor<90) { return 'light-blue'; }
+  if (valor<95) { return 'blue'; }
+  if (valor<=100) { return 'green'; }
 } //END-colorRango
 
 
 function nombreRango(valor) {
-  if (valor<0) {
-    return 'error';
-  } else {
-    if (valor<1) {
-      return '';
-    } else {
-      if (valor<60) {
-        return 'Bajo';
-      } else { 
-        if (valor<70) {
-          return 'Básico';
-        } else {
-          if (valor<80) {
-            return 'Básico+';
-          } else {
-            if (valor<90) {
-              return 'Alto';
-            } else {
-              if (valor<95) {
-                return 'Alto+';
-              } else {
-                if (valor<=100) {
-                  return 'Superior';
-                } else {
-                  return 'error';
-                } 
-              } 
-            } 
-          } 
-        } 
-      }
-    }
-  }
-
+  if (valor<0 || valor>100) { return 'err'; }
+  if (valor<1) { return ''; }  
+  if (valor<60) { return 'Bajo'; }
+  if (valor<70) { return 'Bási'; }
+  if (valor<80) { return 'Bás+'; }
+  if (valor<90) { return 'Alto'; }
+  if (valor<95) { return 'Alt+'; }
+  if (valor<=100) { return 'Supe'; }
 } //END-nombreRango
 
 

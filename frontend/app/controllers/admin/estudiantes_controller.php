@@ -12,11 +12,16 @@ class EstudiantesController extends ScaffoldController
    * admin/.../index
    */
   public function index() {
-    //(new Estudiante())->setUUID_All_ojo();
-    $this->page_action = "Listado $this->controller_name" ;
-    $this->fieldsToShow = (new Estudiante())->getFieldsShow(__FUNCTION__);
-    $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
-    $this->data = (new Estudiante())->getListEstudiantes($orden='n,a1,a2');
+    try {
+      $this->page_action = "Listado $this->controller_name" ;
+      $this->fieldsToShow = (new Estudiante())->getFieldsShow(__FUNCTION__);
+      $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
+      $this->data = (new Estudiante())->getListEstudiantes($orden='n,a1,a2');
+      //OdaLog::debug("mensaje","rastreo");
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
   }//END-list
   
   public function exportPdf() {

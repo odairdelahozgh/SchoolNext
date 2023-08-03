@@ -297,34 +297,39 @@ class DocentesController extends AppController
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
 
       $PA = new PlanesApoyo();
-      $this->data = $PA->getBySalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
-      $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
+      $this->data = $PA->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
+      $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
+      $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
       
+      $regs_min = 0;
+      $regs_max = 0;
+
       $min_fortaleza = 0;
+      $max_fortaleza = 0;
+      $min_debilidad = 0;
+      $max_debilidad = 0;
+      $min_recomendacion = 0;
+      $max_recomendacion = 0;
+
       if ($RegsIndicad) {
-        $regs_min = min($RegsIndicad) ?? 0;
-        $regs_max = max($RegsIndicad) ?? 0;
-        
-        $min_fortaleza = min(array_filter(array: $RegsIndicad, callback: function ($element): bool {
-          return $element->valorativo == 'Fortaleza';
-        }));
-        $max_fortaleza = max(array_filter(array: $RegsIndicad, callback: function ($element) {
-          return $element->valorativo == 'Fortaleza';
-        }));
-        
-        $min_debilidad = min(array_filter(array: $RegsIndicad, callback: function ($element) {
-          return $element->valorativo == 'Debilidad';
-        }));
-        $max_debilidad = max(array_filter(array: $RegsIndicad, callback: function ($element) {
-          return $element->valorativo == 'Debilidad';
-        }));
-        
-        $min_recomendacion = min(array_filter(array: $RegsIndicad, callback: function ($element) {
-          return $element->valorativo == 'Recomendación';
-        }));
-        $max_recomendacion = max(array_filter(array: $RegsIndicad, callback: function ($element) {
-          return $element->valorativo == 'Recomendación';
-        }));
+        //$regs_min = min($RegsIndicad) ?? 0;
+        //$regs_max = max($RegsIndicad) ?? 0;
+        foreach ($MinMaxIndicad as $key => $Indic) {
+          if ('Fortaleza'==$Indic->valorativo) {
+            $min_fortaleza = $Indic->min;
+            $max_fortaleza = $Indic->max;
+            $regs_min = $Indic->min; // revisar un poco mas
+          }
+          if ('Debilidad'==$Indic->valorativo) {
+            $min_debilidad = $Indic->min;
+            $max_debilidad = $Indic->max;
+          }
+          if ('Recomendación'==$Indic->valorativo) {
+            $min_recomendacion = $Indic->min;
+            $max_recomendacion = $Indic->max;
+            $regs_max = $Indic->max; // revisar un poco mas
+          }
+        }
       }
 
       

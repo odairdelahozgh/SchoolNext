@@ -63,10 +63,16 @@ abstract class ScaffoldController extends AdminController
    * admin/.../index
    */
   public function index() {
-    $this->page_action = "Listado $this->controller_name" ;
-    $this->data = (new $this->nombre_modelo())->getList();
-    $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__);
-    $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__, true);
+    try {
+      $this->page_action = "Listado $this->controller_name" ;
+      $this->data = (new $this->nombre_modelo())->getList();
+      $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__);
+      $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__, true);
+      //OdaLog::debug("mensaje","rastreo");
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
   }//END-list
   
   /**

@@ -16,7 +16,7 @@ class Indicador extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.indicadores');
-    self::$order_by_default = 't.annio, t.periodo_id, t.grado_id, t.asignatura_id, t.codigo';
+    self::$_order_by_defa = 't.annio, t.periodo_id, t.grado_id, t.asignatura_id, t.codigo';
     $this->setUp();
   } //END-__construct
 
@@ -33,7 +33,7 @@ class Indicador extends LiteRecord {
         ->leftJoin('periodo', 'p')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
-        ->orderBy(self::$order_by_default);
+        ->orderBy(self::$_order_by_defa);
     if (!is_null($order_by)) {
       $DQL->orderBy($order_by);
     }
@@ -51,7 +51,7 @@ class Indicador extends LiteRecord {
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
         ->where('t.periodo_id=? AND t.grado_id=?')
-        ->orderBy(self::$order_by_default)
+        ->orderBy(self::$_order_by_defa)
         ->setParams([$periodo_id, $grado_id]);
     return $DQL->execute();
   } // END-getByPeriodoGrado
@@ -62,7 +62,7 @@ class Indicador extends LiteRecord {
         ->where('t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
-        ->orderBy(self::$order_by_default)
+        ->orderBy(self::$_order_by_defa)
         ->setParams([$periodo_id, $grado_id, $asignatura_id]);
     return $DQL->execute();
   } // END-getByPeriodoGradoAsignatura
@@ -74,53 +74,81 @@ class Indicador extends LiteRecord {
           ->where('t.grado_id=? AND t.asignatura_id=?')
           ->leftJoin('grado', 'g')
           ->leftJoin('asignatura', 'a')
-          ->orderBy(self::$order_by_default)
+          ->orderBy(self::$_order_by_defa)
           ->setParams([$grado_id, $asignatura_id]);
       return $DQL->execute();
 
-    }
-    catch (\Throwable $th) {
+    } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
   } // END-getByGradoAsignatura
 
-  /**
-   * Regresa Lista de indicadores filtrada
-   */
+
   public function getListIndicadores(int $periodo_id, int $grado_id, int $asignatura_id) {
-    $DQL = new OdaDql(__CLASS__);
-    $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
-        ->where('t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
-        ->leftJoin('grado', 'g')
-        ->leftJoin('asignatura', 'a')
-        ->orderBy(self::$order_by_default)
-        ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-    return $DQL->execute();
+    try {
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
+          ->where('t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+          ->leftJoin('grado', 'g')
+          ->leftJoin('asignatura', 'a')
+          ->orderBy(self::$_order_by_defa)
+          ->setParams([$periodo_id, $grado_id, $asignatura_id]);
+      return $DQL->execute();
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
   } // END-getListIndicadores
 
-  /**
-   * Regresa Lista de indicadores filtrada
-   */
+
   public function getListIndicadoresVisibles(int $periodo_id, int $grado_id, int $asignatura_id) {
-    $DQL = new OdaDql(__CLASS__);
-    $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
-        ->where('t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
-        ->leftJoin('grado', 'g')
-        ->leftJoin('asignatura', 'a')
-        ->orderBy(self::$order_by_default)
-        ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-    return $DQL->execute();
-  } // END-getListIndicadores
+    try {
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
+          ->where('t.is_active=1 AND t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+          ->leftJoin('grado', 'g')
+          ->leftJoin('asignatura', 'a')
+          ->orderBy(self::$_order_by_defa)
+          ->setParams([$periodo_id, $grado_id, $asignatura_id]);
+      return $DQL->execute();
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } // END-getListIndicadoresVisibles
 
 
   public function getIndicadoresCalificar(int $periodo_id, int $grado_id, int $asignatura_id) {
-    $DQL = new OdaDql(__CLASS__);
-    $DQL->select('t.codigo, t.valorativo, t.concepto')
-        ->where('t.is_active=1 AND t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
-        ->orderBy(self::$order_by_default)
-        ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-    return $DQL->execute();
-  } // END-getListIndicadores
+    try {
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select('t.codigo, t.valorativo, t.concepto')
+          //->where('t.is_active=1 AND t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+          ->where('t.is_active=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+          ->orderBy(self::$_order_by_defa)
+          ->setParams([$periodo_id, $grado_id, $asignatura_id]);
+
+      return $DQL->execute();
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+
+  } // END-getIndicadoresCalificar
+
+  public function getMinMaxByPeriodoGradoAsignatura(int $periodo_id, int $grado_id, int $asignatura_id) {
+    try {
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select('t.valorativo, MIN(t.codigo) AS min, MAX(t.codigo) AS max')
+          ->where('t.is_active=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
+          ->groupBy('t.valorativo')
+          ->orderBy(self::$_order_by_defa)
+          ->setParams([$periodo_id, $grado_id, $asignatura_id]);
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } // END-getMinMaxByPeriodoGradoAsignatura
 
 
 } //END-CLASS

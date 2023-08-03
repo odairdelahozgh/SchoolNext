@@ -70,13 +70,20 @@ function traer_data(salon_id) {
             asi = (is_asi_validar_ok==1) ? '<span class="w3-badge w3-white w3-tiny">SI</span>' : '';
             paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">PA</a>' : '';
             br = ((asi.length+paf.length)>0) ? '<br>' : '';
+
+            let def = '';
             let lleva_pa = '';
             if (definitiva<60) {
-              lleva_pa = (plan_apoyo > 0) ? 'PA:'+plan_apoyo+'<br>' : 'PA:?<br>';
+              def = `<strong style="color:red">DEF: ${definitiva}</strong><br>`;
+              if (plan_apoyo > 0) {
+                lleva_pa = '<strong style="color:'+((plan_apoyo<60)?'red':'black')+'">PA:'+plan_apoyo+'</strong><br>';
+              } else {
+                lleva_pa = (plan_apoyo > 0) ? '<strong style="color:red">DEF:'+definitiva+'</strong><br><strong style="color:red">PA:'+plan_apoyo+'</strong><br>' : 'PA:?<br>';
+              }
             } else {
               lleva_pa = '<br>';
-            }      
-            fila += `<td class="w3-center w3-padding-small w3-small">${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0) + `${br} ${asi} ${paf}</td>`;
+            }
+            fila += `<td class="w3-center w3-padding-small w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0) + `${br} ${asi} ${paf}</td>`;
             
             if (parseInt(nota_final)>0) {
               elementos += 1;

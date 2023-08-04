@@ -32,7 +32,7 @@ function traer_data(salon_id) {
       caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_boletines_salon}<br><br>`;
       for (let estudiante in datos[salon]) {
         [estudiante_nombre, estudiante_id, estudiante_uuid]= estudiante.split(";");
-        body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+'5"><td colspan=12><h3>INFOALUMNO</h3></td></tr>';
+        body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+`5"><td colspan=12><h3># ${cnt_estudiantes} ${estudiante_nombre} [${estudiante_id}] :: ${salon_nombre} NOTA-PROM-ESTU</h3></td></tr>`;
         
         let cont = 1;
         let arrSumCols = [];
@@ -122,12 +122,12 @@ function traer_data(salon_id) {
           fila_nueva_proms = fila_proms.replace(/PROMTOT/i, notaFormato(avg_prom));
           body_table += fila_nueva_proms;
 
-          info_estudiante = (`# ${cnt_estudiantes} - ${estudiante_nombre} `).toUpperCase() + '<span class="w3-tag w3-'+colorRango(avg_prom)+'">'+nombreRango(avg_prom)+'</span>';
+          info_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom)+'">'+nombreRango(avg_prom)+'</span>';
         } else {
-          info_estudiante = (`# ${cnt_estudiantes} - ${estudiante_nombre}`).toUpperCase();
+          info_estudiante = '';
         }
 
-        body_table = body_table.replace(/INFOALUMNO/i, info_estudiante);
+        body_table = body_table.replace(/NOTA-PROM-ESTU/i, info_estudiante);
         cnt_estudiantes += 1;
 
       }

@@ -3,7 +3,6 @@
  * @see Controller nuevo controller
  */
 require_once CORE_PATH . 'kumbia/controller.php';
-const APP_NAME= "SchoolNEXT>>";
 
 /**
  * Controlador DMZ (Sin seguridad)

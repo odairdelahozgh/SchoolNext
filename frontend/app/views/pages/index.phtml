@@ -5,6 +5,7 @@
 <?php 
   $tabla = new OdaTable();
     $tabla->setCaption('Indice de Paginas estáticas de Ejemplos');
+    $tabla->addRow(data: [Html::linkAction('ejemplos/componentes', 'Componentes'), 'Manejo de componentes']);
     $tabla->addRow(data: [Html::linkAction('ejemplos/archivos', 'Archivos'), 'Ejemplos de manejo de archivos y carpetas']);
     $tabla->addRow(data: [Html::linkAction('ejemplos/input_car_faltan', 'Input Calcula Caracteres'), 'Calcula la cantidad de caracteres faltantes en un input']);
     $tabla->addRow(data: [Html::linkAction('ejemplos/datalists', 'datalist'), 'Uso de datalist']);

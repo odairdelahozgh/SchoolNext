@@ -5,7 +5,7 @@
   * @package Controllers 
   * https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
-class AdmisionesController extends AppController
+class AdmisionesController extends DmzController
 {
     
   public function index() {

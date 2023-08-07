@@ -1,30 +1,26 @@
 <div class="w3-panel">
-    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
-    <?php View::flash(); ?>
-    <?php 
-        //echo OdaUtils::ver_array($RegistrosHist);
-        $tabsAnnios = new OdaTabs();
-        $ArrAnnios=[];
-        foreach ($data as $annio => $regAnnios) {
-            $info_periodos = '';
-            $tabsPeriodos = new OdaTabs();
-            foreach ($regAnnios as $periodo => $regPeriodos) {
-                $contenido = '';
-                foreach ($regPeriodos as $salon_id => $nomsalon_total) {
-                    $Valor = explode(";",$nomsalon_total);
-                    $url = "https://windsortemp.schoolnext.space/index.php/+/notasHistoria/GenerarBoletinesHis?annio={$annio}&periodo={$periodo}&salon_id=$salon_id";
-                    $contenido .= OdaTags::linkExterno($url, "Descargar $annio - P$periodo : $Valor[0]", ['target'=>'_blank', 'class'=>"w3-btn w3-round-large w3-border w3-border-white"]).'<br>';
-                }
-                $tabsPeriodos->addTab($annio.$periodo, "$annio P".$periodo, $contenido);
-            }
-            $ArrAnnios[$annio]=$tabsPeriodos;
-        }        
-        foreach ($ArrAnnios as $key => $value) {
-            echo Tag::create('button', "Boletines del Año $key", ['onclick'=>"acordeon('$key $periodo')", 'class'=>"w3-button w3-block w3-black w3-left-align"]);
-            echo "<div id=\"$key $periodo\" class=\"w3-hide w3-container\"><p>$value</p></div>";
+    <?= View::Encab(page_module: $controller_name, page_action: $page_action, breadcrumb: $breadcrumb); ?>
+    <?= View::flash(); ?>
+</div>
+    
+<div class="w3-container">
+    <div  class="w3-bar">
+      <?php 
+        foreach ($data as $key => $annio) {
+          echo "<div class=\"w3-bar-item\">
+                  <button id=\"annio-$key\" class=\"w3-button w3-theme\" onclick=\"traer_grados($annio)\">$annio</button>
+               </div>";
         }
-    ?>
+      ?>
+  </div>
+  <hr>
+  <h2 id="grado"></h2>
+  <div id="botones"></div>
+  <div id="resultados"></div>
+
 </div>
 
-<?= tag::js("tabs_h", false);?>
-<?= tag::js("acordeon", false);?>
+
+<?php
+  echo Tag::js(src: 'secretaria/secre_consolidado_notas_historicos', cache: false);
+?>  

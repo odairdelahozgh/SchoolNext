@@ -22,11 +22,11 @@ class CoordinadorController extends AppController
 
   public function listadoEstudiantes() {
     try {
-    $this->page_action = 'Listado de Estudiantes Activos';
-    $this->data = (new Estudiante)->getListSecretaria(estado:1);
+      $this->page_action = 'Listado de Estudiantes Activos';
+      $this->data = (new Estudiante)->getListSecretaria(estado:1);
     
     } catch (\Throwable $th) {
-    OdaFlash::error($th);
+      OdaFlash::error($th);
     }
     View::select('estudiantes/index');
   } // END-listadoEstudiantes
@@ -41,8 +41,8 @@ class CoordinadorController extends AppController
   
   public function consolidado() {
     try {
-    $this->page_action = 'Consolidado de Notas';
-    $this->data = (new Salon())->getByCoordinador(Session::get('id'));
+      $this->page_action = 'Consolidado de Notas';
+      $this->data = (new Salon())->getByCoordinador(Session::get('id'));
     
     } catch (\Throwable $th) {
     OdaFlash::error($th);
@@ -59,11 +59,17 @@ class CoordinadorController extends AppController
   } //END-notas_salon_json
 
   
-  public function historico_notas() {
-    $this->page_action = 'Hist&oacute;rico de Notas';
-    $this->data = (new NotaHist() )->getTotalAnniosPeriodosSalones();
+  public function historico_notas() { // Al index de Historico notas
+    try {
+      $this->page_action = 'Hist&oacute;rico de Notas';
+      //$this->data = range(Config::get('config.academic.annio_actual')-1, Config::get('config.academic.annio_inicial'), -1);
+      $this->data = range(Config::get('config.academic.annio_actual')-1, 2010, -1);
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
     View::select('historico_notas/index');
-  } //END-historico_notas
+    } //END-historico_notas
 
 
   public function cambiar_salon_estudiante(int $estudiante_id, int $salon_id, bool $cambiar_en_notas = true) {

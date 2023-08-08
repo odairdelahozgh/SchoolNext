@@ -294,4 +294,80 @@ class Nota extends LiteRecord {
 
 
 
+  public static function getCuadroHonorPDF($annio_in, $periodo_in, $secciones_in) {
+    $annio     = (!isset($annio_in))     ? dmConfig::get('annio_actual')   : $annio_in ;
+    $periodo   = (!isset($periodo_in))   ? dmConfig::get('periodo_actual') : $periodo_in ;
+    $secciones = (!isset($secciones_in)) ? '2,3,4' : $secciones_in;
+
+    $q = Doctrine_Core::getTable('Nota')->createQuery('n')
+      ->select('n.salon_id, n.estudiante_id, round(AVG(n.definitiva),2,0) as prom, CONCAT(e.nombres, " ", e.apellido1, " ", e.apellido2) as Estudiante, s.nombre AS Salon')
+      ->leftJoin('n.Salon s')
+      ->leftJoin('n.Estudiante e')
+      ->groupBy('n.salon_id, n.estudiante_id')
+      ->WhereNotIn('n.asignatura_id', self::$arrExcepProm)  //Excluye Comportamiento y Preicfes.
+      ->addWhere('n.annio = ? AND n.periodo_id = ?', array($annio, $periodo))
+      ->addWhere('n.grado_id IN (SELECT G1.id FROM grado G1 WHERE G1.seccion_id IN (2,3,4) )')
+      ->orderBy('s.nombre ASC, prom DESC');
+    $registros = $q->fetchArray();              
+    $info = array(
+          "TITULO"  => "Listado de Puestos",
+          "CLAVE"   => "Notas",
+          "HEADER"  => "Estudiante,Salon,prom",
+          "FIELDS"  => "Estudiante,Salon,prom",
+          "ANCHOS"  => "80,20,15",
+          "BREAK"   => "1",
+          "ANNIO"   => $annio,
+          "PERIODO" => $periodo
+          );
+
+    if ( count($registros) > 0 ) {
+      CrearListadoPuestos($info, $registros);
+    }
+  }
+
+  //====================
+  public static function getCuadroHonorPrimariaPDF($periodo_id, $annio = null) {
+
+    $annio     = (!isset($annio_in))     ? dmConfig::get('annio_actual')   : $annio_in ;
+    $periodo   = (!isset($periodo_in))   ? dmConfig::get('periodo_actual') : $periodo_in ;
+    $secciones = (!isset($secciones_in)) ? '2,3,4' : $secciones_in ;
+    $max=10;
+    if ($secciones=='2') {
+      $titulo = 'Cuadro de Honor General - PRIMARIA';
+    } elseif ($secciones=='3,4') {
+      $titulo = 'Cuadro de Honor General - BACHILLERATO';
+      } else {
+        $titulo = 'Cuadro de Honor General';
+      }
+    $q = Doctrine_Core::getTable('Nota')->createQuery('n')
+        ->select('n.salon_id, n.estudiante_id, round(AVG(n.definitiva),2,0) as prom')
+        ->groupBy('n.salon_id, n.estudiante_id')
+        ->WhereNotIn('n.asignatura_id', self::$arrExcepProm)
+        ->addWhere('n.annio = ? AND n.periodo_id = ?', array($annio, $periodo))
+        ->addWhere('n.salon_id IN (SELECT S.id FROM salon S WHERE S.grado_id IN (SELECT G.id FROM grado G WHERE G.seccion_id IN ('.$secciones.')))')
+        ->addWhere('n.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM nota AS P WHERE P.definitiva<60 AND P.periodo_id ='.$periodo.' ) ')
+        ->orderBy('prom DESC');
+    $registros = $q->execute();
+    $consulta_sql = $q->getSqlQuery();
+
+    $info = array(
+            "TITULO"   => $titulo,
+            "CLAVE"    => "Notas",
+            "HEADER"   => "Estudiante,Salon,prom",
+            "FIELDS"   => "Estudiante,Salon,prom",
+            "ANCHOS"   => "80,20,15",
+            "BREAK"    => "",
+            "CONSQL"   => $consulta_sql,
+            "ANNIO"    => $annio,
+            "PERIODO"  => $periodo
+            );
+          
+    if ($registros->count() > 0 ) {
+      CrearListadoCuadroHonor($info, $registros);
+    } else {
+    }
+
+  }
+
+
 } //END-CLASS

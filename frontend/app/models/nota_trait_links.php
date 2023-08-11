@@ -15,5 +15,34 @@ trait NotaTraitLinks {
         }
         return '<div class="w3-show-inline-block"><div class="w3-bar">'.$btns.'</div></div>';
     }
+
+  public static function lnkCuadroHonorPrimariaPDF(int $periodo): string {
+    try {
+      return OdaTags::linkButton(
+        action: "admin/notas/exportCuadroHonorPrimariaPdf/$periodo", 
+        text: "Honor Primaria P$periodo",      
+        attrs: 'class="w3-button w3-green" target="_blank"',
+      );
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
+  } //END-lnkCuadroHonorPrimariaPDF
+  
+  
+  public static function lnkCuadroHonorBachilleratoPDF(int $periodo): string {
+    try {
+      return OdaTags::linkButton(
+        action: "admin/notas/exportCuadroHonorBachilleratoPdf/$periodo", 
+        text: "Honor Bachillerato P$periodo",
+        attrs: 'class="w3-button w3-green" target="_blank"',
+      );
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
+  } //END-lnkCuadroHonorBachilleratoPDF
     
 }

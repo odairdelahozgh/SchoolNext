@@ -39,7 +39,6 @@ class Nota extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-
   
   public function setUpdateCalificacion() {
     try {
@@ -47,9 +46,8 @@ class Nota extends LiteRecord {
     } catch (\Throwable $th) {
       OdaLog::error($th);
     }
-  } //END-setCalificacion
+  } //END-setUpdateCalificacion
 
-  
 
   public function cambiarSalonEstudiante(int $nuevo_salon_id, int $nuevo_grado_id, int $estudiante_id) {
     try {
@@ -58,7 +56,6 @@ class Nota extends LiteRecord {
       OdaLog::error($th);
     }
   } //END-cambiarSalonEstudiante
-
   
 
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
@@ -110,7 +107,7 @@ class Nota extends LiteRecord {
         ->orderBy('estudiante_nombre, a.nombre')
         ->setParams([$periodo_id, $salon_id]);
     return $DQL->execute();
-  } // END-getByPeriodoEstudiante
+  } // END-getByPeriodoSalon
 
 
   //====================
@@ -136,7 +133,7 @@ class Nota extends LiteRecord {
       ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
       array((int)$salon_id, (int)$asignatura_id)
     );
-  } //END-
+  } //END-getNotasSalonAsignatura
 
   
   public static function getBySalonAsignaturaPeriodos(int $salon_id, int $asignatura_id, array $periodos=[], $annio=null) {
@@ -155,7 +152,7 @@ class Nota extends LiteRecord {
       ORDER BY t.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres",
       array($salon_id, $asignatura_id)
     );
-  } //END-getNotasPeriodoSalonAsignatura
+  } //END-getBySalonAsignaturaPeriodos
 
 
   //====================
@@ -215,11 +212,10 @@ class Nota extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getVistaNotasTodasExportar
+  } //END-getNotasConsolidado
 
 
-
-  public static function getNotasPromAnnioPeriodoSalon(int $periodo_id, int $salon_id) {
+  public static function getNotasPromAnnioPeriodoSalon(int $periodo_id, int $salon_id): array|string {
     $DQL = (new OdaDql(__CLASS__))
     ->select('t.periodo_id, a.nombre as asignatura_nombre')
     ->addSelect('round(AVG(if(t.nota_final>0, t.nota_final, t.definitiva)), 2) as avg')
@@ -228,7 +224,8 @@ class Nota extends LiteRecord {
     ->groupBy('t.periodo_id, a.nombre')
     ->setParams([$periodo_id, $salon_id]);
     return $DQL->execute();
-  }//END-getNotasPromAnnioPeriodoSalon
+  } //END-getNotasPromAnnioPeriodoSalon
+
 
   public static function getSalonesByAnnio(int $annio) {
     $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
@@ -240,7 +237,7 @@ class Nota extends LiteRecord {
         ->orderBy('t.annio, s.nombre')
         ->setFrom($tbl_notas);
     return $DQL->execute();
-  }
+  } //END-getSalonesByAnnio
 
   public static function getGradosByAnnio(int $annio) {
     try {
@@ -294,80 +291,77 @@ class Nota extends LiteRecord {
 
 
 
-  public static function getCuadroHonorPDF($annio_in, $periodo_in, $secciones_in) {
-    $annio     = (!isset($annio_in))     ? dmConfig::get('annio_actual')   : $annio_in ;
-    $periodo   = (!isset($periodo_in))   ? dmConfig::get('periodo_actual') : $periodo_in ;
-    $secciones = (!isset($secciones_in)) ? '2,3,4' : $secciones_in;
+  // public static function getCuadroHonorPDF($annio_in, $periodo_in, $secciones_in) {
+  //   $annio     = (!isset($annio_in))     ? dmConfig::get('annio_actual')   : $annio_in ;
+  //   $periodo   = (!isset($periodo_in))   ? dmConfig::get('periodo_actual') : $periodo_in ;
+  //   $secciones = (!isset($secciones_in)) ? '2,3,4' : $secciones_in;
 
-    $q = Doctrine_Core::getTable('Nota')->createQuery('n')
-      ->select('n.salon_id, n.estudiante_id, round(AVG(n.definitiva),2,0) as prom, CONCAT(e.nombres, " ", e.apellido1, " ", e.apellido2) as Estudiante, s.nombre AS Salon')
-      ->leftJoin('n.Salon s')
-      ->leftJoin('n.Estudiante e')
-      ->groupBy('n.salon_id, n.estudiante_id')
-      ->WhereNotIn('n.asignatura_id', self::$arrExcepProm)  //Excluye Comportamiento y Preicfes.
-      ->addWhere('n.annio = ? AND n.periodo_id = ?', array($annio, $periodo))
-      ->addWhere('n.grado_id IN (SELECT G1.id FROM grado G1 WHERE G1.seccion_id IN (2,3,4) )')
-      ->orderBy('s.nombre ASC, prom DESC');
-    $registros = $q->fetchArray();              
-    $info = array(
-          "TITULO"  => "Listado de Puestos",
-          "CLAVE"   => "Notas",
-          "HEADER"  => "Estudiante,Salon,prom",
-          "FIELDS"  => "Estudiante,Salon,prom",
-          "ANCHOS"  => "80,20,15",
-          "BREAK"   => "1",
-          "ANNIO"   => $annio,
-          "PERIODO" => $periodo
-          );
+  //   $q = Doctrine_Core::getTable('Nota')->createQuery('n')
+  //     ->select('n.salon_id, n.estudiante_id, round(AVG(n.definitiva),2,0) as prom, CONCAT(e.nombres, " ", e.apellido1, " ", e.apellido2) as Estudiante, s.nombre AS Salon')
+  //     ->leftJoin('n.Salon s')
+  //     ->leftJoin('n.Estudiante e')
+  //     ->groupBy('n.salon_id, n.estudiante_id')
+  //     ->WhereNotIn('n.asignatura_id', self::$arrExcepProm)  //Excluye Comportamiento y Preicfes.
+  //     ->addWhere('n.annio = ? AND n.periodo_id = ?', array($annio, $periodo))
+  //     ->addWhere('n.grado_id IN (SELECT G1.id FROM grado G1 WHERE G1.seccion_id IN (2,3,4) )')
+  //     ->orderBy('s.nombre ASC, prom DESC');
+  // }
 
-    if ( count($registros) > 0 ) {
-      CrearListadoPuestos($info, $registros);
+  
+  public static function getCuadroHonorPrimariaPDF(int $periodo_id, null|int $annio = null): array|string {
+    try {
+      $annio = $annio ?? config::get('config.academic.annio_actual');
+      $secciones = implode(',', (new Seccion)::segSecPrimaria());
+  
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->setFrom('sweb_notas');
+      $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
+          ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
+          ->leftJoin('salon', 's')
+          ->leftJoin('estudiante', 'e')
+          ->groupBy('t.salon_id, t.estudiante_id')
+          ->where('t.asignatura_id NOT IN (30, 35)')
+          ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
+          ->andWhere("t.salon_id IN (SELECT S.id FROM sweb_salones S WHERE S.grado_id IN (SELECT G.id FROM sweb_grados G WHERE G.seccion_id IN ($secciones)))")
+          ->andWhere("t.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM sweb_notas AS P WHERE P.definitiva<60 AND P.periodo_id=$periodo_id )")
+          ->orderBy('prom DESC')
+          ->setLimit(10);
+      
+      return $DQL->execute();
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
     }
-  }
+  } //END-getCuadroHonorPrimariaPDF
 
-  //====================
-  public static function getCuadroHonorPrimariaPDF($periodo_id, $annio = null) {
 
-    $annio     = (!isset($annio_in))     ? dmConfig::get('annio_actual')   : $annio_in ;
-    $periodo   = (!isset($periodo_in))   ? dmConfig::get('periodo_actual') : $periodo_in ;
-    $secciones = (!isset($secciones_in)) ? '2,3,4' : $secciones_in ;
-    $max=10;
-    if ($secciones=='2') {
-      $titulo = 'Cuadro de Honor General - PRIMARIA';
-    } elseif ($secciones=='3,4') {
-      $titulo = 'Cuadro de Honor General - BACHILLERATO';
-      } else {
-        $titulo = 'Cuadro de Honor General';
-      }
-    $q = Doctrine_Core::getTable('Nota')->createQuery('n')
-        ->select('n.salon_id, n.estudiante_id, round(AVG(n.definitiva),2,0) as prom')
-        ->groupBy('n.salon_id, n.estudiante_id')
-        ->WhereNotIn('n.asignatura_id', self::$arrExcepProm)
-        ->addWhere('n.annio = ? AND n.periodo_id = ?', array($annio, $periodo))
-        ->addWhere('n.salon_id IN (SELECT S.id FROM salon S WHERE S.grado_id IN (SELECT G.id FROM grado G WHERE G.seccion_id IN ('.$secciones.')))')
-        ->addWhere('n.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM nota AS P WHERE P.definitiva<60 AND P.periodo_id ='.$periodo.' ) ')
-        ->orderBy('prom DESC');
-    $registros = $q->execute();
-    $consulta_sql = $q->getSqlQuery();
-
-    $info = array(
-            "TITULO"   => $titulo,
-            "CLAVE"    => "Notas",
-            "HEADER"   => "Estudiante,Salon,prom",
-            "FIELDS"   => "Estudiante,Salon,prom",
-            "ANCHOS"   => "80,20,15",
-            "BREAK"    => "",
-            "CONSQL"   => $consulta_sql,
-            "ANNIO"    => $annio,
-            "PERIODO"  => $periodo
-            );
-          
-    if ($registros->count() > 0 ) {
-      CrearListadoCuadroHonor($info, $registros);
-    } else {
-    }
-
-  }
+  public static function getCuadroHonorBachilleratoPDF(int $periodo_id, null|int $annio = null): array|string {
+    try {
+      $annio = $annio ?? config::get('config.academic.annio_actual');
+      $secciones = implode(',', (new Seccion)::segSecBachillerato());
+  
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->setFrom('sweb_notas');
+      $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
+          ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
+          ->leftJoin('salon', 's')
+          ->leftJoin('estudiante', 'e')
+          ->groupBy('t.salon_id, t.estudiante_id')
+          ->where('t.asignatura_id NOT IN (30, 35)')
+          ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
+          ->andWhere("t.salon_id IN (SELECT S.id FROM sweb_salones S WHERE S.grado_id IN (SELECT G.id FROM sweb_grados G WHERE G.seccion_id IN ($secciones)))")
+          ->andWhere("t.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM sweb_notas AS P WHERE P.definitiva<60 AND P.periodo_id=$periodo_id )")
+          ->orderBy('prom DESC')
+          ->setLimit(10);
+      
+      return $DQL->execute();
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    } 
+  } //END-getCuadroHonorBachilleratoPDF
 
 
 } //END-CLASS

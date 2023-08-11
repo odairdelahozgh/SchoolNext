@@ -233,4 +233,24 @@ class NotasController extends ScaffoldController
   } //END-exportCuadroHonorBachilleratoPdf
 
   
+  public function exportCuadroHonorGeneralPrimariaPdf(int $periodo_id): void {
+    $this->data = (new Nota())->getCuadroHonorGeneralPrimariaPDF($periodo_id);
+    $this->file_tipo = 'file-tipo';
+    $this->file_name = OdaUtils::getSlug("Cuadro de Honor General Primaria PDF-periodo-$periodo_id");
+    $this->file_title = "Cuadro de Honor General Primaria PDF - Periodo $periodo_id";
+    $this->file_download = true;
+    View::select(view: "cuadros-de-honor-general.pdf", template: 'pdf/mpdf');
+  } //END-exportCuadroHonorGeneralPrimariaPdf
+
+
+  public function exportCuadroHonorGeneralBachilleratoPdf(int $periodo_id): void {
+    $this->data = (new Nota())->getCuadroHonorGeneralBachilleratoPDF($periodo_id);
+    $this->file_tipo = 'file-tipo';
+    $this->file_name = OdaUtils::getSlug("Cuadro de Honor General Bachillerato PDF-periodo-$periodo_id");
+    $this->file_title = "Cuadro de Honor General Bachillerato PDF - Periodo $periodo_id";
+    $this->file_download = true;
+    View::select(view: "cuadros-de-honor-general.pdf", template: 'pdf/mpdf');
+  } //END-exportCuadroHonorGeneralBachilleratoPdf
+
+  
 } // END CLASS

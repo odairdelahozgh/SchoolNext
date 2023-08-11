@@ -15,6 +15,7 @@ class OdaDql {
   private string $_group_by    = '';
   private array  $_joins       = [];
   private array  $_params      = [];
+  private int $_limit = 0;
 
   public function __construct(private string $_from, private TipoDql $_tipo_dql = TipoDql::Select) {
     $this->_from_source = $_from::getSource() ?? $_from;
@@ -28,9 +29,10 @@ class OdaDql {
               . ((empty($this->_select) or ('*'==$this->_select)) ? 't.*' : $this->_select)
               . " FROM $this->_from_source AS t"
               . implode(" ", $this->_joins)
-              . (empty($this->_where) ? '' : " WHERE $this->_where ")
+              . (empty($this->_where)    ? '' : " WHERE $this->_where ")
               . (empty($this->_group_by) ? '' : " GROUP BY $this->_group_by")
-              . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by"),
+              . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by")
+              . (empty($this->_limit)    ? '' : " LIMIT $this->_limit"),
 
       TipoDql::Update => "UPDATE $this->_from_source AS t"
               . (empty($this->_sets) ? '-ERROR NO SET-' : " SET $this->_sets")
@@ -47,7 +49,8 @@ class OdaDql {
               . implode(" ", $this->_joins).PHP_EOL
               . (empty($this->_where) ? '' : " WHERE $this->_where ").PHP_EOL
               . (empty($this->_group_by) ? '' : " GROUP BY $this->_group_by").PHP_EOL
-              . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by"),
+              . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by")
+              . (empty($this->_limit)    ? '' : " LIMIT $this->_limit"),
 
       TipoDql::Update => "UPDATE $this->_from_source AS t".PHP_EOL
               . (empty($this->_sets) ? '-ERROR NO SET-' : " SET $this->_sets").PHP_EOL
@@ -189,5 +192,11 @@ class OdaDql {
   public function setFrom(string $nombre_tabla): void {
     $this->_from_source = $nombre_tabla;
   }
+
+  
+  public function setLimit(int $limite_regs): void {
+    $this->_limit = $limite_regs;
+  }
+
   
 } // END-CLASS

@@ -20,7 +20,7 @@ trait NotaTraitLinks {
     try {
       return OdaTags::linkButton(
         action: "admin/notas/exportCuadroHonorPrimariaPdf/$periodo", 
-        text: "Honor Primaria P$periodo",      
+        text: "Top 10 - P$periodo",      
         attrs: 'class="w3-button w3-green" target="_blank"',
       );
 
@@ -35,7 +35,7 @@ trait NotaTraitLinks {
     try {
       return OdaTags::linkButton(
         action: "admin/notas/exportCuadroHonorBachilleratoPdf/$periodo", 
-        text: "Honor Bachillerato P$periodo",
+        text: "Top 10 - P$periodo",
         attrs: 'class="w3-button w3-green" target="_blank"',
       );
 
@@ -51,7 +51,7 @@ trait NotaTraitLinks {
     try {
       return OdaTags::linkButton(
         action: "admin/notas/exportCuadroHonorGeneralPrimariaPdf/$periodo", 
-        text: "Honor General Primaria P$periodo",      
+        text: "Puestos P$periodo",      
         attrs: 'class="w3-button w3-blue" target="_blank"',
       );
 
@@ -66,7 +66,7 @@ trait NotaTraitLinks {
     try {
       return OdaTags::linkButton(
         action: "admin/notas/exportCuadroHonorGeneralBachilleratoPdf/$periodo", 
-        text: "Honor General Bachillerato P$periodo",
+        text: "Puestos P$periodo",
         attrs: 'class="w3-button w3-blue" target="_blank"',
       );
 

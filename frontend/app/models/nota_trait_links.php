@@ -45,4 +45,36 @@ trait NotaTraitLinks {
     }
   } //END-lnkCuadroHonorBachilleratoPDF
     
-}
+
+  
+  public static function lnkCuadroHonorGeneralPrimariaPDF(int $periodo): string {
+    try {
+      return OdaTags::linkButton(
+        action: "admin/notas/exportCuadroHonorGeneralPrimariaPdf/$periodo", 
+        text: "Honor General Primaria P$periodo",      
+        attrs: 'class="w3-button w3-blue" target="_blank"',
+      );
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
+  } //END-lnkCuadroHonorGeneralPrimariaPDF
+  
+  
+  public static function lnkCuadroHonorGeneralBachilleratoPDF(int $periodo): string {
+    try {
+      return OdaTags::linkButton(
+        action: "admin/notas/exportCuadroHonorGeneralBachilleratoPdf/$periodo", 
+        text: "Honor General Bachillerato P$periodo",
+        attrs: 'class="w3-button w3-blue" target="_blank"',
+      );
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
+  } //END-lnkCuadroHonorGeneralBachilleratoPDF
+
+
+}//END-Trait

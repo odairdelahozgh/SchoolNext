@@ -6,15 +6,20 @@ $tabla->setCaption($file_title);
 $tabla->setHead($head);
 
 $brake = '';
+$cnt = 1;
 foreach ($data as $key => $item) {
-  if ($brake<>$item->salon_nombre) { $tabla->addRow($head); }
+  if ($brake<>$item->salon_nombre) { 
+    $tabla->addRow($head); 
+    $cnt = 1;
+  }
   $tabla->addRow([
-    ($key+1),
+    $cnt,
     $item->salon_nombre,
     $item->estudiante_nombre,
     round($item->prom, 2), 
   ]);
   $brake = $item->salon_nombre;
+  $cnt +=1;
 }
 
 echo $tabla;

@@ -305,10 +305,10 @@ class Nota extends LiteRecord {
         ->groupBy('t.salon_id, t.estudiante_id')
         ->where('t.asignatura_id NOT IN (30, 35)')
         ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
-        ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grado G1 WHERE G1.seccion_id IN ($secciones) )")
+        ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grados G1 WHERE G1.seccion_id IN ($secciones) )")
         ->orderBy('s.nombre ASC, prom DESC');
       
-    return $DQL->execute(true);
+    return $DQL->execute();
       
   } catch (\Throwable $th) {
     OdaFlash::error($th);
@@ -332,10 +332,10 @@ class Nota extends LiteRecord {
         ->groupBy('t.salon_id, t.estudiante_id')
         ->where('t.asignatura_id NOT IN (30, 35)')
         ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
-        ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grado G1 WHERE G1.seccion_id IN ($secciones) )")
+        ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grados G1 WHERE G1.seccion_id IN ($secciones) )")
         ->orderBy('s.nombre ASC, prom DESC');
       
-    return $DQL->execute(true);
+    return $DQL->execute();
       
   } catch (\Throwable $th) {
     OdaFlash::error($th);

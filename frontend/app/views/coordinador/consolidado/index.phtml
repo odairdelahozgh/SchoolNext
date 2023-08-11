@@ -3,6 +3,18 @@
     <?= View::flash(); ?>
 </div>
 <div class="w3-container">
+  <?php
+    $periodo_limite = Config::get('config.academic.periodo_actual');
+    for ($p=1; $p<=$periodo_limite; $p++) { 
+      if (31==$user_id or 1==$user_id) { // primaria
+        echo (new Nota)::lnkCuadroHonorPrimariaPDF($p).'&nbsp;';
+      }
+
+      if (19==$user_id or 1==$user_id) { // primaria
+        echo (new Nota)::lnkCuadroHonorBachilleratoPDF($p).'&nbsp;';
+      }
+    }
+  ?>
     <div  class="w3-bar">
         <?php 
         foreach ($data as $key => $salon) {

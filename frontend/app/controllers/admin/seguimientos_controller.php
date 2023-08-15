@@ -135,34 +135,34 @@ class SeguimientosController extends ScaffoldController
   
   public function exportSeguimientosEstudiantePdf(string $plan_apoyo_uuid): void {
     try {    
-      $PA = (new Seguimientos)::getByUUID($plan_apoyo_uuid);
+      $Seg = (new Seguimientos)::getByUUID($plan_apoyo_uuid);
       
-      $Estud = (new Estudiante())::get($PA->estudiante_id);
+      $Estud = (new Estudiante())::get($Seg->estudiante_id);
       $this->arrData['Estud'] = $Estud;
       
-      //$this->arrData['Profesor'] = (new SalAsigProf())::getProfesor($PA->salon_id, $PA->asignatura_id);
+      //$this->arrData['Profesor'] = (new SalAsigProf())::getProfesor($Seg->salon_id, $Seg->asignatura_id);
       //OdaLog::debug($this->arrData['Profesor']);
-      $Asign = (new Asignatura)::get($PA->asignatura_id);
-      $Salon = (new Salon)::get($PA->salon_id);
-      $this->arrData['Periodo'] = $PA->periodo_id;
+      $Asign = (new Asignatura)::get($Seg->asignatura_id);
+      $Salon = (new Salon)::get($Seg->salon_id);
+      $this->arrData['Periodo'] = $Seg->periodo_id;
       $this->arrData['Asign'] = $Asign;
       $this->arrData['Salon'] = $Salon;
-      $this->arrData['Grado'] = (new Grado)::get($PA->grado_id);
+      $this->arrData['Grado'] = (new Grado)::get($Seg->grado_id);
       
       $this->arrData['Docentes'] = [];
       foreach ((new Empleado)->getList() as $empleado) {
         $this->arrData['Docentes'][$empleado->id] = $empleado;
       }
       
-      $Indicadores = (new Indicador())->getByPeriodoGrado($PA->periodo_id, (int)$PA->grado_id);
+      $Indicadores = (new Indicador())->getByPeriodoGrado($Seg->periodo_id, (int)$Seg->grado_id);
       foreach ($Indicadores as $key => $indic) {
         $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = trim($indic->concepto);
       }
       $this->file_tipo = 'Seguimientos Intermedios';
-      $this->file_name = OdaUtils::getSlug("seguim-intermedios-{$Estud}-periodo-{$PA->periodo_id}");
+      $this->file_name = OdaUtils::getSlug("seguim-intermedios-{$Estud}-periodo-{$Seg->periodo_id}");
       $this->file_title = "$this->file_tipo de $Estud";
       
-      $this->data = $PA;
+      $this->data = $Seg;
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);
@@ -172,36 +172,34 @@ class SeguimientosController extends ScaffoldController
   } //END-exportSeguimientosEstudiantePdf
 
   
-  public function exportSeguimientosRegistroPdf(string $plan_apoyo_uuid): void {
+  public function exportSeguimientosRegistroPdf(string $seguimientno_uuid): void {
     try {    
-      $PA = (new Seguimientos)::getByUUID($plan_apoyo_uuid);
-      
-      $Estud = (new Estudiante())::get($PA->estudiante_id);
-      $this->arrData['Estud'] = $Estud;
-      
-      //$this->arrData['Profesor'] = (new SalAsigProf())::getProfesor($PA->salon_id, $PA->asignatura_id);
+      $Seg = (new Seguimientos)::getByUUID($seguimientno_uuid);
+      $Estud = (new Estudiante())::get($Seg->estudiante_id);
+      $this->arrData['Estud'] = $Estud;      
+      //$this->arrData['Profesor'] = (new SalAsigProf())::getProfesor($Seg->salon_id, $Seg->asignatura_id);
       //OdaLog::debug($this->arrData['Profesor']);
-      $Asign = (new Asignatura)::get($PA->asignatura_id);
-      $Salon = (new Salon)::get($PA->salon_id);
-      $this->arrData['Periodo'] = $PA->periodo_id;
+      $Asign = (new Asignatura)::get($Seg->asignatura_id);
+      $Salon = (new Salon)::get($Seg->salon_id);
+      $this->arrData['Periodo'] = $Seg->periodo_id;
       $this->arrData['Asign'] = $Asign;
       $this->arrData['Salon'] = $Salon;
-      $this->arrData['Grado'] = (new Grado)::get($PA->grado_id);
+      $this->arrData['Grado'] = (new Grado)::get($Seg->grado_id);
       
       $this->arrData['Docentes'] = [];
       foreach ((new Empleado)->getList() as $empleado) {
         $this->arrData['Docentes'][$empleado->id] = $empleado;
       }
       
-      $Indicadores = (new Indicador())->getByPeriodoGrado($PA->periodo_id, (int)$PA->grado_id);
+      $Indicadores = (new Indicador())->getByPeriodoGrado($Seg->periodo_id, (int)$Seg->grado_id);
       foreach ($Indicadores as $key => $indic) {
         $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = trim($indic->concepto);
       }
       $this->file_tipo = 'Seguimientos Intermedios';
-      $this->file_name = OdaUtils::getSlug("seguim-intermedios-{$Estud}-periodo-{$PA->periodo_id}");
+      $this->file_name = OdaUtils::getSlug("seguim-intermedios-{$Estud}-periodo-{$Seg->periodo_id}");
       $this->file_title = "$this->file_tipo de $Estud";
       
-      $this->data = $PA;
+      $this->data = $Seg;
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);

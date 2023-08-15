@@ -50,12 +50,12 @@ class OdaForm extends Form {
       $data_sets = '';
       if ($cols_max==2) {
         $fielset1   = self::createFieldset($this->_ffields[1], 'Columna 1', ' style="width:90%" ');
-        $data_sets .= OdaTags::createTag('div', $fielset1, 'class="w3-half w3-container"');
+        $data_sets .= OdaTags::tag('div', $fielset1, 'class="w3-half w3-container"');
         $fielset2   = self::createFieldset($this->_ffields[2], 'Columna 2', ' style="width:90%" ');
-        $data_sets .= OdaTags::createTag('div', $fielset2, 'class="w3-half w3-container"');         
+        $data_sets .= OdaTags::tag('div', $fielset2, 'class="w3-half w3-container"');         
       } else {
         $fieldset   = self::createFieldset($this->_ffields[1], 'Registro', ' style="width:50%" ');
-        $data_sets .= OdaTags::createTag('div', $fieldset, 'class="w3-col w3-container"');
+        $data_sets .= OdaTags::tag('div', $fieldset, 'class="w3-col w3-container"');
       }
 
       $form  = '';
@@ -66,7 +66,7 @@ class OdaForm extends Form {
       }
 
       $form .= self::getHiddens();
-      $form .= OdaTags::createTag('div', $data_sets, 'class="w3-row"');
+      $form .= OdaTags::tag('div', $data_sets, 'class="w3-row"');
       $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar', 'onclick="cancelar()"');
       $form .= self::close();
       return $form;

@@ -1,6 +1,6 @@
 <?php
 /**
- * Theme: Helper para crear TABS Odair.
+ * ThemeLooper: Helper para crear TABS Odair.
  * 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category Helper.
@@ -20,7 +20,7 @@ enum ThemeColor {
 } // END-ENUM
 
 
-class Theme {
+class ThemeLooper {
   
   public function __construct() {
   }

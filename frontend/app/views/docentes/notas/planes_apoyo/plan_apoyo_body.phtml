@@ -17,7 +17,7 @@
   $tabla = Form::open(action: "admin/planes_apoyo/guardarPlanesApoyo/{$arrData['Salon']->id}/{$arrData['Asignatura']->id}").'<table>';
   $tabla .= '<tr> <td colspan="11"><hr></td><tr>';
   $tabla .= '<tr> <td colspan="11">'.Form::submit(text: 'Guardar').'</td><tr>';
-  foreach ($data as $RegPA) {
+  foreach ($data as $Reg) {
     $tabla .= require('plan_apoyo_form.phtml');
     $tabla .= '<tr> <td colspan="11"><hr></td><tr>';
   }

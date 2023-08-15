@@ -10,29 +10,26 @@
                               
             $btn_seguimientos = OdaTags::linkButton(
               action: "docentes/notasCalificarSeguimientos/$periodo/$Salon->id/$Asignatura->id", 
-              text: 'Seguimientos', 
+              text: "Seguimientos <br>Intermedios P$periodo", 
               icon: '', 
               attrs: 'title="Ingresar SEGUIMIENTOS INTERMEDIOS" class="w3-button w3-small w3-pale-blue w3-round-large"'
             );
 
             $btn_calificar = OdaTags::linkButton(
               action: "docentes/notasCalificar/$periodo/$Salon->id/$Asignatura->id", 
-              text: "Calificar P$periodo", 
+              text: "Calificar <br>P$periodo", 
               icon: '', 
               attrs: 'title="Ingresar NOTAS" class="w3-button w3-small w3-pale-green w3-round-large"'
             );
             
             $btn_planes_apoyo = OdaTags::linkButton(
               action: "docentes/notasCalificarPlanesApoyo/$periodo/$Salon->id/$Asignatura->id", 
-              text: "Planes de Apoyo P$periodo", 
+              text: "Planes de <br>Apoyo P$periodo", 
               icon: '', 
               attrs: 'title="Ingresar PLANES DE APOYO" class="w3-button w3-small w3-pale-red w3-round-large"'
             );
 
-
-            $btn_seguimientos  = ''; // temporal
             $tabla = new OdaTable();
-            
 
             $tabla->setCaption("<h2 class=\"\">[$Salon->nombre] $Asignatura->nombre PERIODO $periodo</h2> 
             $btn_seguimientos &nbsp;&nbsp; $btn_calificar &nbsp;&nbsp; $btn_planes_apoyo<br><br>");

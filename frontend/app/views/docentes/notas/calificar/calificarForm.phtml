@@ -1,21 +1,21 @@
 <?php
   
   // fila #1
-  $info_reg = '<br>Reg #'.$reg_nota->id;
+  $info_reg = '<br>Reg #'.$Reg->id;
   $frm = "<tr class=\"\">";  
-  $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->getFoto().$info_reg, attrs: 'rowspan="3"');
-  $frm .= OdaTags::createTag(tag: 'td', content: $reg_nota->estudiante_nombre."<br>$info_indic", attrs: 'colspan="4"');
-  $frm .= OdaTags::createTag(tag: 'td', content: '');
+  $frm .= OdaTags::tag(tag: 'td', content: $Reg->getFoto().$info_reg, attrs: 'rowspan="3"');
+  $frm .= OdaTags::tag(tag: 'td', content: $Reg->estudiante_nombre."<br>$info_indic", attrs: 'colspan="4"');
+  $frm .= OdaTags::tag(tag: 'td', content: '');
   
-  $slider_definitiva = OdaTags::inputRango(id_name: $reg_nota->id, value: $reg_nota->definitiva, min: 0, max: 100, step: 1);
-  $field_definitiva = $reg_nota->fieldForm('definitiva');
-  $field_plan_apoyo = $reg_nota->fieldForm(field_name: 'plan_apoyo', type:'hidden');
-  $field_nota_final = $reg_nota->fieldForm(field_name: 'nota_final', type:'hidden');
+  $slider_definitiva = OdaTags::inputRango(id_name: $Reg->id, value: $Reg->definitiva, min: 0, max: 100, step: 1);
+  $field_definitiva = $Reg->fieldForm('definitiva');
+  $field_plan_apoyo = $Reg->fieldForm(field_name: 'plan_apoyo', type:'hidden');
+  $field_nota_final = $Reg->fieldForm(field_name: 'nota_final', type:'hidden');
 
   $las_notas = $field_definitiva.$field_plan_apoyo.$field_nota_final;
-  $frm .= OdaTags::createTag(tag: 'td', content: $slider_definitiva.'<br>Nota:'.$las_notas, attrs: 'colspan="3"');
-  $frm .= OdaTags::createTag(tag: 'td', content: 'P.A.<br>'.$reg_nota->plan_apoyo);
-  $frm .= OdaTags::createTag(tag: 'td', content: 'N.F.<br>'.$reg_nota->nota_final);
+  $frm .= OdaTags::tag(tag: 'td', content: $slider_definitiva.'<br>Nota:'.$las_notas, attrs: 'colspan="3"');
+  $frm .= OdaTags::tag(tag: 'td', content: 'P.A.<br>'.$Reg->plan_apoyo);
+  $frm .= OdaTags::tag(tag: 'td', content: 'N.F.<br>'.$Reg->nota_final);
   $frm .= '</tr>';
   
 
@@ -28,8 +28,8 @@
   $frm .= "<tr class=\"\">";
   $fields['f2'] = ['i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10'];
   foreach ($fields['f2'] as $key => $campo) { 
-    $field = $reg_nota->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
-    $frm .= OdaTags::createTag('td', $field);
+    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
+    $frm .= OdaTags::tag('td', $field);
   }//foreach
   $frm .= '</tr>';
   
@@ -37,8 +37,8 @@
   $frm .= "<tr class=\"\">";
   $fields['f3'] = ['i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20'];
   foreach ($fields['f3'] as $key => $campo) { 
-    $field = $reg_nota->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
-    $frm .= OdaTags::createTag('td', $field);
+    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
+    $frm .= OdaTags::tag('td', $field);
   }//foreach
   $frm .= '</tr>';
 

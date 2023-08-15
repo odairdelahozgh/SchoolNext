@@ -1,6 +1,6 @@
 <header class="w3-margin-top">
   <?php
     $titulo = "Perido {$arrData['Periodo']} - [{$arrData['Asignatura']->id}] {$arrData['Asignatura']->nombre} - [{$arrData['Salon']->id}] {$arrData['Salon']->nombre}";
-    echo OdaTags::createTag(tag:'h2', content:$titulo, attrs:'');
+    echo OdaTags::tag(tag:'h2', content: $titulo, attrs:'');
   ?>
 </header>

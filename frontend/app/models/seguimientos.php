@@ -10,12 +10,11 @@
   'id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 
   'definitiva', 'plan_apoyo', 'nota_final', 'profesor_id', 
   
-  /// planes de apoyo
-  'i31', 'i32', 'i33', 'i34', 'i35', 'i36', 'i37', 'i38', 'i39', 'i40', 
+  /// INDICADORES DE SEGUIMIENTOS
+  'i21', 'i22', 'i23', 'i24', 'i25', 'i26', 'i27', 'i28', 'i29', 'i30',
 
-  'paf_link_externo1', 'paf_link_externo2', 
-  'paf_temas', 'paf_acciones', 'paf_activ_estud', 'paf_activ_profe', 'paf_fecha_entrega', 
-  'is_paf_ok_coord', 'is_paf_validar_ok', 'is_paf_ok_dirgrupo', 
+  'asi_desempeno', 'asi_activ_profe', 'asi_activ_estud', 'asi_fecha_entrega', 'is_asi_validar_ok', 
+  'asi_calificacion', 'is_asi_ok_dirgrupo', 'is_asi_ok_coord', 'asi_link_externo1', 'asi_link_externo2', 
   
   'created_at', 'updated_at', 'created_by', 'updated_by'
 */

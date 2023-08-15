@@ -7,16 +7,16 @@
 class AuthController extends AdminController
 {
   public function index(): void {
-    Redirect::toAction(action: 'login');
+    Redirect::toAction('login');
   }
 
   public function login(): void {
     try {
-    View::template(template: 'login');
-    if((new User)->login()) { 
-      Redirect::to(route: 'index'); 
-    }
-
+      View::template('login');
+      if((new User)->login()) { 
+        Redirect::to('index'); 
+      }
+      
     } catch (\Throwable $th) {
     OdaFlash::error($th);
     }
@@ -25,7 +25,7 @@ class AuthController extends AdminController
   public function logout(): void {
     try {
     (new User)->logout();
-    Redirect::toAction(action: 'login');
+    Redirect::toAction('login');
 
     } catch (\Throwable $th) {
     OdaFlash::error($th);

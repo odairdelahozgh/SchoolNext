@@ -56,9 +56,15 @@ trait NotaTraitSetUp {
     ];
   
     self::$_widgets = [
-      'definitiva'   => 'number',
-      'plan_apoyo'   => 'number',
-      'nota_final'   => 'number',
+      'definitiva'    => 'number',
+      'plan_apoyo'    => 'number',
+      'nota_final'    => 'number',
+
+      'asi_desempeno'    => 'text',
+      'asi_calificacion' => 'number',
+      'asi_fecha_entrega' => 'date',
+      'asi_activ_profe' => 'textarea',
+      'asi_activ_estud' => 'textarea',
 
       'paf_fecha_entrega' => 'date',
       'paf_temas' => 'textarea',
@@ -123,6 +129,13 @@ trait NotaTraitSetUp {
       'paf_acciones' => ' cols=35 rows=4 maxlength="1000" ',
       'paf_activ_profe' => 'cols=35 rows=4 maxlength="1000" ',
       'paf_activ_estud' => 'cols=35 rows=4 maxlength="1000" ',
+
+      //'asi_desempeno'    => 'text',
+      'asi_calificacion' => ' min="0" max="100" maxlength="3" size="3" ',
+      //'asi_fecha_entrega' => '',
+      'asi_activ_profe' => ' cols=35 rows=4 maxlength="1000" ',
+      'asi_activ_estud' => ' cols=35 rows=4 maxlength="1000" ',
+
       
       'i01'   => ' maxlength="4" size="4" ',
       'i02'   => ' maxlength="4" size="4" ',
@@ -177,6 +190,9 @@ trait NotaTraitSetUp {
       'is_active'       => 'Indica si está activo el registro.',
       'paf_activ_profe' => 'máx. 1024 caracteres.',
       'paf_activ_estud' => 'máx. 1024 caracteres.',
+      
+      'asi_activ_profe' => 'máx. 1000 caracteres.',
+      'asi_activ_estud' => 'máx. 1000 caracteres.',
     ];
   
     self::$_labels = [
@@ -195,6 +211,13 @@ trait NotaTraitSetUp {
       'paf_acciones' => 'Acciones',
       'paf_activ_profe' => 'Actividades Realizadas por el Profesor',
       'paf_activ_estud' => 'Actividades para el Estudiante',
+      
+      'asi_desempeno'     => 'Desempeño',
+      'asi_calificacion'  => 'Nota',
+      'asi_fecha_entrega' => 'Fecha de entrega',
+      'asi_activ_profe'   => 'Actividades Realizadas por el Profesor',
+      'asi_activ_estud'   => 'Actividades para el Estudiante',
+
 
     ];
   

@@ -22,7 +22,7 @@ class Asignatura extends LiteRecord {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, a.nombre AS area_nombre')
         ->leftJoin('area', 'a')
-        ->orderBy(self::$order_by_default);
+        ->orderBy(self::$_order_by_defa);
 
     if (!is_null($order_by)) {
       $DQL->orderBy($order_by);

@@ -44,7 +44,7 @@
   $(document).on('theme:init', () =>  {
     /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
     particlesJS.load('comingsoon', '<?=PUBLIC_PATH?>assets/javascript/pages/particles-comingsoon.json'); 
-    var countDownDate = new Date('August 14, 2023 00:00:00').getTime(); // Set the date we're counting down to
+    var countDownDate = new Date('August 14, 2023 10:00:00').getTime(); // Set the date we're counting down to
     var countDownFormater = function(i) {
       return i < 10 ? '0' + i : i;
     }
@@ -60,7 +60,7 @@
       document.querySelector('#clock').innerHTML = '' + '<div class="countdown-item">' + countDownFormater(days) + ' <small>Dias<\/small><\/div>' + '<div class="countdown-item">' + countDownFormater(hours) + ' <small>Horas<\/small><\/div>' + '<div class="countdown-item">' + countDownFormater(minutes) + ' <small>Minutos<\/small><\/div>' + '<div class="countdown-item">' + countDownFormater(seconds) + ' <small>Segundos<\/small><\/div>';
       if (distance < 0) { // If the count down is finished, write some text
         clearInterval(countDown);
-        document.querySelector('#clock').innerHTML = 'We\'ll Live Soon';
+        document.querySelector('#clock').innerHTML = 'en pocos minutos';
       }
     }, 1000);
   })

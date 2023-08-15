@@ -20,7 +20,34 @@ abstract class DmzController extends Controller
     public $page_title  = 'Título Página';
     //public $theme       = 'w3-theme-windsor-blue-grey';
 
+    public int  $_data_count = 0;
+    public array  $arrData = [];
+    public object $Modelo;
+    public array  $fieldsToShow = [];
+    public array  $fieldsToShowLabels = [];
+    public array  $fieldsToHidden = [];
+    public string $nombre_post = '';
+    public string $nombre_modelo = '';
+    public ?int $user_id = 0;
+    public ?string $user_name = '';
+    public string $id_instit = '';
+    public int $_periodo_actual = 0;
+    
     final protected function initialize() {
+      try {
+        $this->data = [0];
+        
+        $this->user_id = Session::get('id');
+        $this->user_name = Session::get('username');
+        $this->_periodo_actual = Config::get(var: 'config.academic.periodo_actual');
+        
+        $this->nombre_post   = strtolower(OdaUtils::pluralize($this->controller_name));
+        $this->nombre_modelo = ucfirst(OdaUtils::singularize($this->controller_name));
+        
+      } catch (\Throwable $th) {
+        OdaFlash::error($th);
+      }
+      
     }
 
     final protected function finalize() {

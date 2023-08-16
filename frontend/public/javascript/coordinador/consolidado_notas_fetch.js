@@ -67,8 +67,9 @@ function traer_data(salon_id) {
             nota = datos[salon][estudiante][periodo][asignatura];
             [reg_id, reg_uuid, definitiva, plan_apoyo, nota_final, desempeno, is_asi_validar_ok, is_paf_validar_ok] = datos[salon][estudiante][periodo][asignatura].split(";");
             
-            asi = (is_asi_validar_ok==1) ? '<span class="w3-badge w3-white w3-tiny">SI</span>' : '';
-            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">PA</a>' : '';
+            //asi = (is_asi_validar_ok==1) ? '<span class="w3-badge w3-white w3-tiny">A.S.I.</span>' : '';
+            asi = (is_asi_validar_ok==1) ? '<a href="'+ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Seguimiento Intermedio">S.I.</a>' : '';
+            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">P.A.</a>' : '';
             br = ((asi.length+paf.length)>0) ? '<br>' : '';
 
             let def = '';

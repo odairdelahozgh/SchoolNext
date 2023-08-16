@@ -1,1 +1,3 @@
-update sweb_notas_2011 set uuid = (select md5(UUID()));
+update sweb_notas 
+set uuid = (select md5(UUID()))
+WHERE LENGHT(uuid)=0;

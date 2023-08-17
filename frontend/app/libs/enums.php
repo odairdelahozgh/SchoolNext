@@ -5,6 +5,9 @@
   require_once "enums/rangos.php";
   require_once "enums/t_boletin.php";
   require_once "enums/modulo.php";
+  require_once "enums/sexo.php";
+  require_once "enums/tipo_doc.php";
+  require_once "enums/aspir_estatus.php";
   
   // $estado = Estado::tryFrom($Param) ?? Estado::Inactivo;
 ?>

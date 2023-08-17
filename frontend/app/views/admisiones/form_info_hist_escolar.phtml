@@ -1,68 +1,41 @@
 <?php 
 try {  
-  $tabla = new OdaTable();
-  $tabla->setCaption('Datos Básicos del Aspirante');
+  $info = '<h2>Historia Escolar</h2><p>Información sobre los últimos Jardines y colegios en los que ha estudiando</p>';
 
-  $tabla->addRow(
-    data: [
-      $FormAspir->getInput(field: 'nombres'), 
-      $FormAspir->getInput(field: 'apellido1'), 
-      $FormAspir->getInput(field: 'apellido2'),
-      ''
-      ],
-  );
-
-  $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'fecha_nac'), 
-           '<br><b>'.TipoDoc::caption().'</b><br>'.TipoDoc::forSelect('aspirantes_tipo_dcto', 'aspirantes[tipo_dcto]'), 
-           $FormAspir->getInput(field: 'documento'),
-           ''
-          ],
-  );
-
-  $tabla->addRow(
-    data: ['<br><b>Grado al que Aspira</b><br>'.Grado::getSelectGrados('aspirantes_grado_aspira', 'aspirantes[grado_aspira]'),
-           '',
-           '<br><b>'.Sexo::caption().'</b><br>'.Sexo::forSelect('aspirantes_sexo', 'aspirantes[sexo]'),
-           ''
-          ],
-  );
-
-  $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'pais_nac'), 
-           $FormAspir->getInput(field: 'depto_nac'),
-           $FormAspir->getInput(field: 'ciudad_nac'),
-           ''
-          ],
-  );
+  $tabla = new OdaTable('id="myTable-he1" class="w3-table w3-responsive w3-striped w3-bordered"');
+  $tabla->setCaption('Institución 1');
+  $tabla->addRow(data:[$FormAspir->getInput(field: '1_colegio'),
+      $FormAspir->getInput(field: '1_ciudad'),
+      $FormAspir->getInput(field: '1_telefono')]);
+  $tabla->addRow(data:[$FormAspir->getInput(field: '1_grados'),
+      $FormAspir->getInput(field: '1_annios'),
+      $FormAspir->getInput(field: '1_motivo_ret')]);
+  $info .= $tabla.'<hr>';
   
-  $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'direccion'), 
-           $FormAspir->getInput(field: 'barrio'),
-           $FormAspir->getInput(field: 'telefono1'),
-           ''
-          ],
-  );
+  $tabla = new OdaTable('id="myTable-he2" class="w3-table w3-responsive w3-striped w3-bordered"');
+  $tabla->setCaption('Institución 2');
+  $tabla->addRow(data:[$FormAspir->getInput(field: '2_colegio'),
+      $FormAspir->getInput(field: '2_ciudad'),
+      $FormAspir->getInput(field: '2_telefono')]);
 
+  $tabla->addRow(data:[$FormAspir->getInput(field: '2_grados'),
+      $FormAspir->getInput(field: '2_annios'),
+      $FormAspir->getInput(field: '2_motivo_ret')]);
+  $info .= $tabla.'<hr>';
   
-  $tabla->addRow(
-    data: [$FormAspirPsico->getTextarea(field: 'rel_pad_mad'), 
-          $FormAspirPsico->getTextarea(field: 'vive_con')],
-          attrs_td: ['colspan="2"','colspan="2"'],
-  );
+  $tabla = new OdaTable('id="myTable-he3" class="w3-table w3-responsive w3-striped w3-bordered"');
+  $tabla->setCaption('Institución 3');
+  $tabla->addRow(data:[$FormAspir->getInput(field: '3_colegio'),
+      $FormAspir->getInput(field: '3_ciudad'),
+      $FormAspir->getInput(field: '3_telefono')]);
 
-  $extras = $FormAspir->getInput(tipo: 'hidden', field: 'fecha_insc');
+  $tabla->addRow(data:[$FormAspir->getInput(field: '3_grados'),
+      $FormAspir->getInput(field: '3_annios'),
+      $FormAspir->getInput(field: '3_motivo_ret')]);
+  $info .= $tabla.'<hr>';
 
-  return $tabla.$extras;
+  return $info;
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);
 }
-
-/*
-$tabla .= _open('table', array('width'=>'100%'));
-  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/rel_pad_mad') );
-  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/vive_con',array('cols'=>'60', 'rows'=>'6')) );
-$tabla .= _close('table');
-echo $tabla;
-*/

@@ -3,7 +3,8 @@
 enum TipoDql: int {
   case Select = 1;
   case Update = 2;
-  case Delete = 3;
+  case Insert = 3;
+  case Delete = 4;
 }
 
 class OdaDql {
@@ -16,6 +17,8 @@ class OdaDql {
   private array  $_joins       = [];
   private array  $_params      = [];
   private int $_limit = 0;
+  private string $_inserts_cols     = '';
+  private string $_inserts_vals     = '';
 
   public function __construct(private string $_from, private TipoDql $_tipo_dql = TipoDql::Select) {
     $this->_from_source = $_from::getSource() ?? $_from;
@@ -37,6 +40,10 @@ class OdaDql {
       TipoDql::Update => "UPDATE $this->_from_source AS t"
               . (empty($this->_sets) ? '-ERROR NO SET-' : " SET $this->_sets")
               . (empty($this->_where) ? '' : " WHERE $this->_where"),
+      
+      TipoDql::Insert => "INSERT INTO $this->_from_source "
+      . (empty($this->_inserts_cols) ? '-ERROR NO SET-' : " ($this->_inserts_cols) VALUES ($this->_inserts_vals) "),
+
     };
   } //END-render()
   
@@ -55,6 +62,9 @@ class OdaDql {
       TipoDql::Update => "UPDATE $this->_from_source AS t".PHP_EOL
               . (empty($this->_sets) ? '-ERROR NO SET-' : " SET $this->_sets").PHP_EOL
               . (empty($this->_where) ? '' : " WHERE $this->_where"),
+      
+      TipoDql::Insert => "INSERT INTO $this->_from_source "
+              . (empty($this->_inserts_cols) ? '-ERROR NO SET-' : " ($this->_inserts_cols) VALUES ($this->_inserts_vals) "),
     };
   } //END-renderlog()
 
@@ -64,12 +74,12 @@ class OdaDql {
         OdaLog::debug($this->renderlog().PHP_EOL.'Params: ' .$this->getParams());
       }
       return (new $this->_from)->all($this->render(), $this->_params);
-
+      
     } catch (\Throwable $th) {
       OdaLog::error($th);
     }
   } //END-execute
-
+  
   public function executeFirst(bool $write_log = false): array|string {
     try {
       if ($write_log) {
@@ -80,6 +90,10 @@ class OdaDql {
       OdaLog::error($th);
     }
   } //END-executeFirst
+  
+  public function getLastInsertId() {
+    return (new $this->_from)->first('SELECT LAST_INSERT_ID() as last_id');
+  }
 
   public function select(string $select) {
     $this->_select = (empty($select) or ('*'==$select)) ? 't.*' : $select;
@@ -100,7 +114,7 @@ class OdaDql {
     foreach ($arr_values as $key => $value) {
       if (!empty($value)) { $sets .= " t.$key='$value',"; }
     }
-    //$this->_from_source = Config::get("tablas.grado");
+    
     $this->_sets = substr($sets, 0, strlen($sets)-1);
     $this->_tipo_dql  = TipoDql::Update;
     return $this;
@@ -112,14 +126,44 @@ class OdaDql {
     foreach ($arr_values as $key => $value) { 
       if (!empty($value)) { $sets .= " t.$key='$value',"; }
     }
-    //$this->_from_source = 'sweb_notas';
     
     if (empty($this->_sets)) { $this->_sets = substr($sets, 0, strlen($sets)-1); } 
     else { $this->_sets .= ', '.substr($sets, 0, strlen($sets)-1); }
 
     $this->_tipo_dql  = TipoDql::Update;
     return $this;
-  } //END-update
+  } //END-addUpdate
+
+  public function insert(array $arr_values) {
+    $cols = '';  $vals = '';
+    foreach ($arr_values as $key => $value) { 
+      $cols .= " $key,";
+      $vals .= " '$value',";
+    }
+    $this->_inserts_cols = substr($cols, 0, strlen($cols)-1);
+    $this->_inserts_vals = substr($vals, 0, strlen($vals)-1);
+    $this->_tipo_dql  = TipoDql::Insert;
+    return $this;
+  } //END-insert
+
+  public function addInsert(array $arr_values) {
+    $cols = '';
+    $vals = '';
+    foreach ($arr_values as $key => $value) { 
+      $cols .= " $key,";
+      $vals .= " '$value',";
+    }
+    if (empty($this->_inserts_cols)) {
+      $this->_inserts_cols = substr($cols, 0, strlen($cols)-1);
+      $this->_inserts_vals = substr($vals, 0, strlen($vals)-1);
+    } else { 
+      $this->_inserts_cols .= ', '.substr($cols, 0, strlen($cols)-1);
+      $this->_inserts_vals .= ', '.substr($vals, 0, strlen($vals)-1);
+    }
+
+    $this->_tipo_dql  = TipoDql::Insert;
+    return $this;
+  } //END-addInsert
 
   public function concat(array $concat=[], string $alias='') {
     $str = '';

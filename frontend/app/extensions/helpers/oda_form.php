@@ -399,9 +399,14 @@ class OdaForm extends Form {
     }
   } // END-getOpenForm
 
-  public function getCloseForm(string $submit_caption ='Guardar', $attrs = ''): string {
-    return self::submit($submit_caption, $attrs).self::close();
+  public function getSubmitForm(string $submit_caption ='Guardar', $attrs = ''): string {
+    return self::submit($submit_caption, $attrs);
   } // END-getOpenForm
+  
+  public function getCloseForm(): string {
+    return self::close();
+  } // END-getOpenForm
+
 
    public function v(): string {
       $version = \DateTime::createFromFormat(format: 'Y.m.d', datetime: $this->version);

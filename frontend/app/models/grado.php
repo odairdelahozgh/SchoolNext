@@ -14,12 +14,12 @@
   
 class Grado extends LiteRecord {
 
-  use GradoTraitSetUp;
+  use GradoTraitSetUp, GradoTraitProps;
 
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.grados');
-    self::$order_by_default = 't.orden';
+    self::$_order_by_defa = 't.orden';
     $this->setUp();
   } //END-__construct
 
@@ -46,7 +46,7 @@ class Grado extends LiteRecord {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, s.nombre AS seccion_nombre, s.nombre AS seccion')
         ->leftJoin('seccion', 's')
-        ->orderBy(self::$order_by_default);
+        ->orderBy(self::$_order_by_defa);
 
     if (!is_null($order_by)) {
       $DQL->orderBy($order_by);

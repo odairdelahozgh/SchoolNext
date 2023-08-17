@@ -92,7 +92,7 @@ class OdaDql {
   } //END-executeFirst
   
   public function getLastInsertId() {
-    return (new $this->_from)->first('SELECT LAST_INSERT_ID() as last_id');
+    return (new $this->_from)->first("SELECT MAX(id) as last_id FROM $this->_from_source");
   }
 
   public function select(string $select) {

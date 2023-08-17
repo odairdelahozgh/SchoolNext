@@ -9,7 +9,7 @@
 
 class BsForm extends Form {
   
-  private string $_form_name   = '';
+  private string $_form_name = '';
 
   const METHOD = [
     'POST' => 'post',
@@ -24,34 +24,45 @@ class BsForm extends Form {
     $this->_form_name   = strtolower(OdaUtils::pluralize($_modelo::class));
  } // END-__construct
 
-  public function getInput(string $type='text', string $field='', $attrs=''): string {
-    $fieldname  = $this->_form_name.'.'.trim($field);
-    //$place_holder = $this->getPlaceholder($field);
-    // $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-    // $label      = $this->getLabel($field, $inline);
-    // $help       = $this->getHelp($field);
+  public function getInput(string|bool $tipo=null, string $field='', $attrs=''): string {
+    $fieldname    = $this->_form_name.'.'.trim($field);
+    $place_holder =  $this->getAttrib($field). ' '. $this->getPlaceholder($field);
+    $label        = $this->getLabel($field);
+    // $help         = $this->getHelp($field);
     // $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-    // $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
+    $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
     // $campo_input = $this::input($widget, $fieldname, $attr, $value);
     // $this->_ffields[$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label>";
-
-
+    
     $input = Form::input(
-      type:  $type, 
+      type:  $widget, 
       field: $fieldname, 
-      attrs: $attrs);
-      
+      attrs: $attrs .$place_holder
+    );
+
     return "
       <div class=\"form-label-group\">
         $input
-        <label for=\"firstName\">First name</label>
-        <div class=\"invalid-feedback\"> Valid first name is required. </div>
+        <label for=\"$fieldname\">$label</label>
+        <div class=\"invalid-feedback\"> $label es requerido. </div>
       </div>
     ";
   } //END-getInput
 
   private function getPlaceholder($field) {
-    return (($this->_modelo->getPlaceholder($field)) ? " placeholder=\"$this->_modelo->getPlaceholder($field)\" " : '');
- } // END-getPlaceholder
+    return (($this->_modelo->getPlaceholder($field)) ? " placeholder=\"{$this->_modelo->getPlaceholder($field)}\" " : '');
+  } // END-getPlaceholder
+
+  private function getLabel($field) {
+    return $this->_modelo->getLabel($field);
+  } // END-getLabel
+
+  private function getAttrib($field) {
+     return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : '') ;
+  } // END-getAttrib
+
+  private function getWidget($field) {
+   return (($this->_modelo->getWidget($field)) ? $this->_modelo->getWidget($field) : 'input') ;
+ } // END-getWidget
 
 } // END-Class

@@ -7,7 +7,7 @@
  * @source   frontend\app\extensions\helpers\odaodaform.php
  */
 class OdaForm extends Form {
-   private $version = '2023.02.01';
+   private $version = '2023.08.17';
    private $_style = ' class="w3-input w3-border" ';
    private $_modelo = '';
    private $_fname   = '';
@@ -72,7 +72,7 @@ class OdaForm extends Form {
       return $form;
    } // END-__toString
   
-   
+  
   /**
    * OdaForm->getFields('legend Fieldset');
    */
@@ -94,9 +94,23 @@ class OdaForm extends Form {
       $help       = $this->getHelp($field);
       $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
       $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
+
       $campo_input = $this::input($widget, $fieldname, $attr, $value);
+
       $this->_ffields[$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label>";
    } // END-addInput
+
+   public function getInput(string|bool $tipo=null, string $field='', $attrs='', $inline=false): string {
+    $attr = $this->_style . (($attrs) ? $attrs : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+    $fieldname    = $this->_fname.'.'.trim($field);
+    $place_holder =  $this->getAttrib($field). ' '. $this->getPlaceholder($field);
+    $label        = $this->getLabel($field, $inline);
+    $help         = $this->getHelp($field);
+    $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+    $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
+    $campo_input = $this::input($widget, $fieldname, $attr, $value);
+    return ($tipo=='hidden') ? $campo_input : "<label> $label" .$campo_input .$help ."</label>";
+  } //END-getInput
 
    /**
     * Retorna un campo FILE.
@@ -143,11 +157,22 @@ class OdaForm extends Form {
       $this->_ffields[$columna] .= "<br><label>$label" .$campo_textarea .$help ."</label>";
    } // END-addTextarea
 
+  public function getTextarea(string $field='', $attr='', $inline=true): string {
+    $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+    $fieldname  = $this->_fname.'.'.trim($field);
+    $label      = $this->getLabel($field, $inline);
+    $help       = $this->getHelp($field);
+    $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+
+    $campo_textarea = $this::textarea($fieldname, $attr, $value);
+    return "<label>$label" .$campo_textarea .$help ."</label>";
+  } // END-addTextarea
+
    /**
     * Retorna un campo Select.
     * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
     */
-   public function addSelect(int $columna=1, string $field='', array $data=[], string $attr='') {
+   public function addSelect(int $columna=1, string $field='', array $data=[], string $attr=''): void {
       $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = trim($this->_fname.'.'.$field);
       $label       = $this->getLabel($field);
@@ -158,7 +183,18 @@ class OdaForm extends Form {
       $this->_ffields[(int)$columna] .= "<br><label> $label $campo_select $help </label>";
    } // END-addSelect
 
-   
+  public function getSelect(string $field='', array $data=[], string $attr=''): string {
+    $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+    $fieldname = trim($this->_fname.'.'.$field);
+    $label     = $this->getLabel($field);
+    $help      = $this->getHelp($field);
+    $value     = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
+
+    $campo_select = $this::select($fieldname, $data, $attr, $value);
+    return "<label> $label $campo_select $help </label>";
+  } // END-addSelect
+
+ 
    
    /**
     * Retorna un campo CHECKBOX.
@@ -177,7 +213,18 @@ class OdaForm extends Form {
       $this->_ffields[(int)$columna] .= "<br><label> $label $check </label><br>";
    }
 
-   
+  public function getCheck(string $field='', string|array $attr=''){
+    $fieldname  = trim($this->_fname.'.'.$field);
+    $label = $this->getLabel($field, true);
+    $help  = $this->getHelp($field);
+    $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+    $value = ($value) ? 1 : 0 ;
+    $is_checked = ($value) ? true : false ;
+
+    $check = Form::check($fieldname, $value, $attr, $is_checked).'<br>'.$help;
+    return "<label>$label $check</label><br>";
+  }
+
    /**
     * Retorna un campos radio button.
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
@@ -343,6 +390,18 @@ class OdaForm extends Form {
       }
       return trim($data);
    }
+
+   public function getOpenForm(): string {
+    if ($this->_isMultipart) {
+      return self::openMultipart($this->_faction, $this->_fattrs);
+    } else {
+      return self::open($this->_faction, $this->_fmethod, $this->_fattrs);
+    }
+  } // END-getOpenForm
+
+  public function getCloseForm(string $submit_caption ='Guardar', $attrs = ''): string {
+    return self::submit($submit_caption, $attrs).self::close();
+  } // END-getOpenForm
 
    public function v(): string {
       $version = \DateTime::createFromFormat(format: 'Y.m.d', datetime: $this->version);

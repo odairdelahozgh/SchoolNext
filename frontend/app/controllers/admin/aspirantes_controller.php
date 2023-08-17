@@ -20,13 +20,17 @@ class AspirantesController extends ScaffoldController
       // =================================================================
       $post_name_aspir = 'aspirantes';
       if (!Input::hasPost($post_name_aspir)) { OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); }
-
+      
+      $documento = '';
       if (Input::hasPost($post_name_aspir)) {
         $Post = Input::post($post_name_aspir);
         $dataAspir = [];
         foreach ($Post as $field_name => $value) {
           $dataAspir[$field_name] = $value;
           //echo "[$field_name] = $value<br>";
+          if ('documento'==$field_name) {
+            $documento = $value;
+          }
         }
       }//end-foreach
 
@@ -40,12 +44,18 @@ class AspirantesController extends ScaffoldController
       // buscar por numero documento...
       // si está lo elimina... y listo...
       // despuiés buscar otra alternativa mas eficiente
+      
+      $ObjAsp = new Aspirante();
+      $AspExiste =  $ObjAsp::first('Select documento from sweb_aspirantes where documento =?', [$documento]);
+      if (isset($AspExiste)) {
+        $ObjAsp::query("DELETE FROM sweb_aspirantes WHERE documento = ?", [$AspExiste->documento]);
+      }
 
       $Modelo = (new Aspirante());
       $DQL = new OdaDql($Modelo::class);
       $DQL->insert($dataAspir)
                ->addInsert($dataAdicAspir)
-               ->execute(true);
+               ->execute();
 
       
       // =================================================================
@@ -65,7 +75,7 @@ class AspirantesController extends ScaffoldController
 
       // AGREGA CAMPOS DE CONTROL
       $dataAdicAspirPsico =[];
-      $dataAdicAspirPsico['aspirante_id'] = $aspirante_id->id ?? 1;
+      $dataAdicAspirPsico['aspirante_id'] = $aspirante_id->last_id??0;
       $dataAdicAspirPsico['created_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspirPsico['created_by']= 0;
       $dataAdicAspirPsico['updated_at'] = date('Y-m-d H:i:s', time());
@@ -75,7 +85,7 @@ class AspirantesController extends ScaffoldController
       $DQL = new OdaDql($Modelo::class);
       $DQL->insert($dataAspirPsico)
                ->addInsert($dataAdicAspirPsico)
-               ->execute(true);
+               ->execute();
 
       
       // =================================================================

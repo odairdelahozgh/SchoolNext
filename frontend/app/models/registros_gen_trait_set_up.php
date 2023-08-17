@@ -42,9 +42,8 @@ trait RegistrosGenTraitSetUp {
       'salon_id'        => 'required',
       'asunto'          => 'required',
       'fecha'           => 'required',
-      'acudiente'       => 'required',
-      'director'        => 'required',
-
+      //'acudiente'       => 'required',
+      //'director'        => 'required',
       'id'              => 'required',
       'uuid'            => 'required',
     ];

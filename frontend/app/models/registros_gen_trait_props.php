@@ -8,9 +8,13 @@ trait RegistrosGenTraitProps {
   
   public function getFotoAcudiente() {
     try {
-      if (!$this->foto_acudiente) {  return 'sin evidencia'; }
-      $filename = 'estud_reg_observ_gen/'.$this->foto_acudiente;
-      return OdaTags::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
+      return '';
+      //if (!$this->foto_acudiente) {  return 'sin evidencia'; }
+      if (!$this->foto_acudiente) { 
+        return ''; 
+      }
+      // $filename = 'estud_reg_observ_gen/'.$this->foto_acudiente;
+      // return OdaTags::fileimg($filename, "class=\"w3-round\" style=\"width:100%;max-width:80px\"");
       
     } catch (\Throwable $th) {
       OdaFlash::error($th);
@@ -30,10 +34,10 @@ trait RegistrosGenTraitProps {
 
   public function isRegistroOk() {
     try {
-      if ( (0==strlen($this->foto_director)) or (0==strlen($this->foto_acudiente)) ) { 
-        return false;
-      }
       return true;
+      //if ( (0==strlen($this->foto_director)) or (0==strlen($this->foto_acudiente)) ) { 
+      //  return false;
+      //}
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }

@@ -71,17 +71,18 @@ class RegistrosGen extends LiteRecord {
 
   public function updatePhoto($id)
   {
-    if ($foto_acudiente = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
-      $this->foto_acudiente = $foto_acudiente;
-      Session::set('foto_acudiente',$foto_acudiente);
-    }
+    // if ($foto_acudiente = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
+    //   $this->foto_acudiente = $foto_acudiente;
+    //   Session::set('foto_acudiente',$foto_acudiente);
+    // }
+    
     if ($foto_director = $this->uploadPhoto('foto_director')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
       $this->foto_director = $foto_director;
       Session::set('foto_director',$foto_director);
     }
     $reg = (new RegistrosGen)::get($id);
     $reg->save([
-      'foto_acudiente' => $foto_acudiente,
+      //'foto_acudiente' => $foto_acudiente,
       'foto_director'  => $foto_director,
     ]);
     return true;

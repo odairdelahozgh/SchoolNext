@@ -6,7 +6,7 @@ trait SeguimientosTraitProps {
   public function fieldForm(string $field_name, string $attr='', string|bool $type=null, bool $label=false): string {
     try {
       $label = ($label) ? $this->getLabel($field_name).'<br>':'';
-      $attribs = ($attr) ? $attr : $this->getAttrib(field: $field_name);
+      $attribs = ($attr) ? $attr : $this->getAttrib($field_name);
 
 
       if ('textarea'==$this->getWidget($field_name)) {
@@ -20,7 +20,8 @@ trait SeguimientosTraitProps {
         if ('asi_desempeno'==$field_name) {
           return $label.Form::select(
             field: 'seguimientos.'.$field_name.'_'.$this->id, 
-            data: ['Bajo', 'Básico', 'Básico +'],
+            data: ['Bajo'=>'Bajo', 'Básico'=>'Básico', 'Básico +'=>'Básico +'],
+            value: $this->$field_name,
           );
         } else {
           return  $label.Form::input(

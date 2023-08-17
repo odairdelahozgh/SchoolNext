@@ -86,7 +86,7 @@ abstract class AppController extends Controller
   final protected function finalize() {
     try {
       $this->page_action = (!$this->page_action) ? $this->action_name : $this->page_action;
-      $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .APP_NAME;
+      $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .Config::get('config.institution.nombre');
       
       if ($this->action_name!=='index') {
         $this->_data_count = count($this->data);

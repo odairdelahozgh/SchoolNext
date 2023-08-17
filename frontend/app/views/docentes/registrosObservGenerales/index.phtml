@@ -13,7 +13,8 @@
       require('indexHeader.phtml');
       
       $tabla = new OdaTable(showTotalRegs: true);
-      $tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
+      //$tabla->setHead("Registro, *Estudiante, *Asunto, Acudiente, Docente");
+      $tabla->setHead("Registro, *Estudiante, *Asunto, Docente");
       foreach($data as $key => $reg) {
         $estudiante = ucwords(OdaUtils::sanearString($reg->estudiante_nombre))." $reg->salon_nombre [$reg->salon_id]";
         $btn_edit = $reg->lnkEditRegistro($estudiante);
@@ -21,7 +22,7 @@
           $reg.$btn_edit,
           $estudiante,
           OdaUtils::TIPO_REG_OBSERV[$reg->tipo_reg].'<br>' .OdaUtils::truncate($reg->asunto, 150),
-          $reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
+          //$reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
           $reg->director.'<br>'.$reg->getFotoDirector(),
         );
         $tabla->addRow(data: $data_row, attrs_td:['','class="searchTdata"','class="searchTdata"']);

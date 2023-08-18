@@ -236,24 +236,20 @@ class DocentesController extends AppController
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
       
-      $regs_min = 0;
-      $regs_max = 0;
+      $regs_min = 0; $regs_max = 0;
+      $min_fortaleza = 0; $max_fortaleza = 0;
+      $min_debilidad = 0; $max_debilidad = 0;
+      $min_recomendacion = 0; $max_recomendacion = 0;
+      $ancho_lim = 0;
       
-      $min_fortaleza = 0;
-      $max_fortaleza = 0;
-      $min_debilidad = 0;
-      $max_debilidad = 0;
-      $min_recomendacion = 0;
-      $max_recomendacion = 0;
-      
-      if ($RegsIndicad) {
-        //$regs_min = min($RegsIndicad) ?? 0;
-        //$regs_max = max($RegsIndicad) ?? 0;
+      if ($RegsIndicad) { // verifico que hay registros de indicadores
+        $min_max_todos = [];
         foreach ($MinMaxIndicad as $key => $Indic) {
+          $min_max_todos[] = $Indic->min;
+          $min_max_todos[] = $Indic->max;
           if ('Fortaleza'==$Indic->valorativo) {
             $min_fortaleza = $Indic->min;
             $max_fortaleza = $Indic->max;
-            $regs_min = $Indic->min; // revisar un poco mas
           }
           if ('Debilidad'==$Indic->valorativo) {
             $min_debilidad = $Indic->min;
@@ -262,9 +258,11 @@ class DocentesController extends AppController
           if ('Recomendación'==$Indic->valorativo) {
             $min_recomendacion = $Indic->min;
             $max_recomendacion = $Indic->max;
-            $regs_max = $Indic->max; // revisar un poco mas
           }
         }
+        $regs_min = min($min_max_todos) ?? 0;
+        $regs_max = max($min_max_todos) ?? 0;
+        $ancho_lim = strlen((string)$regs_max);
       }
       
       
@@ -284,6 +282,7 @@ class DocentesController extends AppController
         'max_recomendacion' =>$max_recomendacion,
         'min_indic' => $regs_min,
         'max_indic' => $regs_max,
+        'ancho_lim' => $ancho_lim,
         'cnt_indicador'   =>count(value: $RegsIndicad),
       ];
       View::select(view: 'notas/seguimientos/index');

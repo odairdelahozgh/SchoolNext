@@ -65,7 +65,7 @@ trait AspirantePsicoTraitSetUp {
       'lenguaje' =>  ' maxlength="1024" ',
       'manejoautor' =>  ' maxlength="1024" ',
       'nucleofamil' =>  ' maxlength="1024" ',
-      'porquedesea' =>  ' maxlength="1024" ',
+      'porquedesea' =>  ' required maxlength="1024" ',
       'proceso_acad' =>  ' maxlength="1024" ',
       'reforzar' =>  ' maxlength="1024" ',
       'rel_pad_mad' =>  ' maxlength="1024" ',
@@ -76,7 +76,7 @@ trait AspirantePsicoTraitSetUp {
       'relpares' =>  ' maxlength="1024" ',
       //'updated_at' =>  '',
       //'updated_by' =>  '',
-      'uuid' =>  'required',
+      'uuid' =>  ' required ',
       'vive_con' =>  ' maxlength="1024" ',
     ];
   

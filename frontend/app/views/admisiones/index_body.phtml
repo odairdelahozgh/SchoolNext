@@ -19,10 +19,12 @@
     $hist_escolar   = require('form_info_hist_escolar.phtml');
     $academico   = require('form_info_academico.phtml');
     $documentos   = require('form_info_doc_adjuntos.phtml');
+    $final   = require('form_info_final.phtml');
     
     $tabs = new OdaTabs();
     
     $tabs->addTab('privacidad', 'Privacidad', $privacidad, true);
+    $tabs->addTab('documentos','Documentos', $documentos, true);
     $tabs->addTab('basicos', 'Básicos', $datos_basicos, true);
     $tabs->addTab('madre', 'Madre', $datos_madre, true);
     $tabs->addTab('padre', 'Padre', $datos_padre, true);
@@ -31,7 +33,7 @@
     $tabs->addTab('antec_fami','Familia', $antec_fami, true);
     $tabs->addTab('hist_escolar','Escolar', $hist_escolar, true);
     $tabs->addTab('academico','Academico', $academico, true);
-    $tabs->addTab('documentos','Final', $documentos, true);
+    $tabs->addTab('final','Final', $final, true);
 
     echo  $FormAspir->getOpenForm()
           .$tabs

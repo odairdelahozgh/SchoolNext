@@ -1,0 +1,13 @@
+<?php 
+try {  
+  $tabla = new OdaTable('id="myTable-fin" class="w3-table w3-responsive w3-striped w3-bordered"');
+  
+  return "<h2>Fin del formulario</h2>
+  <br>
+  {$FormAspir->getSubmitForm('Guardar y Terminar')}
+  <br><br>
+  ";
+
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}

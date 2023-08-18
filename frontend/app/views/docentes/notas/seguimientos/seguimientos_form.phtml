@@ -25,7 +25,7 @@ try {
   // reglas para los indicadores
   $patternInidisc  = ' pattern="/^('. implode('|', $arrData['Indicadores']) .')$/"';
   $min_max  = ' min="'.$arrData['min_indic'].'" max="'.$arrData['max_indic'].'" ';
-  $max_lenght = ' maxlength="'.strlen($arrData['max_indic']).'" size="'.(strlen($arrData['max_indic'])).'"' ;
+  $max_lenght = ' maxlength="'.$arrData['ancho_lim'].'" size="'.$arrData['ancho_lim'].'"' ;
   
   // fila #2
   $frm .= "<tr class=\"\">";

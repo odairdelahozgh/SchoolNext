@@ -19,15 +19,23 @@
     });
   }
   
+
+  const min_f = document.getElementById('min_f').innerHTML.trim();
+  const max_f = document.getElementById('max_f').innerHTML.trim();
+  const min_d = document.getElementById('min_d').innerHTML.trim();
+  const max_d = document.getElementById('max_d').innerHTML.trim();
+  const min_r = document.getElementById('min_r').innerHTML.trim();
+  const max_r = document.getElementById('max_r').innerHTML.trim();
+
   const inputs = document.querySelectorAll('.color-input');
   inputs.forEach(input => {
     input.addEventListener('input', () => {
       const num = parseInt(input.value);
-      if (num >= 100 && num <= 199) {
+      if (num >= min_f && num <= max_f) {
         input.style.color = 'green';
-      } else if (num >= 200 && num <= 299) {
+      } else if (num >= min_d && num <= max_d) {
         input.style.color = 'blue';
-      } else if (num >= 300 && num <= 399) {
+      } else if (num >= min_r && num <= max_r) {
         input.style.color = 'red';
       } else {
         input.style.color = 'black';

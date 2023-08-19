@@ -8,7 +8,8 @@
 class AspirantesController extends ScaffoldController
 {
   function crear() {
-    try {      
+    $id = 0;
+    try {
       $this->page_action = "Crear Aspirante";
       $redirect = "admisiones/success";
       //  var_dump(array_filter($_POST, function($k) {
@@ -95,11 +96,12 @@ class AspirantesController extends ScaffoldController
 
 
       OdaFlash::valid("El registro de aspirante #$id ha sido creado satisfactoriamente");
-      return Redirect::to($redirect."/{$id}");
-
+      
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
+    return Redirect::to($redirect."/{$id}");
+    
   } //END-crear
 
 

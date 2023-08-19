@@ -13,7 +13,7 @@ class TestController extends AppController
     try {
     $this->page_action = 'Inicio';
     $Modelo = new RegistrosGen();
-    $Modelo->setUUID_All_ojo();
+    //$Modelo->setUUID_All_ojo();
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);

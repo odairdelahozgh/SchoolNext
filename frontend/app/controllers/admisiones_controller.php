@@ -7,14 +7,15 @@
   */
 class AdmisionesController extends DmzController
 {
-  
+  protected function before_filter() {
+    $this->theme = 'dark';
+    $this->themei = 'd';
+    View::template('admisiones');
+  }
+
   public function index() {
     try {
-      $this->theme = 'dark';
-      $this->themei = 'd';
-
       $this->page_action = 'Inicio';
-      View::template('admisiones');
       //View::select('index', 'looper/component-steps');
 
     } catch (\Throwable $th) {
@@ -25,7 +26,6 @@ class AdmisionesController extends DmzController
   public function success($id) {
     try {
       $this->page_action = 'Success';
-      View::template('admisiones');
       $this->data = (new Aspirante())::get($id);
       $GradosActivos = (new Grado())->getListActivos();
       $this->arrData['Grados'] = null;

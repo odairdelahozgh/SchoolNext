@@ -152,4 +152,21 @@ class SecretariaController extends AppController
     } //END-historico_notas
 
 
+    public function admisiones() {
+      try {
+        $this->page_action = 'Módulo de Admisiones';
+        $select = implode(', ', (new Aspirante)::getFieldsShow(show: 'index', prefix: 't.'));
+        $this->data = (new Aspirante)->getListActivos(select: $select);
+
+      } catch (\Throwable $th) {
+        OdaFlash::error($th);
+      }
+
+      View::select('admisiones/index');
+    } //END-admisiones
+
+    public static function formato($arr_element) {
+      return "t.$arr_element";
+    }
+
 } // END CLASS

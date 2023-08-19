@@ -154,7 +154,7 @@ class SecretariaController extends AppController
 
     public function admisiones() {
       try {
-        $this->page_action = 'Módulo de Admisiones';
+        $this->page_action = 'M&oacute;dulo de Admisiones';
         $select = implode(', ', (new Aspirante)::getFieldsShow(show: 'index', prefix: 't.'));
         $this->data = (new Aspirante)->getListActivos(select: $select);
 
@@ -165,8 +165,5 @@ class SecretariaController extends AppController
       View::select('admisiones/index');
     } //END-admisiones
 
-    public static function formato($arr_element) {
-      return "t.$arr_element";
-    }
 
 } // END CLASS

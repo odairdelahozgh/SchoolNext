@@ -24,6 +24,65 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
 
   });
 
+  
+  // ========================================================================      
+  const periodo_seguimientos = document.getElementById('periodo_seguimientos').value;
+  const div_seguimientos = document.getElementById('seguimientos');
+  if (1==document.getElementById('ver_seguimientos').value) { 
+    getDataSeguimientos(ruta_base, estudiante_id, periodo_seguimientos)
+    .then(res => {
+      const elements = res.reduce((acc, data_seguimientos) => acc + template_seguimientos(ruta_base, data_seguimientos), "");
+      const botones = elements;
+
+      if (botones.length>0) { 
+        div_seguimientos.innerHTML = `
+        <div>
+          <h2 class="w3-panel w3-theme w3-round-xlarge">Seguimientos</h2>
+          ${botones}
+        </div>`;
+      } else { 
+        div_seguimientos.innerHTML =  `
+        <div>
+          <h2 class="w3-panel w3-theme w3-round-xlarge">Seguimientos</h2>
+          <span class="w3-text-blue">No tiene Seguimientos en el presente periodo</span>
+        </div>`; 
+      }
+    });
+  } //END::SEGUIMIENTOS-INTERMEDIOS
+  
+  function getDataSeguimientos(ruta_base, estudiante_id, periodo_id) {
+    ruta = ruta_base+'api/seguimientos/by_estudiante_periodo/'+estudiante_id+'/'+periodo_id;
+    return fetch(ruta).then(res => res.json() );
+  }//END-getDataPlanesApoyo
+
+  function template_seguimientos(ruta_base, data) {
+    let ruta_descarga_seguimientos  = ruta_base+'admin/seguimientos/exportPlanesApoyoRegistroPdf/'+data.uuid;
+    console.log('periodo: '+data.periodo_id);
+    return `
+      <a href="${ruta_descarga_seguimientos}" 
+        class="w3-btn w3-black" 
+        target="_blank">
+        <i class="fa-solid fa-file-pdf"></i> Seg. Int. ${data.asignatura_nombre} P${data.periodo_id}
+      </a>
+    `;
+  } //END-template_seguimientos
+
+
+
+
+  function template_planes_apoyo(ruta_base, data) {
+    let ruta_descarga_plan_apoyo  = ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+data.uuid;
+    console.log('periodo: '+data.periodo_id);
+    return `
+      <a href="${ruta_descarga_plan_apoyo}" 
+        class="w3-btn w3-black" 
+        target="_blank">
+        <i class="fa-solid fa-file-pdf"></i> P.A. ${data.asignatura_nombre} P${data.periodo_id}
+      </a>
+    `;
+  } //END-template_planes_apoyo
+
+
   // ========================================================================      
   const periodo_planes_apoyo = document.getElementById('periodo_planes_apoyo').value;
   const div_planes_apoyo = document.getElementById('planes_apoyo');
@@ -47,10 +106,13 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
         </div>`; 
       }
     });
-  } //IF
+  } //END::PLANES-DE-APOYO 
   
 
 } //END-traer_data
+
+
+
 
 function getDataPlanesApoyo(ruta_base, estudiante_id, periodo_id) {
   ruta = ruta_base+'api/planes_apoyo/by_estudiante_periodo/'+estudiante_id+'/'+periodo_id;

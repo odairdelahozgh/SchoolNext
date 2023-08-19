@@ -31,13 +31,12 @@ class Seguimientos extends Nota {
   // } //END-__construct
 
 
-  
   public function getByEstudiantePeriodo(int $estudiante_id, int $periodo_id) {
     try {
       $DQL = (new OdaDql(__CLASS__))
         ->select('t.uuid, t.periodo_id, a.nombre as asignatura_nombre')
         ->leftJoin('asignatura', 'a')
-        ->where("t.is_psi_validar_ok>=3 AND t.estudiante_id=? AND t.periodo_id=?")
+        ->where("t.is_asi_validar_ok>=2 AND t.estudiante_id=? AND t.periodo_id=?")
         ->setParams([$estudiante_id, $periodo_id]);
       return $DQL->execute();
 

@@ -37,36 +37,33 @@ class AspirantesController extends ScaffoldController
 
       // AGREGA CAMPOS $dataAdicAspir (DE CONTROL)
       $dataAdicAspir =[];
+      $dataAdicAspir['uuid'] = (new Aspirante())->xxh3Hash();
       $dataAdicAspir['created_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspir['created_by']= 0;
       $dataAdicAspir['updated_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspir['updated_by']= 0;
       
-      // buscar por numero documento...
-      // si está lo elimina... y listo...
-      // despuiés buscar otra alternativa mas eficiente
-      
-      $ObjAsp = new Aspirante();
-      $AspExiste =  $ObjAsp::first('Select documento from sweb_aspirantes where documento =?', [$documento]);
+      // OJO :: despuiés buscar otra alternativa mas eficiente
+      $AspExiste = (new Aspirante())::first('Select documento from sweb_aspirantes where documento =?', [$documento]);
       if (isset($AspExiste)) {
-        $ObjAsp::query("DELETE FROM sweb_aspirantes WHERE documento = ?", [$AspExiste->documento]);
+        (new Aspirante())::query("DELETE FROM sweb_aspirantes WHERE documento = ?", [$AspExiste->documento]);
+        (new AspirantePsico())::query("DELETE FROM sweb_aspirantepsico WHERE aspirante_id = ?", [$AspExiste->id]);
       }
-
-      $Modelo = (new Aspirante());
-      $DQL = new OdaDql($Modelo::class);
+      
+      $DQL = new OdaDql((new Aspirante)::class);
       $DQL->insert($dataAspir)
-               ->addInsert($dataAdicAspir)
-               ->execute();
-
+      ->addInsert($dataAdicAspir)
+      ->execute();
+      
       
       // =================================================================
       // =================================================================
       $aspirante_id = $DQL->getLastInsertId();
       $id = $aspirante_id->last_id??0;
-
+      
       $post_name_aspir_psico = 'aspirantepsicos';
       if (!Input::hasPost($post_name_aspir_psico)) { OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir_psico</b>, no llegó"); }
-
+      
       if (Input::hasPost($post_name_aspir_psico)) {
         $Post = Input::post($post_name_aspir_psico);
         $dataAspirPsico = [];
@@ -75,26 +72,26 @@ class AspirantesController extends ScaffoldController
           //echo "[$field_name] = $value<br>";
         }
       }//end-foreach
-
+      
       // AGREGA CAMPOS DE CONTROL
       $dataAdicAspirPsico =[];
+      $dataAdicAspirPsico['uuid'] = (new AspirantePsico())->xxh3Hash();
       $dataAdicAspirPsico['aspirante_id'] = $id;
       $dataAdicAspirPsico['created_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspirPsico['created_by']= 0;
       $dataAdicAspirPsico['updated_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspirPsico['updated_by']= 0;
-        
-      $Modelo = (new AspirantePsico());
-      $DQL = new OdaDql($Modelo::class);
+      
+      $DQL = new OdaDql((new AspirantePsico)::class);
       $DQL->insert($dataAspirPsico)
-               ->addInsert($dataAdicAspirPsico)
-               ->execute();
-
+      ->addInsert($dataAdicAspirPsico)
+      ->execute();
+      
       
       // =================================================================
       // =================================================================
-
-
+      
+      
       OdaFlash::valid("El registro de aspirante #$id ha sido creado satisfactoriamente");
       
     } catch (\Throwable $th) {

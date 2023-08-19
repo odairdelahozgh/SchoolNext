@@ -37,7 +37,7 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
       if (botones.length>0) { 
         div_seguimientos.innerHTML = `
         <div>
-          <h2 class="w3-panel w3-theme w3-round-xlarge">Seguimientos</h2>
+          <h2 class="w3-panel w3-theme w3-round-xlarge">Seguimientos Intermedios</h2>
           ${botones}
         </div>`;
       } else { 
@@ -56,31 +56,17 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
   }//END-getDataPlanesApoyo
 
   function template_seguimientos(ruta_base, data) {
-    let ruta_descarga_seguimientos  = ruta_base+'admin/seguimientos/exportPlanesApoyoRegistroPdf/'+data.uuid;
+    let ruta_descarga_seguimientos  = ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+data.uuid;
     console.log('periodo: '+data.periodo_id);
     return `
       <a href="${ruta_descarga_seguimientos}" 
         class="w3-btn w3-black" 
         target="_blank">
-        <i class="fa-solid fa-file-pdf"></i> Seg. Int. ${data.asignatura_nombre} P${data.periodo_id}
+        <i class="fa-solid fa-file-pdf"></i> ${data.asignatura_nombre} P${data.periodo_id}
       </a>
     `;
   } //END-template_seguimientos
 
-
-
-
-  function template_planes_apoyo(ruta_base, data) {
-    let ruta_descarga_plan_apoyo  = ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+data.uuid;
-    console.log('periodo: '+data.periodo_id);
-    return `
-      <a href="${ruta_descarga_plan_apoyo}" 
-        class="w3-btn w3-black" 
-        target="_blank">
-        <i class="fa-solid fa-file-pdf"></i> P.A. ${data.asignatura_nombre} P${data.periodo_id}
-      </a>
-    `;
-  } //END-template_planes_apoyo
 
 
   // ========================================================================      
@@ -126,7 +112,7 @@ function template_planes_apoyo(ruta_base, data) {
     <a href="${ruta_descarga_plan_apoyo}" 
        class="w3-btn w3-black" 
        target="_blank">
-       <i class="fa-solid fa-file-pdf"></i> P.A. ${data.asignatura_nombre} P${data.periodo_id}
+       <i class="fa-solid fa-file-pdf"></i> ${data.asignatura_nombre} P${data.periodo_id}
     </a>
   `;
 } //END-template_planes_apoyo

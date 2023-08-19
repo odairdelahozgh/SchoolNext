@@ -10,7 +10,7 @@ class AspirantesController extends ScaffoldController
   function crear() {
     try {      
       $this->page_action = "Crear Aspirante";
-      $redirect = "admisiones";
+      $redirect = "admisiones/success";
       //  var_dump(array_filter($_POST, function($k) {
       //   return $k == 'notas';
       //   }, ARRAY_FILTER_USE_KEY));
@@ -61,6 +61,8 @@ class AspirantesController extends ScaffoldController
       // =================================================================
       // =================================================================
       $aspirante_id = $DQL->getLastInsertId();
+      $id = $aspirante_id->last_id??0;
+
       $post_name_aspir_psico = 'aspirantepsicos';
       if (!Input::hasPost($post_name_aspir_psico)) { OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir_psico</b>, no llegó"); }
 
@@ -75,7 +77,7 @@ class AspirantesController extends ScaffoldController
 
       // AGREGA CAMPOS DE CONTROL
       $dataAdicAspirPsico =[];
-      $dataAdicAspirPsico['aspirante_id'] = $aspirante_id->last_id??0;
+      $dataAdicAspirPsico['aspirante_id'] = $id;
       $dataAdicAspirPsico['created_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspirPsico['created_by']= 0;
       $dataAdicAspirPsico['updated_at'] = date('Y-m-d H:i:s', time());
@@ -92,7 +94,8 @@ class AspirantesController extends ScaffoldController
       // =================================================================
 
 
-      return Redirect::to($redirect);
+      OdaFlash::valid("El registro de aspirante #$id ha sido creado satisfactoriamente");
+      return Redirect::to($redirect."/{$id}");
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);

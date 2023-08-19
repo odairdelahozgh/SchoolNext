@@ -16,11 +16,15 @@
     echo OdaForm::hidden(field: 'ver_reconocimientos', 
       value: Config::get('padres.mostrar_reconocimientos'));
 
+
     echo OdaForm::hidden(field: 'periodo_boletines',
       value: Config::get('padres.periodo_boletines'));
       
     echo OdaForm::hidden(field: 'periodo_planes_apoyo',
      value: Config::get('padres.periodo_planes_apoyo'));
+     
+    echo OdaForm::hidden(field: 'periodo_seguimientos',
+     value: Config::get('padres.periodo_seguimientos'));
     
     $periodo = $arrData['periodo'];
     $buttons = [];

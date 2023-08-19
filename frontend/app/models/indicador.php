@@ -143,8 +143,46 @@ class Indicador extends LiteRecord {
           ->groupBy('t.valorativo')
           ->orderBy(self::$_order_by_defa)
           ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-      return $DQL->execute();
-    
+      
+      $MinMaxIndicad = $DQL->execute();
+      
+      $arrResult = [
+        'regs_min' => 0, 
+        'regs_max' => 0,
+        'min_fortaleza' => 0, 
+        'max_fortaleza' => 0,
+        'min_debilidad' => 0, 
+        'max_debilidad' => 0,
+        'min_recomendacion' => 0, 
+        'max_recomendacion' => 0,
+        'ancho_lim' => 0,
+      ];
+
+      if (isset($MinMaxIndicad)) { // verifico que hay registros
+        $min_max_todos = [];
+        foreach ($MinMaxIndicad as $key => $Indic) {
+          $min_max_todos[] = $Indic->min;
+          $min_max_todos[] = $Indic->max;
+          if (str_starts_with(strtoupper($Indic->valorativo), 'F')) {
+            $arrResult['min_fortaleza'] = $Indic->min;  
+            $arrResult['max_fortaleza'] = $Indic->max;
+          }
+          if (str_starts_with(strtoupper($Indic->valorativo), 'D')) {
+            $arrResult['min_debilidad'] = $Indic->min;  
+            $arrResult['max_debilidad'] = $Indic->max;
+          }
+          if (str_starts_with(strtoupper($Indic->valorativo), 'R')) {
+            $arrResult['min_recomendacion'] = $Indic->min; 
+            $arrResult['max_recomendacion'] = $Indic->max;
+          }
+        }
+        $arrResult['regs_min'] = min($min_max_todos);
+        $arrResult['regs_max'] = max($min_max_todos);
+        $arrResult['ancho_lim'] = strlen((string)$arrResult['regs_max']);
+      }
+
+      Return $arrResult;
+
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }

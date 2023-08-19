@@ -1,0 +1,46 @@
+<div class="w3-panel">
+   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+   <?= View::flash(); ?>
+
+   <div class="w3-row w3-section">
+      <?=OdaForm::inputSearch();?>
+   </div>
+   
+   <?php 
+   try {
+      $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
+      $tabla->setCaption('Lista de Aspirantes Activos');
+      $tabla->setHead(
+         data_head:    ['id', 'Estado', 'Grado', 'Aspirante', 'Fechas'], 
+         attrs:         'class="w3-theme"', 
+         //arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
+      );
+
+      //'', 'ctrl_llamadas', '', ''
+
+      foreach($data as $key => $reg) {
+         $tabla->addRow(
+            data: [ 
+              $reg->fecha_insc .'<br>Activo: ' .(($reg->is_active)?'SI':'NO').'<br>Pago: ' .(($reg->is_pago)?'SI':'NO'), 
+              $reg->estatus, 
+              $reg->aspirante_grado, 
+              "$reg->apellido1 $reg->apellido2 $reg->nombres [$reg->id] <br>$reg->telefono1",
+              "Entrevista: $reg->fecha_entrev <br>Evaluación: $reg->fecha_eval", 
+            ], 
+            attrs_td: ['class="searchTdata"', 'class="searchTdata" w3-center', 'class="searchTdata"', 'class="searchTdata"']
+         );
+      }
+      echo $tabla;
+
+    } catch (\Throwable $th) {
+      OdaLog::error($th);
+      echo $th;
+     }
+
+   ?>   
+</div>
+
+<?= Tag::js(src: "table_filter"); ?>
+
+<script>
+</script>

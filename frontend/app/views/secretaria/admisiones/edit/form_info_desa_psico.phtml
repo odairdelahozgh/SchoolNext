@@ -1,0 +1,24 @@
+<?php 
+try {  
+  $tabla = new OdaTable('id="myTable-ds" class="w3-table w3-responsive w3-striped w3-bordered"');
+  $tabla->setCaption('Desarrollo Psicológico');
+
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'lenguaje')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'aprendizaje')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'comporta')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'afecto')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'autocuidado')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'especialista')]);
+  return $tabla;
+
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}
+
+/*
+$tabla .= _open('table', array('width'=>'100%'));
+  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/rel_pad_mad') );
+  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/vive_con',array('cols'=>'60', 'rows'=>'6')) );
+$tabla .= _close('table');
+echo $tabla;
+*/

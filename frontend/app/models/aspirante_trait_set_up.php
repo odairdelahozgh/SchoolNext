@@ -34,7 +34,7 @@ trait AspiranteTraitSetUp {
                       'pais_nac', 'razones_cambio', 'recomendac', 'result_caste', 'result_ingle', 'result_matem', 'result_plect', 'result_pmate', 'result_scien', 'result_socia', 
                       'sexo', 'telefono1', 'telefono2', 'tiempoinstit', 'tipo_dcto', 'uuid', 'updated_at', 'updated_by' ],
 
-      'index'    => ['is_active', 'estatus', 'fecha_insc', 'nombres', 'apellido1', 'apellido2', 'documento' ],
+      'index'    => [ 'id', 'is_active', 'grado_aspira', 'estatus', 'is_pago', 'fecha_insc', 'nombres', 'apellido1', 'apellido2', 'telefono1', 'ctrl_llamadas', 'fecha_entrev', 'fecha_eval'],
 
       'create'   => ['1_annios', '1_ciudad', '1_colegio', '1_grados', '1_motivo_ret', '1_telefono', '2_annios', '2_ciudad', '2_colegio', '2_grados', '2_motivo_ret', '2_telefono', 
                      '3_annios', '3_ciudad', '3_colegio', '3_grados', '3_motivo_ret', '3_telefono', 'ante_fecha_ret', 'ante_grado', 'ante_instit', 'ante_instit_dir', 'ante_instit_tel', 

@@ -27,10 +27,10 @@ trait TraitForms {
   public static function getWidget($field)      { return ((array_key_exists($field, self::$_widgets)) ? self::$_widgets[$field]: 'input'); }
   public static function getValidators($field)  { return ((array_key_exists($field, self::$_rules_validators)) ? self::$_rules_validators[$field]: ''); }
   
-  public static function getFieldsShow(string $show='index', bool $show_labels = false): array {
+  public static function getFieldsShow(string $show='index', bool $show_labels = false, $prefix=''): array {
     $srrShow = [];
     foreach (self::$_fields_show[$show] as $name => $field) {
-      $srrShow[] = (($show_labels) ? self::getLabel($field) : $field);
+      $srrShow[] = (($show_labels) ? self::getLabel($field) : $prefix.$field);
     }
     return  $srrShow;
   }

@@ -29,7 +29,7 @@ class Aspirante extends LiteRecord {
           ->orderBy(self::$_order_by_defa);
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
 
-     return $DQL->execute(true);
+     return $DQL->execute();
    } // END-getList
   
 

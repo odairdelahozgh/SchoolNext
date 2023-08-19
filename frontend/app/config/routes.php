@@ -43,9 +43,10 @@ return [
         //'/coord-registros'       => 'coordinador/gestion_registros',
         //'/coord-historicos'      => 'coordinador/historico_notas',
         
-        '/secre-estud-list-activos'   => 'secretaria/listadoEstudActivos',
-        '/secre-estud-edit-activos'   => 'secretaria/editarEstudActivos',
-        '/secre-estud-list-inactivos' => 'secretaria/listadoEstudInactivos',
-        '/secre-historico-notas'      => 'secretaria/historico_notas',
+        '/secre-estud-list-activos'    => 'secretaria/listadoEstudActivos',
+        '/secre-estud-edit-activos'    => 'secretaria/editarEstudActivos',
+        '/secre-estud-list-inactivos'  => 'secretaria/listadoEstudInactivos',
+        '/secre-estud-list-admisiones' => 'secretaria/admisiones',
+        '/secre-historico-notas'       => 'secretaria/historico_notas',
         ],
 ];

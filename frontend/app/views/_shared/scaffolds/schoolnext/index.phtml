@@ -5,7 +5,7 @@
 
     echo OdaForm::inputSearch();
 
-    if ($tot_regs = count(value: $data)) {
+    if ($tot_regs = count($data)) {
       $tabla = new OdaTable();
       $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels]);
       foreach ($data as $key => $item_data) {

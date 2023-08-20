@@ -7,12 +7,12 @@ enum AspirEstatus: string {
   case Admitido  = 'Admitido';
   case Rechazado = 'Rechazado';
 
-  public function label(): string {
+  public function label(bool $abrev = false): string {
     return match($this) {
       static::Estudio   => 'En Estudio',
       static::Admitido  => 'Admitido',
       static::Rechazado => 'Rechazado',
-      default           => 'En Estudio',
+      default           => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label
 

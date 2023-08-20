@@ -12,7 +12,7 @@ enum Estado: int {
     return match($this) {
       static::Inactivo => 'Inactivo',
       static::Activo   => 'Activo',
-      default          => 'Inactivo',
+      default          => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label
   
@@ -37,4 +37,8 @@ enum Estado: int {
     };
   }//END-color
 
-} //END-ENUM-Estado
+  public static function caption(): string {
+    return 'Estado del registro';
+  }//END-caption
+
+} //END-ENUM

@@ -15,21 +15,21 @@ enum Mes: int {
   case Noviembre = 11;
   case Diciembre = 12;
   
-  public function label(): string {
+  public function label(bool $abrev=false): string {
     return match($this) {
-      static::Enero      => 'Enero',
-      static::Febrero    => 'Febrero',
-      static::Marzo      => 'Marzo',
-      static::Abril      => 'Abril',
-      static::Mayo       => 'Mayo',
-      static::Junio      => 'Junio',
-      static::Julio      => 'Julio',
-      static::Agosto     => 'Agosto',
-      static::Septiembre => 'Septiembre',
-      static::Octubre    => 'Octubre',
-      static::Noviembre  => 'Noviembre',
-      static::Diciembre  => 'Diciembre',
-      default            => throw new InvalidArgumentException(message: "Mes Erroneo"),
+      static::Enero      => (($abrev)?'Ene':'Enero'),
+      static::Febrero    => (($abrev)?'Feb':'Febrero'),
+      static::Marzo      => (($abrev)?'Mar':'Marzo'),
+      static::Abril      => (($abrev)?'Abr':'Abril'),
+      static::Mayo       => (($abrev)?'May':'Mayo'),
+      static::Junio      => (($abrev)?'Jun':'Junio'),
+      static::Julio      => (($abrev)?'Jul':'Julio'),
+      static::Agosto     => (($abrev)?'Ago':'Agosto'),
+      static::Septiembre => (($abrev)?'Sep':'Septiembre'),
+      static::Octubre    => (($abrev)?'Oct':'Octubre'),
+      static::Noviembre  => (($abrev)?'Nov':'Noviembre'),
+      static::Diciembre  => (($abrev)?'Dic':'Diciembre'),
+      default            => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label
 
@@ -40,6 +40,10 @@ enum Mes: int {
   public function label_ico(): string {
     return $this->ico().$this->label();
   }
+
+  public static function caption(): string {
+    return 'Mes del a&nacute;o';
+  }//END-caption
 
 
 } // END-ENUM

@@ -17,7 +17,7 @@ enum Rangos: string {
       static::Alto        => 'Alto',
       static::AltoPlus    => 'Alto +',
       static::Superior    => 'Superior',
-      default             => 'Rango Indefinido',
+      default             => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label
   
@@ -70,5 +70,9 @@ enum Rangos: string {
       $valor < 0    => 'Rango no válido: Inferior a Cero',
     };
   } //END-rango
+
+  public static function caption(): string {
+    return 'Rango de la califiación';
+  }//END-caption
 
 } // END-ENUM

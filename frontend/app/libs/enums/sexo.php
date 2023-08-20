@@ -6,19 +6,19 @@ enum Sexo: string {
   case Masculino = 'Masculino';
   case Femenino  = 'Femenino';
 
-  public function label(): string {
+  public function label(bool $abrev = false): string {
     return match($this) {
-      static::Masculino => 'Masculino',
-      static::Femenino  => 'Femenino',
-      default           => 'No definido',
+      static::Masculino => (($abrev)?'M':'Masculino'),
+      static::Femenino  => (($abrev)?'F':'Femenino'),
+      default           => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label
   
   public function ico(): string {
     $ico = match($this) {
-        static::Masculino => 'fa-??',
-        static::Femenino  => 'fa-??',
-        default           => 'fa-??',
+        static::Masculino => 'fa-mars',
+        static::Femenino  => 'fa-venus',
+        default           => 'fa-question',
     };
     return "<i class=\"fa-solid $ico w3-small\"></i>&nbsp;";
   }//END-ico

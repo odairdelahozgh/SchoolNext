@@ -13,27 +13,31 @@ enum Modulo: int {
   case Secre = 8;
   
   
-  public function label(): string {
+  public function label(bool $abrev=false): string {
     return match($this) {
-      static::Admin  => 'Administrador',
-      static::Conta  => 'Contabilidad',
-      static::Coord  => 'Coordinacion',
-      static::Docen  => 'Docentes',
-      static::Enfer  => 'Enfermeria',
-      static::Padre  => 'Padres',
-      static::Psico  => 'Psicologia',
-      static::Secre  => 'Secretaria',
-      default => throw new InvalidArgumentException(message: "Modulo Erroneo"),
+      static::Admin  => (($abrev)?'Admin':'Administrador'),
+      static::Conta  => (($abrev)?'Cont':'Contabilidad'),
+      static::Coord  => (($abrev)?'Coor':'Coordinacion'),
+      static::Docen  => (($abrev)?'Doce':'Docentes'),
+      static::Enfer  => (($abrev)?'Enfe':'Enfermeria'),
+      static::Padre  => (($abrev)?'Padr':'Padres'),
+      static::Psico  => (($abrev)?'Psic':'Psicologia'),
+      static::Secre  => (($abrev)?'Secr':'Secretaria'),
+      default => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   } //END-label
 
   public function ico(): string {
-    return "<i class=\"fa-solid fa-calendar-days w3-small\"></i>&nbsp;";
+    return "<i class=\"fa-solid fa-layer-group w3-small\"></i>&nbsp;";
   } //END-ico
   
   public function label_ico(): string {
     return $this->ico().$this->label();
   } //END-label_ico
+
+  public static function caption(): string {
+    return 'M&oacute;dulo del sistema';
+  }//END-caption
 
 
 } // END-ENUM

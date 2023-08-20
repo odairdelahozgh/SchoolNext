@@ -7,12 +7,12 @@ enum TipoDoc: string {
   case Tarjeta  = 'TI';
   case Cedula  = 'CC';
 
-  public function label(): string {
+  public function label(bool $abrev = false): string {
     return match($this) {
-      static::Registro => 'Registro Civil',
-      static::Tarjeta  => 'Tarjeta de Identidad',
-      static::Cedula   => 'Cédula de Ciudadanía',
-      default          => 'No disponible',
+      static::Registro => (($abrev)?'RC':'Registro Civil'),
+      static::Tarjeta  => (($abrev)?'TI':'Tarjeta de Identidad'),
+      static::Cedula   => (($abrev)?'CC':'C&eacute;dula de Ciudadan&iacute;a'),
+      default          => 'No definido',
     };
   }//END-label
 

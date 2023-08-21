@@ -25,4 +25,20 @@ class SicologiaController extends AppController
     } //END-estudiantes
     
 
+
+    public function admisiones() {
+      try {
+        $this->page_action = 'M&oacute;dulo de Admisiones';
+        $select = implode(', ', (new Aspirante)::getFieldsShow(show: 'index', prefix: 't.'));
+        $this->data = (new Aspirante)->getListActivos(select: $select);
+  
+      } catch (\Throwable $th) {
+        OdaFlash::error($th);
+      }
+  
+      View::select('admisiones/index');
+    } //END-admisiones
+
+    
+    
 } // END CLASS

@@ -51,6 +51,18 @@ class CoordinadorController extends AppController
   } //END-consolidado_notas
 
   
+  public function seguimientosConsolidado() {
+    try {
+      $this->page_action = 'Consolidado de Notas';
+      $this->data = (new Seguimientos())::getConsolidadoBySalonPeriodo('fde6d4554a101204ca5c', 3);
+    
+    } catch (\Throwable $th) {
+    OdaFlash::error($th);
+    }
+    View::select('segumientos/consolidado');
+  } //END-consolidado_notas
+  
+
   public function notas_salon_json(int $salon_id) {
     View::template(null);
     //View::select(null);
@@ -85,5 +97,19 @@ class CoordinadorController extends AppController
   } //END-cambiar_salon_estudiante
 
   
+
+  public function admisiones() {
+    try {
+      $this->page_action = 'M&oacute;dulo de Admisiones';
+      $select = implode(', ', (new Aspirante)::getFieldsShow(show: 'index', prefix: 't.'));
+      $this->data = (new Aspirante)->getListActivos(select: $select);
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+
+    View::select('admisiones/index');
+  } //END-admisiones
+
 
 } // END CLASS

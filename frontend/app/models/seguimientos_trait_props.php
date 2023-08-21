@@ -3,6 +3,9 @@
  * Summary of SeguimientosTraitProps
  */
 trait SeguimientosTraitProps {
+
+  private static $asi_valido = 2;
+
   public function fieldForm(string $field_name, string $attr='', string|bool $type=null, bool $label=false): string {
     try {
       $label = ($label) ? $this->getLabel($field_name).'<br>':'';

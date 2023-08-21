@@ -5,8 +5,15 @@
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
   
-class AspirantesController extends ScaffoldController
-{
+
+  
+  
+  class AspirantesController extends ScaffoldController
+  {
+  protected function before_filter() {
+    $this->nombre_modelo = 'Aspirante';
+  }
+
   function crear() {
     $id = 0;
     try {

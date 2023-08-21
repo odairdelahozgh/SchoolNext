@@ -7,5 +7,8 @@
   
 class IndicadoresController extends ScaffoldController
 {
+  protected function before_filter() {
+    $this->nombre_modelo = 'indicador';
+  }
  
 } // END CLASS

@@ -46,7 +46,7 @@ return [
         '/secre-estud-list-activos'    => 'secretaria/listadoEstudActivos',
         '/secre-estud-edit-activos'    => 'secretaria/editarEstudActivos',
         '/secre-estud-list-inactivos'  => 'secretaria/listadoEstudInactivos',
-        '/secre-estud-list-admisiones' => 'secretaria/admisiones',
+        '/secre-admisiones' => 'secretaria/admisiones',
         '/secre-historico-notas'       => 'secretaria/historico_notas',
         ],
 ];

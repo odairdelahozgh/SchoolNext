@@ -8,7 +8,7 @@
         <?php 
         try {
           $key = 0;
-          for ($periodop=$_periodo_actual; $periodo>=1 ; $periodo--) { 
+          for ($periodo=$_periodo_actual; $periodo>=1 ; $periodo--) { 
             echo "<div id=\"btn-$key\" onclick=\"traer_salones($periodo, $user_id)\" class=\"w3-button w3-bar-item\">
                     Periodo $periodo
                   </div>" ;
@@ -26,6 +26,6 @@
 </div>
 
 <?php
-  //echo (new Form)::hidden(field: 'coord', value: $user);
+  echo (new Form)::hidden(field: 'coord', value: $user);
   echo Tag::js(src: 'coordinador/seguimientos/seg_consolidado', cache: false);
 ?>

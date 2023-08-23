@@ -22,7 +22,7 @@ class RegistrosGen extends LiteRecord {
     parent::__construct();
     self::$table = Config::get('tablas.estud_reg_obs_gen');
     $this->setUp();
-    self::$order_by_default = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
+    self::$_order_by_defa = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
   } //END-__construct
 
   public function getRegistrosProfesor(int $user_id) {
@@ -100,12 +100,28 @@ class RegistrosGen extends LiteRecord {
   
   
   // =============
-  public function getRegistrosAnnio(int $annio) {
+  public function getRegistrosByAnnioSalon(int $annio, int $salon_id) {
     $annio_actual = Config::get('config.academic.annio_actual');
     $sufijo = ($annio!=$annio_actual) ? '_'.$annio : '' ;
 
-    $DQL = "SELECT rg.*, CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante,
-            s.nombre as salon, CONCAT(u.nombres,' ',u.apellido1,' ',u.apellido2) as creador
+    $RegGen = new RegistrosGen();
+    $DQL = new OdaDql($RegGen::class);
+    $DQL->select('t.*')
+        ->addSelect('s.nombre as salon_nombre')
+        ->concat(['e.apellido1', 'e.apellido2', 'e.nombres'], 'estudiante_nombre')
+        ->concat(['u.apellido1', 'u.apellido2', 'u.nombres'], 'creador_nombre')
+        ->leftJoin('salon', 's')
+        ->leftJoin('estudiante', 'e')
+        ->leftJoin('usuario', 'u', 't.created_by = u.id')
+        ->where('t.salon_id=?')
+        ->orderBy('t.annio, t.grado_id, e.apellido1, e.apellido2, e.nombres, t.fecha DESC');
+    $DQL->setParams([$salon_id]);
+    $DQL->execute(true);
+    /*
+    $DQL = "SELECT rg.*, 
+            CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante_nombre,
+            s.nombre as salon_nombre, 
+            CONCAT(u.nombres,' ',u.apellido1,' ',u.apellido2) as creador
             FROM ".self::$table.$sufijo." AS rg
             LEFT JOIN ".Config::get('tablas.estudiantes') ." as e ON rg.estudiante_id = e.id
             LEFT JOIN ".Config::get('tablas.salones') ." as s ON rg.salon_id      = s.id
@@ -113,6 +129,7 @@ class RegistrosGen extends LiteRecord {
             WHERE annio = $annio
             ORDER BY s.position,estudiante,rg.periodo_id";
     return $this::all($DQL);
+    */
   } // END-getRegistrosAnnio
     
 

@@ -1,0 +1,29 @@
+<div class="w3-panel">
+    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+    <?= View::flash(); ?>
+</div>
+
+<div class="w3-panel">
+    <div  class="w3-bar">
+        <?php 
+        try {
+          $key = 0;
+          for ($p=$_periodo_actual; $p>=1 ; $p--) { 
+            echo "<div id=\"btn-$key\" onclick=\"traer_salones($p, $user_id)\" class=\"w3-button w3-bar-item\">Periodo $p</div>" ;
+            $key++;
+          }
+        
+        } catch (\Throwable $th) {
+          OdaFlash::error($th);
+        }
+        ?>
+    </div>
+
+    <div id="salones"></div>
+    <div id="resultados"></div>
+</div>
+
+<?php
+  echo (new Form)::hidden(field: 'coord', value: $user);
+  echo Tag::js(src: 'coordinador/seguimientos/seg_consolidado', cache: false);
+?>

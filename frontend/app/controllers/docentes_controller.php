@@ -11,6 +11,18 @@ require_once APP_PATH . '../vendor/autoload.php';
 class DocentesController extends AppController
 {
 
+  public function seguimientos_grupo() {
+    try {
+      $this->page_action = 'Seguimientos del Grupo';
+      $this->data = (new usuario)->misGrupos();
+      //OdaLog::debug("mensaje","rastreo");
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    View::select('direccionDeGrupo/seguimientos');
+  }
+
   public function index() {
     try {
       $this->page_action = 'Inicio';

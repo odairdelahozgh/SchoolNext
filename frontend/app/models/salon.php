@@ -104,6 +104,28 @@ class Salon extends LiteRecord {
     }
   } //END-getList
 
+  public function getByDirector(int $user_id) { 
+    try {
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select("t.*, g.nombre AS grado_nombre")
+          ->concat( ['ud.nombres', 'ud.apellido1', 'ud.apellido2'], 'director_nombre')
+          ->concat( ['uc.nombres', 'uc.apellido1', 'uc.apellido2'], 'codirector_nombre')
+          ->leftJoin('grado', 'g')
+          ->leftJoin('usuario', 'ud', 't.director_id = ud.id')
+          ->leftJoin('usuario', 'uc', 't.codirector_id = uc.id')
+          ->orderBy(self::$_order_by_defa)
+          ->where("t.is_active=1");
+      
+      if ($user_id<>1) {
+        $DQL->andWhere("(t.director_id=? or t.codirector_id=?)")
+          ->setParams([$user_id, $user_id]);
+      }
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getList
 
   
       

@@ -21,7 +21,7 @@ class CoordinadorController extends AppController
     } catch (\Throwable $th) {
     OdaFlash::error($th);
     }
-    View::select('segumientos/consolidado');
+    View::select('seguimientos/consolidado');
   } //END-consolidado_notas
 
 

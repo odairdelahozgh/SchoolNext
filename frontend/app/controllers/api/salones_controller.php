@@ -17,8 +17,11 @@ class SalonesController extends RestController
     $this->data = (new Salon)->getListActivos();
   }//END-get_all
 
-  public function get_by_coordinador(int $coordinador) {
-    $this->data = (new Salon)->getByCoordinador($coordinador); // corregir
+  public function get_by_coordinador(int $user_id) {
+    $this->data = (new Salon)->getByCoordinador($user_id); // corregir
+  }//END-get_all
+  public function get_by_director(int $user_id) {
+    $this->data = (new Salon)->getByDirector($user_id); // corregir
   }//END-get_all
 
 } //END-CLASS

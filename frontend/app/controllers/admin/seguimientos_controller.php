@@ -174,7 +174,9 @@ class SeguimientosController extends ScaffoldController
   
   public function exportSeguimientosRegistroPdf(string $seguimientno_uuid): void {
     try {    
+      
       $Seg = (new Seguimientos)::getByUUID($seguimientno_uuid);
+
       $Estud = (new Estudiante())::get($Seg->estudiante_id);
       $this->arrData['Estud'] = $Estud;      
       //$this->arrData['Profesor'] = (new SalAsigProf())::getProfesor($Seg->salon_id, $Seg->asignatura_id);
@@ -182,9 +184,9 @@ class SeguimientosController extends ScaffoldController
       $Asign = (new Asignatura)::get($Seg->asignatura_id);
       $Salon = (new Salon)::get($Seg->salon_id);
       $this->arrData['Periodo'] = $Seg->periodo_id;
-      $this->arrData['Asign'] = $Asign;
-      $this->arrData['Salon'] = $Salon;
-      $this->arrData['Grado'] = (new Grado)::get($Seg->grado_id);
+      $this->arrData['Asign']   = $Asign;
+      $this->arrData['Salon']   = $Salon;
+      $this->arrData['Grado']   = (new Grado)::get($Seg->grado_id);
       
       $this->arrData['Docentes'] = [];
       foreach ((new Empleado)->getList() as $empleado) {
@@ -195,8 +197,8 @@ class SeguimientosController extends ScaffoldController
       foreach ($Indicadores as $key => $indic) {
         $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = trim($indic->concepto);
       }
-      $this->file_tipo = 'Seguimientos Intermedios';
-      $this->file_name = OdaUtils::getSlug("seguim-intermedios-{$Estud}-periodo-{$Seg->periodo_id}");
+      $this->file_tipo  = 'Seguimientos Intermedios';
+      $this->file_name  = OdaUtils::getSlug("seguim-intermedios-{$Estud}-periodo-{$Seg->periodo_id}");
       $this->file_title = "$this->file_tipo de $Estud";
       
       $this->data = $Seg;

@@ -38,23 +38,26 @@ try {
 
   // ENCADEZADO
   // --------------------------------
-  $attrs_td  = ['width="15%"','width="35%"','width="35%"', 'width="15%"'];
   $tabla = new OdaTable(_attrs: 'width="100%"');
   $tabla->setCaption("ACCIONES DE SEGUIMIENTO INTERMEDIO PERIODO {$arrData['Periodo']}");
+  
+  $attrs_td  = ['width="15%"', 'width="30%"', 'width="45%"', 'width="10%"'];
   $fila = [
-    'Salon:'. $arrData['Salon'],
-    'Asignatura:'. $arrData['Asign'],
-    //'Profesor:'. $data->profesor_id,
-    'Periodo:'. $arrData['Periodo'],
+    '<b>Salon: </b>'. $arrData['Salon'],
+    '<b>Asignatura: </b>'. $arrData['Asign'],
+    '<b>Desempeño: </b>'. $data->asi_desempeno,
+    '<b>Periodo: </b>'. $arrData['Periodo'],
   ];
   $tabla->addRow(data: $fila, attrs: ['bgcolor="#B2BABB";'], attrs_td: $attrs_td);
+  
   // --------------------------------
   // --------------------------------
-  $attrs_td  = ['colspan="2"; width="50%";','width="35%"', 'width="15%"'];
+  $attrs_td  = ['colspan="2";', 'width="15%"', 'width="20%"'];
   $fila = [
     '<b>'.$arrData['Estud'].'</b>',
     '' ,
-    'F. ENTREGA:' ,
+    '' ,
+    '',
   ];
   $tabla->addRow(data: $fila, attrs: ['bgcolor="#B2BABB";'], attrs_td: $attrs_td);
   // --------------------------------
@@ -106,6 +109,8 @@ try {
     $tabla->addRow(data: [$data->asi_link_externo1], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->asi_link_externo2], attrs_td: ['colspan="4"']);
   }
+
+  $tabla->addRow(data: ['<hr><b>Fecha de entrega:</b> '.$data->asi_fecha_entrega], attrs_td: ['colspan="4"']);
   
   $archivoPDF->WriteHTML($tabla);
   $archivoPDF->Output("{$file_name}.pdf", 'D');

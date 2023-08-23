@@ -13,6 +13,16 @@ class CoordinadorController extends AppController
       View::template(null);
     }
   } //END-before_filter
+  
+  public function seguimientosConsolidado() {
+    try {
+      $this->page_action = 'Consolidado de Seguimientos';
+    
+    } catch (\Throwable $th) {
+    OdaFlash::error($th);
+    }
+    View::select('segumientos/consolidado');
+  } //END-consolidado_notas
 
 
   public function index() {
@@ -50,17 +60,7 @@ class CoordinadorController extends AppController
     View::select('consolidado/index');
   } //END-consolidado_notas
 
-  
-  public function seguimientosConsolidado() {
-    try {
-      $this->page_action = 'Consolidado de Notas';
-      $this->data = (new Seguimientos())::getConsolidadoBySalonPeriodo('fde6d4554a101204ca5c', 3);
-    
-    } catch (\Throwable $th) {
-    OdaFlash::error($th);
-    }
-    View::select('segumientos/consolidado');
-  } //END-consolidado_notas
+
   
 
   public function notas_salon_json(int $salon_id) {

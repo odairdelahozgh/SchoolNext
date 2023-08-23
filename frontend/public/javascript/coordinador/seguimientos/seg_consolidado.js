@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function traer_salones(periodo, coordinador) {
-  console.clear();
+  //console.clear();
   document.getElementById('salones').innerHTML = '';
 
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
@@ -34,12 +34,12 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
   let theme = document.getElementById('theme').innerHTML.trim();
   document.querySelector('#resultados').innerHTML = '';
   
-  console.clear();
+  //console.clear();
   fetch(ruta_base+`api/seguimientos/by_salon_periodo/${salon_uuid}/${periodo}`)
   .then((res) => res.json())
   .then(datos => {
     let caption = `<h2>Periodo ${periodo} :: Seguimientos de ${salon_nombre}</h2>`;
-    console.log(datos);
+    //console.log(datos);
     
     let result = '';
     let cnt = 0;
@@ -58,8 +58,8 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
         }
       }
     }//END-for
-    console.log(AsignaturasValidas);
-    console.log(AsignaturasValidas.keys());
+    //console.log(AsignaturasValidas);
+    //console.log(AsignaturasValidas.keys());
 
     // ARMA LA TABLA FINAL
     for (let cod_estudiante in datos) {
@@ -79,13 +79,14 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
                 columnas += `<td></td>`;
               } else {
                 columnas += `
-                  <td>
+                  <td class="w3-center">
                     <a href="${ruta_base}admin/seguimientos/exportSeguimientosRegistroPdf/${data.uuid}" 
                        class="w3-btn w3-pale-red " 
                        target="_blank"
                        title="Seguimiento ${nom_estudiante} ${abrev} P${periodo}">
-                        ${abrev}
+                       ${abrev}
                     </a>
+                    <br>${data.asi_desempeno}<br>${data.asi_fecha_entrega}
                   </td>
                 `;
                 anadir = true;

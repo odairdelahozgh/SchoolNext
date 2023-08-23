@@ -52,7 +52,6 @@ class SeguimientosController extends RestController
   public function get_by_estudiante_periodo(int $estudiante_id, int $periodo_id) {
     try {
       $record = (new Seguimientos)->getByEstudiantePeriodo($estudiante_id, $periodo_id);
-      
       if (isset($record)) {
         $this->data = $record;
       } else {
@@ -65,4 +64,20 @@ class SeguimientosController extends RestController
   } //END-get_by_estudiante_periodo
 
 
+  public function get_by_salon_periodo(string $salon_uuid, int $periodo_id) {
+    try {
+      $record = (new Seguimientos)->getConsolidadoBySalonPeriodo($salon_uuid, $periodo_id);
+      if (isset($record)) {
+        $this->data = $record;
+      } else {
+        $this->error('No hay registros que coincidan con la busqueda', 404);
+      }
+      
+    } catch (\Throwable $th) {
+      $this->error('Excepcion interna capturada', 404);
+    }
+  } //END-get_by_estudiante_periodo
+
+
+  ////$this->data = (new Seguimientos())::('fde6d4554a101204ca5c', 3);
 } //END-CLASS

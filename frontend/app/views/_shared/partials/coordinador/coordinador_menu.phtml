@@ -1,8 +1,10 @@
 <div class="w3-bar-block">
-  <?= OdaTags::linkBarItem('coordinador/consolidado', 'Notas', 'book-bookmark') ?>
-  <?= OdaTags::linkBarItem('coordinador/seguimientosConsolidado', 'Seguimientos', 'book-bookmark') ?>
-  <?= OdaTags::linkBarItem('coordinador/listadoEstudiantes', 'Estudiantes', 'person-circle-check') ?>
-  <?= OdaTags::linkBarItem('coordinador/gestion_registros', 'Registros', 'address-card') ?>
-  <?= OdaTags::linkBarItem('coordinador/historico_notas', 'Históricos', 'timeline') ?>
-  <?= OdaTags::linkBarItem('coordinador/admisiones', 'Admisiones', 'person-walking-arrow-right') ?>
+  <?php 
+  echo OdaTags::linkBarItem('coordinador/consolidado', 'Notas', 'book-bookmark')
+      .OdaTags::linkBarItem('coordinador/seguimientosConsolidado', 'Seguimientos', 'book-bookmark')
+      .OdaTags::linkBarItem('coordinador/listadoEstudiantes', 'Estudiantes', 'person-circle-check')
+      .OdaTags::linkBarItem('coordinador/gestion_registros', 'Registros', 'address-card')
+      .OdaTags::linkBarItem('coordinador/historico_notas', 'Históricos', 'timeline')
+      .OdaTags::linkBarItem('coordinador/admisiones', 'Admisiones', 'person-walking-arrow-right') 
+  ?>
 </div>

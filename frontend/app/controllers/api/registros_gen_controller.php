@@ -9,60 +9,68 @@
 class RegistrosGenController extends RestController
 {
 
-   /**
-    * Obtiene todos los registros de estudiantes
-    * @link /api/registros/all
-    */
-   public function get_all() {
-      $this->data = (new RegistrosGen)->all();
-   }
+  /**
+   * Obtiene todos los registros de estudiantes
+   * @link /api/registros/all
+   */
+  public function get_all() {
+    $this->data = (new RegistrosGen)->all();
+  }
 
-   /**
-    * Devuelve el estudiante buscado por UUID
-    * @link /api/registros/singleuuid/3b22fefc7f6afa79c54f
+  /**
+   * Devuelve el estudiante buscado por UUID
+   * @link /api/registros/singleuuid/3b22fefc7f6afa79c54f
+   */
+  public function get_singleuuid(string $uuid) {
+    /*
+    $record = (new RegistrosGen)->getByUUID($uuid);
+    if (isset($record)) {
+      $this->data = $record;
+    } else {
+      $this->error('El registro buscado no existe', 404);
+    }
     */
-   public function get_singleuuid(string $uuid) {
-      /*
-      $record = (new RegistrosGen)->getByUUID($uuid);
+  }
+
+  /**
+   * Devuelve el estudiante buscado por ID
+   * @link /api/registros_gen/singleid/{id}
+   */
+  public function get_singleid(int $id) {
+    try {
+      $record = (new RegistrosGen)::get($id);
       if (isset($record)) {
-         $this->data = $record;
+       $this->data = $record;
       } else {
-         $this->error('El registro buscado no existe', 404);
+       $this->error('El registro buscado no existe', 404);
       }
-      */
-   }
+    } catch (\Throwable $th) {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+    }
+  }//END-get_singleid
 
-   /**
-    * Devuelve el estudiante buscado por ID
-    * @link /api/registros_gen/singleid/{id}
-    */
-    public function get_singleid(int $id) {
-      try {
-        $record = (new RegistrosGen)::get($id);
-        if (isset($record)) {
-          $this->data = $record;
-        } else {
-          $this->error('El registro buscado no existe', 404);
-        }
-      } catch (\Throwable $th) {
-        OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+  
+  /**
+   * Devuelve 
+   * @link /api/registros_gen/get_reg_observ_annio_salon/2021/16
+   */
+  public function get_reg_observ_annio_salon(int $annio, int $salon) {
+    try {
+      $result = (new RegistrosGen())->getRegistrosByAnnioSalon($annio, $salon);
+      if (isset($result)) {
+        $this->data = $result;
+        /*
+        ["$record->salon_nombre;$record->salon_id"]
+                   ["$record->estudiante_nombre;$record->estudiante_id"]
+                   [$record->periodo_id] = "$record->tipo_reg;$record->fecha;$record->asunto;$record->acudiente;$record->director";
+        */
+      } else {
+        $this->error('No hay registros que coincidan con la busqueda', 404);
       }
-   }//END-get_singleid
-
-   
-   /**
-    * Devuelve 
-    * @link /api/registros/reg_observ_annio/2021
-    */
-   public function get_reg_observ_annio(int $annio) {
-      $registros = (new RegistrosGen)->getRegistrosAnnio($annio);
-      foreach ($registros as $reg) {
-         $this->data["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id] = $reg;
-      }
-      /*
-      $this->data = (new RegistrosGen)->getRegistrosAnnio($annio);
-      */
-   }
-   
+    } catch (\Throwable $th) {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+    }
+  } //END-get_reg_observ_annio
+  
 
 }

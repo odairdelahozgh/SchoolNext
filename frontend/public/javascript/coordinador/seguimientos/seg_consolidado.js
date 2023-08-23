@@ -82,8 +82,10 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
                   <td>
                     <a href="${ruta_base}admin/seguimientos/exportSeguimientosRegistroPdf/${data.uuid}" 
                        class="w3-btn w3-pale-red " 
-                       target="_blank" 
-                       title="Seguimiento Intermedio">${abrev}</a>
+                       target="_blank"
+                       title="Seguimiento ${nom_estudiante} ${abrev} P${periodo}">
+                        ${abrev}
+                    </a>
                   </td>
                 `;
                 anadir = true;

@@ -79,7 +79,7 @@ class Seguimientos extends Nota {
       $GradoAsig = (new GradoAsignatura())->getByGrado($RegSalon->grado_id);
 
       $DQL = (new OdaDql(__CLASS__))
-      ->select('t.uuid, t.estudiante_id, t.asignatura_id, t.asi_activ_profe, t.asi_activ_estud, t.asi_fecha_entrega, t.is_asi_validar_ok')
+      ->select('t.uuid, t.estudiante_id, t.asignatura_id, t.asi_activ_profe, t.asi_activ_estud, t.asi_desempeno, t.asi_fecha_entrega, t.is_asi_validar_ok')
       ->addselect('a.nombre as asignatura_nombre, a.abrev as asignatura_abrev')
       ->concat(['e.apellido1', 'e.apellido2', 'e.nombres'], 'estudiante_nombre')
       ->leftJoin('estudiante', 'e')

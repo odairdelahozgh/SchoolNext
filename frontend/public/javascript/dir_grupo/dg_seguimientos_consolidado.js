@@ -3,11 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function traer_salones(periodo, user_id) {
-  //console.clear();
   document.getElementById('salones').innerHTML = '';
 
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
-  let url = ruta_base+`api/salones/by_director/${user_id}`;  // cambiarlo por salones_por_coordinador
+  let url = ruta_base+`api/salones/by_director/${user_id}`;
   fetch(url)
   .then((res) => res.json())
   .then(datos => {
@@ -106,7 +105,7 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
 
 
     document.querySelector('#resultados').innerHTML = `
-      <table id="myTable"class="w3-table w3-responsive w3-bordered w3-small">
+      <table id="myTable"class="w3-table w3-responsive w3-bordered">
         <caption id="tcaption" class="w3-left-align w3-bottombar w3-border-blue">${caption}</caption>
         <tbody id="tbody">${result}</tbody>
       </table>

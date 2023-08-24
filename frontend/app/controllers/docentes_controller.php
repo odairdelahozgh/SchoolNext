@@ -20,8 +20,9 @@ class DocentesController extends AppController
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-    View::select('direccionDeGrupo/seguimientos');
-  }
+    View::select('direccionDeGrupo/seguimientos_consolidado');
+  }//END-seguimientos_grupo
+  
 
   public function index() {
     try {

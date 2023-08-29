@@ -78,15 +78,17 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
               if (obj.length==0){
                 columnas += `<td></td>`;
               } else {
+                fecha = new Date(data.asi_fecha_entrega.replaceAll('-','/') );
                 columnas += `
                   <td class="w3-center">
                     <a href="${ruta_base}admin/seguimientos/exportSeguimientosRegistroPdf/${data.uuid}" 
                        class="w3-btn w3-pale-red " 
                        target="_blank"
-                       title="Seguimiento ${nom_estudiante} ${abrev} P${periodo}">
+                       title="DESCARGAR Seguimiento : ${nom_estudiante} - ${abrev} - P${periodo}">
                        ${abrev}
-                    </a>
-                    <br>${data.asi_desempeno}<br>${data.asi_fecha_entrega}
+                    </a><br>
+                    <span class="w3-small" title="desempeño">${data.asi_desempeno}</span><br>
+                    <span class="w3-small" title="fecha de entrega">${fecha.getDate()}-${getNombreMes(fecha)}</span>
                   </td>
                 `;
                 anadir = true;
@@ -106,7 +108,7 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
 
 
     document.querySelector('#resultados').innerHTML = `
-      <table id="myTable"class="w3-table w3-responsive w3-bordered w3-small">
+      <table id="myTable"class="w3-table w3-responsive w3-bordered">
         <caption id="tcaption" class="w3-left-align w3-bottombar w3-border-blue">${caption}</caption>
         <tbody id="tbody">${result}</tbody>
       </table>
@@ -118,4 +120,13 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
   );
 
 
+}
+
+
+function getNombreMes (date)  {
+  const MESES = [
+    "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul",
+    "Ago", "Sep", "Oct", "Nov", "Dic",
+  ];
+  return MESES[date.getMonth()];  
 }

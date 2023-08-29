@@ -1,68 +1,83 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.clear();
-  document.getElementById('2021').click();
+  document.getElementById('btn-0').click();
 });
 
 
-function traer_data(id) {
-let ruta = document.getElementById('public_path');
-fetch(ruta.innerHTML.trim()+'api/registros_gen/reg_observ_annio/'+id)
+function traer_salones(user_id, annio) {
+  document.querySelector('#salones').innerHTML = '';
+  document.querySelector('#resultados').innerHTML = '';
+
+  let ruta_base = document.getElementById('public_path').innerHTML.trim();
+  let url = ruta_base+`api/notas/salones_coordinador_by_annio/${user_id}/${annio}`;
+  fetch(url)
   .then((res) => res.json())
-  
   .then(datos => {
-      console.clear();
-      //console.log(datos);
+    let html = `
+      <h2>SALONES (AÑO ${annio})</h2>
+      <div class="w3-bar">
+    `;
+    for (let key in datos) {
+      html += `<div class=\"w3-bar-item\">
+                  <button 
+                    id="salon-${key}" 
+                    onclick="traer_data(${datos[key].salon_id}, '${datos[key].salon_nombre}', ${annio}, ${datos[key].max_periodos})" 
+                    class="w3-bar-item">
+                    ${datos[key].salon_nombre}
+                  </button>
+                </div>`;
+    }
+    html += '</div>';
+    document.querySelector('#salones').innerHTML = html;
+    document.getElementById('salon-0').click();
 
-      let plantilla_tabla = 
-        '<table id="myTable" class="w3-table w3-responsive w3-bordered">'
-        + '<caption id="tcaption" class="w3-left-align w3-bottombar w3-border-blue">TEXTCAPTION</caption>'
-        + '<tbody id="tbody">TEXTBODY</tbody>'
-        + '</table>'
-        + '</div>';
+  })
+    .catch(
+        error => document.querySelector('#salones').innerHTML = 'ERROR traer_salones:'+error
+    );
+} //END-traer_salones
 
+
+function traer_data(salon_id, salon_nombre, annio, max_periodos) {
+  console.clear();
+  let ruta = document.getElementById('public_path');
+  document.getElementById('resultados').innerHTML = '';
+
+  fetch(ruta.innerHTML.trim()+`api/registros_gen/reg_observ_annio_salon/${annio}/${salon_id}`)
+    .then((res) => res.json())
+    .then(datos => {
+      let plantilla_tabla = `
+      <table id="myTable" class="w3-table w3-responsive w3-bordered">
+
+        <caption id="tcaption" class="w3-left-align w3-bottombar w3-border-blue">
+          TEXTCAPTION
+        </caption>
+        
+        <tbody id="tbody">
+          TEXTBODY
+        </tbody>
+
+      </table>
+      `;
       let output = '';
       let caption = '';
-
-      for (let salon in datos) {  
-          let arrSalon = salon.split(";");
-          caption = 'Salon: ' + arrSalon[0];
-
-          for (let estudiante in datos[salon]) {  
-              let arrEstudiante = estudiante.split(";"); //nombre;abrev 
-              output += '<tr><td colspan=10>'+arrEstudiante[0]+'</td></tr>';
-              cont = 1;
-              for (let periodo in datos[salon][estudiante]) { 
-                  // fila de titulos de materia
-                  if (cont==1) {
-                      output += '<tr><td>P</td>'; 
-                      for (let asignatura in datos[salon][estudiante][periodo]) {   
-                          var arrAsignatura = asignatura.split(";"); //nombre;abrev 
-                          output += '<td>' + arrAsignatura[1] + '</td>';
-                      }
-                      output += '</tr>';
-                      cont += 1;
-                  }
-
-
-                  output += '<tr><td>'+periodo+'</td>'; 
-                  for (let asignatura in datos[salon][estudiante][periodo]) {  
-                      nota = datos[salon][estudiante][periodo][asignatura];
-                      var arrNotas = datos[salon][estudiante][periodo][asignatura].split(";"); //definitiva;planapoyo;final;desempe�0�9o
-                      output += '<td>' + arrNotas[2] + '</td>';
-                  }
-
-                  output += '</tr>';
-              }
-          }
+      for (let key in datos) {
+        output += `
+          <tr> 
+            <td>P${datos[key].periodo_id}<br>${datos[key].fecha}</td>
+            <td>${datos[key].estudiante_nombre}</td>
+            <td>${datos[key].tipo_reg}</td>
+            <td>${datos[key].asunto}</td>
+            <td>Director:<br>  ${datos[key].director}</td>
+            <td>Acudiente:<br> ${datos[key].acudiente}</td>
+          </tr>
+        `;
       }
-      let salida = plantilla_tabla.replace('TEXTCAPTION', output);
-      console.log(salida);
-      document.querySelector('#salon').innerHTML = caption;
-      document.querySelector('#resultados').innerHTML = salida;
+      let salida = plantilla_tabla.replace('TEXTCAPTION', `REGISTROS GENERALES ${salon_nombre}`);
+      document.getElementById('resultados').innerHTML = salida.replace('TEXTBODY', output);
   })
   .catch(
-      error => console.log(error)
+      error => console.log('ERROR traer_data'+error)
   );
 
 }

@@ -100,12 +100,14 @@ class RegistrosGen extends LiteRecord {
   
   
   // =============
-  public function getRegistrosByAnnioSalon(int $annio, int $salon_id) {
+  public function getByAnnioSalon(int $annio, int $salon_id) {
     $annio_actual = Config::get('config.academic.annio_actual');
-    $sufijo = ($annio!=$annio_actual) ? '_'.$annio : '' ;
+    $sufijo = ($annio != $annio_actual) ? '_'.$annio : '' ;
 
     $RegGen = new RegistrosGen();
-    $DQL = new OdaDql($RegGen::class);
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->setFrom(self::$table.$sufijo);
+    
     $DQL->select('t.*')
         ->addSelect('s.nombre as salon_nombre')
         ->concat(['e.apellido1', 'e.apellido2', 'e.nombres'], 'estudiante_nombre')
@@ -116,20 +118,7 @@ class RegistrosGen extends LiteRecord {
         ->where('t.salon_id=?')
         ->orderBy('t.annio, t.grado_id, e.apellido1, e.apellido2, e.nombres, t.fecha DESC');
     $DQL->setParams([$salon_id]);
-    $DQL->execute(true);
-    /*
-    $DQL = "SELECT rg.*, 
-            CONCAT(e.nombres,' ',e.apellido1,' ',e.apellido2) as estudiante_nombre,
-            s.nombre as salon_nombre, 
-            CONCAT(u.nombres,' ',u.apellido1,' ',u.apellido2) as creador
-            FROM ".self::$table.$sufijo." AS rg
-            LEFT JOIN ".Config::get('tablas.estudiantes') ." as e ON rg.estudiante_id = e.id
-            LEFT JOIN ".Config::get('tablas.salones') ." as s ON rg.salon_id      = s.id
-            LEFT JOIN ".Config::get('tablas.usuarios')  ." as u ON rg.created_by    = u.id
-            WHERE annio = $annio
-            ORDER BY s.position,estudiante,rg.periodo_id";
-    return $this::all($DQL);
-    */
+    return $DQL->execute();
   } // END-getRegistrosAnnio
     
 

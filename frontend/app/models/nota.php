@@ -226,6 +226,27 @@ class Nota extends LiteRecord {
     return $DQL->execute();
   } //END-getNotasPromAnnioPeriodoSalon
 
+  //
+  
+  public static function getSalonesCoordinadorByAnnio(int $coordinador_id, int $annio) {
+    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select('DISTINCT t.annio, t.salon_id, s.nombre AS salon_nombre')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g')
+        ->leftJoin('seccion', 's2', 'g.seccion_id = s2.id')
+        ->groupBy('t.annio, s.nombre')
+        ->setFrom($tbl_notas);
+   
+    if ($coordinador_id<>1) {
+      $DQL->andWhere("s2.coordinador_id=?")
+          ->setParams([$coordinador_id]);
+    }
+
+    return $DQL->execute();
+  } //END-getSalonesByAnnio
+
 
   public static function getSalonesByAnnio(int $annio) {
     $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );

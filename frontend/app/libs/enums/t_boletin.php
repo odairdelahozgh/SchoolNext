@@ -6,8 +6,8 @@ enum TBoletin: int {
 
   public function label(bool $abrev = false): string {
     return match($this) {
-      static::Preboletin => (($abrev)?'PBo':'Prebolet&iacute;n'),
-      static::Boletin    => (($abrev)?'Bol':'Bolet&iacute;n'),
+      static::Preboletin => (($abrev)?'PBo':'Preboletín'),
+      static::Boletin    => (($abrev)?'Bol':'Boletín'),
       default            => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label

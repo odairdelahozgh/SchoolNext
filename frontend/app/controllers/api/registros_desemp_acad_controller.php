@@ -52,4 +52,18 @@ class RegistrosDesempAcadController extends RestController
    }//END-get_singleid   
 
    
+   public function get_reg_observ_annio_salon(int $annio, int $salon_id) {
+    try {
+      $result = (new RegistroDesempAcad())->getByAnnioSalon($annio, $salon_id);
+      if (isset($result)) {
+        $this->data = $result;
+      } else {
+        $this->error('No hay registros que coincidan con la busqueda', 404);
+      }
+    } catch (\Throwable $th) {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+    }
+  } //END-get_reg_observ_annio
+  
+
 }//END-class

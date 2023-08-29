@@ -54,16 +54,11 @@ class RegistrosGenController extends RestController
    * Devuelve 
    * @link /api/registros_gen/get_reg_observ_annio_salon/2021/16
    */
-  public function get_reg_observ_annio_salon(int $annio, int $salon) {
+  public function get_reg_observ_annio_salon(int $annio, int $salon_id) {
     try {
-      $result = (new RegistrosGen())->getRegistrosByAnnioSalon($annio, $salon);
+      $result = (new RegistrosGen())->getByAnnioSalon($annio, $salon_id);
       if (isset($result)) {
         $this->data = $result;
-        /*
-        ["$record->salon_nombre;$record->salon_id"]
-                   ["$record->estudiante_nombre;$record->estudiante_id"]
-                   [$record->periodo_id] = "$record->tipo_reg;$record->fecha;$record->asunto;$record->acudiente;$record->director";
-        */
       } else {
         $this->error('No hay registros que coincidan con la busqueda', 404);
       }

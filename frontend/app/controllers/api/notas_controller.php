@@ -88,6 +88,22 @@ class NotasController extends RestController
     }
   } //END-get_salones_annio
 
+  
+  public function get_salones_coordinador_by_annio(int $coordinador_id, int $annio) {
+    try {
+      $record = (new Nota)->getSalonesCoordinadorByAnnio($coordinador_id, $annio);
+      if (isset($record)) {
+        $this->data = $record;
+      } else {
+        $this->error("No se encontraron SALONES en el AÑO $annio", 404);
+      }
+
+    } catch (\Throwable $th) {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+    }
+  } //END-get_salones_annio
+
+
   public function get_grados_annio(int $annio) {
     try {
       $record = (new Nota)->getGradosByAnnio($annio);

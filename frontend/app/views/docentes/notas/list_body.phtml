@@ -1,82 +1,93 @@
 <div class="w3-margin-top">
 
    <?php
-      $result = "";
-      $tabbuttons = '<div class="w3-bar w3-theme w3-card">';
-      foreach ($data as $periodo => $regs_periodo) {
-         if (isset($regs_periodo[0])) {
-            $tabbuttons .= "<button class=\"w3-bar-item w3-mobile w3-button tablink w3-theme-action\" 
-                              onclick=\"openTab(event,'p$periodo')\">Periodo $periodo</button>";
-                              
-            $btn_seguimientos = OdaTags::linkButton(
-              action: "docentes/notasCalificarSeguimientos/$periodo/$Salon->id/$Asignatura->id", 
-              text: "Seguimientos <br>Intermedios P$periodo", 
-              icon: '', 
-              attrs: 'title="Ingresar SEGUIMIENTOS INTERMEDIOS" class="w3-button w3-small w3-pale-blue w3-round-large"'
-            );
+   try {
+     //echo OdaUtils::ver_array($arrData) .'<hr>';
+    $result = "";
+    $tabbuttons = '<div class="w3-bar w3-theme w3-card">';
+    foreach ($data as $periodo => $regs_periodo) {
+       if (isset($regs_periodo[0])) {
+          $tabbuttons .= "<button class=\"w3-bar-item w3-mobile w3-button tablink w3-theme-action\" 
+                            onclick=\"openTab(event,'p$periodo')\">Periodo $periodo</button>";
+          
+          $btn_seguimientos = (new Nota)::lnkPageSeguimientos($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id);
+          $btn_calificar = (new Nota)::lnkPageCalificar($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id);
+          $btn_planes_apoyo =  (new Nota)::lnkPagePlanesApoyo($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id);
 
-            $btn_calificar = OdaTags::linkButton(
-              action: "docentes/notasCalificar/$periodo/$Salon->id/$Asignatura->id", 
-              text: "Calificar <br>P$periodo", 
-              icon: '', 
-              attrs: 'title="Ingresar NOTAS" class="w3-button w3-small w3-pale-green w3-round-large"'
+          // $arr_cal_periodos = Config::get('docentes.calificaciones.periodos');
+          // $arr_cal_salones = Config::get('docentes.calificaciones.salones');
+          // $arr_cal_asignaturas = Config::get('docentes.calificaciones.asignaturas');
+          // $arr_cal_usuarios  = Config::get('docentes.calificaciones.usuarios');
+
+          // $arr_seg_periodos = Config::get('docentes.seguimientos.periodos');
+          // $arr_seg_salones = Config::get('docentes.seguimientos.salones');
+          // $arr_seg_asignaturas  = Config::get('docentes.seguimientos.asignaturas');
+          // $arr_seg_usuarios  = Config::get('docentes.seguimientos.usuarios');
+          
+          // $arr_pa_periodos = Config::get('docentes.planes_apoyo.periodos');
+          // $arr_pa_salones = Config::get('docentes.planes_apoyo.salones');
+          // $arr_pa_asignaturas  = Config::get('docentes.planes_apoyo.asignaturas');
+          // $arr_pa_usuarios  = Config::get('docentes.planes_apoyo.usuarios');
+          
+
+          $tabla = new OdaTable();
+
+          $tabla->setCaption("<h2 class=\"\"> PERIODO $periodo</h2> 
+          $btn_seguimientos &nbsp;&nbsp; $btn_calificar &nbsp;&nbsp; $btn_planes_apoyo<br><br>");
+
+          foreach ($regs_periodo as $key => $nota) {
+            $t1=($themei=='d'?'d1':'l1');   $t2=($themei=='d'?'d2':'l3');
+            $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre)." [{$arrData['Salon']->nombre}]")
+                         ."</br>P$periodo:  {$arrData['Asignatura']->nombre} ".$nota->verNota();
+
+            $fila1 = array($nota->getFoto().'<br>Reg-'.$nota->id, $nom_estud);
+            $attr = "id=\"$nota->id-1\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
+            $attrs_td = array('class="w3-center" rowspan="3"' , 'colspan="10"');
+            $tabla->addRow(
+              data: $fila1, 
+              attrs: $attr, 
+              attrs_td: $attrs_td
             );
             
-            $btn_planes_apoyo = OdaTags::linkButton(
-              action: "docentes/notasCalificarPlanesApoyo/$periodo/$Salon->id/$Asignatura->id", 
-              text: "Planes de <br>Apoyo P$periodo", 
-              icon: '', 
-              attrs: 'title="Ingresar PLANES DE APOYO" class="w3-button w3-small w3-pale-red w3-round-large"'
+
+            $fila2 = [];
+            for ($i=1; $i<=10 ; $i++) { 
+              $pref = ($i<10) ? 'i0'.$i : 'i'.$i ;
+              $fila2[] = (new Indicador)::indicadorF( (int)$nota->$pref, $arrData["IndicadoresP{$periodo}"] );
+            }
+            $attr = "id=\"$nota->id-2\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
+            $str = 'style="width:8%"'.str_repeat(',style="width:8%"',9);
+            $attrs_td = explode(',',$str);
+            $tabla->addRow(
+              data: $fila2, 
+              attrs: $attr, 
+              attrs_td: $attrs_td
             );
-
-            $tabla = new OdaTable();
-
-            $tabla->setCaption("<h2 class=\"\">[$Salon->nombre] $Asignatura->nombre PERIODO $periodo</h2> 
-            $btn_seguimientos &nbsp;&nbsp; $btn_calificar &nbsp;&nbsp; $btn_planes_apoyo<br><br>");
-
-            foreach ($regs_periodo as $key => $nota) {
-              $t1=($themei=='d'?'d1':'l1');   $t2=($themei=='d'?'d2':'l3');
-              $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre)." [$Salon->nombre]")
-                           ."</br>P$periodo:  $Asignatura->nombre ".$nota->verNota();
-
-              $fila1=array($nota->getFoto().'<br>Reg-'.$nota->id, $nom_estud);
-              $attr = "id=\"$nota->id-1\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
-              $attrs_td = array('class="w3-center" rowspan="3"' , 'colspan="10"');
-              $tabla->addRow(
-                data: $fila1, 
-                attrs: $attr, 
-                attrs_td: $attrs_td
-              );
-               
-              $fila2 = array($nota->i01, $nota->i02, $nota->i03, $nota->i04, $nota->i05, 
-                             $nota->i06, $nota->i07, $nota->i08, $nota->i09, $nota->i10);
-              $attr = "id=\"$nota->id-2\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
-              $str = 'style="width:8%"'.str_repeat(',style="width:8%"',9);
-              $attrs_td = explode(',',$str);
-              $tabla->addRow(
-                data: $fila2, 
-                attrs: $attr, 
-                attrs_td: $attrs_td
-              );
-              
-              $fila3 = array($nota->i11, $nota->i12, $nota->i13, $nota->i14, $nota->i15, 
-                             $nota->i16, $nota->i17, $nota->i18, $nota->i19, $nota->i20);
-              $attr = "id=\"$nota->id-3\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
-              $tabla->addRow(
-                data: $fila3, 
-                attrs: $attr, 
-                attrs_td: $attrs_td
-              );
-            }//end-foreach
             
-            $display = ($periodo!=1) ? "style=\"display:none\"" : '' ;
-            $result .= "<div id=\"p$periodo\" class=\"tab w3-card-4 w3-padding\" $display >";
-            $result .= $tabla;
-            $result .= '</div>';
-         }
-      }
-      $tabbuttons .= '</div>';
-      echo $tabbuttons.$result;
+            $fila3 = array($nota->i11, $nota->i12, $nota->i13, $nota->i14, $nota->i15, 
+                           $nota->i16, $nota->i17, $nota->i18, $nota->i19, $nota->i20);
+
+            $attr = "id=\"$nota->id-3\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
+            $tabla->addRow(
+              data: $fila3, 
+              attrs: $attr, 
+              attrs_td: $attrs_td
+            );
+          }//end-foreach
+          
+          $display = ($periodo!=Config::get('config.academic.periodo_actual')) ? "style=\"display:none\"" : '' ;
+          $result .= "<div id=\"p$periodo\" class=\"tab w3-card-4 w3-padding\" $display >";
+          $result .= $tabla;
+          $result .= '</div>';
+       } //END-if-isset-regs_periodo
+    } //end-foreach-data
+    $tabbuttons .= '</div>';
+    echo $tabbuttons.$result;
+   
+   } catch (\Throwable $th) {
+     OdaFlash::error($th);
+   }
+
    ?>
 
 </div>

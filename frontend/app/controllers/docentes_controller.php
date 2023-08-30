@@ -139,31 +139,43 @@ class DocentesController extends AppController
   }//END-indicadores
 
 
-  /**
-   * notas/list
-   */
   public function listNotas(int $asignatura_id, int $salon_id): void {
     try {  
       $this->page_action = 'Notas del Sal&oacute;n';
-      $this->Asignatura = (new Asignatura)->get($asignatura_id);
-      $this->Salon= (new Salon)->get($salon_id);
-      $arr_periodos = range(start: 1, end: $this->_periodo_actual);
+      $RegAsignatura = (new Asignatura)::get($asignatura_id);
+      $RegSalon = (new Salon)::get($salon_id);
 
-      $Notas = (new Nota)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, $arr_periodos);
-      if (0==count($Notas)) { 
+      for ($i=1; $i<=$this->_periodo_actual; $i++) { 
+        $RegsIndicadP = (new Indicador)->getIndicadoresCalificar($i, $RegSalon->grado_id, $asignatura_id);
+        $IndicP = [];
+        foreach ($RegsIndicadP as $key => $object) {
+          $IndicP[$object->codigo] = get_object_vars($object);
+        }
+        $this->arrData["IndicadoresP{$i}"] = $IndicP;
+      }     
+      
+      $this->arrData['Asignatura'] = $RegAsignatura;
+      $this->arrData['Salon'] = $RegSalon;
+      $this->arrData['annio_actual'] = $this->_annio_actual;
+      $this->arrData['periodo_actual'] =$this->_periodo_actual;
+
+      $Notas = (new Nota)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, range(1, $this->_periodo_actual) );
+      if (0 == count($Notas)) { 
         OdaFlash::info('No hay registros para mostrar.');
       }
-      $this->data = array( 1=>array(), 2=>array(), 3=>array(), 4=>array(), 5=>array() );
+      
+      $this->data = array( 5=>array(), 4=>array(), 3=>array(), 2=>array(), 1=>array() );
       foreach ($Notas as $key => $nota) {
         array_push($this->data[$nota->periodo_id], $nota);
       }
-      
+
+
     } catch (\Throwable $th) {
       OdaFlash::error($th, true);
     }
 
     View::select(view: 'notas/list');
-  }//END-notas
+  }//END-listNotas
 
 
   public function notasCalificar(int $periodo_id, int $salon_id, int $asignatura_id): void {
@@ -173,7 +185,7 @@ class DocentesController extends AppController
       $RegPeriodo =(new Periodo)->get($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
       $this->data = (new Nota)->getBySalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
-      $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
+      $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
 
       $this->arrData = [

@@ -214,10 +214,19 @@ class OdaTags {
   */
   public static function detailsTag(string $summary, string $contenido, $attrs ='class="w3-padding"'): string { 
     return "<details $attrs>
-              <summary>$summary</summary>
-                $contenido
-            </details>";
+    <summary>$summary</summary>
+    $contenido
+    </details>";
   } //END-detailsTag
+  
+  public static function card(string $header, string $contenido, $footer, $attrs = ['class="w3-container w3-blue"', 'class="w3-container"', 'class="w3-container w3-pale-green"']): string { 
+    return "
+      <div class=\"w3-card\">
+        <header $attrs[0]>$header</header>
+        <div $attrs[1]>$contenido</div>
+        <footer $attrs[2]>$footer</footer>
+  </div>";
+  }
 
 
 } // END-OdaTag

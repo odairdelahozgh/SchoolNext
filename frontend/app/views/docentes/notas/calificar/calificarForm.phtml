@@ -1,9 +1,18 @@
 <?php
   
   // fila #1
-  $info_reg = '<br>Reg #'.$Reg->id;
+  $chk = Form::check(
+    field: 'chk_calif_'.$Reg->id, 
+    checkValue: true, 
+    attrs: 'class="chk-estud-control" onclick="contar_check_seleccionados()"',
+    checked: true
+  );
+
+  $cnt = $key+1;
+  $info_reg = "<div class=\"w3-center\">Item: $cnt <br>{$Reg->getFoto()} <br>Reg #$Reg->id <br>$chk</div>";
+
   $frm = "<tr class=\"\">";  
-  $frm .= OdaTags::tag(tag: 'td', content: $Reg->getFoto().$info_reg, attrs: 'rowspan="3"');
+  $frm .= OdaTags::tag(tag: 'td', content: $info_reg, attrs: 'rowspan="3"');
   $frm .= OdaTags::tag(tag: 'td', content: $Reg->estudiante_nombre."<br>$info_indic", attrs: 'colspan="4"');
   $frm .= OdaTags::tag(tag: 'td', content: '');
   
@@ -28,7 +37,7 @@
   $frm .= "<tr class=\"\">";
   $fields['f2'] = ['i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10'];
   foreach ($fields['f2'] as $key => $campo) { 
-    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
+    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input" title="hola"');
     $frm .= OdaTags::tag('td', $field);
   }//foreach
   $frm .= '</tr>';

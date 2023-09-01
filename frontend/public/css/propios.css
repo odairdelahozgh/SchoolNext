@@ -1,3 +1,13 @@
+.my-fixed-item {
+  position: fixed;
+  min-height: 120px;
+  width: 252px;
+  text-align: center;
+  word-wrap: break-word;
+  background-color: rgb(28, 29, 28);
+}
+
+
 /* Formatea los mensajes Flash::xxx() de KumbiaPHP */
 .flash {
   margin: 5px 0;

@@ -188,11 +188,20 @@ class DocentesController extends AppController
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
 
+      
+      $RegsIndicadP = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
+      $IndicP = [];
+      foreach ($RegsIndicadP as $key => $object) {
+        $IndicP[$object->codigo] = get_object_vars($object);
+      }  
+
+
       $this->arrData = [
         'Periodo'           => $RegPeriodo,
         'Asignatura'        => $RegAsignatura,
         'Salon'             => $RegSalon,
         'Indicadores'       => $RegsIndicad,
+        'IndicRef'       => $IndicP,
         'annio_actual'      => $this->_annio_actual,
         'periodo_actual'    => $this->_periodo_actual,
         'min_fortaleza'     => $MinMaxIndicad['min_fortaleza'],
@@ -204,7 +213,7 @@ class DocentesController extends AppController
         'min_indic'         => $MinMaxIndicad['regs_min'],
         'max_indic'         => $MinMaxIndicad['regs_max'],
         'ancho_lim'         => $MinMaxIndicad['ancho_lim'],
-        'cnt_indicador'     => count($RegsIndicad),
+        //'cnt_indicador'     => count($RegsIndicad),
       ];
       
     } catch (\Throwable $th) {

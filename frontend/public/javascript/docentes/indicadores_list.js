@@ -87,7 +87,12 @@ function traer_data(periodo_id, grado_id, asignatura_id) {
     const elements = res.reduce((acc, data) => acc + template(data, periodo_id, grado_id, asignatura_id), "");
     const boton_add = `
     <div class="w3-panel">
-      <button class="w3-button w3-circle w3-green" onclick="show_new_form(`+periodo_id+`, `+grado_id+`, `+asignatura_id+`)">+P`+periodo_id+`</button>
+      <button 
+        class="w3-button w3-round w3-green" 
+        onclick="show_new_form(${periodo_id}, ${grado_id}, ${asignatura_id})" 
+        title="Agregar Nuevo Indicador en Periodo P${periodo_id}">
+          Agregar Indicador P${periodo_id}
+      </button>
     </div>`;
     const tabla = boton_add
           + `<table id="myTable" class="w3-table w3-responsive w3-striped w3-border w3-bordered">
@@ -117,7 +122,7 @@ function template(data, periodo_id, grado_id, asignatura_id) {
         <i class="fa-solid fa-trash-can w3-large"></i></a>
         <b>${indicador_codigo}</b>
         <br>
-        <p class="w3-hover-text-theme" onclick="show_edit_form(${data.id})">${data.concepto}</p>
+        <p class="w3-hover-text-blue" title="EDITAR Indicador ${indicador_codigo}" onclick="show_edit_form(${data.id})">${data.concepto}</p>
       </td>
     </tr>
   `;

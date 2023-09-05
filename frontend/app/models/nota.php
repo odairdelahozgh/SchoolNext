@@ -262,7 +262,8 @@ class Nota extends LiteRecord {
 
   public static function getGradosByAnnio(int $annio) {
     try {
-      $tbl_notas = "sweb_notas_$annio";
+      $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+      //$tbl_notas = "sweb_notas_$annio";
       $DQL = new OdaDql(__CLASS__);
       $DQL->select('DISTINCT t.annio, t.grado_id, g.abrev AS grado_abrev, max(t.periodo_id) as max_periodos')
           ->leftJoin('grado', 'g')

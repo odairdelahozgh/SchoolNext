@@ -97,6 +97,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   } // END-_afterUpdate
   
   public function _afterCreate() { // DESPUÉS de CREAR el Registro
+    echo $this->id;
   } // END-_afterUpdate
   
 
@@ -186,6 +187,5 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   public function valor_letras(int $val_num): string {
     return strtolower(OdaUtils::getNumeroALetras($val_num));
   } //END-valor_letras
-
-      
+  
 } //END-CLASS

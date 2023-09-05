@@ -55,8 +55,11 @@ class Empleado extends LiteRecord {
 
 public function setPassDocente() {
   try {
+    $salt = md5(rand(100000, 999999).$this->username);
+    $this->salt = $salt;
+    
     $pass = substr($this->documento, -4);
-    $password_salt = hash('sha1', $this->salt . $pass);
+    $password_salt = hash('sha1', $salt . $pass);
     $this->password = $password_salt;
     $this->update();
 

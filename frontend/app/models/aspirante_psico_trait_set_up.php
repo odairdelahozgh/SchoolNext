@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait AspirantePsicoTraitSetUp {
   
-  use TraitUuid, TraitForms;
+  use TraitUuid, TraitForms, AspiranteTraitProps;
   
   public function validar($input_post): bool {
     Session::set(index: 'error_validacion', value: '');

@@ -249,21 +249,24 @@ class Nota extends LiteRecord {
 
 
   public static function getSalonesByAnnio(int $annio) {
-    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
-
-    $DQL = new OdaDql(__CLASS__);
-    $DQL->select('DISTINCT t.annio, t.salon_id, s.nombre AS salon_nombre, max(t.periodo_id) as max_periodos')
-        ->leftJoin('salon', 's')
-        ->groupBy('t.annio, t.salon_id')
-        ->orderBy('t.annio, s.nombre')
-        ->setFrom($tbl_notas);
-    return $DQL->execute();
+    try {
+      $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->select('DISTINCT t.annio, t.salon_id, s.nombre AS salon_nombre, max(t.periodo_id) as max_periodos')
+          ->leftJoin('salon', 's')
+          ->groupBy('t.annio, t.salon_id')
+          ->orderBy('t.annio, s.nombre')
+          ->setFrom($tbl_notas);
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
   } //END-getSalonesByAnnio
 
   public static function getGradosByAnnio(int $annio) {
     try {
       $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
-      //$tbl_notas = "sweb_notas_$annio";
       $DQL = new OdaDql(__CLASS__);
       $DQL->select('DISTINCT t.annio, t.grado_id, g.abrev AS grado_abrev, max(t.periodo_id) as max_periodos')
           ->leftJoin('grado', 'g')

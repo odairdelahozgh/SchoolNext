@@ -22,9 +22,9 @@
       $data_row = array(
         $reg.$btn_edit,
         $estudiante,
-        'F: '.OdaUtils::truncate($reg->fortalezas, 50)
-        .'<br>D: '.OdaUtils::truncate($reg->dificultades, 50)
-        .'<br>C: '.OdaUtils::truncate($reg->compromisos, 50),
+        'F: '.$reg->fortalezas
+        .'<br>D: '.$reg->dificultades
+        .'<br>C: '.$reg->compromisos,
         $reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
         $reg->director.'<br>'.$reg->getFotoDirector(),
       );

@@ -21,7 +21,7 @@
         $data_row = array(
           $reg.$btn_edit,
           $estudiante,
-          OdaUtils::TIPO_REG_OBSERV[$reg->tipo_reg].'<br>' .OdaUtils::truncate($reg->asunto, 150),
+          OdaUtils::TIPO_REG_OBSERV[$reg->tipo_reg].'<br>' .$reg->asunto,
           //$reg->acudiente.'<br>'.$reg->getFotoAcudiente(),
           $reg->director.'<br>'.$reg->getFotoDirector(),
         );

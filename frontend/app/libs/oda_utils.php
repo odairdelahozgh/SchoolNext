@@ -106,6 +106,12 @@ class OdaUtils extends Util {
     } // END-nombreMes
 
 
+    public static function fecha_corta(string $fecha): string {
+      $date = new DateTimeImmutable($fecha, new DateTimeZone('America/Bogota'));
+      return $date->format('M-d') ;
+    } //END-valor_letras
+
+
     public static function ver_array(array $var) {
         return '<pre>' .print_r($var).'<br>'.count($var).'</pre>';
     }

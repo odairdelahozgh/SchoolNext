@@ -68,7 +68,6 @@ trait UsuarioTraitSetUp {
       
       'direccion'  => 'Dirección:',
       'cargo'      => 'Cargo:',
-      'fecha_nac'  => 'Fecha Nacimiento:',
       'documento'  => 'Nro. Documento:',
       'telefono1'  => 'Teléfono Principal:',
       'telefono2'  => 'Teléfono Secundario:',

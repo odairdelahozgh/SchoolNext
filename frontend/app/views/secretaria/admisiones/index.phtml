@@ -18,12 +18,17 @@
 
       foreach($data as $key => $reg) {
          $tabla->addRow(
-            data: [ 
-              $reg->fecha_insc .'<br>Activo: ' .(($reg->is_active)?'SI':'NO').'<br>Pago: ' .(($reg->is_pago)?'SI':'NO'), 
-              $reg->estatus, 
+            data: [
+              OdaUtils::fecha_corta($reg->fecha_insc) .'<br>' .Estado::tryFrom($reg->is_active)->label_ico(), 
+
+              $reg->is_pago_f(). '<br>' .$reg->estatus, 
+
               $reg->aspirante_grado, 
+
               "$reg->apellido1 $reg->apellido2 $reg->nombres [$reg->id] <br>Tel: $reg->telefono1 <br>Doc Id: $reg->documento",
+
               "Entrevista: $reg->fecha_entrev <br>Evaluaci&oacute;n: $reg->fecha_eval", 
+
             ], 
             attrs_td: ['class="searchTdata"', 'class="searchTdata" w3-center', 'class="searchTdata"', 'class="searchTdata"']
          );

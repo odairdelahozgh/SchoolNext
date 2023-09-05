@@ -1,7 +1,7 @@
 <h2>Agregando Nuevo Registro</h2>
 <?php
 $message = Config::get('messages.comprimir_imagenes');
-$msg_info = OdaTags::createTag('div', $message, 'class="w3-panel w3-theme-l2"');
+$msg_info = OdaTags::tag('div', $message, 'class="w3-panel w3-theme-l2"');
 
 $model = new RegistrosGen();
 $fieldsToHidden = $model::getFieldsHidden('create');

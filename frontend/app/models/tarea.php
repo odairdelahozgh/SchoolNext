@@ -15,7 +15,7 @@ class Tarea extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.tareas');
-    self::$order_by_default = 't.estado, t.prioridad, t.avance, t.nombre';
+    self::$_order_by_defa = 't.estado, t.prioridad, t.avance, t.nombre';
     $this->setUp();
   } //END-__construct
 

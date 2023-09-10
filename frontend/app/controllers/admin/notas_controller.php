@@ -83,7 +83,7 @@ class NotasController extends ScaffoldController
           $indic_blank = $indic_i;
           for ($i=$indic_blank; $i<=$INDEX_INDCI_FIN; $i++) {
             $index =  'i'.(($indic_blank<10)?'0':'').$indic_blank;
-            $data[$index] = '';
+            $data[$index] = ' ';
           }
 
           // SE ASEGURA DE QUE EL VALOR DEL CAMPO "nota_final" SEA CORRECTO
@@ -252,5 +252,20 @@ class NotasController extends ScaffoldController
     View::select(view: "cuadros-de-honor-general.pdf", template: 'pdf/mpdf');
   } //END-exportCuadroHonorGeneralBachilleratoPdf
 
-  
+  public function generarNotasEnBlanco() {
+    try {
+      $Notas = new Nota();
+      $salon_id = 1;
+      $asignatura_id = 1;
+      
+      $Notas::generarCalif_BySalonAsignatura($salon_id, $asignatura_id);
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    return Redirect::to();
+
+  } //END-generarNotasEnBlanco
+
+
 } // END CLASS

@@ -6,8 +6,8 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait NotaTraitSetUp {
   
-  use TraitUuid, TraitForms, NotaTraitProps, NotaTraitLinks;
-
+  use TraitUuid, TraitForms, NotaTraitProps, NotaTraitLinks, NotaTraitCorrecciones;
+  
   public function validar($input_post): bool {
     Session::set(index: 'error_validacion', value: '');
     try{

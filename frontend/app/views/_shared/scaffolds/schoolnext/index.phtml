@@ -9,6 +9,7 @@
       $tabla = new OdaTable();
       $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels]);
       foreach ($data as $key => $item_data) {
+        
         if ('salon'==$nombre_modelo and 1==$item_data->is_active) {
           $item_data->setNumeroEstudiantes();
         }

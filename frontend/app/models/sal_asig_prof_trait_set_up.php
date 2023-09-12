@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait SalAsigProfTraitSetUp {
   
-  use TraitUuid, TraitForms;
+  use TraitUuid, TraitForms, SalAsigProfTraitProps, SalAsigProfTraitLinks;
   
   public function validar($input_post) {
     Session::set('error_validacion', '');
@@ -54,6 +54,8 @@ trait SalAsigProfTraitSetUp {
   
     self::$_placeholders = [
     ];
-  
-  }
-} //END-SetUp
+
+  }//END-setUp()
+
+
+} //END-TRAIT

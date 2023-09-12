@@ -17,7 +17,7 @@ class SalAsigProf extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.salon_asignat_profe');
-    self::$order_by_default = 't.user_id, t.salon_id, t.asignatura_id';
+    self::$_order_by_defa = 't.user_id, t.salon_id, t.asignatura_id';
     $this->setUp();
   } //END-__construct
 
@@ -27,14 +27,17 @@ class SalAsigProf extends LiteRecord {
    */
   public function getCarga(int $user_id) {
     $DQL = (new OdaDql(__CLASS__))
-      ->select('t.*, s.nombre as salon, a.nombre as asignatura, s.grado_id, g.nombre as grado')
-      ->concat(['u.nombres','u.apellido1', 'u.apellido2'], 'profesor')
+      ->select('t.*')
+      ->addSelect('s.nombre as salon_nombre, s.grado_id, s.tot_estudiantes')
+      ->addSelect('a.nombre as asignatura_nombre')
+      ->addSelect('g.nombre as grado_nombre')
+      ->concat(['u.nombres','u.apellido1', 'u.apellido2'], 'profesor_nombre')
       ->leftJoin('salon', 's')
       ->leftJoin('grado', 'g', 's.grado_id=g.id')
       ->leftJoin('asignatura', 'a')
       ->leftJoin('usuario', 'u', 't.user_id=u.id')
       ->where('s.is_active=1')
-      ->orderBy('profesor, asignatura, salon');
+      ->orderBy('asignatura_nombre, salon_nombre');
 
     if ($user_id<>1) {
         $DQL->andWhere('t.user_id=?');

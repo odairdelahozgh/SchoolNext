@@ -22,26 +22,7 @@ class Salon extends LiteRecord {
     $this->setUp();
   } //END-__construct
 
-/*   public function getNombreDirector() { 
-    $registro = $this::first("SELECT * FROM dm_user WHERE id = :usuario", [":usuario" => $this->director_id]);
-    if (!$registro) {
-      return false;
-    }
-    return true;
-  } */
 
-  /* 
-  public function esDirector(int $user_id) { 
-    $registro = $this::first("SELECT * FROM self::$table WHERE director_id = :usuario", [":usuario" => $user_id]);
-    if (!$registro) {
-      return false;
-    }
-    return true;
-  } */
-
-  /**
-   * Devuelve lista de Salones.
-   */
   public function getList2($estado=null, $select='*', string|bool $order_by=null) { 
     $DQL = "SELECT s.*, g.nombre AS grado, CONCAT(ud.nombres, ' ', ud.apellido1, ' ', ud.apellido2) AS director, 
               CONCAT(uc.nombres, ' ', uc.apellido1, ' ', uc.apellido2) AS codirector 
@@ -188,6 +169,11 @@ class Salon extends LiteRecord {
 
   } // FIN setupCalificarSalon
 
-
+  
+  public function setNumeroEstudiantes(): void {
+    $tot_estudiantes = (new Estudiante)->getNumEstudiantes_BySalon($this->id);
+    $this->tot_estudiantes = $tot_estudiantes;
+    $this->save();
+  } //END-setNumeroEstudiantes
 
 } //END-CLASS

@@ -8,6 +8,19 @@
 class NotasController extends ScaffoldController
 {
 
+  public function generarNotasEnBlanco(int $salon_id, int $asignatura_id) {
+    try {
+      $Notas = new Nota();
+      $Notas::generarCalif_BySalonAsignatura($salon_id, $asignatura_id);
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    return Redirect::to();
+
+  } //END-generarNotasEnBlanco
+
+
 
   function guardarCalificaciones(int $periodo, int $salon_id, int $asignatura_id) {
     $this->page_action = "Guardar Notas";
@@ -251,21 +264,5 @@ class NotasController extends ScaffoldController
     $this->file_download = true;
     View::select(view: "cuadros-de-honor-general.pdf", template: 'pdf/mpdf');
   } //END-exportCuadroHonorGeneralBachilleratoPdf
-
-  public function generarNotasEnBlanco() {
-    try {
-      $Notas = new Nota();
-      $salon_id = 1;
-      $asignatura_id = 1;
-      
-      $Notas::generarCalif_BySalonAsignatura($salon_id, $asignatura_id);
-
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-    return Redirect::to();
-
-  } //END-generarNotasEnBlanco
-
 
 } // END CLASS

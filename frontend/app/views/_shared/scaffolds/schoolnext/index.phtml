@@ -9,6 +9,10 @@
       $tabla = new OdaTable();
       $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels]);
       foreach ($data as $key => $item_data) {
+        if ('salon'==$nombre_modelo and 1==$item_data->is_active) {
+          $item_data->setNumeroEstudiantes();
+        }
+
         $uuid_ok   = (property_exists(object_or_class: $item_data, property: 'uuid') && !is_null(value: $item_data->uuid));
         $edit_id   = ($uuid_ok) ? "editUuid/$item_data->uuid" : "edit/$item_data->id";
         $delete_id = ($uuid_ok) ? "delUuid/$item_data->uuid" : "del/$item_data->id";
@@ -58,7 +62,10 @@
           $arrFields[] = $dato;
         }
 
-        $arrBody = [$lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar, ...$arrFields];
+        $arrBody = [
+          $lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar, 
+          ...$arrFields
+        ];
         $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"']);
       }
       echo $tabla;

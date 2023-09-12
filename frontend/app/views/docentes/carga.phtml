@@ -11,22 +11,34 @@
   
   <div class="w3-container w3-twothird">
     <?php
-      echo OdaForm::inputSearch();
-      $tabla = new OdaTable(showTotalRegs: true);
-      $tabla->setHead("*Asignatura, *Salon, Indicadores, Notas", 
-        arr_attrs_th: ['style="width:40%;"', 'style="width:30%;"', 'style="width:15%;"', 'style="width:15%;"'] );
-      $tabla->setCaption(caption:'Carga Asignada');
+      try {
+        echo OdaForm::inputSearch();
+        $tabla = new OdaTable(showTotalRegs: true);
+        $tabla->setHead("*Asignatura, *Salon, Estudiantes, Indicadores, Notas", 
+          arr_attrs_th: ['style="width:40%;"', 'style="width:30%;"', 'style="width:15%;"', 'style="width:15%;"'] );
+        $tabla->setCaption(caption:'Carga Asignada');
 
-      foreach($data as $key => $carga) {
-        $d1 = OdaUtils::sanearString($carga->asignatura).' '.(($user_id==1)?"[$carga->asignatura_id]":'');
-        $d1 .= (($user_id==1) ? "<br> [$carga->profesor]" :'');
-        $d2 = $carga->salon . ' ' .(($user_id==1) ? "[$carga->salon_id]" :'');
-        $d3 = OdaTags::link("docentes/listIndicadores/$carga->grado_id/$carga->asignatura_id", 'Indicadores');
-        $d4 = OdaTags::link("docentes/listNotas/$carga->asignatura_id/$carga->salon_id", 'Notas');
-        $tabla->addRow( data: [$d1, $d2, $d3, $d4], attrs_td:['class="searchTdata"','class="searchTdata"']);
+        foreach($data as $key => $carga) {
+          $tabla->addRow( 
+            data: [
+              $carga->getAsignaturaF($user_id, $carga->asignatura_nombre, $carga->profesor_nombre),
+              $carga->getSalonF($user_id, $carga->salon_nombre), 
+              $carga->tot_estudiantes, 
+              $carga->getLnkPageIndicadores($carga->grado_id),
+              $carga->getLnkPageListNotas(),
+            ], 
+            attrs_td: [
+              'class="searchTdata"',
+              'class="searchTdata"'
+            ]
+          );
+        }
+        echo $tabla;
+        echo Tag::js("table_filter");
+      
+      } catch (\Throwable $th) {
+        OdaFlash::error($th);
       }
-      echo $tabla;
-      echo Tag::js("table_filter");
     ?>
   </div>
 

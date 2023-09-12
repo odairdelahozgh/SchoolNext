@@ -2,7 +2,7 @@
 
 trait NotaTraitCorrecciones {
 
-  public static function generarCalif_BySalonAsignatura(int $salon_id=1, int $asignatura_id=1) {
+  public static function generarCalif_BySalonAsignatura(int $salon_id, int $asignatura_id) {
     try {
       $Salon = (new Salon())::get($salon_id);
 
@@ -10,11 +10,11 @@ trait NotaTraitCorrecciones {
       $DQL->setFrom('sweb_estudiantes');
       $Estudiantes = $DQL->where('t.is_active=1 AND t.salon_id=?')
                       ->setParams([$salon_id])
-                      ->execute(true);
+                      ->execute();
           
       if ($Estudiantes) {
         foreach ($Estudiantes as $key => $Estud) {
-          OdaLog::debug("$Estud :: $Estud->id<br>");
+          //OdaLog::debug("$Estud->nombres $Estud->apellido1 :: $Estud->id<br>");
           $DQL = new OdaDql(__CLASS__);
           $DQL->setFrom('sweb_notas');
           $Now = new DateTime('now', new DateTimeZone('America/Bogota'));

@@ -15,7 +15,6 @@
 5				  cenitcd				  21065965
 4				  cibelisbo				22600655
 74				dariomm				  77005690
-114				deimerdo				1065824566
 31				dianarc				  32761310
 22800			eileenap				39460621
 131				elidaac				  49606632
@@ -23,9 +22,7 @@
 39				franciscosg			77033161
 77				gandyll				  77181402
 32				gloriarl				42499375
-29				indirapm				39462923
 22847			ingridpq				49796822
-22810			isaivm				  1143458567
 22841			isamargq				1065823221
 53				ivansd				  72150175
 33				jackelinerr			43616182
@@ -53,7 +50,6 @@
 22986			mileydisao			1065847132
 8				  miriamcr				57401865
 120				nailethoh				1065662738
-133				nathanielt			502976733
 132				nidianbb				1065818077
 22992     paolagg         1102348340    Granados Guerrero Paola Andrea
 106				synthialo				547029
@@ -66,5 +62,4 @@
 6				  yanics				  49766182
 123				yerliscp				1065654269
 22948			yesikaaa				1122814513
-22949			yolibismv				49715640
 15				yuleinismg			1065579951

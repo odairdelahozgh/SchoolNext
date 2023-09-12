@@ -170,10 +170,15 @@ class Salon extends LiteRecord {
   } // FIN setupCalificarSalon
 
   
-  public function setNumeroEstudiantes(): void {
+  public function setNumeroEstudiantes() {
     $tot_estudiantes = (new Estudiante)->getNumEstudiantes_BySalon($this->id);
-    $this->tot_estudiantes = $tot_estudiantes;
-    $this->save();
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->setFrom('sweb_salones');
+    $DQL->update(['tot_estudiantes' => $tot_estudiantes])
+        ->where('t.id=?')
+        ->setParams([$this->id]);
+
+    $DQL->execute();
   } //END-setNumeroEstudiantes
 
 } //END-CLASS

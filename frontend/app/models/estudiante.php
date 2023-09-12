@@ -347,4 +347,15 @@ class Estudiante extends LiteRecord {
     }
   } // END-setMesPago 
  
+
+  public function getNumEstudiantes_BySalon(int $salon_id) {
+    $DQL = (new OdaDql(__CLASS__));
+    $tot = $DQL->select('count(*) as total')
+        ->groupBy('t.salon_id')
+        ->where('t.is_active=1 AND t.salon_id=?')
+        ->setParams([$salon_id])
+        ->execute();
+    return ($tot[0]->total);
+  }
+
 }//END-CLASS

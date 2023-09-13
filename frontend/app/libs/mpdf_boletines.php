@@ -13,10 +13,10 @@ class MpdfBoletines extends Mpdf {
   public function __construct(array $config = [], $container = null) {
     parent::__construct($config, $container);
     
-    $this->SetSubject('Boletin de Notas');
+    $this->SetSubject('INFORME ACADÉMICO');
     $this->SetCreator(APP_NAME.' '.Config::get('config.construxzion.name'));
     $this->SetAuthor(Config::get('config.institution.nombre'));
-    $this->SetTitle( strtoupper(TBoletin::Boletin->label().' de Notas'));
+    $this->SetTitle('INFORME ACADÉMICO');
     $this->SetDefaultFont('helvetica');
     $this->SetDefaultFontSize(10);
     $this->SetMargins(20, 15, 48 );

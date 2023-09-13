@@ -68,30 +68,45 @@ foreach ($data as $key => $nota) {
   }
 
 
+  // for ($i=1; $i<=20; $i++) { 
+  //   $codigo = ($i<=9) ? $nota->{'i0'."$i"} : $nota->{'i'."$i"} ;
+  //   if (strlen($codigo)>0) {
+  //     $valorativo_concepto = $arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'] ?? '';
+  //     if (strlen($valorativo_concepto)>0) {
+  //       $valorativo = substr($arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'], 0, 1) ?? '';
+  //       $concepto = substr($arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'], offset: 2) ?? '';
+  //       $descripcion = (TBoletin::Boletin->label() == $file_tipo) ? "$concepto" : "<span style=\"color:red;\">[$codigo]</span> $concepto" ;
+  //     } else {
+  //     }
+      
+  //     if (strlen($concepto)>0) {
+  //       $descripcion = (TBoletin::Boletin->label() == $file_tipo) ? "$concepto" : "<span style=\"color:red;\">[$codigo]</span> $concepto" ;
+  //     } else {
+  //       $descripcion = (TBoletin::Boletin->label() == $file_tipo) ? '' : "<span style=\"background-color:yellow; color:red;\">Indicador no encontrado: $codigo</span>" ;
+  //     }
+  //     $t_materia->addRow(["* $descripcion"], attrs_td: ['colspan="2"']);
+  //   }
+  // }
   for ($i=1; $i<=20; $i++) { 
-    $codigo = ($i<=9) ? $nota->{'i0'."$i"} : $nota->{'i'."$i"} ;
+    $codigo = ($i<=9) ? $nota->{'i0'."$i"} : $nota->{'i'."$i"};
     if (strlen($codigo)>0) {
       $valorativo_concepto = $arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'] ?? '';
       if (strlen($valorativo_concepto)>0) {
         $valorativo = substr($arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'], 0, 1) ?? '';
         $concepto = substr($arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'], offset: 2) ?? '';
         $descripcion = (TBoletin::Boletin->label() == $file_tipo) ? "$concepto" : "<span style=\"color:red;\">[$codigo]</span> $concepto" ;
-      } else {
+        $t_materia->addRow(["* $descripcion"], attrs_td: ['colspan="2"']);
       }
-      
-      if (strlen($concepto)>0) {
-        $descripcion = (TBoletin::Boletin->label() == $file_tipo) ? "$concepto" : "<span style=\"color:red;\">[$codigo]</span> $concepto" ;
-      } else {
-        $descripcion = (TBoletin::Boletin->label() == $file_tipo) ? '' : "<span style=\"background-color:yellow; color:red;\">Indicador no encontrado: $codigo</span>" ;
-      }
-      $t_materia->addRow(["* $descripcion"], attrs_td: ['colspan="2"']);
+    } else {
+      // Indicador no encontrado.
     }
-  }
+  }//END-FOR
+  
   $archivoPDF->WriteHTML($t_materia.'<hr>');
   $pivote_estudiante = $nota->estudiante_id;
   $pivote_materia = $nota->asignatura_id;
   
-}
+} //END-foreach-data
 
 $Params_pie = [ $img_rango_notas,
   $arrData['Salon']->getImgFirmaDirector(),
@@ -99,8 +114,8 @@ $Params_pie = [ $img_rango_notas,
 ];
 $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
 
-$archivoPDF->showWatermarkText = true;
-$archivoPDF->SetWatermarkText($file_title);
-$archivoPDF->watermarkTextAlpha = (('Preboletín' == $file_tipo) ? 0.2 : 0.1);
+$archivoPDF->showWatermarkText = false;
+//$archivoPDF->SetWatermarkText($file_title);
+//$archivoPDF->watermarkTextAlpha = (('Preboletín' == $file_tipo) ? 0.2 : 0.1);
 
 $archivoPDF->Output("$file_name.pdf", 'D');

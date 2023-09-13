@@ -34,10 +34,11 @@ trait RegistrosGenTraitProps {
 
   public function isRegistroOk() {
     try {
-      return true;
       //if ( (0==strlen($this->foto_director)) or (0==strlen($this->foto_acudiente)) ) { 
-      //  return false;
-      //}
+      if (0==strlen($this->foto_director)) { 
+        return false;
+      }
+      return true;
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }

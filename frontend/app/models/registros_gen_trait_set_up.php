@@ -40,7 +40,7 @@ trait RegistrosGenTraitSetUp {
       'periodo_id'      => 'required',
       'grado_id'        => 'required',
       'salon_id'        => 'required',
-      'asunto'          => 'required',
+      'asunto'          => 'required spellcheck = true',
       'fecha'           => 'required',
       //'acudiente'       => 'required',
       //'director'        => 'required',

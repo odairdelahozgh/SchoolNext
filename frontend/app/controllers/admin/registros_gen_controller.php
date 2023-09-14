@@ -7,14 +7,13 @@
   
 class RegistrosGenController extends ScaffoldController
 {
-  /**
-   * Crea un Registro con AJAX
-   */
+
   public function create_ajax(string $redirect='') {
     $this->page_action = 'CREAR Registro de Observaciones Generales';
     $redirect = 'docentes/registros_observaciones';
-
+    
     try {
+
       View::select(null, null);
       $post_name = 'registrosgens';
       $Registro = new RegistrosGen();
@@ -34,7 +33,7 @@ class RegistrosGenController extends ScaffoldController
         Input::delete();
       } else {
         $this->data = Input::post($post_name);
-        OdaFlash::warning("$this->page_action - No Creó el Registro.");
+        OdaFlash::warning("$this->page_action - No Cre&oacute; el Registro.");
       }
       return Redirect::to($redirect);
 
@@ -78,7 +77,7 @@ class RegistrosGenController extends ScaffoldController
       return Redirect::to($redirect);
 
     } catch (\Throwable $th) {
-      OdaFlash::error($t);
+      OdaFlash::error($th);
       return Redirect::to($redirect);
     }
 

@@ -16,10 +16,10 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
     div_info_estudiante.innerHTML = template_datos_estud(data_estudiante, ruta_base, salon_nombre);
     
     // LINKS PARA DESCARGAR BOLETINES
-    const periodo_actual = document.getElementById('periodo').innerHTML.trim();
+    const periodo_boletines = document.getElementById('periodo_boletines').value;
     div_boletines = document.getElementById('boletines');
     if (1==document.getElementById('ver_boletines').value) {
-      div_boletines.innerHTML = template_boletines(data_estudiante, ruta_base, periodo_actual);
+      div_boletines.innerHTML = template_boletines(data_estudiante, ruta_base, periodo_boletines);
     }
 
   });

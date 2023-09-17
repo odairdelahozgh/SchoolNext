@@ -24,7 +24,7 @@ class Usuario extends LiteRecord {
     $this->setUp();
   } //END-__construct
   
-  public function misGrupos() { // int $user_id
+  public function misGrupos() { // int $user_id // mejorar !!!
     try {
 
       $user_id = Session::get('id');

@@ -22,7 +22,19 @@ class DocentesController extends AppController
     }
     View::select('direccionDeGrupo/seguimientos_consolidado');
   }//END-seguimientos_grupo
+
+  public function registros_grupo() {
+    try {
+      $this->page_action = 'Registros del Grupo';
+      $this->data = (new usuario)->misGrupos();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    View::select('direccionDeGrupo/dg_registros_consoli');
+  }//END-seguimientos_grupo
   
+
 
   public function index() {
     try {
@@ -96,7 +108,8 @@ class DocentesController extends AppController
   public function registros_observaciones(): void {
     try {
       $this->page_action = 'Registros de Observaciones Generales';
-      $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
+      $estudiantes = (new Estudiante)->getListPorProfesor($this->user_id);
+
       $this->arrData = ['estudiantes' => $estudiantes];
       $this->data = (new RegistrosGen)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
 
@@ -110,7 +123,10 @@ class DocentesController extends AppController
   public function registros_desemp_acad(): void {  // Registros de desempeño academico
     try {
       $this->page_action = 'Registros de Desempeño Académico';
-      $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
+      
+      //$estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
+      $estudiantes = (new Estudiante)->getListPorDirector($this->user_id);
+
       $this->arrData = ['estudiantes' => $estudiantes];
       $this->data = (new RegistroDesempAcad)->getRegistrosProfesor(user_id: Session::get('id'));
     
@@ -119,7 +135,7 @@ class DocentesController extends AppController
     }
 
     View::select('registrosDesempAcad/index');
-  } //END-registros_observaciones
+  } //END-registros_desemp_acad
 
 
   public function listIndicadores(int $grado_id, int $asignatura_id): void {

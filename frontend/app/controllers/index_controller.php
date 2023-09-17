@@ -14,7 +14,7 @@ class IndexController extends AppController
             'secretarias'   => 'secretaria', 
             'sicologos'     => 'sicologia', 
             'contables'     => 'contabilidad', 
-            'enfermeras'    => 'enfermeria'
+            'enfermeras'    => 'enfermeria',
         );
     
     public function index() {

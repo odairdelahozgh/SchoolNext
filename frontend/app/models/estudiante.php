@@ -229,22 +229,36 @@ class Estudiante extends LiteRecord {
     }
   } // END-getListPadres
 
-  /**
-   * 
-   */
-  public function getListPorProfesor(int $user_id): array {
-    $salones = '';
-    $CargaProfe = (new CargaProfesor)->getSalonesCarga($user_id);
-    foreach ($CargaProfe as $carga) {
-      $salones .= $carga->salon_id.",";
+  public function getListPorProfesor(int $user_id, string $orden='a1,a2,n'): array {
+    try {
+      $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
+
+      $CargaProfe = (new SalAsigProf)->getSalones_ByProfesor($user_id);
+      $salones = [];
+      foreach ($CargaProfe as $carga) {
+        $salones[] = $carga->salon_id;
+      }
+      $filtro_in = implode(',', $salones);
+
+      $DQL = (new OdaDql(__CLASS__));
+      $DQL->setFrom(Config::get('tablas.estudiante'));
+
+      $DQL->select('t.*')
+          ->concat(explode(',', $orden), 'estudiante_nombre')
+          ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+          ->leftJoin('salon', 's')
+          ->leftJoin('grado', 'g', 's.grado_id=g.id')
+          ->where('t.is_active=1')
+          ->andWhere("t.salon_id IN($filtro_in)")
+          ->orderBy($orden);
+
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    $salones = substr($salones,0,-1);
-    $DQL = "SELECT e.*, s.nombre as salon
-            FROM ".self::$table." as e
-            LEFT JOIN ".Config::get('tablas.salones')." as s ON e.salon_id=s.id
-            WHERE s.id IN($salones)";
-    return $this::all($DQL);
-  } // END-getListPorProfesor
+    
+  } //END-getListPorProfesor
 
   
     /**

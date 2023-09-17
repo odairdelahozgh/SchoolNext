@@ -22,9 +22,24 @@ class SalAsigProf extends LiteRecord {
   } //END-__construct
 
 
-  /**
-   * Obtiene la Carga academica de un docente
-   */
+  public function getSalones_ByProfesor(int $user_id) {
+    try {
+      $DQL = (new OdaDql(__CLASS__));
+      $DQL->setFrom(self::$table);
+      $DQL->select('DISTINCT t.salon_id');
+      if ($user_id<>1) {
+        $DQL->where('t.user_id=?')
+            ->setParams([$user_id]);
+      }
+      
+      return $DQL->execute(true);
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getSalones_ByProfesor
+
+  
   public function getCarga(int $user_id) {
     $DQL = (new OdaDql(__CLASS__))
       ->select('t.*')

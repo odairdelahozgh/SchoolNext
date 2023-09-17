@@ -15,7 +15,6 @@ class DocentesController extends AppController
     try {
       $this->page_action = 'Registros del Grupo';
       $this->data = range((int)Config::get('config.academic.annio_actual'), 2021, -1);
-      //OdaLog::debug("mensaje","rastreo");
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);

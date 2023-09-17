@@ -261,9 +261,39 @@ class Estudiante extends LiteRecord {
   } //END-getListPorProfesor
 
   
-    /**
-     * 
-     */
+  public function getListPorDirector(int $director_grupo_id, string $orden='a1,a2,n'): array {
+    try {
+      $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
+
+      $Grupos = (new Usuario)->misGrupos();
+      $salones = [];
+      foreach ($Grupos as $salon) {
+        $salones[] = $salon->id;
+      }
+      $filtro_in = implode(',', $salones);
+
+      $DQL = (new OdaDql(__CLASS__));
+      $DQL->setFrom(Config::get('tablas.estudiante'));
+
+      $DQL->select('t.*')
+          ->concat(explode(',', $orden), 'estudiante_nombre')
+          ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+          ->leftJoin('salon', 's')
+          ->leftJoin('grado', 'g', 's.grado_id=g.id')
+          ->where('t.is_active=1')
+          ->andWhere("t.salon_id IN($filtro_in)")
+          ->orderBy($orden);
+
+      return $DQL->execute();
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    
+  } //END-getListPorDirector
+
+
+  
     public function getSalonesCambiar(string $modulo): string {
       $lnk_cambio = '';
       if ($this->is_active) {

@@ -25,6 +25,7 @@ class RegistrosGen extends LiteRecord {
     self::$_order_by_defa = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
   } //END-__construct
 
+  
   public function getRegistrosProfesor(int $user_id) {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, s.nombre as salon_nombre')
@@ -42,83 +43,105 @@ class RegistrosGen extends LiteRecord {
   } // END-getListProfesor
 
   
-  public function saveWithPhoto($data)
-  {
-    $this->begin();
-    if ($this->update($data)) {
-      if ($this->updatePhoto($this->id)) {
-        $this->commit();
-        return true;
+  public function saveWithPhoto($data) {
+    try {
+      $this->begin();
+      if ($this->update($data)) {
+        if ($this->updatePhoto($this->id)) {
+          $this->commit();
+          return true;
+        }
       }
+      $this->rollback();
+      return false;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    $this->rollback();
-    return false;
   } //END-saveWithPhoto
 
   
-  public function createWithPhoto($data)
-  {
-    $this->begin();
-    if ($this->create($data)) {
-      if ($this->updatePhoto($this->lastInsertId())) {
-        $this->commit();
-        return true;
+  public function createWithPhoto($data) {
+    try {
+      $this->begin();
+      if ($this->create($data)) {
+        if ($this->updatePhoto($this->lastInsertId())) {
+          $this->commit();
+          return true;
+        }
       }
+      $this->rollback();
+      return false;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    $this->rollback();
-    return false;
   } //END-saveWithPhoto
 
-  public function updatePhoto($id)
-  {
+
+  public function updatePhoto($id) {
     // if ($foto_acudiente = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
     //   $this->foto_acudiente = $foto_acudiente;
     //   Session::set('foto_acudiente',$foto_acudiente);
     // }
+    try {
+      if ($foto_director = $this->uploadPhoto('foto_director')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
+        $this->foto_director = $foto_director;
+        Session::set('foto_director',$foto_director);
+      }
+      $reg = (new RegistrosGen)::get($id);
+      $reg->save([
+        //'foto_acudiente' => $foto_acudiente,
+        'foto_director'  => $foto_director,
+      ]);
+      return true;
     
-    if ($foto_director = $this->uploadPhoto('foto_director')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
-      $this->foto_director = $foto_director;
-      Session::set('foto_director',$foto_director);
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    $reg = (new RegistrosGen)::get($id);
-    $reg->save([
-      //'foto_acudiente' => $foto_acudiente,
-      'foto_director'  => $foto_director,
-    ]);
-    return true;
+    
   } //END-updatePhoto 
   
+
   public function uploadPhoto($imageField)  {
-    $file = Upload::factory($imageField, 'file');
-    $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg'));
-    if ($file->isUploaded()) {
-      return $file->saveRandom('estud_reg_observ_gen');
+    try {
+      $file = Upload::factory($imageField, 'file');
+      $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg'));
+      if ($file->isUploaded()) {
+        return $file->saveRandom('estud_reg_observ_gen');
+      }
+      return false;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    return false;
   } //END-uploadPhoto
 
   
-  
-  // =============
   public function getByAnnioSalon(int $annio, int $salon_id) {
-    $annio_actual = Config::get('config.academic.annio_actual');
-    $sufijo = ($annio != $annio_actual) ? '_'.$annio : '' ;
-
-    $RegGen = new RegistrosGen();
-    $DQL = new OdaDql(__CLASS__);
-    $DQL->setFrom(self::$table.$sufijo);
+    try {
+      $annio_actual = Config::get('config.academic.annio_actual');
+      $sufijo = ($annio != $annio_actual) ? '_'.$annio : '' ;
+  
+      $RegGen = new RegistrosGen();
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->setFrom(self::$table.$sufijo);
+      
+      $DQL->select('t.*')
+          ->addSelect('s.nombre as salon_nombre')
+          ->concat(['e.apellido1', 'e.apellido2', 'e.nombres'], 'estudiante_nombre')
+          ->concat(['u.apellido1', 'u.apellido2', 'u.nombres'], 'creador_nombre')
+          ->leftJoin('salon', 's')
+          ->leftJoin('estudiante', 'e')
+          ->leftJoin('usuario', 'u', 't.created_by = u.id')
+          ->where('t.salon_id=?')
+          ->orderBy('t.annio, t.grado_id, e.apellido1, e.apellido2, e.nombres, t.fecha DESC');
+      $DQL->setParams([$salon_id]);
+      return $DQL->execute();
     
-    $DQL->select('t.*')
-        ->addSelect('s.nombre as salon_nombre')
-        ->concat(['e.apellido1', 'e.apellido2', 'e.nombres'], 'estudiante_nombre')
-        ->concat(['u.apellido1', 'u.apellido2', 'u.nombres'], 'creador_nombre')
-        ->leftJoin('salon', 's')
-        ->leftJoin('estudiante', 'e')
-        ->leftJoin('usuario', 'u', 't.created_by = u.id')
-        ->where('t.salon_id=?')
-        ->orderBy('t.annio, t.grado_id, e.apellido1, e.apellido2, e.nombres, t.fecha DESC');
-    $DQL->setParams([$salon_id]);
-    return $DQL->execute();
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
   } // END-getRegistrosAnnio
     
 

@@ -21,16 +21,16 @@ class Padre extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.usuario');
-    self::$order_by_default = 't.username';
+    self::$_order_by_defa = 't.username';
     $this->setUp();
   } //END-__construct
 
   
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
-    $DQL = new OdaDql(self::$class_name);
+    $DQL = new OdaDql(__CLASS__);
     $DQL->select($select)
         ->where('t.username=t.documento')
-        ->orderBy(self::$order_by_default);
+        ->orderBy(self::$_order_by_defa);
 
    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
    if (!is_null($estado)) { 

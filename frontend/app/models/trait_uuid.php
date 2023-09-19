@@ -23,7 +23,7 @@ trait TraitUuid {
 
   public function xxh3Hash(): string {
     try {
-      $data = date('ymdhis');
+      $data = date('ymdhis').rand(1, 1000);
       return hash("xxh3", $data, options: ["seed" => rand(1, 1000)]);
     
     } catch (\Throwable $th) {

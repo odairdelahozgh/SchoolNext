@@ -16,8 +16,8 @@
     $tabla->setCaption(caption:'Carga Total Asignada');
     foreach($data as $key => $carga) {
       $d0 = OdaTags::linkIcon("admin/cargas/del/$carga->id/docen-asignar-carga", 'trash-can');
-      $d1 = "[$carga->user_id] ".OdaUtils::sanearString($carga->profesor);
-      $d2 = "[$carga->asignatura_id] ".OdaUtils::sanearString($carga->asignatura);
+      $d1 = "[$carga->user_id] ".OdaUtils::sanearString($carga->profesor_nombre);
+      $d2 = "[$carga->asignatura_id] ".OdaUtils::sanearString($carga->asignatura_nombre);
       $d3 = "[$carga->salon_id] $carga->salon";
       $tabla->addRow( data: [$d0, $d1, $d2, $d3], attrs_td:[null, 'class="searchTdata"','class="searchTdata"','class="searchTdata"']);
     }

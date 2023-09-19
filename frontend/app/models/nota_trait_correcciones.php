@@ -32,7 +32,7 @@ trait NotaTraitCorrecciones {
             'updated_by' => 1,
             ]
           );
-          $DQL->execute(true);
+          $DQL->execute();
         }
       } else {
         OdaFlash::info('No hay registros');

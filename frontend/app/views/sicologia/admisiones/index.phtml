@@ -8,27 +8,32 @@
    
    <?php 
    try {
-      $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
-      $tabla->setCaption('Lista de Aspirantes Activos');
-      $tabla->setHead(
-         data_head:    ['id', 'Estado', 'Grado', 'Aspirante', 'Fechas'], 
-         attrs:         'class="w3-theme"', 
-         //arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
-      );
+    $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
+    $tabla->setCaption('Lista de Aspirantes Activos');
+    $tabla->setHead(
+       data_head:    ['id', 'Estado', 'Grado', 'Aspirante', 'Fechas'], 
+       attrs:         'class="w3-theme"', 
+       //arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
+    );
 
-      foreach($data as $key => $reg) {
-         $tabla->addRow(
-            data: [ 
-              $reg->fecha_insc .'<br>Activo: ' .(($reg->is_active)?'SI':'NO').'<br>Pago: ' .(($reg->is_pago)?'SI':'NO'), 
-              $reg->estatus, 
-              $reg->aspirante_grado, 
-              "$reg->apellido1 $reg->apellido2 $reg->nombres [$reg->id] <br>Tel: $reg->telefono1 <br>Doc Id: $reg->documento",
-              "Entrevista: $reg->fecha_entrev <br>Evaluaci&oacute;n: $reg->fecha_eval", 
-            ], 
-            attrs_td: ['class="searchTdata"', 'class="searchTdata" w3-center', 'class="searchTdata"', 'class="searchTdata"']
-         );
-      }
-      echo $tabla;
+    foreach($data as $key => $reg) {
+       $tabla->addRow(
+          data: [
+            OdaUtils::fecha_corta($reg->fecha_insc) .'<br>' .Estado::tryFrom($reg->is_active)->label_ico(), 
+
+            $reg->is_pago_f(). '<br>' .$reg->estatus, 
+
+            $reg->aspirante_grado, 
+
+            "$reg->apellido1 $reg->apellido2 $reg->nombres [$reg->id] <br>Tel: $reg->telefono1 <br>Doc Id: $reg->documento",
+
+            "Entrevista: $reg->fecha_entrev <br>Evaluaci&oacute;n: $reg->fecha_eval", 
+
+          ], 
+          attrs_td: ['class="searchTdata"', 'class="searchTdata" w3-center', 'class="searchTdata"', 'class="searchTdata"']
+       );
+    }
+    echo $tabla;
 
     } catch (\Throwable $th) {
       OdaLog::error($th);

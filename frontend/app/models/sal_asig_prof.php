@@ -32,7 +32,7 @@ class SalAsigProf extends LiteRecord {
             ->setParams([$user_id]);
       }
       
-      return $DQL->execute(true);
+      return $DQL->execute();
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);

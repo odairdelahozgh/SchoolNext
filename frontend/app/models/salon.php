@@ -115,57 +115,64 @@ class Salon extends LiteRecord {
     $periodo_actual = Config::get('config.academic.annio_actual');
     $annio_actual = Config::get('config.academic.periodo_actual');
     $RegSalon = (new Salon())->get($salon_id);
-
-    $tot_notas = 0;
+    $cnt = 0;
     if (isset($RegSalon)) {
-        $grado = $RegSalon->grado_id;
-        // OBTENER TODAS LAS ASIGNATURAS DE ESE SALON (GRADO).
-        $DQL = new OdaDql(__CLASS__);
-        $DQL->setFrom('sweb_grado_asignat');
-        
-        if ($periodo_actual==5) {
-          $DQL = Doctrine_Core::getTable('GradoAsignatura')->createQuery('GA')
-                  ->select('GA.asignatura_id AS asignatura_id')
-                  ->where('GA.grado_id=?', $grado);
-        } else {
-          // EXCLUIR COMPORTAMIENTO (codigo 30) (PERIODOS 1,2,3,4)
-          // POLITICA ESTABLECIDA A PARTIR DE 25 ENERO 2017.
-          $DQL = Doctrine_Core::getTable('GradoAsignatura')->createQuery('GA')
-                  ->select('GA.asignatura_id AS asignatura_id')
-                  ->where('GA.grado_id=?', $grado)
-                  ->AndWhere('GA.asignatura_id<>?', 30);
+      // OBTENER TODAS LAS ASIGNATURAS DE ESE SALON (GRADO).
+        $Model = new GradoAsignatura();
+        $DQL = new OdaDql($Model->getC);
+        $DQL->where('t.grado_id=?');
+        $DQL->setParams([$RegSalon->grado_id]);
+        if ($periodo_actual<5) { // Excluir comportamiento
+          $DQL->andWhere('t.asignatura_id<>30');
         }
-        //$query_ga->AndWhere('GA.asignatura_id<>?', 9); // excluir recreacion y deportes
-        $reg_asignaturas = $query_ga->fetchArray();
-
-        // OBTENER LOS ESTUDIANTES DE ESE SALON
-        $query_e = Doctrine_Core::getTable('Estudiante')->createQuery('E')
-                  ->where('E.is_active=1 AND E.salon_id=?', array($RegSalon['id']) );
-        $reg_estudiantes = $query_e->execute();
+        $Asignaturas = $DQL->execute();
         
-        // AGREGAR REGISTROS VACIOS A NOTAS. 
-        // RECORRER MATERIAS
-        foreach ($reg_estudiantes as $key => $estud) {
-          foreach ($reg_asignaturas as $key => $asignat) {
-              //if ($asignat['asignatura_id']==41) {  //para incluir una materia especifica que qued�� por fuera !!
-                $nota = new Nota();
-                $nota->annio         = $annio_actual;
-                $nota->periodo_id    = $periodo_actual;
-                $nota->grado_id      = $RegSalon['grado_id'];
-                $nota->salon_id      = $RegSalon['id'];
-                $nota->asignatura_id = $asignat['asignatura_id'];
-                $nota->estudiante_id = $estud['id'];
-                $nota->save();
-                $tot_notas += 1;
-            //}
+        // OBTENER TODAS LOS ESTUDIANTES DE ESE SALON
+        $Model = new Estudiante();
+        $DQL = new OdaDql($Model);
+        $DQL->where('t.is_active=1 AND t.salon_id=?');
+        $DQL->setParams([$salon_id]);
+        $Estudiantes = $DQL->execute();
+        
+        foreach ($Estudiantes as $estud) {
+          foreach ($Asignaturas as $asignat) {
+            $Now = new DateTime('now', new DateTimeZone('America/Bogota'));
+            $Model = new Nota();
+            $DQL = new OdaDql($Model);
+            $DQL->update([
+                //'uuid' => $Model->xxh3Hash(),
+                'annio' => $annio_actual,
+                'periodo_id' => $periodo_actual,
+                'grado_id' => $RegSalon->grado_id,
+                'salon_id' => $salon_id,
+                'asignatura_id' => $asignat->asignatura_id,
+                'estudiante_id' => $estud->id,
+                'created_at' => $Now->format('Y-m-d H:i:s'),, 
+                'updated_at' => $Now->format('Y-m-d H:i:s'),, 
+                'created_by' => 1,
+                'updated_by' => 1,
+            ]);
+            $DQL->execute();
+            $cnt += 1;
           }
         }
         
-      $RegSalon['updated_at'] = date('Y-m-d H:i:s');
-      $RegSalon['print_state'.$periodo_actual] = 'En Calificacion';
-      $RegSalon->save();
-      return $tot_notas;
+      //   foreach ($reg_estudiantes as $key => $estud) {
+      //     foreach ($reg_asignaturas as $key => $asignat) {
+      //         //if ($asignat['asignatura_id']==41) {  //para incluir una materia especifica que qued�� por fuera !!
+      //           $nota->save();
+      //           $tot_notas += 1;
+      //       //}
+      //     }
+      //   }
+        
+      // $RegSalon['updated_at'] = date('Y-m-d H:i:s');
+      // $RegSalon['print_state'.$periodo_actual] = 'En Calificacion';
+      // $RegSalon->save();
+      // return $tot_notas;
     }
+
+    return $cnt;
 
   } // FIN setupCalificarSalon
 

@@ -106,7 +106,9 @@ class OdaForm extends Form {
     $place_holder =  $this->getAttrib($field). ' '. $this->getPlaceholder($field);
     $label        = $this->getLabel($field, $inline);
     $help         = $this->getHelp($field);
+
     $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+    
     $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
     $campo_input = $this::input($widget, $fieldname, $attr, $value);
     return ($tipo=='hidden') ? $campo_input : "<label> $label" .$campo_input .$help ."</label>";

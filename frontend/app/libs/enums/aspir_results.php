@@ -3,12 +3,14 @@
 enum AspirResults: string {
   Use EnumsFunciones;
 
+  case Nulo   = '';
   case Alto   = 'Alto';
   case Basico = 'Básico';
   case Bajo   = 'Bajo';
 
   public function label(bool $abrev = false): string {
     return match($this) {
+      static::Nulo   => '',
       static::Alto   => 'Alto',
       static::Basico => 'Básico',
       static::Bajo   => 'Bajo',

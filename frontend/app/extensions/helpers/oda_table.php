@@ -45,10 +45,10 @@ class OdaTable {
     * Formatea el encabezado de la Tabla.
     *
     * @example echo $tabla->setableHead(
-         data_head: ['Actions', 'Estudiante', 'Cambiar Salon'], 
-         attrs:    'class="w3-theme"', 
-         attrs_th:   ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
-      );
+    *     data_head: ['Actions', 'Estudiante', 'Cambiar Salon'], 
+    *     attrs:    'class="w3-theme"', 
+    *     attrs_th:   ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
+    *  );
     */
    public function setHead(
       string|array $data_head = '', 

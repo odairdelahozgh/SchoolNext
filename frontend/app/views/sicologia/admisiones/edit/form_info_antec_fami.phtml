@@ -3,10 +3,10 @@ try {
   $tabla = new OdaTable('id="myTable-af" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Antecedentes Familiares');
 
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'nucleofamil', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'relpadres', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'rel_pad_mad_desc', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'relhermanos', attr:'')]);
+  $tabla->addRow( data:[$FormAspirPsico->nucleofamil ] );
+  $tabla->addRow( data:[$FormAspirPsico->relpadres] );
+  $tabla->addRow( data:[$FormAspirPsico->rel_pad_mad_desc ] );
+  $tabla->addRow( data:[$FormAspirPsico->relhermanos ] );
   return $tabla;
 
 } catch (\Throwable $th) {

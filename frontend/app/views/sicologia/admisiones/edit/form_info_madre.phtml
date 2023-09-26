@@ -5,34 +5,33 @@ try {
 
   $tabla->addRow(
     data: [
-      $FormAspir->getInput(field: 'madre', attrs:''), 
-      $FormAspir->getInput(field: 'madre_id', attrs:''), 
+      $ModeloAspirante->madre, 
+      $ModeloAspirante->madre_id, 
       ],
   );
   $tabla->addRow(
     data: [
-      $FormAspir->getInput(field: 'madre_edad', attrs:''), 
-      $FormAspir->getInput(field: 'madre_prof', attrs:''), 
+      $ModeloAspirante->madre_edad, 
+      $ModeloAspirante->madre_prof, 
       ],
   );
   $tabla->addRow(
     data: [
-      $FormAspir->getInput(field: 'madre_empresa', attrs:''), 
-      $FormAspir->getInput(field: 'madre_cargo', attrs:''), 
+      $ModeloAspirante->madre_empresa, 
+      $ModeloAspirante->madre_cargo, 
       ],
   );
   $tabla->addRow(
     data: [
-      $FormAspir->getInput(field: 'madre_tel_ofi', attrs:''), 
-      $FormAspir->getInput(field: 'madre_tel_per', attrs:''), 
+      $ModeloAspirante->madre_tel_ofi, 
+      $ModeloAspirante->madre_tel_per, 
       ],
   );
   $tabla->addRow(
     data: [
-      $FormAspir->getInput(field: 'madre_email', attrs:''), 
+      $ModeloAspirante->madre_email, 
       '', 
       ],
-    attrs_td: ['colspan="2"'],
   );
 
   return $tabla;

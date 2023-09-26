@@ -3,22 +3,14 @@ try {
   $tabla = new OdaTable('id="myTable-ds" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Desarrollo Psicológico');
 
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'lenguaje', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'aprendizaje', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'comporta', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'afecto', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'autocuidado', attr:'')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'especialista', attr:'')]);
+  $tabla->addRow( data: [$ModeloAspirPsico->lenguaje ]);
+  $tabla->addRow( data: [$ModeloAspirPsico->aprendizaje ]);
+  $tabla->addRow( data: [$ModeloAspirPsico->comporta ]);
+  $tabla->addRow( data: [$ModeloAspirPsico->afecto ]);
+  $tabla->addRow( data: [$ModeloAspirPsico->autocuidado ]);
+  $tabla->addRow( data: [$ModeloAspirPsico->especialista ]);
   return $tabla;
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);
 }
-
-/*
-$tabla .= _open('table', array('width'=>'100%'));
-  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/rel_pad_mad') );
-  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/vive_con',array('cols'=>'60', 'rows'=>'6')) );
-$tabla .= _close('table');
-echo $tabla;
-*/

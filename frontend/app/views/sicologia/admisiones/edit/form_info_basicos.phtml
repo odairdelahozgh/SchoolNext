@@ -2,67 +2,56 @@
 try {  
   $tabla = new OdaTable('id="myTable-db" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Datos Básicos del Aspirante');
+  
+  $tabla->addRow(
+    data: [
+      '<b>Fecha de Nacimiento:</b><br>'.$ModeloAspirante->fecha_nac, 
+      '<b>Tipo de documento:</b><br>'.$ModeloAspirante->tipo_dcto, 
+      '<b>Identificación:</b><br>'.$ModeloAspirante->documento, 
+    ],
+  );
 
   $tabla->addRow(
     data: [
-      $FormAspir->getInput(field: 'nombres', attrs:'maxlength="30"'), 
-      $FormAspir->getInput(field: 'apellido1', attrs:'maxlength="30"'), 
-      $FormAspir->getInput(field: 'apellido2', attrs:'maxlength="30"'),
-      ''
-      ],
-  );
-
-  $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'fecha_nac', attrs:''), 
-           '<br><b>'.TipoDoc::caption().'</b><br>'.TipoDoc::forSelect('aspirantes_tipo_dcto', 'aspirantes[tipo_dcto]'), 
-           $FormAspir->getInput(field: 'documento', attrs:''),
-           ''
-          ],
-  );
-
-  $tabla->addRow(
-    data: ['<br><b>Grado al que Aspira</b><br>'.Grado::getSelectGrados('aspirantes_grado_aspira', 'aspirantes[grado_aspira]'),
-           '',
-           '<br><b>'.Sexo::caption().'</b><br>'.Sexo::forSelect('aspirantes_sexo', 'aspirantes[sexo]'),
-           ''
-          ],
-  );
-
-  $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'pais_nac', attrs:''), 
-           $FormAspir->getInput(field: 'depto_nac', attrs:''),
-           $FormAspir->getInput(field: 'ciudad_nac', attrs:''),
-           ''
-          ],
+    '<b>Grado al que Aspira</b><br>'.$ModeloAspirante->grado_aspira, 
+    '', 
+    '<b>Sexo:</b><br>'.$ModeloAspirante->sexo, 
+    ],
   );
   
   $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'direccion', attrs:''), 
-           $FormAspir->getInput(field: 'barrio', attrs:''),
-           $FormAspir->getInput(field: 'telefono1', attrs:''),
-           ''
-          ],
+    data: [
+      '<b>Pais Nac:</b><br>'.$ModeloAspirante->pais_nac, 
+      '<b>Depto Nac:</b><br>'.$ModeloAspirante->depto_nac, 
+      '<b>Ciudad Nac:</b><br>'.$ModeloAspirante->ciudad_nac, 
+    ],
+  );
+  
+  $tabla->addRow(
+    data: [
+      '<b>dirección:</b><br>'.$ModeloAspirante->direccion.'<br>'
+      .$ModeloAspirante->barrio, 
+      '<b>Teléfono:</b><br>'.$ModeloAspirante->telefono1, 
+      '',
+    ],
+    attrs_td: ['colspan="2"'],
   );
 
   
   $tabla->addRow(
-    data: [$FormAspirPsico->getTextarea(field: 'rel_pad_mad', attr:''), 
-          $FormAspirPsico->getTextarea(field: 'vive_con', attr:'')],
-          attrs_td: ['colspan="2"','colspan="2"'],
+    data: [
+      '<b>Relación Actual Padres:</b><br>'.$ModeloAspirPsico->rel_pad_mad, 
+      '<b>Personas con las que vive:</b><br>'.$ModeloAspirPsico->vive_con, 
+      '', 
+      // $FormAspirPsico->getInput(field: 'rel_pad_mad', attrs:''), 
+      // $FormAspirPsico->getInput(field: 'vive_con', attrs:'')],
+      // 
+    ],
+    attrs_td: ['','colspan="2"'],
   );
 
-  $extras = $FormAspir->getInput(tipo: 'hidden', field: 'fecha_insc', attrs:'');
-
-  return $tabla.$extras;
+  return $tabla;
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);
 }
-
-/*
-$tabla .= _open('table', array('width'=>'100%'));
-  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/rel_pad_mad') );
-  $tabla .= _tag('tr', $FormAspir->getColCampo('Aspirantepsico/vive_con',array('cols'=>'60', 'rows'=>'6')) );
-$tabla .= _close('table');
-echo $tabla;
-*/

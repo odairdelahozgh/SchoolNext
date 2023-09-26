@@ -19,9 +19,11 @@
     foreach($data as $key => $reg) {
        $tabla->addRow(
           data: [
-            OdaUtils::fecha_corta($reg->fecha_insc) .'<br>' .Estado::tryFrom($reg->is_active)->label_ico(), 
+            OdaUtils::fecha_corta($reg->fecha_insc) .'<br>' 
+            .Estado::tryFrom($reg->is_active)->label_ico(), 
 
-            $reg->is_pago_f(). '<br>' .$reg->estatus, 
+            $reg->is_pago_f() .'<br>'
+            .AspirEstatus::tryFrom($reg->estatus)->label_ico(), 
 
             $reg->aspirante_grado, 
 

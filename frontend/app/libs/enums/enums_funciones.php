@@ -14,13 +14,15 @@
     return array_column(self::cases(), 'name');
   } //END-allNames
 
-  public static function forSelect(string $id, string $name): String  {
+  public static function forSelect(string $id, string $name, string $selected=''): String  {
     $opts = '';
     foreach (self::cases() as $case) {
-      $opts .= "<option value=\"$case->value\">".$case->label()."</option>";
+      $is_selected = ($case->value==$selected) ? 'selected' : '';
+      $opts .= "<option value=\"$case->value\" $is_selected>".$case->label()."</option>";
     }
     return "<select id=\"$id\" name=\"$name\" class=\"w3-input w3-border\">$opts</select>";
   } //END-forSelect
+
 
 } // END-TRAIT
 

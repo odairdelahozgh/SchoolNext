@@ -27,7 +27,9 @@
       // =================================================================
       // =================================================================
       $post_name_aspir = 'aspirantes';
-      if (!Input::hasPost($post_name_aspir)) { OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); }
+      if (!Input::hasPost($post_name_aspir)) { 
+        OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); 
+      }
       
       $documento = '';
       if (Input::hasPost($post_name_aspir)) {
@@ -109,11 +111,54 @@
   } //END-crear
 
 
+
   function actualizar() {
     try {
+      // echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+
       $this->page_action = "Actualizar Aspirante";
       $redirect = "sicologia/admisiones";
-      OdaFlash::valid('Actualizar en proceso');
+
+      $post_name_aspir = 'aspirantes';
+      if (!Input::hasPost($post_name_aspir)) { 
+        OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); 
+      }
+      
+      // CARGA LOS DATOS DEL POST EN UN ARRAY
+      $arrCamposValidos = [
+        "estatus", "is_active", "fecha_entrev", "ctrl_llamadas", "fecha_eval", 
+        "result_matem", "result_caste", "result_ingle", "result_scien",
+        "entrevista", "recomendac", 
+      ];
+
+      $aspirante_id = 0;
+      $dataAspir = [];
+      if (Input::hasPost($post_name_aspir)) {
+        $Post = Input::post($post_name_aspir);
+        foreach ($Post as $field_name => $value) {
+          if ( in_array($field_name, $arrCamposValidos) ) {
+            $dataAspir[$field_name] = $value;
+          }
+          if ('id'==$field_name) {
+            $aspirante_id = $value;
+          }
+        }
+      }
+
+      // AGREGA CAMPOS DE CONTROL
+      $dataAdicAspir =[];
+      $dataAdicAspir['updated_at'] = date('Y-m-d H:i:s', time());
+      $dataAdicAspir['updated_by'] = $this->user_id;
+      
+      $DQL = new OdaDql((new Aspirante)::class);
+      $DQL->update($dataAspir)
+          ->addUpdate($dataAdicAspir)
+          ->where('id=?')
+          ->setParams([$aspirante_id]);
+      $DQL->execute();
+      
+
+      OdaFlash::valid('Actualización exitosa.');
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);

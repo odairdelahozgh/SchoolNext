@@ -291,8 +291,8 @@ trait AspiranteTraitSetUp {
     'entrevista' =>  'textarea',
     'estatus' =>  'select',
     //'extra' =>  'text',
-    'fecha_entrev' =>  'datetime',
-    'fecha_eval' =>  'datetime',
+    'fecha_entrev' =>  'datetime-local',
+    'fecha_eval' =>  'datetime-local',
     'fecha_insc' =>  'date',
     'fecha_nac' =>  'date',
     

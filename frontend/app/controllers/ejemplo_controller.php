@@ -12,6 +12,7 @@ class EjemploController extends AppController
   public function index() {
     try {
       $this->page_action = 'Sign In';
+      //View::select('layout-pagenavs', 'looper/layout-pagenavs');
       View::select('layout-pagenavs', 'looper/layout-pagenavs');
 
     } catch (\Throwable $th) {

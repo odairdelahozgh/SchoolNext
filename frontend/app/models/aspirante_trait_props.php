@@ -13,7 +13,7 @@ trait AspiranteTraitProps {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  }
+  } //END-is_pago_enum
 
   public function is_pago_f(): string {
     try {
@@ -22,6 +22,33 @@ trait AspiranteTraitProps {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  }
+  } //END-is_pago_f
+
+  
+  public function lnkPageEditAspirante(): string {
+    try {
+      return OdaTags::link(
+        action: "sicologia/admisiones_edit/$this->id",
+        text: "$this",
+        //attrs: 'class="btn"',
+      );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }//END-lnkPageEditAspirante
+
+
+  public function fecha_entrev_f() {
+    $date = new DateTimeImmutable($this->fecha_entrev);
+    return ( ($this->fecha_entrev=='0000-00-00 00:00:00') ? '' : $date->format('Y-M-d H:i:s'));
+  } //END-fecha_entrev_f
+
+
+  public function fecha_eval_f() {
+      $date = new DateTimeImmutable($this->fecha_eval);
+      return ( ($this->fecha_eval=='0000-00-00 00:00:00') ? '' : $date->format('Y-M-d H:i:s'));
+  } //END-fecha_eval_f
+
 
 } //END-TraitProps

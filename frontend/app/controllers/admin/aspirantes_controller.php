@@ -109,5 +109,17 @@
   } //END-crear
 
 
+  function actualizar() {
+    try {
+      $this->page_action = "Actualizar Aspirante";
+      $redirect = "sicologia/admisiones";
+      OdaFlash::valid('Actualizar en proceso');
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    return Redirect::to($redirect);
+
+  } //END-actualizar
 
 } //END-class

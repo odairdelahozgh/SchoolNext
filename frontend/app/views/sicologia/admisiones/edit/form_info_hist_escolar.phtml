@@ -4,33 +4,33 @@ try {
 
   $tabla = new OdaTable('id="myTable-he1" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Institución 1');
-  $tabla->addRow(data:[$FormAspir->getInput(field: '1_colegio'),
-      $FormAspir->getInput(field: '1_ciudad'),
-      $FormAspir->getInput(field: '1_telefono')]);
-  $tabla->addRow(data:[$FormAspir->getInput(field: '1_grados'),
-      $FormAspir->getInput(field: '1_annios'),
-      $FormAspir->getInput(field: '1_motivo_ret')]);
+  $tabla->addRow(data:[$FormAspir->getInput(field: '1_colegio', attrs:''),
+      $FormAspir->getInput(field: '1_ciudad', attrs:''),
+      $FormAspir->getInput(field: '1_telefono', attrs:'')]);
+  $tabla->addRow(data:[$FormAspir->getInput(field: '1_grados', attrs:''),
+      $FormAspir->getInput(field: '1_annios', attrs:''),
+      $FormAspir->getInput(field: '1_motivo_ret', attrs:'')]);
   $info .= $tabla.'<hr>';
   
   $tabla = new OdaTable('id="myTable-he2" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Institución 2');
-  $tabla->addRow(data:[$FormAspir->getInput(field: '2_colegio'),
-      $FormAspir->getInput(field: '2_ciudad'),
-      $FormAspir->getInput(field: '2_telefono')]);
+  $tabla->addRow(data:[$FormAspir->getInput(field: '2_colegio', attrs:''),
+      $FormAspir->getInput(field: '2_ciudad', attrs:''),
+      $FormAspir->getInput(field: '2_telefono', attrs:'')]);
 
-  $tabla->addRow(data:[$FormAspir->getInput(field: '2_grados'),
-      $FormAspir->getInput(field: '2_annios'),
-      $FormAspir->getInput(field: '2_motivo_ret')]);
+  $tabla->addRow(data:[$FormAspir->getInput(field: '2_grados', attrs:''),
+      $FormAspir->getInput(field: '2_annios', attrs:''),
+      $FormAspir->getInput(field: '2_motivo_ret', attrs:'')]);
   $info .= $tabla.'<hr>';
   
   $tabla = new OdaTable('id="myTable-he3" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Institución 3');
-  $tabla->addRow(data:[$FormAspir->getInput(field: '3_colegio'),
-      $FormAspir->getInput(field: '3_ciudad'),
-      $FormAspir->getInput(field: '3_telefono')]);
+  $tabla->addRow(data:[$FormAspir->getInput(field: '3_colegio', attrs:''),
+      $FormAspir->getInput(field: '3_ciudad', attrs:''),
+      $FormAspir->getInput(field: '3_telefono', attrs:'')]);
 
-  $tabla->addRow(data:[$FormAspir->getInput(field: '3_grados'),
-      $FormAspir->getInput(field: '3_annios'),
+  $tabla->addRow(data:[$FormAspir->getInput(field: '3_grados', attrs:''),
+      $FormAspir->getInput(field: '3_annios', attrs:''),
       $FormAspir->getInput(field: '3_motivo_ret')]);
   $info .= $tabla.'<hr>';
 

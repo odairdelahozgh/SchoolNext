@@ -2,11 +2,11 @@
 <?php
 
   try {
-    $Modelo  = new Aspirante();
-    $FormAspir = new OdaForm(modelo: $Modelo, action: 'admin/aspirantes/crear', method: 'post');
+    $ModeloAspirante  = new Aspirante();
+    $FormAspir = new OdaForm(modelo: $ModeloAspirante, action: 'admin/aspirantes/crear');
 
-    $Modelo  = new AspirantePsico();
-    $FormAspirPsico = new OdaForm(modelo: $Modelo, action: 'admin/aspirantes/crear', method: 'post');
+    $ModeloAspirPsico  = new AspirantePsico();
+    $FormAspirPsico = new OdaForm(modelo: $ModeloAspirPsico, action: '');
 
     $privacidad    = require('form_info_privacidad.phtml');
     $datos_basicos = require('form_info_basicos.phtml');

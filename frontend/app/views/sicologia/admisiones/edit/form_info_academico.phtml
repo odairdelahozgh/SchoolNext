@@ -3,11 +3,11 @@ try {
   $tabla = new OdaTable('id="myTable-ac" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Información sobre Proceso Académico y otros');
 
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'proceso_acad')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'relpares')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'reldocentes')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'cumplnormas')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'porquedesea')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'proceso_acad', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'relpares', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'reldocentes', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'cumplnormas', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'porquedesea', attr:'')]);
   return $tabla;
 
 } catch (\Throwable $th) {

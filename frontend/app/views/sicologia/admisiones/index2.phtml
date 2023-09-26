@@ -25,10 +25,9 @@
 
             $reg->aspirante_grado, 
 
-            "[$reg->id] ".$reg->lnkPageEditAspirante().
-            "<br>Tel: $reg->telefono1 <br>Doc Id: $reg->documento",
+            "$reg->apellido1 $reg->apellido2 $reg->nombres [$reg->id] <br>Tel: $reg->telefono1 <br>Doc Id: $reg->documento",
 
-            "Entrevista: {$reg->fecha_entrev_f()} <br>Evaluaci&oacute;n: $reg->fecha_eval", 
+            "Entrevista: $reg->fecha_entrev <br>Evaluaci&oacute;n: $reg->fecha_eval", 
 
           ], 
           attrs_td: ['class="searchTdata"', 'class="searchTdata" w3-center', 'class="searchTdata"', 'class="searchTdata"']

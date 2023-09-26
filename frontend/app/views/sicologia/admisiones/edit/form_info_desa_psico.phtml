@@ -3,12 +3,12 @@ try {
   $tabla = new OdaTable('id="myTable-ds" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Desarrollo Psicológico');
 
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'lenguaje')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'aprendizaje')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'comporta')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'afecto')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'autocuidado')]);
-  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'especialista')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'lenguaje', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'aprendizaje', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'comporta', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'afecto', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'autocuidado', attr:'')]);
+  $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'especialista', attr:'')]);
   return $tabla;
 
 } catch (\Throwable $th) {

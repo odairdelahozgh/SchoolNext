@@ -5,17 +5,17 @@ try {
 
   $tabla->addRow(
     data: [
-      $FormAspir->getInput(field: 'nombres'), 
-      $FormAspir->getInput(field: 'apellido1'), 
-      $FormAspir->getInput(field: 'apellido2'),
+      $FormAspir->getInput(field: 'nombres', attrs:'maxlength="30"'), 
+      $FormAspir->getInput(field: 'apellido1', attrs:'maxlength="30"'), 
+      $FormAspir->getInput(field: 'apellido2', attrs:'maxlength="30"'),
       ''
       ],
   );
 
   $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'fecha_nac'), 
+    data: [$FormAspir->getInput(field: 'fecha_nac', attrs:''), 
            '<br><b>'.TipoDoc::caption().'</b><br>'.TipoDoc::forSelect('aspirantes_tipo_dcto', 'aspirantes[tipo_dcto]'), 
-           $FormAspir->getInput(field: 'documento'),
+           $FormAspir->getInput(field: 'documento', attrs:''),
            ''
           ],
   );
@@ -29,29 +29,29 @@ try {
   );
 
   $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'pais_nac'), 
-           $FormAspir->getInput(field: 'depto_nac'),
-           $FormAspir->getInput(field: 'ciudad_nac'),
+    data: [$FormAspir->getInput(field: 'pais_nac', attrs:''), 
+           $FormAspir->getInput(field: 'depto_nac', attrs:''),
+           $FormAspir->getInput(field: 'ciudad_nac', attrs:''),
            ''
           ],
   );
   
   $tabla->addRow(
-    data: [$FormAspir->getInput(field: 'direccion'), 
-           $FormAspir->getInput(field: 'barrio'),
-           $FormAspir->getInput(field: 'telefono1'),
+    data: [$FormAspir->getInput(field: 'direccion', attrs:''), 
+           $FormAspir->getInput(field: 'barrio', attrs:''),
+           $FormAspir->getInput(field: 'telefono1', attrs:''),
            ''
           ],
   );
 
   
   $tabla->addRow(
-    data: [$FormAspirPsico->getTextarea(field: 'rel_pad_mad'), 
-          $FormAspirPsico->getTextarea(field: 'vive_con')],
+    data: [$FormAspirPsico->getTextarea(field: 'rel_pad_mad', attr:''), 
+          $FormAspirPsico->getTextarea(field: 'vive_con', attr:'')],
           attrs_td: ['colspan="2"','colspan="2"'],
   );
 
-  $extras = $FormAspir->getInput(tipo: 'hidden', field: 'fecha_insc');
+  $extras = $FormAspir->getInput(tipo: 'hidden', field: 'fecha_insc', attrs:'');
 
   return $tabla.$extras;
 

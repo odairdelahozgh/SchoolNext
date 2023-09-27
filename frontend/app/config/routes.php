@@ -35,9 +35,12 @@ return [
         '/notas'                    => 'docentes/listNotas',
         '/docen-indicadores'        => 'docentes/listIndicadores',
         '/indicadores'              => 'docentes/listIndicadores',
+
+        '/dirgrupo'                 => 'dirgrupo/index', // ?? no funciona
+
         '/docen-dir-grupo'          => 'docentes/direccion_grupo',
-        '/dirreccion-grupo'         => 'docentes/direccion_grupo',
         '/docen-seguimientos-grupo' => 'docentes/seguimientos_grupo',
+        '/docen-registros-grupo'    => 'docentes/registros_grupo',
         
         //'/coord-consoli-notas'   => 'coordinador/consolidado_notas',
         //'/coord-consoli-notas'   => 'coordinador/consolidado',

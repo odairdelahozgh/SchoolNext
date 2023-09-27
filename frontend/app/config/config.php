@@ -28,7 +28,7 @@ return [
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2023,
-      'periodo_actual' => 3,
+      'periodo_actual' => 4,
       'asignar_carga' => ['*'],
     ],
     'boletines' => [

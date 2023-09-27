@@ -112,7 +112,9 @@ class OdaDql {
   public function update(array $arr_values) {
     $sets = '';
     foreach ($arr_values as $key => $value) {
-      if (!empty($value)) { $sets .= " t.$key='$value',"; }
+      //if (!empty($value)) { 
+        $sets .= " t.$key='$value',"; 
+      //}
     }
     
     $this->_sets = substr($sets, 0, strlen($sets)-1);
@@ -124,7 +126,9 @@ class OdaDql {
   public function addUpdate(array $arr_values) {
     $sets = '';
     foreach ($arr_values as $key => $value) { 
-      if (!empty($value)) { $sets .= " t.$key='$value',"; }
+      //if (!empty($value)) { 
+        $sets .= " t.$key='$value',"; 
+      //}
     }
     
     if (empty($this->_sets)) { $this->_sets = substr($sets, 0, strlen($sets)-1); } 

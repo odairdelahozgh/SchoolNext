@@ -306,6 +306,14 @@ class OdaForm extends Form {
       return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
    } // END-getLabel
 
+   public function getDataLabel($field, $inline=false) {
+    $in_line = ($inline) ? '' : '<br>' ;
+    $label = (($this->_modelo->getLabel($field)) ? '<b>'.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
+    $data = $this->_modelo->$field;
+    return $label.$data;
+ } // END-getLabel
+
+
 
    private function getHelp($field) {
       return (($this->_modelo->getHelp($field)) ? '<i class="fa-solid fa-circle-info"></i> <small>'.$this->_modelo->getHelp($field).'</small>' : '') ;

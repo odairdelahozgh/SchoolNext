@@ -13,7 +13,7 @@ class Aspirante extends LiteRecord {
     try {
       parent::__construct();
       self::$table = Config::get('tablas.aspirante');
-      self::$_order_by_defa = 't.is_active DESC,T.fecha_insc DESC, t.estatus,t.grado_aspira,t.apellido1,t.apellido2,t.nombres';
+      self::$_order_by_defa = 't.is_active DESC,t.fecha_insc DESC, t.estatus,t.grado_aspira,t.apellido1,t.apellido2,t.nombres';
       $this->setUp();
       } catch (\Throwable $th) {
         OdaFlash::error($th);
@@ -29,7 +29,7 @@ class Aspirante extends LiteRecord {
           ->orderBy(self::$_order_by_defa);
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
 
-     return $DQL->execute(true);
+     return $DQL->execute();
    } // END-getList
   
 

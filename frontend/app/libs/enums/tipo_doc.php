@@ -5,13 +5,13 @@ enum TipoDoc: string {
 
   case Registro = 'RC';
   case Tarjeta  = 'TI';
-  case Cedula  = 'CC';
+  case Cedula   = 'CC';
 
   public function label(bool $abrev = false): string {
     return match($this) {
       static::Registro => (($abrev)?'RC':'Registro Civil'),
       static::Tarjeta  => (($abrev)?'TI':'Tarjeta de Identidad'),
-      static::Cedula   => (($abrev)?'CC':'C&eacute;dula de Ciudadan&iacute;a'),
+      static::Cedula   => (($abrev)?'CC':'Cédula de Ciudadanía'),
       default          => 'No definido',
     };
   }//END-label

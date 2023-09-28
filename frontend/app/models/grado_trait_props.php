@@ -13,7 +13,7 @@
 
   public function __toString() { return $this->nombre; }
 
-  public static function getSelectGrados(string $id, string $name): string { 
+  public static function getSelectGrados(string $id, string $name, int $grado_selected_id=0): string { 
     $listaGrados = (new Grado())->getList(1);
     $opts = '';
     //<hr>
@@ -22,7 +22,8 @@
       if ($grado->seccion_id <> $secc_ant) {
         $opts .= ((0==$key) ? "<optgroup label=\"$grado->seccion\">" : "</optgroup><optgroup label=\"$grado->seccion\">");
       }
-      $opts .= "<option value=\"$grado->id\">$grado->nombre</option>";
+      $grado_sel = ($grado->id == $grado_selected_id) ? 'selected' : '' ;
+      $opts .= "<option value=\"$grado->id\" $grado_sel>$grado->nombre</option>";
       $secc_ant = $grado->seccion_id;
     }
     return "<select id=\"$id\" name=\"$name\"  class=\"w3-input w3-border\">$opts</select>";

@@ -5,9 +5,6 @@
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
   
-
-  
-  
   class AspirantesController extends ScaffoldController
   {
   protected function before_filter() {
@@ -112,9 +109,10 @@
 
 
 
-  function actualizar() {
+  function actualizarPsicologia() {
     try {
-      // echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      $debug = false;
+      //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
 
       $this->page_action = "Actualizar Aspirante";
       $redirect = "sicologia/admisiones";
@@ -126,23 +124,32 @@
       
       // CARGA LOS DATOS DEL POST EN UN ARRAY
       $arrCamposValidos = [
-        "estatus", "is_active", "fecha_entrev", "ctrl_llamadas", "fecha_eval", 
-        "result_matem", "result_caste", "result_ingle", "result_scien",
-        "entrevista", "recomendac", 
+        "estatus"       => '',
+        "fecha_entrev"  => '000-00-00 00:00:00', 
+        "ctrl_llamadas" => '', 
+        "fecha_eval"    => '000-00-00 00:00:00', 
+        "result_matem"  => '', 
+        "result_caste"  => '', 
+        "result_ingle"  => '', 
+        "result_scien"  => '',
+        "entrevista"    => '', 
+        "recomendac"    => '', 
       ];
 
       $aspirante_id = 0;
-      $dataAspir = [];
       if (Input::hasPost($post_name_aspir)) {
         $Post = Input::post($post_name_aspir);
+        $is_active_ctrl = false;
         foreach ($Post as $field_name => $value) {
-          if ( in_array($field_name, $arrCamposValidos) ) {
-            $dataAspir[$field_name] = $value;
+          if ('is_active'==$field_name) { $is_active_ctrl = true; }
+          if (array_key_exists($field_name, $arrCamposValidos) and strlen($value)>0) {
+            $arrCamposValidos[$field_name] = $value;
           }
           if ('id'==$field_name) {
             $aspirante_id = $value;
           }
         }
+        $arrCamposValidos['is_active'] = ($is_active_ctrl) ? 1 : 0 ;
       }
 
       // AGREGA CAMPOS DE CONTROL
@@ -151,11 +158,11 @@
       $dataAdicAspir['updated_by'] = $this->user_id;
       
       $DQL = new OdaDql((new Aspirante)::class);
-      $DQL->update($dataAspir)
+      $DQL->update($arrCamposValidos)
           ->addUpdate($dataAdicAspir)
           ->where('id=?')
           ->setParams([$aspirante_id]);
-      $DQL->execute();
+      $DQL->execute($debug);
       
 
       OdaFlash::valid('Actualización exitosa.');

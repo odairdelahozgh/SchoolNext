@@ -5,34 +5,34 @@ try {
   
   $tabla->addRow(
     data: [
-      '<b>Fecha de Nacimiento:</b><br>'.$ModeloAspirante->fecha_nac, 
-      '<b>Tipo de documento:</b><br>'.$ModeloAspirante->tipo_dcto, 
-      '<b>Identificación:</b><br>'.$ModeloAspirante->documento, 
+      $FormAspir->getDataLabel('fecha_nac'), 
+      $FormAspir->getDataLabel('tipo_dcto'), 
+      $FormAspir->getDataLabel('documento'), 
     ],
   );
 
+  $Grado = (new Grado())::get($ModeloAspirante->grado_aspira);
   $tabla->addRow(
     data: [
-    '<b>Grado al que Aspira</b><br>'.$ModeloAspirante->grado_aspira, 
-    '', 
-    '<b>Sexo:</b><br>'.$ModeloAspirante->sexo, 
+      $FormAspir->getDataLabel('grado_aspira').' '.$Grado->nombre, 
+      '', 
+      $FormAspir->getDataLabel('sexo'), 
     ],
   );
   
   $tabla->addRow(
     data: [
-      '<b>Pais Nac:</b><br>'.$ModeloAspirante->pais_nac, 
-      '<b>Depto Nac:</b><br>'.$ModeloAspirante->depto_nac, 
-      '<b>Ciudad Nac:</b><br>'.$ModeloAspirante->ciudad_nac, 
+      $FormAspir->getDataLabel('pais_nac'), 
+      $FormAspir->getDataLabel('depto_nac'), 
+      $FormAspir->getDataLabel('ciudad_nac'), 
     ],
   );
   
   $tabla->addRow(
     data: [
-      '<b>dirección:</b><br>'.$ModeloAspirante->direccion.'<br>'
+      $FormAspir->getDataLabel('direccion').'<br>'
       .$ModeloAspirante->barrio, 
-      '<b>Teléfono:</b><br>'.$ModeloAspirante->telefono1, 
-      '',
+      $FormAspir->getDataLabel('telefono1'), 
     ],
     attrs_td: ['colspan="2"'],
   );
@@ -40,12 +40,8 @@ try {
   
   $tabla->addRow(
     data: [
-      '<b>Relación Actual Padres:</b><br>'.$ModeloAspirPsico->rel_pad_mad, 
-      '<b>Personas con las que vive:</b><br>'.$ModeloAspirPsico->vive_con, 
-      '', 
-      // $FormAspirPsico->getInput(field: 'rel_pad_mad', attrs:''), 
-      // $FormAspirPsico->getInput(field: 'vive_con', attrs:'')],
-      // 
+      $FormAspir->getDataLabel('rel_pad_mad'), 
+      $FormAspir->getDataLabel('vive_con'), 
     ],
     attrs_td: ['','colspan="2"'],
   );

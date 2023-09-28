@@ -1,22 +1,22 @@
 <?php 
 try {  
   $info = '<h2>Historia Escolar</h2><p>Información sobre los últimos Jardines y colegios en los que ha estudiado</p>';
-
+  
   $tabla = new OdaTable('id="myTable-he1" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Institución 1');
   $tabla->addRow(
     data:[
-      // $ModeloAspirante->1_colegio,
-      // $ModeloAspirante->1_ciudad,
-      // $ModeloAspirante->1_telefono,
+      $FormAspirPsico->getDataLabel('1_colegio'),
+      $FormAspirPsico->getDataLabel('1_ciudad'),
+      $FormAspirPsico->getDataLabel('1_telefono'),
     ]
   );
 
   $tabla->addRow(
     data:[
-      // $ModeloAspirante->1_grados,
-      // $ModeloAspirante->1_annios,
-      // $ModeloAspirante->1_motivo_ret,
+      $FormAspirPsico->getDataLabel('1_grados'),
+      $FormAspirPsico->getDataLabel('1_annios'),
+      $FormAspirPsico->getDataLabel('1_motivo_ret'),
     ]
   );
   $info .= $tabla.'<hr>';
@@ -25,17 +25,17 @@ try {
   $tabla->setCaption('Institución 2');
   $tabla->addRow(
     data:[
-      // $ModeloAspirante->2_colegio,
-      // $ModeloAspirante->2_ciudad,
-      // $ModeloAspirante->2_telefono,
+      $FormAspirPsico->getDataLabel('2_colegio'),
+      $FormAspirPsico->getDataLabel('2_ciudad'),
+      $FormAspirPsico->getDataLabel('2_telefono'),
     ]
   );
 
   $tabla->addRow(
     data:[
-      // $ModeloAspirante->2_grados,
-      // $ModeloAspirante->2_annios,
-      // $ModeloAspirante->2_motivo_ret,
+      $FormAspirPsico->getDataLabel('2_grados'),
+      $FormAspirPsico->getDataLabel('2_annios'),
+      $FormAspirPsico->getDataLabel('2_motivo_ret'),
     ]
   );
   $info .= $tabla.'<hr>';
@@ -44,21 +44,22 @@ try {
   $tabla->setCaption('Institución 3');
   $tabla->addRow(
     data:[
-      // $ModeloAspirante->3_colegio,
-      // $ModeloAspirante->3_ciudad,
-      // $ModeloAspirante->3_telefono,
+      $FormAspirPsico->getDataLabel('3_colegio'),
+      $FormAspirPsico->getDataLabel('3_ciudad'),
+      $FormAspirPsico->getDataLabel('3_telefono'),
     ]
   );
 
   $tabla->addRow(
     data:[
-      // $ModeloAspirante->3_grados,
-      // $ModeloAspirante->3_annios,
-      // $ModeloAspirante->3_motivo_ret,
+      $FormAspirPsico->getDataLabel('3_grados'),
+      $FormAspirPsico->getDataLabel('3_annios'),
+      $FormAspirPsico->getDataLabel('3_motivo_ret'),
       ]
   );
+  $info .= $tabla.'<hr>';
 
-  return $tabla.'<hr>';
+  return $info.'<hr>';
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

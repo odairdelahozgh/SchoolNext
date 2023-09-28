@@ -5,31 +5,31 @@ try {
 
   $tabla->addRow(
     data: [
-      $ModeloAspirante->padre, 
-      $ModeloAspirante->padre_id, 
+      $FormAspir->getDataLabel('padre'), 
+      $FormAspir->getDataLabel('padre_id'), 
       ],
   );
   $tabla->addRow(
     data: [
-      $ModeloAspirante->padre_edad, 
-      $ModeloAspirante->padre_prof, 
+      $FormAspir->getDataLabel('padre_edad'), 
+      $FormAspir->getDataLabel('padre_prof'), 
       ],
   );
   $tabla->addRow(
     data: [
-      $ModeloAspirante->padre_empresa, 
-      $ModeloAspirante->padre_cargo, 
+      $FormAspir->getDataLabel('padre_empresa'), 
+      $FormAspir->getDataLabel('padre_cargo'), 
       ],
   );
   $tabla->addRow(
     data: [
-      $ModeloAspirante->padre_tel_ofi, 
-      $ModeloAspirante->padre_tel_per, 
+      $FormAspir->getDataLabel('padre_tel_ofi'), 
+      $FormAspir->getDataLabel('padre_tel_per'), 
       ],
   );
   $tabla->addRow(
     data: [
-      $ModeloAspirante->padre_email, 
+      $FormAspir->getDataLabel('padre_email'), 
       '', 
     ],
   );

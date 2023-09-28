@@ -72,13 +72,6 @@ trait AspiranteTraitSetUp {
       'id'             => ' required ',
       'is_habeas_data' => ' required ',
       'nombres'        => ' required maxlength="50" ', 
-      //'result_caste' =>  ' maxlength="255" ',
-      //'result_ingle' =>  ' maxlength="255" ',
-      //'result_matem' =>  ' maxlength="255" ',
-      //'result_plect' =>  ' maxlength="255" ',
-      //'result_pmate' =>  ' maxlength="255" ',
-      //'result_scien' =>  ' maxlength="255" ',
-      //'result_socia' =>  ' maxlength="255" ',
     ];
     
     self::$_defaults = [
@@ -94,41 +87,43 @@ trait AspiranteTraitSetUp {
       'is_trasladado'  => 0,
       'madre_edad'     => '18',
       'padre_edad'     => '18',
-      'sexo'           => 'M',
+      'sexo'           => 'Masculino',
       'tipo_dcto'      => 'TI',
       'created_at'     => $date,
       'created_by'     => 0,
     ];
     
     self::$_widgets = [
-    '1_annios' =>  'text',
-    '1_ciudad' =>  'text',
-    '1_colegio' =>  'text',
-    '1_grados' =>  'text',
+    '1_annios'     =>  'text',
+    '1_ciudad'     =>  'text',
+    '1_colegio'    =>  'text',
+    '1_grados'     =>  'text',
     '1_motivo_ret' =>  'text',
-    '1_telefono' =>  'text',
+    '1_telefono'   =>  'text',
     
-    '2_annios' =>  'text',
-    '2_ciudad' =>  'text',
-    '2_colegio' =>  'text',
-    '2_grados' =>  'text',
+    '2_annios'     =>  'text',
+    '2_ciudad'     =>  'text',
+    '2_colegio'    =>  'text',
+    '2_grados'     =>  'text',
     '2_motivo_ret' =>  'text',
-    '2_telefono' =>  'text',
+    '2_telefono'   =>  'text',
     
-    '3_annios' =>  'text',
-    '3_ciudad' =>  'text',
-    '3_colegio' =>  'text',
-    '3_grados' =>  'text',
+    '3_annios'     =>  'text',
+    '3_ciudad'     =>  'text',
+    '3_colegio'    =>  'text',
+    '3_grados'     =>  'text',
     '3_motivo_ret' =>  'text',
-    '3_telefono' =>  'text',
+    '3_telefono'   =>  'text',
 
     'ante_fecha_ret' =>  'date',
     'ante_grado' =>  'text',
     'ante_instit' =>  'text',
     'ante_instit_dir' =>  'text',
     'ante_instit_tel' =>  'text',
+
     'apellido1' =>  'text',
     'apellido2' =>  'text',
+    
     'barrio' =>  'text',
     'ciudad_nac' =>  'text',
     'created_at' =>  'datetime',
@@ -276,6 +271,9 @@ trait AspiranteTraitSetUp {
 
       'nombres' =>  'Nombres',
       'observaciones' =>  'Observaciones',
+
+      'rel_pad_mad' => 'Relación entre Padre y Madre ',
+      'vive_con'=>'Personas con las que vive',
 
       'padre' =>  'Nombre completo',
       'padre_cargo' =>  'Cargo',

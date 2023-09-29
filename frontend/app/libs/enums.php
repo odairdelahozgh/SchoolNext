@@ -3,6 +3,7 @@
   require_once "enums/aspir_estatus.php";
   require_once "enums/aspir_results.php";
   require_once "enums/aspir_traslado.php";
+  require_once "enums/aspir_llamadas.php";
   require_once "enums/dia_semana.php";
   require_once "enums/estado.php";
   require_once "enums/mes.php";

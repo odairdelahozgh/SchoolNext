@@ -300,7 +300,7 @@ class OdaForm extends Form {
    /**
     * 
     */
-   private function getLabel($field, $inline=false) {
+   public function getLabel($field, $inline=false) {
       $requerido = ($this->isRequired($field)) ? '<i class="fa-solid fa-bolt"></i> ' : '' ;
       $in_line = ($inline) ? '' : '<br>' ;
       return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;

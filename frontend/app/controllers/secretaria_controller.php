@@ -165,5 +165,20 @@ class SecretariaController extends AppController
       View::select('admisiones/index');
     } //END-admisiones
 
+    
+    public function admisiones_edit(int $aspirante_id) {
+      try {
+        $this->page_action = 'Admisiones - Editando Aspirante';
+        $this->data = [0];
+        $this->arrData['Aspirante'] = (new Aspirante)->get($aspirante_id);
+        $this->arrData['AspirantePsico'] = (new AspirantePsico)::first('SELECT * FROM sweb_aspirantepsico WHERE aspirante_id=?', [$aspirante_id]);
+      
+      } catch (\Throwable $th) {
+        OdaFlash::error($th);
+      }
 
+      View::select('admisiones/edit/edit');
+    } //END-admisiones_edit
+
+    
 } // END CLASS

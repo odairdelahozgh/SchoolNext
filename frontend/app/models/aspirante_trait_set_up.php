@@ -141,8 +141,10 @@ trait AspiranteTraitSetUp {
     'grado_aspira' =>  'select',
     'id' =>  'text',    
     'is_active' =>  'check',
+
     'is_fecha_entrev' =>  'check',
     'is_fecha_eval' =>  'check',
+
     'is_habeas_data' =>  'check',
     'is_pago' =>  'check',
     'is_trasladado' =>  'check',
@@ -240,7 +242,7 @@ trait AspiranteTraitSetUp {
       'ciudad_nac' =>  'Ciudad',
       'created_at'      => 'Creado el',
       'created_by'      => 'Creado por',
-      'ctrl_llamadas' =>  'Se llamó?',
+      'ctrl_llamadas' =>  'Control de Llamadas',
       'depto_nac' =>  'Depto (Estado)',
       'direccion' =>  'Dirección',
       'documento' =>  '# Identificación',
@@ -253,8 +255,10 @@ trait AspiranteTraitSetUp {
       'grado_aspira' =>  'Grado al que Aspira',
 
       'is_active' =>  'Activo?',
-      'is_fecha_entrev' =>  'Entrevistado?',
-      'is_fecha_eval' =>  'Evaluado?',
+
+      'is_fecha_eval'   => 'Asistió a <br>Evaluación ?',
+      'is_fecha_entrev' => 'Asistió a <br>Entrevista ?',
+
       'is_habeas_data' =>  'Acepta?',
       'is_pago' =>  'Ya pagó?',
       'is_trasladado' =>  'Trasladado?',

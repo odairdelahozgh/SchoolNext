@@ -112,7 +112,9 @@
   function actualizarPsicologia() {
     try {
       $debug = false;
-      //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      if ($debug) { 
+        echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      }
 
       $this->page_action = "Actualizar Aspirante";
       $redirect = "sicologia/admisiones";
@@ -126,7 +128,6 @@
       $arrCamposValidos = [
         "estatus"       => '',
         "fecha_entrev"  => '000-00-00 00:00:00', 
-        "ctrl_llamadas" => '', 
         "fecha_eval"    => '000-00-00 00:00:00', 
         "result_matem"  => '', 
         "result_caste"  => '', 
@@ -172,6 +173,70 @@
     }
     return Redirect::to($redirect);
 
-  } //END-actualizar
+  } //END-actualizarPsicologia
+
+
+
+
+  function actualizarSecretaria() {
+    try {
+      $debug = false;
+      if ($debug) { 
+        echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      }
+
+      $this->page_action = "Actualizar Aspirante";
+      $redirect = "secretaria/admisiones";
+
+      $post_name_aspir = 'aspirantes';
+      if (!Input::hasPost($post_name_aspir)) { 
+        OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); 
+      }
+      
+      // CARGA LOS DATOS DEL POST EN UN ARRAY
+      $arrCamposValidos = [
+        "ctrl_llamadas" => '', 
+        'is_pago' => 0,
+      ];
+
+      $aspirante_id = 0;
+      if (Input::hasPost($post_name_aspir)) {
+        $Post = Input::post($post_name_aspir);
+        $is_pago_ctrl = false;
+        foreach ($Post as $field_name => $value) {
+          if ('is_pago'==$field_name) { $is_pago_ctrl = true; }
+          if (array_key_exists($field_name, $arrCamposValidos) and strlen($value)>0) {
+            $arrCamposValidos[$field_name] = $value;
+          }
+          if ('id'==$field_name) {
+            $aspirante_id = $value;
+          }
+        }
+        $arrCamposValidos['is_pago'] = ($is_pago_ctrl) ? 1 : 0 ;
+      }
+
+      // AGREGA CAMPOS DE CONTROL
+      $dataAdicAspir =[];
+      $dataAdicAspir['updated_at'] = date('Y-m-d H:i:s', time());
+      $dataAdicAspir['updated_by'] = $this->user_id;
+      
+      $DQL = new OdaDql((new Aspirante)::class);
+      $DQL->update($arrCamposValidos)
+          ->addUpdate($dataAdicAspir)
+          ->where('id=?')
+          ->setParams([$aspirante_id]);
+      $DQL->execute($debug);
+      
+
+      OdaFlash::valid('Actualización exitosa.');
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    return Redirect::to($redirect);
+
+  } //END-actualizarSecretaria
+
+
 
 } //END-class

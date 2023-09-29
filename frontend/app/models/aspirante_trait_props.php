@@ -45,18 +45,31 @@ trait AspiranteTraitProps {
   } //END-is_pago_f
 
 
-  public function lnkPageEditAspirante(): string {
+  public function lnkPageEditAspirantePsicologia(): string {
     try {
       return OdaTags::link(
         action: "sicologia/admisiones_edit/$this->id",
         text: "$this",
-        //attrs: 'class="btn"',
       );
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  }//END-lnkPageEditAspirante
+  }//END-lnkPageEditAspirantePsicologia
+
+  
+  public function lnkPageEditAspiranteSecretaria(): string {
+    try {
+      return OdaTags::link(
+        action: "secretaria/admisiones_edit/$this->id",
+        text: "$this",
+      );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }//END-lnkPageEditAspiranteSecretaria
+
 
 
   public function fecha_entrev_f() {

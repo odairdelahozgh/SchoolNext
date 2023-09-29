@@ -13,7 +13,6 @@
     $tabla->setHead(
        data_head:    ['id', 'Estado', 'Grado', 'Aspirante', 'Fechas'], 
        attrs:         'class="w3-theme"', 
-       //arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
     );
 
     foreach($data as $key => $reg) {
@@ -27,7 +26,7 @@
 
             $reg->aspirante_grado, 
 
-            "[$reg->id] ".$reg->lnkPageEditAspirante().
+            "[$reg->id] ".$reg->lnkPageEditAspirantePsicologia().
             "<br>Tel: $reg->telefono1 <br>Doc Id: $reg->documento",
 
             "Entrevista: {$reg->fecha_entrev_f()} <br>Evaluaci&oacute;n: {$reg->fecha_eval_f()}", 

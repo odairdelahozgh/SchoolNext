@@ -18,7 +18,7 @@
     $numDias = ($is_vigente and ($diferencia->days > 0)) ? '<b class="w3-yellow">Falta(n) '.($diferencia->days).' dia(s) mas</b>' : '' ;
 
     $col_estado_evento = $pasado.$vigente;
-    $col_fecha_evento = ($desde == $hasta) ? $desde->format('M-d') : $desde->format('M-d').'<br> a <br>'.$hasta->format('M-d') ;
+    $col_fecha_evento = ($desde == $hasta) ? $desde->format('M-d') : $desde->format('M-d').'<br> '.$hasta->format('M-d') ;
     $col_evento = $value->nombre.'<br>'.$numDias;
 
     $tabla->addRow(data:[$col_estado_evento, $col_fecha_evento, $col_evento], attrs_td:['class="w3-center"', 'class="w3-center"']);

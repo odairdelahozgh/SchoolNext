@@ -61,9 +61,8 @@ abstract class AppController extends Controller
       
       //if(Auth::is_valid()) $this->userRol = Auth::get("rol");
       $this->data = [0];
-      $this->breadcrumb = new Breadcrumb();
-      $this->breadcrumb->class_ul = 'breadcrumb';
-      $this->breadcrumb->addCrumb(0, '&#127968;', '');
+      $this->breadcrumb = new OdaBreadcrumb();
+      $this->breadcrumb->__set('cut', true);
       
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');

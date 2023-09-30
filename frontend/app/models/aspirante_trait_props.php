@@ -15,7 +15,7 @@ trait AspiranteTraitProps {
     }
   } //END-is_pago_enum
 
-  public function is_pago_f(): string {
+  public function is_pago_f() {
     try {
       return self::is_pago_enum((int)$this->is_pago);
     
@@ -60,7 +60,7 @@ trait AspiranteTraitProps {
   } //END-estatus_enum
 
 
-  public function ctrl_llamadas_f(): string {
+  public function ctrl_llamadas_f() {
     try {
       return self::ctrl_llamadas_enum((string)$this->ctrl_llamadas);
     

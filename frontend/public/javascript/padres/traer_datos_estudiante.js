@@ -170,7 +170,7 @@ function template_boletines(estudiante, ruta_base, periodo_actual) {
   let mes_req = [];
   mes_req[1] = 4;
   mes_req[2] = 6;
-  mes_req[3] = 9;
+  mes_req[3] = 8;
   mes_req[4] = 11;
   mes_req[5] = 11;
 

@@ -8,7 +8,7 @@
 class NotasController extends ScaffoldController
 {
 
-  public function generarNotasEnBlanco(int $salon_id, int $asignatura_id) {
+  public function generarNotasEnBlanco_BySalonAsignatura(int $salon_id, int $asignatura_id) {
     try {
       $Notas = new Nota();
       $Notas::generarCalif_BySalonAsignatura($salon_id, $asignatura_id);

@@ -3,27 +3,27 @@
 enum AspirLlamadas: string {
   Use EnumsFunciones;
 
-  case Pendiente   = 'No Notificado';
-  case AExamen     = 'Examen';
+  case Pendiente   = 'No notificado';
   case AEntrevista = 'Entrevista';
+  case AExamen     = 'Examen';
   case AResultados = 'Resultados';
 
   public function label(bool $abrev = false): string {
     return match($this) {
-      static::Pendiente   => 'No notificado',
-      static::AExamen     => 'Llamado para Examen',
-      static::AEntrevista => 'Llamado para Entrevista',
-      static::AResultados => 'Llamado para Resultados',
+      static::Pendiente   => (($abrev)?'NON':'No notificado'),
+      static::AEntrevista => (($abrev)?'ENT':'Llamado para Entrevista'),
+      static::AExamen     => (($abrev)?'EXA':'Llamado para Examen'),
+      static::AResultados => (($abrev)?'RES':'Llamado para Resultados'),
       default             => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label
 
   public function ico(bool $with_color=true, $attr_class=''): string {
     $ico = match($this) {
-        static::Pendiente   => 'fa-',
-        static::AExamen     => 'fa-',
-        static::AEntrevista => 'fa-',
-        static::AResultados => 'fa-',
+        static::Pendiente   => 'fa-phone-slash',
+        static::AEntrevista => 'fa-phone-volume',
+        static::AExamen     => 'fa-phone-volume',
+        static::AResultados => 'fa-phone-volume',
         default             => 'fa-question',
     };
     $color = ($with_color) ? 'style="color: '.self::color().'"' : '' ;
@@ -32,11 +32,11 @@ enum AspirLlamadas: string {
   
   public function color(): string {
     return match($this) {
-        static::Pendiente   => 'red',
-        static::AExamen     => 'blue',
-        static::AEntrevista => 'orange',
-        static::AResultados => 'green',
-        default             => 'red',
+        static::Pendiente   => 'crimson',
+        static::AEntrevista => 'coral',
+        static::AExamen     => 'dodgerblue',
+        static::AResultados => 'seagreen',
+        default             => 'crimson',
     };
   }//END-color
 

@@ -38,9 +38,9 @@ enum Estado: int {
 
   public function color(): string {
     return match($this) {
-        static::Inactivo => 'red',
-        static::Activo   => 'green',
-        default          => 'red',
+        static::Inactivo => 'crimson',
+        static::Activo   => 'seagreen',
+        default          => 'crimson',
     };
   }//END-color
 

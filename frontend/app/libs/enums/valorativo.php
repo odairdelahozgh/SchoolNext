@@ -34,10 +34,10 @@ enum Valorativo: String {
 
   public function color(): string {
     return match($this) {
-        static::Fortaleza     => 'green',
-        static::Debilidad     => 'blue',
-        static::Recomendacion => 'red',
-        default               => 'red',
+        static::Fortaleza     => 'seagreen',
+        static::Debilidad     => 'dodgerblue',
+        static::Recomendacion => 'crimson',
+        default               => 'crimson',
     };
   }//END-color
 

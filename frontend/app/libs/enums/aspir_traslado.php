@@ -36,9 +36,9 @@ enum AspirTraslado: int {
 
   public function color(): string {
     return match($this) {
-        static::No => 'blue',
-        static::Si => 'green',
-        default    => 'blue',
+        static::No => 'dodgerblue',
+        static::Si => 'seagreen',
+        default    => 'dodgerblue',
     };
   }//END-color
 

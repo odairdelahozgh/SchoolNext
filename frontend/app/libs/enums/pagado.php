@@ -32,9 +32,9 @@ enum Pagado: int {
 
   public function color(): string {
     return match($this) {
-        static::No => 'red',
-        static::Si => 'green',
-        default    => 'red',
+        static::No => 'crimson',
+        static::Si => 'seagreen',
+        default    => 'crimson',
     };
   }//END-color
 

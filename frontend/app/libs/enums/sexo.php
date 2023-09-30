@@ -29,9 +29,9 @@ enum Sexo: string {
 
   public function color(): string {
     return match($this) {
-        static::Masculino => 'blue',
-        static::Femenino  => 'green',
-        default           => 'pink',
+        static::Masculino => 'dodgerblue',
+        static::Femenino  => 'seagreen',
+        default           => 'coral',
     };
   }//END-color
 

@@ -23,13 +23,13 @@ enum Rangos: string {
   
   public function color(): string {
     return match($this) {
-        static::Bajo        => 'red',
-        static::Basico      => 'orange',
+        static::Bajo        => 'crimson',
+        static::Basico      => 'coral',
         static::BasicoPlus  => 'yellow',
         static::Alto        => 'light-blue',
-        static::AltoPlus    => 'blue',
-        static::Superior    => 'green',
-        default             => 'red',
+        static::AltoPlus    => 'dodgerblue',
+        static::Superior    => 'seagreen',
+        default             => 'crimson',
     };
   } //END-color
 

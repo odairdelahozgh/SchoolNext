@@ -11,9 +11,9 @@ enum AspirResults: string {
   public function label(bool $abrev = false): string {
     return match($this) {
       static::Nulo   => '',
-      static::Alto   => 'Alto',
-      static::Basico => 'Básico',
-      static::Bajo   => 'Bajo',
+      static::Alto   => (($abrev)?'AL':'Alto'),
+      static::Basico => (($abrev)?'BA':'Básico'),
+      static::Bajo   => (($abrev)?'BJ':'Bajo'),
       default        => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label

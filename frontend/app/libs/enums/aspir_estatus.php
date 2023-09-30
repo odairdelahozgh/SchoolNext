@@ -9,9 +9,9 @@ enum AspirEstatus: string {
 
   public function label(bool $abrev = false): string {
     return match($this) {
-      static::Estudio   => 'En Estudio',
-      static::Admitido  => 'Admitido',
-      static::Rechazado => 'Rechazado',
+      static::Estudio   => (($abrev)?'ES':'En Estudio'),
+      static::Admitido  => (($abrev)?'AD':'Admitido'),
+      static::Rechazado => (($abrev)?'RE':'Rechazado'),
       default           => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label
@@ -29,10 +29,10 @@ enum AspirEstatus: string {
   
   public function color(): string {
     return match($this) {
-        static::Estudio => 'blue',
-        static::Admitido => 'green',
-        static::Rechazado => 'red',
-        default    => 'red',
+        static::Estudio => 'dodgerblue',
+        static::Admitido => 'seagreen',
+        static::Rechazado => 'crimson',
+        default    => 'crimson',
     };
   }//END-color
 

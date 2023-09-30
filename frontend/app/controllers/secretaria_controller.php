@@ -155,8 +155,7 @@ class SecretariaController extends AppController
     public function admisiones() {
       try {
         $this->page_action = 'M&oacute;dulo de Admisiones';
-        $select = implode(', ', (new Aspirante)::getFieldsShow(show: 'index', prefix: 't.'));
-        $this->data = (new Aspirante)->getListActivos(select: $select);
+        $this->data = (new Aspirante)->getListActivos();
 
       } catch (\Throwable $th) {
         OdaFlash::error($th);
@@ -169,6 +168,7 @@ class SecretariaController extends AppController
     public function admisiones_edit(int $aspirante_id) {
       try {
         $this->page_action = 'Admisiones - Editando Aspirante';
+        $this->breadcrumb->addCrumb('admisiones', 'secretaria/admisiones');
         $this->data = [0];
         $this->arrData['Aspirante'] = (new Aspirante)->get($aspirante_id);
         $this->arrData['AspirantePsico'] = (new AspirantePsico)::first('SELECT * FROM sweb_aspirantepsico WHERE aspirante_id=?', [$aspirante_id]);

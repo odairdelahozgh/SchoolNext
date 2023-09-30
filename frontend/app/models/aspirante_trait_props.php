@@ -45,6 +45,31 @@ trait AspiranteTraitProps {
   } //END-is_pago_f
 
 
+  
+  public static function ctrl_llamadas_enum(string $ctrl_llamadas, bool $with_color=true, string $attr_class='', bool $show_ico=true) { 
+    try {
+      return (
+        ($show_ico) ? 
+        AspirLlamadas::tryFrom($ctrl_llamadas)->label_ico($with_color, $attr_class) : 
+        AspirLlamadas::tryFrom($ctrl_llamadas)->label($attr_class)
+      );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-estatus_enum
+
+
+  public function ctrl_llamadas_f(): string {
+    try {
+      return self::ctrl_llamadas_enum((string)$this->ctrl_llamadas);
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-ctrl_llamadas_f
+
+
   public function lnkPageEditAspirantePsicologia(): string {
     try {
       return OdaTags::link(

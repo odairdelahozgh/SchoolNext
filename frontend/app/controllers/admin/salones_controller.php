@@ -8,4 +8,11 @@
 class SalonesController extends ScaffoldController
 {
 
+  public function setupCalificarSalon(int $salon_id) {
+    $Salon = new Salon();
+    $result = $Salon->setupCalificarSalon($salon_id);
+    OdaFlash::info("Registros Incluidos: $result");
+    return Redirect::to("admin/$this->controller_name/index");
+  }
+
 } // END CLASS

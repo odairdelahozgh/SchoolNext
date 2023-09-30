@@ -1,7 +1,6 @@
 <?php if(Config::get('config.application.breadcrumb')): ?>
 <div id="breadcrumb">
   <?php
-    //Load::lib('breadcrumb');
     $Crumb = new Breadcrumb();
     $Crumb->addCrumb(0, 'Inicio', Router::get('module'));
     $Crumb->addCrumb(1, Router::get('controller'), Router::get('module') . '/' . Router::get('controller'));

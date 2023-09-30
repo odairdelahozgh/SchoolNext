@@ -19,7 +19,8 @@ abstract class AdminController extends Controller
 {
   public string $page_action = '';
   public string $page_title = 'Titulo Pagina';
-  public string $breadcrumb = 'Inicio';
+  
+  public $breadcrumb;
 
   public string $theme = 'dark';
   public string $themei = 'd';
@@ -40,6 +41,7 @@ abstract class AdminController extends Controller
   final protected function initialize()
   {
     try {
+      $this->breadcrumb = new OdaBreadcrumb();
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');
       $this->id_instit = Config::get('config.institution.id_name');

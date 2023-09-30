@@ -29,7 +29,9 @@
             "[$reg->id] ".$reg->lnkPageEditAspirantePsicologia().
             "<br>Tel: $reg->telefono1 <br>Doc Id: $reg->documento",
 
-            "Entrevista: {$reg->fecha_entrev_f()} <br>Evaluaci&oacute;n: {$reg->fecha_eval_f()}", 
+            "{$reg->ctrl_llamadas_f()} <br>          
+            Entrevista: {$reg->fecha_entrev_f()} <br>
+            Evaluaci&oacute;n: {$reg->fecha_eval_f()}",   
 
           ], 
           attrs_td: ['class="searchTdata"', 'class="searchTdata" w3-center', 'class="searchTdata"', 'class="searchTdata"']

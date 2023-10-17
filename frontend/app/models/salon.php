@@ -110,7 +110,6 @@ class Salon extends LiteRecord {
 
   
       
-  //----------------------
   public static function setupCalificarSalon(int $salon_id) {
     try {
       $periodo_actual = Config::get('config.academic.periodo_actual');
@@ -143,23 +142,62 @@ class Salon extends LiteRecord {
               $Model = new Nota();
               $DQL = new OdaDql(__CLASS__);
               $DQL->setFrom('sweb_notas');
+
               $DQL->insert([
-                  'uuid' => $Model->xxh3Hash(),
-                  'annio' => $annio_actual,
-                  'periodo_id' => $periodo_actual,
-                  'grado_id' => $RegSalon->grado_id,
-                  'salon_id' => $salon_id,
-                  'asignatura_id' => $asignat->asignatura_id,
-                  'estudiante_id' => $estud->id,
-                  'created_at' => $Now->format('Y-m-d H:i:s'),
-                  'updated_at' => $Now->format('Y-m-d H:i:s'),
-                  'created_by' => 1,
-                  'updated_by' => 1,
+                'uuid' => $Model->xxh3Hash(),
+                'annio' => $annio_actual,
+                'periodo_id' => $periodo_actual,
+                'grado_id' => $RegSalon->grado_id,
+                'salon_id' => $salon_id,
+                'asignatura_id' => $asignat->asignatura_id,
+                'estudiante_id' => $estud->id,
+                'created_at' => $Now->format('Y-m-d H:i:s'),
+                'updated_at' => $Now->format('Y-m-d H:i:s'),
+                'created_by' => 1,
+                'updated_by' => 1,
+            ]);
+            $DQL->execute();
+            $cnt += 1;
+
+            if (4==$periodo_actual) { // OJO EXCEPCIÓN añadir el 5to periodo automáticamente
+              $DQL->insert([
+                'uuid' => $Model->xxh3Hash(),
+                'annio' => $annio_actual,
+                'periodo_id' => 5,
+                'grado_id' => $RegSalon->grado_id,
+                'salon_id' => $salon_id,
+                'asignatura_id' => $asignat->asignatura_id,
+                'estudiante_id' => $estud->id,
+                'created_at' => $Now->format('Y-m-d H:i:s'),
+                'updated_at' => $Now->format('Y-m-d H:i:s'),
+                'created_by' => 1,
+                'updated_by' => 1,
               ]);
               $DQL->execute();
               $cnt += 1;
             }
-          }
+              
+            }// END-foreach-Asignaturas
+
+            if (4==$periodo_actual) { // OJO EXCEPCIÓN añadir comportamiento el 5to periodo automáticamente
+              $DQL->insert([
+                'uuid' => $Model->xxh3Hash(),
+                'annio' => $annio_actual,
+                'periodo_id' => 5, // QUINTO PERIDO SOLAMENTE.
+                'grado_id' => $RegSalon->grado_id,
+                'salon_id' => $salon_id,
+                'asignatura_id' => 30, // MATERIA COMPORTAMIENTO
+                'estudiante_id' => $estud->id,
+                'created_at' => $Now->format('Y-m-d H:i:s'),
+                'updated_at' => $Now->format('Y-m-d H:i:s'),
+                'created_by' => 1,
+                'updated_by' => 1,
+              ]);
+              $DQL->execute();
+              $cnt += 1;
+            }
+
+          }// END-foreach-Estudiantes
 
       }
       return $cnt;
@@ -169,7 +207,7 @@ class Salon extends LiteRecord {
       OdaFlash::error($th);
     }
 
-  } // FIN setupCalificarSalon
+  } // END-setupCalificarSalon
 
   
   public function setNumeroEstudiantes() {

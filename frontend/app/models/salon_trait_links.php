@@ -22,4 +22,14 @@ trait SalonTraitLinks {
     }
   } //END-getLnkPreboletin
   
+  public function getLnkSetupCalificarSalon(): string {
+    try {
+      return OdaTags::linkButton(action: "admin/salones/setupCalificarSalon/$this->id", text: 'Setup Cal', attrs: " class=\"w3-button w3-green\"");
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getLnkPreboletin
+  
+
 } //END-Trait

@@ -12,7 +12,7 @@ class NotasController extends ScaffoldController
     try {
       $Notas = new Nota();
       $Notas::generarCalif_BySalonAsignatura($salon_id, $asignatura_id);
-
+      
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }

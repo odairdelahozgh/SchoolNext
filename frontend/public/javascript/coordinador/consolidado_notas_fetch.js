@@ -34,7 +34,7 @@ function traer_data(salon_id) {
 
       caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_boletines_salon}<br><br>`;
       for (let estudiante in datos[salon]) {
-        [estudiante_nombre, estudiante_id, estudiante_uuid]= estudiante.split(";");
+        [estudiante_nombre, estudiante_id, estudiante_uuid, is_active]= estudiante.split(";");
         body_table += '<tr class="w3-theme-'+theme.toString().substr(0,1)+'5"><td colspan=12><h3>INFOALUMNO</h3> BTNREGPDF</td></tr>';
         
         let cont = 1;
@@ -87,7 +87,8 @@ function traer_data(salon_id) {
             } else {
                 lleva_pa = '<br>';
             }
-            fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0) + `${br} ${asi} ${paf}</td>`;
+            const text_adic = `${asignatura_abrev} P${periodo}`;
+            fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
             
             if (parseInt(nota_final)>0) {
               elementos += 1;
@@ -144,6 +145,9 @@ function traer_data(salon_id) {
             target="_blank"
             class="w3-button w3-pale-green w3-round">Registros PDF
           </a>`;
+        
+        
+        info_estudiante = (is_active == 1) ? info_estudiante : '<del>'+info_estudiante+'</del>';
         body_table = body_table.replace(/INFOALUMNO/i, info_estudiante);
         body_table = body_table.replace(/BTNREGPDF/i, lnkDescargaRegistrosPDF);
         cnt_estudiantes += 1;
@@ -190,12 +194,12 @@ function nombreRango(valor) {
 } //END-nombreRango
 
 
-function notaFormato(valor, brake = true, fixed =2) {
+function notaFormato(valor, brake = true, fixed =2, text2='') {
   fixed =  (valor % 1 !== 0) ? fixed : 0;  
   let valor_fixed = valor.toFixed(fixed);
   let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed)+'"';
   let nombre_rango = nombreRango(valor_fixed);
-  let nombre_rango_title = `title="${nombre_rango}"`;
+  let nombre_rango_title = `title="${nombre_rango} ${text2}"`;
   let br = (brake) ? '<br>' : '';
   //return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}${nombre_rango}`;
   return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}`;

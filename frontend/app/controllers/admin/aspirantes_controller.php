@@ -111,7 +111,7 @@
 
   function actualizarPsicologia() {
     try {
-      $debug = false;
+      $debug = true;
       if ($debug) { 
         echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
       }
@@ -126,9 +126,13 @@
       
       // CARGA LOS DATOS DEL POST EN UN ARRAY
       $arrCamposValidos = [
-        "estatus"       => '',
-        "fecha_entrev"  => '000-00-00 00:00:00', 
-        "fecha_eval"    => '000-00-00 00:00:00', 
+        "estatus"         => '',
+        "grado_aspira"    => '',
+        "fecha_entrev"    => '000-00-00 00:00:00', 
+        "is_fecha_entrev" => '0', 
+        "fecha_eval"      => '000-00-00 00:00:00', 
+        "is_fecha_eval"   => '0', 
+
         "result_matem"  => '', 
         "result_caste"  => '', 
         "result_ingle"  => '', 
@@ -140,9 +144,17 @@
       $aspirante_id = 0;
       if (Input::hasPost($post_name_aspir)) {
         $Post = Input::post($post_name_aspir);
+        
         $is_active_ctrl = false;
+        $is_fecha_entrev = false;
+        $is_fecha_eval = false;
+
         foreach ($Post as $field_name => $value) {
+          
           if ('is_active'==$field_name) { $is_active_ctrl = true; }
+          if ('is_fecha_entrev'==$field_name) { $is_fecha_entrev = true; }
+          if ('is_fecha_eval'==$field_name) { $is_fecha_eval = true; }
+
           if (array_key_exists($field_name, $arrCamposValidos) and strlen($value)>0) {
             $arrCamposValidos[$field_name] = $value;
           }
@@ -151,6 +163,8 @@
           }
         }
         $arrCamposValidos['is_active'] = ($is_active_ctrl) ? 1 : 0 ;
+        $arrCamposValidos['is_fecha_entrev'] = ($is_fecha_entrev) ? 1 : 0 ;
+        $arrCamposValidos['is_fecha_eval'] = ($is_fecha_eval) ? 1 : 0 ;
       }
 
       // AGREGA CAMPOS DE CONTROL

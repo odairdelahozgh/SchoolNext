@@ -16,7 +16,6 @@
   public static function getSelectGrados(string $id, string $name, int $grado_selected_id=0): string { 
     $listaGrados = (new Grado())->getList(1);
     $opts = '';
-    //<hr>
     $secc_ant = 0;
     foreach ($listaGrados as $key => $grado) {
       if ($grado->seccion_id <> $secc_ant) {

@@ -93,11 +93,6 @@
       ->addInsert($dataAdicAspirPsico)
       ->execute();
       
-      
-      // =================================================================
-      // =================================================================
-      
-      
       OdaFlash::valid("El registro de aspirante #$id ha sido creado satisfactoriamente");
       
     } catch (\Throwable $th) {
@@ -111,7 +106,7 @@
 
   function actualizarPsicologia() {
     try {
-      $debug = true;
+      $debug = false;
       if ($debug) { 
         echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
       }
@@ -210,7 +205,8 @@
       // CARGA LOS DATOS DEL POST EN UN ARRAY
       $arrCamposValidos = [
         "ctrl_llamadas" => '', 
-        'is_pago' => 0,
+        'is_pago'       => 0,
+        'grado_aspira'  => '',
       ];
 
       $aspirante_id = 0;

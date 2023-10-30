@@ -94,6 +94,24 @@ class Nota extends LiteRecord {
     return $DQL->execute();
   } // END-getByPeriodoEstudiante
 
+  public function getByAnnioPeriodoEstudiante(int $annio, int $periodo_id, int $estudiante_id): array|string {
+    $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->setFrom($tbl_notas);
+
+    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
+          t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
+          t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
+        ->leftJoin('asignatura', 'a')
+        ->leftJoin('estudiante', 'e')
+        ->where('t.periodo_id=? AND t.estudiante_id=?')
+        ->orderBy('a.nombre')
+        ->setParams([$periodo_id, $estudiante_id]);
+    return $DQL->execute();
+  } // END-getByAnnioPeriodoEstudiante
+
   public function getByPeriodoSalon(int $periodo_id, int $salon_id): array|string {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
@@ -287,6 +305,7 @@ class Nota extends LiteRecord {
   
       $aResult = [];
       $sql = "SELECT N.id, N.annio AS annio, N.periodo_id AS periodo_id, 
+      N.salon_id AS salon_id, S.nombre AS salon_nombre, 
       N.grado_id AS grado_id, G.nombre AS grado_nombre, G.abrev AS grado_abrev, 
       N.asignatura_id AS asignatura_id, A.nombre AS asignatura_nombre, A.abrev AS asignatura_abrev,
       N.estudiante_id AS estudiante_id, concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante_nombre, E.uuid as estudiante_uuid,
@@ -294,6 +313,7 @@ class Nota extends LiteRecord {
       FROM $tbl_notas N 
       LEFT JOIN sweb_asignaturas A on N.asignatura_id = A.id
       LEFT JOIN sweb_estudiantes E on N.estudiante_id = E.id
+      LEFT JOIN sweb_salones S on N.salon_id = S.id
       LEFT JOIN sweb_grados G on N.grado_id = G.id
       
       WHERE N.grado_id = $grado_id and N.asignatura_id NOT IN (30, 35,36,37,38,39,40)
@@ -301,7 +321,7 @@ class Nota extends LiteRecord {
   
       $registros = static::query($sql)->fetchAll();
       foreach ($registros as $reg) {
-        $aResult["$reg->grado_nombre;$reg->grado_id;$reg->grado_abrev"]
+        $aResult["$reg->grado_nombre;$reg->grado_id;$reg->grado_abrev;$reg->salon_nombre;$reg->salon_id"]
                 ["$reg->estudiante_nombre;$reg->estudiante_id;$reg->estudiante_uuid"]
                 ["$reg->periodo_id"]
                 ["$reg->asignatura_nombre;$reg->asignatura_abrev"] 

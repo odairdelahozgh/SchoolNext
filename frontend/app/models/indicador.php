@@ -56,6 +56,22 @@ class Indicador extends LiteRecord {
     return $DQL->execute();
   } // END-getByPeriodoGrado
 
+  
+  public function getByAnnioPeriodoGrado(int $annio, int $periodo_id, int $grado_id): array|string {
+    $tbl_indica = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->setFrom($tbl_indica);
+
+    $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
+        ->leftJoin('grado', 'g')
+        ->leftJoin('asignatura', 'a')
+        ->where('t.periodo_id=? AND t.grado_id=?')
+        ->orderBy(self::$_order_by_defa)
+        ->setParams([$periodo_id, $grado_id]);
+    return $DQL->execute();
+  } // END-getByAnnioPeriodoGrado
+
+
   public function getByPeriodoGradoAsignatura(int $periodo_id, int $grado_id, int $asignatura_id): array|string {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')

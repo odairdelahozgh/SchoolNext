@@ -25,14 +25,13 @@ try {
   
   $t_materia = new OdaTable();
   foreach ($data as $key => $nota) {
-  
     // CAMBIO DE ESTUDIANTE
     if ($pivote_estudiante <> $nota->estudiante_id) {
       if ($key>0) { // antes de añadoir la pagina nueva del siguiete estudiante
         $Params_pie = [ 
           $img_rango_notas,
-          $arrData['Salon']->getImgFirmaDirector(),
-          ($arrData['Docentes'][$arrData['Salon']->director_id] ?? '..'),
+          '', //$arrData['Salon']->getImgFirmaDirector(),
+          '', //($arrData['Docentes'][$arrData['Salon']->director_id] ?? '..'),
         ];
         $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
       }

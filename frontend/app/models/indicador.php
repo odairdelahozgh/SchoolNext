@@ -83,7 +83,7 @@ class Indicador extends LiteRecord {
     return $DQL->execute();
   } // END-getByPeriodoGradoAsignatura
 
-  public function getByGradoAsignatura(int $grado_id, int $asignatura_id): array|string {
+  public function getByGradoAsignatura(int $grado_id, int $asignatura_id) {
     try {
       $DQL = new OdaDql(__CLASS__);
       $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')

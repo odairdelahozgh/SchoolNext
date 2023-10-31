@@ -9,13 +9,13 @@ trait SalonTraitProps {
   } //END-isDirector
   
   public function getImgFirmaDirector(string $attrs="style=\"width:100%;max-width:180px\""): string { 
-    $Director = (new Usuario)::get($this->director_id);
+    $Director = (new Usuario)::get($this->director_id??0);
     $filename = $Director->documento."_firma.png";
     return OdaTags::img(src: "upload/users/$filename", alt: 'firma', attrs: $attrs , err_message: "");
   }
 
   public function getNombreDirector(): string { 
-    return (new Usuario)::get($this->director_id);
+    return (new Usuario)::get($this->director_id??0);
   }
 
 } //END-Trait

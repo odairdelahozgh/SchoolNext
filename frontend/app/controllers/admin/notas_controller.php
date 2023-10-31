@@ -232,6 +232,39 @@ class NotasController extends ScaffoldController
   } //END-exportBoletinEstudiantePdf
 
 
+  public function exportBoletinSalonHisPdf(int $annio, int $periodo_id, string $salon_uuid, int $tipo = 1): void {
+    $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
+    
+    $this->arrData['Annio'] = $annio;
+    $this->arrData['Periodo'] = $periodo_id;
+    $Salon = (new Salon())->getByUUID($salon_uuid);
+
+    $this->arrData['Salon'] = $Salon;
+    $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
+    $this->arrData['Seccion'] = $this->arrData['Grado']->seccion_id;
+    
+    $this->arrData['Docentes'] = [];
+    foreach ((new Empleado())->getList() as $empleado) {
+      $this->arrData['Docentes'][$empleado->id] = $empleado;
+    }
+
+    $this->data = (new Nota())->getByAnnioPeriodoSalon($annio, $periodo_id, $Salon->id);
+    $Indicadores = (new Indicador())->getByAnnioPeriodoGrado($annio, $periodo_id, $Salon->grado_id);
+    foreach ($Indicadores as $key => $indic) {
+      $val = strtoupper(substr($indic->valorativo,0,1));
+      $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
+    }
+    
+    // PARA LA GENERACIÓN DE ARCHIVOS
+    $this->file_tipo = $tipo_boletin->label();
+    $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Salon-periodo-$periodo_id");
+    $this->file_title = $tipo_boletin->label() .' de ' .$Salon;
+
+    View::select(view: "boletines_hist.pdf", template: null);
+  } //END-exportBoletinSalonPdf
+
+
+
   public function exportCuadroHonorPrimariaPdf(int $periodo_id): void {
     $this->data = (new Nota())->getCuadroHonorPrimariaPDF($periodo_id);
     $this->file_tipo = 'file-tipo';

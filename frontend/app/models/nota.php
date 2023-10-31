@@ -128,6 +128,25 @@ class Nota extends LiteRecord {
   } // END-getByPeriodoSalon
 
 
+  public function getByAnnioPeriodoSalon(int $annio, int $periodo_id, int $salon_id): array|string {
+    $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->setFrom($tbl_notas);
+    
+    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
+          t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
+          t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
+        ->leftJoin('asignatura', 'a')
+        ->leftJoin('estudiante', 'e')
+        ->where('t.periodo_id=? AND t.salon_id=?')
+        ->orderBy('estudiante_nombre, a.nombre')
+        ->setParams([$periodo_id, $salon_id]);
+    return $DQL->execute();
+  } // END-getByPeriodoSalon
+
+
   //====================
   public function getNotasSalon(int $salon_id) {
     return (new Nota)->all(

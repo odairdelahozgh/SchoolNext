@@ -1,23 +1,12 @@
 <?php
 /**
- * ThemeLooper: Helper para crear TABS Odair.
+ * ThemeLooper: Helper Odair.
  * 
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category Helper.
- * @source   frontend\app\extensions\helpers\oda_tabs.php
+ * @source   frontend\app\extensions\helpers
  */
 
-enum ThemeColor {
-  case primary;
-  case secondary;
-  case success;
-  case danger;
-  case warning;
-  case info;
-  case light;
-  case dark;
-
-} // END-ENUM
 
 
 class ThemeLooper {

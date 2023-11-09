@@ -31,7 +31,7 @@ try {
         $Params_pie = [ 
           $img_rango_notas,
           '', //$arrData['Salon']->getImgFirmaDirector(),
-          '', //($arrData['Docentes'][$arrData['Salon']->director_id] ?? '..'),
+          '', //($arrData['Docentes'][$arrData['Salon']->director_id] ?? ''),
         ];
         $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
       }
@@ -87,15 +87,14 @@ try {
   
   $Params_pie = [ 
     $img_rango_notas,
-    $arrData['Salon']->getImgFirmaDirector(),
-    ($arrData['Docentes'][$arrData['Salon']->director_id] ?? '..'),
+    '', //$arrData['Salon']->getImgFirmaDirector(),
+    '', //($arrData['Docentes'][$arrData['Salon']->director_id] ?? ''),
   ];
   $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
   
   $archivoPDF->showWatermarkText = false;
   
   $archivoPDF->Output("$file_name.pdf", 'D');
-  //OdaLog::debug("mensaje","rastreo");
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

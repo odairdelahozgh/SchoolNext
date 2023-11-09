@@ -152,7 +152,7 @@ class Estudiante extends LiteRecord {
           ->concat(explode(',', $orden), 'nombre')
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email');
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
-      if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
+      if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
       return $DQL->execute();
 
     } catch (\Throwable $th) {

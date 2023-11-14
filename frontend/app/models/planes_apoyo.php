@@ -36,7 +36,7 @@ class PlanesApoyo extends Nota {
   public function getByEstudiantePeriodo(int $estudiante_id, int $periodo_id) {
     try {
       $DQL = (new OdaDql(__CLASS__))
-        ->select('t.uuid, t.periodo_id, a.nombre as asignatura_nombre')
+        ->select('t.uuid, t.periodo_id, a.nombre as asignatura_nombre, t.grado_id')
         ->leftJoin('asignatura', 'a')
         ->where("t.is_paf_validar_ok>=3 AND t.estudiante_id=? AND t.periodo_id=?")
         ->setParams([$estudiante_id, $periodo_id]);

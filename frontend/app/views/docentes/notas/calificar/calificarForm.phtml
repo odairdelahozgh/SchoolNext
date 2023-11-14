@@ -30,14 +30,15 @@
 
   // reglas para los indicadores
   $patternInidisc  = ' pattern="/^('. implode('|', $arrData['Indicadores']) .')$/"';
-  $min_max  = ' min="'.$arrData['min_indic'].'" max="'.$arrData['max_indic'].'" ';
+  //$min_max  = ' min="'.$arrData['min_indic'].'" max="'.$arrData['max_indic'].'" ';
+  $min_max  = ' min="100" max="'.$arrData['max_indic'].'" ';
   $max_lenght = ' maxlength="'.strlen($arrData['max_indic']).'" size="'.(strlen($arrData['max_indic'])).'"' ;
   
   // fila #2
   $frm .= "<tr class=\"\">";
   $fields['f2'] = ['i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10'];
   foreach ($fields['f2'] as $key => $campo) { 
-    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input" title="hola"');
+    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input" ');
     $frm .= OdaTags::tag('td', $field);
   }//foreach
   $frm .= '</tr>';
@@ -46,7 +47,7 @@
   $frm .= "<tr class=\"\">";
   $fields['f3'] = ['i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20'];
   foreach ($fields['f3'] as $key => $campo) { 
-    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
+    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input" ');
     $frm .= OdaTags::tag('td', $field);
   }//foreach
   $frm .= '</tr>';

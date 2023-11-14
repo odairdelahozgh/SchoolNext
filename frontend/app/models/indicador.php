@@ -177,19 +177,19 @@ class Indicador extends LiteRecord {
       if (isset($MinMaxIndicad)) { // verifico que hay registros
         $min_max_todos = [];
         foreach ($MinMaxIndicad as $key => $Indic) {
-          $min_max_todos[] = $Indic->min;
-          $min_max_todos[] = $Indic->max;
+          $min_max_todos[] = (int)$Indic->min;
+          $min_max_todos[] = (int)$Indic->max;
           if (str_starts_with(strtoupper($Indic->valorativo), 'F')) {
-            $arrResult['min_fortaleza'] = $Indic->min;  
-            $arrResult['max_fortaleza'] = $Indic->max;
+            $arrResult['min_fortaleza'] = (int)$Indic->min;  
+            $arrResult['max_fortaleza'] = (int)$Indic->max;
           }
           if (str_starts_with(strtoupper($Indic->valorativo), 'D')) {
-            $arrResult['min_debilidad'] = $Indic->min;  
-            $arrResult['max_debilidad'] = $Indic->max;
+            $arrResult['min_debilidad'] = (int)$Indic->min;  
+            $arrResult['max_debilidad'] = (int)$Indic->max;
           }
           if (str_starts_with(strtoupper($Indic->valorativo), 'R')) {
-            $arrResult['min_recomendacion'] = $Indic->min; 
-            $arrResult['max_recomendacion'] = $Indic->max;
+            $arrResult['min_recomendacion'] = (int)$Indic->min; 
+            $arrResult['max_recomendacion'] = (int)$Indic->max;
           }
         }
         $arrResult['regs_min'] = min($min_max_todos);

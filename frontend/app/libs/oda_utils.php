@@ -79,7 +79,7 @@ class OdaUtils extends Util {
   ];
 
   const TIPO_REG_OBSERV = [
-    'ACAD' => 'Academico',
+    'ACAD' => 'Académico',
     'DISC' => 'Disciplinario',
   ];
   

@@ -19,7 +19,8 @@ function traer_data(salon_id) {
     for (let salon in datos) { 
       [salon_nombre, salon_id, salon_uuid] = salon.split(";");
       lnk_boletines_salon = 'Preboletines:&nbsp;&nbsp;';
-      for (let index=1; index<=periodo_actual; index++) {
+      let max_periodo = ((4==periodo_actual) ? 5 : periodo_actual);
+      for (let index=1; index<=max_periodo; index++) {
         lnk_boletines_salon +=  `
         <a href="${ruta_base}admin/notas/exportBoletinSalonPdf/${index}/${salon_uuid}/0" 
         class="w3-btn w3-round-large w3-black" 

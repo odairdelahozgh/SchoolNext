@@ -51,13 +51,14 @@ class Estudiante extends LiteRecord {
   } // END-getList
 
   
-  public function getListBySalon(string $orden='a1,a2,n', string $select='*') {
+  public function getListBySalon(int $salon_id, string $orden='a1,a2,n', string $select='*') {
     try {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
           ->concat(explode(',', $orden), 'nombre')
-          ->andWhere('');
+          ->andWhere('t.salon_id=?')
+          ->setParams([$salon_id]);
 
       return $DQL->execute();
     

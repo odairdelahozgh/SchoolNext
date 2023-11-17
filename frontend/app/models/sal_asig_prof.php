@@ -41,24 +41,29 @@ class SalAsigProf extends LiteRecord {
 
   
   public function getCarga(int $user_id) {
-    $DQL = (new OdaDql(__CLASS__))
-      ->select('t.*')
-      ->addSelect('s.nombre as salon_nombre, s.grado_id, s.tot_estudiantes')
-      ->addSelect('a.nombre as asignatura_nombre')
-      ->addSelect('g.nombre as grado_nombre')
-      ->concat(['u.nombres','u.apellido1', 'u.apellido2'], 'profesor_nombre')
-      ->leftJoin('salon', 's')
-      ->leftJoin('grado', 'g', 's.grado_id=g.id')
-      ->leftJoin('asignatura', 'a')
-      ->leftJoin('usuario', 'u', 't.user_id=u.id')
-      ->where('s.is_active=1')
-      ->orderBy('asignatura_nombre, salon_nombre');
-
-    if ($user_id<>1) {
-        $DQL->andWhere('t.user_id=?');
-        $DQL->setParams([$user_id]);
+    try {
+      $DQL = (new OdaDql(__CLASS__))
+        ->select('t.*')
+        ->addSelect('s.nombre as salon_nombre, s.grado_id, s.tot_estudiantes')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->addSelect('g.nombre as grado_nombre')
+        ->concat(['u.nombres','u.apellido1', 'u.apellido2'], 'profesor_nombre')
+        ->leftJoin('salon', 's')
+        ->leftJoin('grado', 'g', 's.grado_id=g.id')
+        ->leftJoin('asignatura', 'a')
+        ->leftJoin('usuario', 'u', 't.user_id=u.id')
+        ->where('s.is_active=1')
+        ->orderBy('asignatura_nombre, salon_nombre');
+  
+      if ($user_id<>1) {
+          $DQL->andWhere('t.user_id=?');
+          $DQL->setParams([$user_id]);
+      }
+      return $DQL->execute(true);
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
     }
-    return $DQL->execute();
   }//END-getCarga
 
 

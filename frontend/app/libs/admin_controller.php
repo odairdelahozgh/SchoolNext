@@ -38,6 +38,14 @@ abstract class AdminController extends Controller
   public string $nombre_post = '';
   public string $nombre_modelo = '';
 
+    
+  // PARA LA GENERACIÓN DE ARCHIVOS
+  public ?string $file_tipo = null;
+  public ?string $file_name = null;
+  public ?string $file_title = null;
+  public bool $file_download = true;
+  public string $file_orientation = 'L';
+  
   final protected function initialize()
   {
     try {

@@ -14,13 +14,6 @@ abstract class ScaffoldController extends AdminController
 {
   public string $scaffold = 'schoolnext'; // en views/_shared/scaffolds/
   public string $model = ''; //Nombre del modelo en CamelCase
-  
-  // PARA LA GENERACIÓN DE ARCHIVOS
-  public $archivoPDF = null;
-  public ?string $file_tipo = null;
-  public ?string $file_name = null;
-  public ?string $file_title = null;
-  public bool $file_download = true;
 
   public function info($view) {
     View::response($view);
@@ -37,7 +30,7 @@ abstract class ScaffoldController extends AdminController
   public function exportCsv() {
     $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
-    View::select(null, "csv");
+    View::select(view: null, template: "csv");
   } //END-exportCsv
   
   public function exportXml() {
@@ -46,14 +39,13 @@ abstract class ScaffoldController extends AdminController
     View::select(view: null, template: "xml");
   } //END-exportXml
   
-
-  public function exportXls(): void { //EXCEL
-    View::select(view: "export_xls_$this->controller_name", template: 'xls');
-    $this->Modelo = new $this->nombre_modelo();
-    $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
-    $this->data = (new $this->nombre_modelo())->getList(estado:1);
-    $this->registros = (new $this->nombre_modelo())->getList(estado:1);
-    $this->header =[];
+  public function exportXls() {
+      View::select(view: "export_xls_$this->controller_name", template: "xls_easy");
+      $this->Modelo = new $this->nombre_modelo();
+      $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
+      $this->data = (new $this->nombre_modelo())->getList(estado:1);
+      $this->registros = $this->data;
+      $this->header = [];
   } //END-exportXls
 
 

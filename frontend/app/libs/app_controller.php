@@ -32,11 +32,11 @@ abstract class AppController extends Controller
 
   
   // PARA LA GENERACIÓN DE ARCHIVOS
-  public $archivoPDF = null;
   public ?string $file_tipo = null;
   public ?string $file_name = null;
   public ?string $file_title = null;
   public bool $file_download = true;
+  public string $file_orientation = 'L';
   
   public string $page_action = '';
   public string $page_module = '';

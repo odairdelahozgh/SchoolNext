@@ -37,7 +37,8 @@ try {
   }
   
   $archivoPDF->showWatermarkText = false;
-  $archivoPDF->Output("$file_name.pdf", 'D');
+  $dest = ($file_download ? 'D' : 'I');
+  $archivoPDF->Output("$file_name.pdf", $dest);
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

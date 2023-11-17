@@ -1,0 +1,44 @@
+<?php
+
+try {
+  $annio = (int)Config::get('config.academic.annio_actual');
+  
+  $archivoPDF = new MpdfListasClase([
+    'tempDir' => APP_PATH . 'temp/mpdf',
+    'format' => 'Legal',
+    'orientation' => 'L', // P(portrait), L(landscape) 
+
+    'progressBar' => true,
+    'title2annots' => true,  // convert headers in annotations
+    'mirrorMargins' => 0,    // mirror the left and right margin values on odd and even pages 
+    'exposeVersion' => false, // security 
+    
+    'margin_left' => 20,
+    'margin_right' => 15,
+    'margin_top' => 48,
+    'margin_bottom' => 25, // no tocar
+    'margin_header' => 15, // no tocar
+    'margin_footer' => 15, // no tocar
+    // more variables in https://mpdf.github.io/reference/mpdf-variables/overview.html
+  ]);
+
+  $archivoPDF->SetSubject($file_tipo);
+  $archivoPDF->SetTitle($file_title);
+  $Nota = new Nota();
+
+  foreach ($data as $key => $item) {
+    $archivoPDF->AddPage();
+    $archivoPDF->WriteHTML($archivoPDF->encabezadoBloque());
+    $NotasSalonAsignaturaPeriodos = $Nota->getBySalonAsignaturaPeriodos((int)$item->salon_id, (int)$item->asignatura_id, [$arrData['periodo']]);
+    foreach ($NotasSalonAsignaturaPeriodos as $key => $nota) {
+      $archivoPDF->WriteHTML($nota->estudiante_nombre);
+    }
+    
+  }
+  
+  $archivoPDF->showWatermarkText = false;
+  $archivoPDF->Output("$file_name.pdf", 'D');
+
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}

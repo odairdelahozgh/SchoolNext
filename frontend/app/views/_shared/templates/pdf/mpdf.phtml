@@ -1,14 +1,12 @@
 <?php
 use Mpdf\Mpdf;
 
-$fileName = $filename ?? "Reporte-de-$controller_name";
-$title = $title ?? "Reporte de $controller_name";
-//$css = $css ?? 'css/w3/w3-theme-light-blue.css';
+$fileName = $file_name ?? "Reporte-de-$controller_name";
+$title = $file_title ?? "Reporte de $controller_name";
 $css = $css ?? 'css/pdf.css';
-$destination = (isset($download) && $download) ? 'D' : 'I';
+$destination = $file_download ? 'D' : 'I';
 
-//Activa el almacenamiento en búfer de la salida
-ob_start();
+ob_start();  //Activa el almacenamiento en búfer de la salida
 ?>
 
 <!DOCTYPE html>

@@ -81,7 +81,7 @@ function traer_data(salon_id) {
             }      
             fila += `<td class="w3-center w3-padding-small w3-small">${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0) + `${br} ${asi} ${paf}</td>`;
             
-            if (parseInt(nota_final)>0) {
+            if ( (parseInt(nota_final)>0) && (periodo!=5) ) {
               elementos += 1;
               suma += parseInt(nota_final);
               arrSumCols[asignatura_abrev]['cnt'] += 1;

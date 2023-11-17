@@ -2,24 +2,35 @@
 
 trait SalAsigProfTraitLinks {
 
+  public static function getLnkListaClase(int $periodo_id) {
+    return OdaTags::linkButton(
+      action: "admin/cargas/exportListasDeClaseProfesorPdf/$periodo_id", 
+      text: "Lista de Clase {$periodo_id}P", 
+      attrs: " target=\"_blank\" class=\"w3-button w3-green\"");
+  } //END-getLnkListaClase
+
   public function getLnkPageIndicadores(int $grado_id): string {
-    return OdaTags::link("docentes/listIndicadores/$grado_id/$this->asignatura_id", 'Indicadores');
+    return OdaTags::link(
+      action: "docentes/listIndicadores/$grado_id/$this->asignatura_id", 
+      text: 'Indicadores');
   } //END-getLnkPageIndicadores
 
   public function getLnkPageListNotas(): string {
-    return OdaTags::link("docentes/listNotas/$this->asignatura_id/$this->salon_id", 'Notas');
+    return OdaTags::link(
+      action: "docentes/listNotas/$this->asignatura_id/$this->salon_id", 
+      text: 'Notas');
   } //END-getLnkPageListNotas
 
   
   public function getAsignaturaF(int $user_id, string $asignatura_nombre, string $profesor_nombre): string {
     return OdaUtils::sanearString($asignatura_nombre).' '.(($user_id==1)?"[$this->asignatura_id]":'')
             .(($user_id==1) ? "<br> [$profesor_nombre] ($user_id)" :'');
-  } //END-getLnkPageIndicadores
+  } //END-getAsignaturaF
 
   
   public function getSalonF(int $user_id, string $salon_nombre): string {
     return $salon_nombre.' '.(($user_id==1)?"[$this->salon_id]":'');
-  } //END-getLnkPageIndicadores
+  } //END-getSalonF
   
 
 } //END-Trait

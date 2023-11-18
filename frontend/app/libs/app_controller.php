@@ -48,6 +48,7 @@ abstract class AppController extends Controller
   public ?int $user_id = 0;
   public ?string $user_name = '';
   public string $id_instit = '';
+  public string $_instit_name = '';
   public int $_periodo_actual = 0;
   public int $_annio_actual = 0;
 
@@ -71,6 +72,7 @@ abstract class AppController extends Controller
 
       //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
       $this->id_instit = Config::get('config.institution.id_name');
+      $this->_instit_name = Config::get('config.institution.nombre');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
       $this->themei = substr($this->theme,0,1);
       

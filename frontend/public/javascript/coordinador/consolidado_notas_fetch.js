@@ -91,7 +91,7 @@ function traer_data(salon_id) {
             const text_adic = `${asignatura_abrev} P${periodo}`;
             fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
             
-            if (parseInt(nota_final)>0) {
+            if ( (parseInt(nota_final)>0) && (periodo!=5) ) {
               elementos += 1;
               suma += parseInt(nota_final);
               arrSumCols[asignatura_abrev]['cnt'] += 1;

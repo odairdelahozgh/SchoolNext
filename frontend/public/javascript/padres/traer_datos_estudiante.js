@@ -7,20 +7,25 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   console.clear();
 
+
+
   // ========================================================================      
   const div_info_estudiante = document.getElementById("info_estudiante");
   fetch(ruta_base+'api/estudiantes/singleid/'+estudiante_id)
   .then((res) => res.json())
   .then(data_estudiante => {
-    
     div_info_estudiante.innerHTML = template_datos_estud(data_estudiante, ruta_base, salon_nombre);
-    
     // LINKS PARA DESCARGAR BOLETINES
     const periodo_boletines = document.getElementById('periodo_boletines').value;
     div_boletines = document.getElementById('boletines');
     if (1==document.getElementById('ver_boletines').value) {
       div_boletines.innerHTML = template_boletines(data_estudiante, ruta_base, periodo_boletines);
     }
+    
+    // temporal
+    // if (16 != data_estudiante.salon_id) {
+    //   document.getElementById('ver_planes_apoyo').value = 0;
+    // }
 
   });
 
@@ -33,7 +38,6 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
     .then(res => {
       const elements = res.reduce((acc, data_seguimientos) => acc + template_seguimientos(ruta_base, data_seguimientos), "");
       const botones = elements;
-
       if (botones.length>0) { 
         div_seguimientos.innerHTML = `
         <div>

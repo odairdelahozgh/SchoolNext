@@ -1,10 +1,11 @@
 <?php 
+try {
   $header = [
     'Activo'      => 'integer', 
     'Salón'       => 'string', 
     'Grado'       => 'string', 
-    'Director'    => 'integer', 
-    'Codirector'  => 'integer', 
+    'Director'    => 'string', 
+    'Codirector'  => 'string', 
     'Estudiantes' => 'integer', 
   ];
 
@@ -12,18 +13,22 @@
     'Activo'      => 'is_active', 
     'Salón'       => 'nombre', 
     'Grado'       => 'grado_nombre', 
-    'Director'    => 'director_id', 
-    'Codirector'  => 'codirector_id', 
+    'Director'    => 'director_nombre', 
+    'Codirector'  => 'codirector_nombre', 
     'Estudiantes' => 'tot_estudiantes',
   ];
-  //OdaUtils::ver_array(var: $fileds_names);
+  
   foreach ($registros as $item) {
     $columnas = [];
-    foreach ($header as $key => $dato) {
-      $campo = $fileds_names[$key];
-      $columnas[] =  ('integer'==$dato) ? (int)$item->$campo : $item->$campo;
+    foreach ($header as $title_name => $title_type) {
+      $campo = $fileds_names[$title_name];
+      $columnas[] =  ('integer'==$title_type) ? (int)$item->$campo : $item->$campo;
     }
-    $data[] = $columnas;
+    $data[] = (array)$columnas;
   }
+
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}
   
 ?>

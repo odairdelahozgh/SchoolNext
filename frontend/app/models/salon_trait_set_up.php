@@ -23,14 +23,27 @@ trait SalonTraitSetUp {
    */
   private function setUp() {
 
-    self::$_fields_show = [
-      'all'      => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at'],
-      'index'    => ['is_active', 'nombre', 'grado_nombre', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'],
-      'create'   => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
-      'edit'     => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
-      'editUuid' => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
-    ];
+    // self::$_fields_show = [
+    //   'all'      => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at'],
+    //   'index'    => ['is_active', 'nombre', 'grado_nombre', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'],
+    //   'create'   => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
+    //   'edit'     => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
+    //   'editUuid' => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
+    // ];
   
+    self::$_fields_show['all'] = ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    self::$_fields_show['index'] = ['is_active', 'nombre', 'grado_nombre', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'];
+    self::$_fields_show['create'] = ['nombre', 'grado_id', 'director_id', 'codirector_id', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ];
+    self::$_fields_show['edit'] = ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ];
+    self::$_fields_show['editUuid'] = ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ];
+    self::$_fields_show['excel'] =  [
+      'nombre' => [ 'caption'=>'Salón', 'data_type'=>'string' ], 
+      'grado_nombre' => [ 'caption'=>'Grado', 'data_type'=>'string' ], 
+      'director_nombre' => [ 'caption'=>'Director', 'data_type'=>'string' ], 
+      'codirector_nombre' => [ 'caption'=>'Codirector', 'data_type'=>'string' ], 
+      'tot_estudiantes' => [ 'caption'=>'Estudiantes', 'data_type'=>'integer' ], 
+    ];
+
     self::$_attribs = [
       'nombre'    =>  'required', 
       'grado_id'  =>  'required',

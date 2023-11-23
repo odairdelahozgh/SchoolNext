@@ -3,12 +3,13 @@ try {
   $tabla = new OdaTable('id="myTable-m" class="w3-table w3-responsive w3-striped w3-bordered" style="width:100%"');
 
   $select_grado = (new Grado)::getSelectGrados('aspirantes_grado_aspira', 'aspirantes[grado_aspira]', $ModeloAspirante->grado_aspira);
-  
   $tabla->addRow(
     data: [
-      $FormAspir->getCheck('is_active').$ModeloAspirante->is_pago_f(), 
+       $FormAspir->getDataLabel('fecha_insc')
+      .$FormAspir->getCheck('is_active'), 
       '',
-      $FormAspir->getLabel('grado_aspira').$select_grado,
+      $FormAspir->getLabel('grado_aspira').$select_grado
+      .'<br>'.$ModeloAspirante->is_pago_f(),
     ],
   );
 

@@ -1,0 +1,20 @@
+<div class="w3-panel">
+    <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+    <?= View::flash(); ?>
+</div>
+
+<div class="w3-panel">
+    <div  class="w3-bar">
+        <?php 
+        foreach ($data as $key => $salon) {
+            echo "<div  id=\"btn-$key\"  onclick=\"cargar_botones($salon->id, \"$salon->nombre\", $annio)\" class=\"w3-button w3-bar-item\">$salon</div>" ;
+        }
+        ?>
+    </div>
+
+    <div id="salones" class="w3-panel"></div>
+    <div id="botones" class="w3-panel"></div>
+    <div id="resultados" class="w3-panel"></div>
+</div>
+
+<?= tag::js("dir_grupo/registros/dg_registros_consolidados", false) ?>

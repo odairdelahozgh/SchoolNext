@@ -50,6 +50,7 @@ trait GradoTraitSetUp {
       'create'   => ['nombre', 'salon_default', 'proximo_salon', 'proximo_grado', 'seccion_id', 'orden', 'abrev', 'valor_matricula', 'valor_pension'],
       'edit'     => ['nombre', 'salon_default', 'proximo_salon', 'proximo_grado', 'seccion_id', 'orden', 'abrev', 'valor_matricula', 'valor_pension'],
       'editUuid' => ['nombre', 'salon_default', 'proximo_salon', 'proximo_grado', 'seccion_id', 'orden', 'abrev', 'valor_matricula', 'valor_pension'],
+      'excel'    => ['is_active', 'nombre', 'abrev', 'seccion_id', 'valor_matricula', 'valor_pension'],
     ];
   
     self::$_attribs = [

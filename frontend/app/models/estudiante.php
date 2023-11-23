@@ -39,9 +39,9 @@ class Estudiante extends LiteRecord {
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
     try {
       $DQL = $this->DQL;
-      $DQL->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'estudiante_nombre')
-          ->concat(['t.apellido2', 't.apellido1', 't.nombres'], 'nombre');
-      if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+      $DQL->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'estudiante_nombre')
+          ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'nombre');
+      if (!is_null(self::$_order_by_defa)) { $DQL->orderBy(self::$_order_by_defa); }
       if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
       return $DQL->execute();
     

@@ -4,11 +4,17 @@ trait TraitForms {
   /// PARA TODOS LO SMODELOS !!
   protected static $_fields_show = [
     'all'=>[], 
-    'index'=>[], 
+    'index'=>['id', 'uuid', 'is_active', 'nombre', 'created_by', 'created_at', 'updated_by', 'updated_at'], 
     'create'=>[1=>[], 2=>[]], 
     'edit'=>[1=>[], 2=>[]], 
     'editUuid'=>[1=>[], 2=>[]], 
     'calificar'=>[],
+    
+    'excel' => [
+      'id'     => [ 'caption'=>'ID', 'data_type'=>'integer' ], 
+      'nombre' => [ 'caption'=>'Nombre', 'data_type'=>'string' ], 
+    ],
+
   ];
   protected static $_attribs      = [];
   protected static $_widgets      = [];

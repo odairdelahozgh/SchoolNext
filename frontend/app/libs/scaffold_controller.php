@@ -40,12 +40,17 @@ abstract class ScaffoldController extends AdminController
   } //END-exportXml
   
   public function exportXls() {
-      View::select(view: "export_xls_$this->controller_name", template: 'xls');
-      $this->Modelo = new $this->nombre_modelo();
-      $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
-      $this->file_title = "listado de $this->controller_name";
-      $this->registros = (new $this->nombre_modelo())->getList(estado:1);
-      $this->header = [];
+    $this->Modelo = new $this->nombre_modelo();
+    View::select(view: "export_xls_$this->controller_name", template: 'xls');
+    $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
+    $this->file_title = "listado de $this->controller_name";
+    $this->registros = $this->Modelo->getList(estado:1);
+    $this->fieldsToShow = $this->Modelo->getFieldsShow('excel');
+    $this->header = [];
+    // foreach ($this->fieldsToShow as $fields) {
+    //   $this->header[$fields->caption] = $fields->data_type;
+    // }
+    
   } //END-exportXls
 
 

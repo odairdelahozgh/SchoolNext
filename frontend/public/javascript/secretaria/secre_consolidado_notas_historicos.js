@@ -46,7 +46,7 @@ function traer_data(grado_id, annio, max_periodo) {
     let cnt_estudiantes = 1;
 
     for (let grado in datos) { 
-      [grado_nombre, grado_id, grado_abrev] = grado.split(";");
+      [grado_nombre, grado_id, grado_abrev, salon_nombre, salon_id] = grado.split(";");
       lnk_boletines_salon = 'Boletines:&nbsp;&nbsp;';
 
       caption = `<h2>GRADO: ${grado_nombre}</h2>`;
@@ -72,16 +72,20 @@ function traer_data(grado_id, annio, max_periodo) {
             cont += 1;
           }
 
+          
           lnk_boletin_estud_periodo =  `
-            <a href="${ruta_base}admin/notas/exportBoletinEstudianteHistPdf/${annio}/${periodo}/${estudiante_uuid}" 
+            <a href="${ruta_base}admin/notas/exportBoletinEstudianteHistPdf/${annio}/${salon_id}/${periodo}/${estudiante_uuid}" 
             class="w3-btn w3-round-large w3-black w3-tiny" 
             target="_blank"
             title="Descarga Boletin de ${estudiante_nombre} (Per&iacute;odo ${periodo})">
-            <i class="fa-solid fa-file-pdf"></i>&nbsp;B P${periodo}</a>
+            Boletin P${periodo}</a>
           `;
           
           //let fila = `<tr class="w3-theme-l3"><td>${lnk_boletin_estud_periodo}</td>` + ( (!is_prescolar(grado_id)) ? `<td class="w3-center">PROMMAT</td>` : ''); 
-          let fila = `<tr class="w3-theme-l3"><td>P${periodo}</td>` + ( (!is_prescolar(grado_id)) ? `<td class="w3-center">PROMMAT</td>` : ''); 
+          let fila = `
+          <tr class="w3-theme-l3">
+            <td>${lnk_boletin_estud_periodo}</td>` 
+            + ( (!is_prescolar(grado_id)) ? `<td class="w3-center">PROMMAT</td>` : ''); 
           let suma = 0;
           let elementos = 0;
           
@@ -140,8 +144,8 @@ function nombreRango(valor) {
   if (valor<0 || valor>100) { return 'err'; } 
   if (valor<1) { return ''; }  
   if (valor<60) { return 'Bajo'; }
-  if (valor<70) { return 'Bási'; }
-  if (valor<80) { return 'Bás+'; }
+  if (valor<70) { return 'Basi'; }
+  if (valor<80) { return 'Bas+'; }
   if (valor<90) { return 'Alto'; }
   if (valor<95) { return 'Alt+'; }
   if (valor<=100) { return 'Supe'; }

@@ -21,6 +21,7 @@ class Usuario extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.usuario');
+    self::$_order_by_defa = 't.is_active DESC, t.apellido1, t.apellido2, t.nombres';
     $this->setUp();
   } //END-__construct
   
@@ -51,5 +52,30 @@ class Usuario extends LiteRecord {
     OdaFlash::error($th);
   }
 }
+
+
+
+public function setPassword(string $seed=null) {
+  try {
+    $salt = md5(rand(100000, 999999).$this->username);
+    $this->salt = $salt;
+    
+    if (is_null($seed)) {
+      $seed = ($this->documento == $this->username) ? $this->documento: substr($this->documento, -4);  // true:padres  false:empleados
+    }
+
+    $password_salt = hash('sha1', $salt . $seed);
+    $this->password = $password_salt;
+    $this->update();
+
+    $rec_count = $this::query("UPDATE ".self::$table." SET password=? WHERE id=? ", [$password_salt, $this->id])->rowCount();
+    OdaFlash::info("\nUsername: $this->username \nId: $this->id \nDocumento: $this->documento \nPassword:  $pass \nSALT: $this->salt \nPassword SALT $password_salt \nAfect: $rec_count", true);
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+
+} //END-setPassword
+
+
 
 } //END-CLASS

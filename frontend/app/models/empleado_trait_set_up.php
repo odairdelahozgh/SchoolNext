@@ -11,9 +11,6 @@ trait EmpleadoTraitSetUp {
   public function validar($input_post) {
     Session::set('error_validacion', '');
     try{
-      validar::alnum()->noWhitespace()->length(3, 20)->assert($input_post['username']);
-      validar::email()->assert($input_post['email']);
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       return true;
     } catch(NestedValidationException $exception) {
       Session::set('error_validacion', $exception->getFullMessage());
@@ -36,7 +33,7 @@ trait EmpleadoTraitSetUp {
 
     self::$_fields_show = [
       'all'       => ['id', 'uuid', 'username', 'roll', 'nombres', 'apellido1', 'apellido2', 'photo', 'profesion', 'direccion', 'documento', 'email', 'telefono1', 'telefono2', 'cargo', 'sexo', 'fecha_nac', 'fecha_ing', 'fecha_ret', 'observacion', 'is_carga_acad_ok', 'is_partner', 'usuario_instit', 'clave_instit', 'theme', 'algorithm', 'salt', 'password', 'is_super_admin', 'last_login', 'forgot_password_code', 'is_active', 'created_at', 'updated_at'],
-      'index'     => ['is_active', 'nombre', 'username', 'nombre', 'roll', 'documento', 'telefono1', 'usuario_instit', 'clave_instit'],
+      'index'     => ['is_active', 'id', 'nombre', 'username', 'roll', 'documento', 'telefono1', 'usuario_instit', 'clave_instit'],
       'create'    => ['username', 'roll', 'nombres', 'apellido1', 'apellido2', 'documento', 'email', 'direccion', 'telefono1', 'telefono2', 'fecha_nac', 'fecha_ing', 'fecha_ret', 'usuario_instit', 'clave_instit', 'theme', 'is_active', 'algorithm', 'salt', 'password' ],
       'edit'      => ['username', 'roll', 'nombres', 'apellido1', 'apellido2', 'documento', 'email', 'direccion', 'telefono1', 'telefono2', 'fecha_nac', 'fecha_ing', 'fecha_ret', 'usuario_instit', 'clave_instit', 'theme', 'is_active'],
       'editUuid'  => ['username', 'roll', 'nombres', 'apellido1', 'apellido2', 'documento', 'email', 'direccion', 'telefono1', 'telefono2', 'fecha_nac', 'fecha_ing', 'fecha_ret', 'usuario_instit', 'clave_instit', 'theme', 'is_active'],

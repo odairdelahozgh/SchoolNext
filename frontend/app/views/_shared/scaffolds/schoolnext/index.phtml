@@ -10,39 +10,42 @@
       $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels]);
       foreach ($data as $key => $item_data) {
         
+
         $lnkSetupCalificar = '';
-        if ('salon'==$nombre_modelo and 1==$item_data->is_active) {
+        if ('salones'==$controller_name and 1==$item_data->is_active) {
           $item_data->setNumeroEstudiantes();
           $lnkSetupCalificar = $item_data->getLnkSetupCalificarSalon();
         }
 
         $uuid_ok   = (property_exists(object_or_class: $item_data, property: 'uuid') && !is_null(value: $item_data->uuid));
+        
+        
+        
         $edit_id   = ($uuid_ok) ? "editUuid/$item_data->uuid" : "edit/$item_data->id";
-        $delete_id = ($uuid_ok) ? "delUuid/$item_data->uuid" : "del/$item_data->id";
-        
-        
-
-        $set_pass = "setPassDocente/$item_data->id";
-
-        $msg_name  = strtoupper(string: $nombre_modelo.': '.((property_exists(object_or_class: $item_data, property: 'nombre')) ? $item_data->nombre : " # $item_data->id")) ;
-        
         $lnkEditar = OdaTags::linkIcon(
           action: "admin/$controller_name/$edit_id", 
           icon: 'square-pen', 
           attr: 'title="Editar Registro"'
         );
-
+        
+        $delete_id = ($uuid_ok) ? "delUuid/$item_data->uuid" : "del/$item_data->id";
+        $msg_name  = strtoupper(string: $nombre_modelo.': '.((property_exists(object_or_class: $item_data, property: 'nombre')) ? $item_data->nombre : " # $item_data->id")) ;
         $lnkBorrar = Html::linkAction(
           action: $delete_id, 
           text: _Icons::solid(icon: 'trash-can'), 
           attrs: 'title="Eliminar Registro" onclick="return confirm(\'Atención: ¿Quiere eliminar? \n'.$msg_name.'\')"'
         );
         
-        $lnkSetPass = Html::linkAction(
-          action: $set_pass, 
-          text: _Icons::solid(icon: 'key'), 
-          attrs: 'title="Actualizar Password" onclick="return confirm(\'Atención: ¿Quiere establecer password por default?)\'"'
-        );
+        
+        $lnkSetPass = '';
+        if ('usuarios'==$controller_name) {
+          $lnkSetPass = Html::linkAction(
+            action: "setPassword/$item_data->id", 
+            text: _Icons::solid(icon: 'key'), 
+            attrs: 'title="Actualizar Password" onclick="return confirm(\'Atención: ¿Quiere establecer password por default?)\'"'
+          );
+        }
+        
 
         $arrFields = [];
         foreach ($fieldsToShow as $key => $field) {
@@ -53,15 +56,15 @@
           }
 
           if ('nombre'==$field) {
-            $dato = '['.$item_data->id.'] '.OdaUtils::nombrePersona(string: (string)$item_data->$field);
+            $dato = OdaUtils::nombrePersona(string: (string)$item_data->$field).' ['.$item_data->id.']';
           }
 
           if (str_ends_with(haystack: $field, needle: '_id')) {
             $field_with_name = substr(string: $field, offset: 0, length: strlen(string: $field)-3).'_nombre';
             if (isset($item_data->$field_with_name) and (!is_null(value: $item_data->$field_with_name))) {
-              $dato = '['.$item_data->$field.'] '.OdaUtils::nombrePersona(string: $item_data->$field_with_name);
+              $dato = OdaUtils::nombrePersona(string: $item_data->$field_with_name).' ['.$item_data->$field.']';
             } else {
-              $dato = '['.$item_data->$field.'] '.$item_data->$field;
+              $dato = $item_data->$field.' ['.$item_data->$field.']';
             }
           }
           $arrFields[] = $dato;
@@ -71,7 +74,7 @@
           $lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar.'&nbsp;&nbsp;'.$lnkSetupCalificar, 
           ...$arrFields
         ];
-        $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"']);
+        $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"', 'class="searchTdata"']);
       }
       echo $tabla;
       echo "<h4>Total Registros: $tot_regs</h4>";

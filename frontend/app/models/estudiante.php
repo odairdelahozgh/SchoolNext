@@ -28,7 +28,6 @@ class Estudiante extends LiteRecord {
       ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
       ->leftJoin('salon', 's')
       ->leftJoin('grado', 'g', 's.grado_id=g.id')
-      //->where('t.salon_id<>0 AND t.is_active=1')
       ->where('t.is_active=1')
       ->orderBy(self::$_order_by_defa);
 
@@ -85,14 +84,6 @@ class Estudiante extends LiteRecord {
   } // END-getListEstudiantes.
 
   //proyecto para reemplazar varios list, dependiendo del módulo desde donde se hace la llamada.
-  /**
-   * 'id', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 
-  * 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'uuid', 'documento', 'contabilidad_id', 
-  * 'nombres', 'apellido1', 'apellido2', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 
-  * 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 
-  * 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'
-  * 
-  */
   public function getListActivosByModulo(Modulo $modulo = Modulo::Docen, string $orden='a1,a2,n', array|string $where = null) {
     try {
       

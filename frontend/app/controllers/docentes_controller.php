@@ -108,7 +108,15 @@ class DocentesController extends AppController
   public function registros_observaciones(): void {
     try {
       $this->page_action = 'Registros de Observaciones Generales';
-      $estudiantes = (new Estudiante)->getListPorProfesor($this->user_id);
+      //31	dianarc
+      //33	jackelinerr
+      //19	lizbethgc
+      $es_coordinador =  [31, 33, 19];
+      if ( in_array($this->user_id, $es_coordinador) ) {
+        $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
+      } else {
+        $estudiantes = (new Estudiante)->getListPorProfesor($this->user_id);
+      }
 
       $this->arrData = ['estudiantes' => $estudiantes];
       $this->data = (new RegistrosGen)->getRegistrosProfesor(user_id: Session::get(index: 'id'));
@@ -160,38 +168,33 @@ class DocentesController extends AppController
       $this->page_action = 'Notas del Sal&oacute;n';
       $RegAsignatura = (new Asignatura)::get($asignatura_id);
       $RegSalon = (new Salon)::get($salon_id);
-
-      for ($i=1; $i<=$this->_periodo_actual; $i++) { 
+      $max_periodo = ($this->_periodo_actual>=4) ? 5 : $this->_periodo_actual;
+      for ($i=1; $i<=$max_periodo; $i++) {
         $RegsIndicadP = (new Indicador)->getIndicadoresCalificar($i, $RegSalon->grado_id, $asignatura_id);
         $IndicP = [];
         foreach ($RegsIndicadP as $key => $object) {
           $IndicP[$object->codigo] = get_object_vars($object);
         }
         $this->arrData["IndicadoresP{$i}"] = $IndicP;
-      }     
-      
+      }
       $this->arrData['Asignatura'] = $RegAsignatura;
       $this->arrData['Salon'] = $RegSalon;
       $this->arrData['annio_actual'] = $this->_annio_actual;
-      $this->arrData['periodo_actual'] =$this->_periodo_actual;
-
-      $Notas = (new Nota)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, range(1, $this->_periodo_actual) );
-      if (0 == count($Notas)) { 
+      $this->arrData['periodo_actual'] = $this->_periodo_actual;
+      $Notas = (new Nota)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, range(1, $max_periodo) );
+      if (0 == count($Notas)) {
         OdaFlash::info('No hay registros para mostrar.');
-      }
-      
+      }      
       $this->data = array( 5=>array(), 4=>array(), 3=>array(), 2=>array(), 1=>array() );
       foreach ($Notas as $key => $nota) {
         array_push($this->data[$nota->periodo_id], $nota);
       }
 
-
     } catch (\Throwable $th) {
       OdaFlash::error($th, true);
     }
-
     View::select(view: 'notas/list');
-  }//END-listNotas
+  } //END-listNotas
 
 
   public function notasCalificar(int $periodo_id, int $salon_id, int $asignatura_id): void {

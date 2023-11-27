@@ -72,7 +72,9 @@ trait EstudianteTraitLinks {
       $lnk .= '<span class="w3-tag w3-green w3-round">' 
         .Html::linkAction(
             action: "actualizarPago/$this->id/", 
-            text: 'Poner al Dia ('.$this->nombre_mes_enum(self::LIM_PAGO_PERIODOS[self::$_periodo_actual]).') '._Icons::solid('coins', 'w3-large'))
+            text: 'Poner al Dia',
+            attrs: 'title="Establece pago a mes de '.$this->nombre_mes_enum(self::LIM_PAGO_PERIODOS[self::$_periodo_actual]).'"' 
+        )
       .'</span>';
       return $lnk.'<br>';
     }

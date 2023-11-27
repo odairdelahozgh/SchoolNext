@@ -1,22 +1,23 @@
 <?php
 trait EstudianteTraitLinks {
 
-  public function getLnkBoletin(int $periodo): string {
+  public function getLnkBoletin(int $periodo) {
     try {
       return OdaTags::linkButton (
         action: "admin/notas/exportBoletinEstudiantePdf/$periodo/$this->uuid", 
-        text: "<i class=\"fa-solid fa-file-pdf\"></i> Bolet&iacute;n P$periodo", 
-        attrs: " target=\"_blank\" class=\"w3-btn w3-ripple w3-round-large w3-small\"");
+        text: "<i class=\"fa-solid fa-file-pdf\"></i> P$periodo", 
+        attrs: "title=\"Descargar Boletín P$periodo $this\" target=\"_blank\" class=\"w3-btn w3-ripple w3-round-large w3-small\"");
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
   } //END-getLnkBoletin
   
-  public function getLnkBoletinesTodos(): string {
+  public function getLnkBoletinesTodos() {
     try {
+      $max_periodo = (4==self::$_periodo_actual) ? 5 : self::$_periodo_actual;
       $lnk = '';
-      for ($i=1; $i<=self::$_periodo_actual; $i++) { 
+      for ($i=1; $i<=$max_periodo; $i++) { 
         $lnk .= $this->getLnkBoletin($i).'&nbsp;';
       }
       return $lnk;
@@ -27,7 +28,7 @@ trait EstudianteTraitLinks {
   } //END-getLnkBoletinesTodos
 
 
-  public function getLnkPlanApoyo(int $periodo): string {
+  public function getLnkPlanApoyo(int $periodo) {
     try {
       /// pensarlo mejor.. no está listo
       return OdaTags::linkButton (
@@ -40,7 +41,7 @@ trait EstudianteTraitLinks {
     }
   } //END-getLnkBoletin
   
-  public function getLnkPlanesApoyoTodos(): string {
+  public function getLnkPlanesApoyoTodos() {
     try {
       $lnk = '';
       for ($i=1; $i<=self::$_periodo_actual; $i++) { 
@@ -80,12 +81,12 @@ trait EstudianteTraitLinks {
 
 
 
-  public static function getLnkListaGenerica(string $salon_id): string {
+  public static function getLnkListaGenerica(string $salon_id) {
     try {
       $RegSalon = (new Salon)::get($salon_id);
       return OdaTags::linkButton (
         action: "admin/estudiantes/exportEstudiantesBySalonPdf/$RegSalon->uuid", 
-        text: "<i class=\"fa-solid fa-file-pdf\"></i> Salon: $RegSalon->nombre", 
+        text: "<i class=\"fa-solid fa-file-pdf\"></i> $RegSalon->nombre", 
         attrs: " target=\"_blank\" class=\"w3-btn w3-ripple w3-round-large w3-small\"");
 
     } catch (\Throwable $th) {

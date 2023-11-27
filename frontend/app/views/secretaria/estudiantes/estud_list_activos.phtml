@@ -23,16 +23,15 @@
          $col1 = $Estud->is_active_f(true) .'<br/>'
                 .$Estud->getFoto().'<br/>'
                 .$Estud->documento .'<br/>';
-        
-        //$lnk_act_mes_pago = '<span class="w3-tag w3-blue w3-round">' .Html::linkAction("setMesPago/$Estud->id/2", 'Mes 2 '._Icons::solid('coins', 'w3-large')). '</span><br/>';
 
         $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>"
-                 .'<span class="w3-blue">'.$Estud.'</span>'.$Estud->isNuevoIco().'<br>'
+                 ."<h3>{$Estud} {$Estud->isNuevoIco()}</h3>"
                  .$Estud->getCuentaInstit(true).'<br><br>'
-                 .$Estud->getPagoPension().'<br>'
-                 .$Estud->getlnkSetPonerAldia().'<br>'
+                 ."{$Estud->getPagoPension()} {$Estud->getlnkSetPonerAldia()}
+                   {$Estud->getDebePreicfes()} <br> 
+                   {$Estud->getDebeAlmuerzos()} <br>"
                  .$Estud->getlnkSetMesPagosTodos().'<br>'
-                 .$Estud->getLnkBoletinesTodos().'<br>'
+                 .'Boleitnes '.$Estud->getLnkBoletinesTodos().'<br>'
                  //.$Estud->getLnkPlanesApoyoTodos()
                  ;
 

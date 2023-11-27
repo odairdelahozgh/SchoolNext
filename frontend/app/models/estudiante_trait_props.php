@@ -32,7 +32,10 @@ trait EstudianteTraitProps {
     if ($periodo==5 and $this->mes_pagado>=parent::LIM_PAGO_PERIODOS[5] and $this->annio_pagado==$annio and !$this->is_debe_preicfes and !$this->is_debe_almuerzos) { return true; }
     return false;
   }
-  public function isPazYSalvoIco() { return ($this->isPazYSalvo()) ? _Icons::solid('face-smile', 'w3-small') : _Icons::solid('face-frown', 'w3-small'); }
+  public function isPazYSalvoIco() { 
+    $result = ($this->isPazYSalvo()) ? ' <span class="w3-text-green">'._Icons::solid('coins', 'w3-large').'</span>' : ' <span class="w3-text-red">'._Icons::solid('coins', 'w3-large').'</span>'; 
+    return $result;
+  }
   public function getCuentaInstit($show_ico=false) { 
     $ico = ($show_ico) ? OdaTags::img(src:'msteams_logo.svg', attrs:'width="16"', err_message:'').' ' : 'MS Teams: ' ;
     return $ico.(($this->email_instit) ? $this->email_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit : 'No tiene usuario en MS TEAMS'); 
@@ -63,7 +66,7 @@ trait EstudianteTraitProps {
   } //END-getFotoEstud
 
 
-  public function getFoto(int $max_width=80, bool $show_cod=true) { 
+  public function getFoto(int $max_width=80, bool $show_cod=false) { 
     return self::getFotoEstud($this->id, $max_width, 'w3-round', $show_cod, $this->sexo);
   } //END-getFoto
 

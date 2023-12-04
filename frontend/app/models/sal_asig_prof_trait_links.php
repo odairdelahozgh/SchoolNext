@@ -3,15 +3,10 @@
 trait SalAsigProfTraitLinks {
 
   public static function getLnkListaClase(int $periodo_id) {
-    return '';
-    /*  
-      PENDIENTE-- habilitar cuanado el pdf esté listo.
-      
-      OdaTags::linkButton(
+    return OdaTags::linkButton(
       action: "admin/cargas/exportListasDeClaseProfesorPdf/$periodo_id", 
       text: "Lista de Clase {$periodo_id}P", 
       attrs: " target=\"_blank\" class=\"w3-button w3-green\"");
-      */
   } //END-getLnkListaClase
 
   public function getLnkPageIndicadores(int $grado_id): string {

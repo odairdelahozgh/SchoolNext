@@ -76,7 +76,7 @@ trait EstudianteTraitLinks {
             attrs: 'title="Establece pago a mes de '.$this->nombre_mes_enum(self::LIM_PAGO_PERIODOS[self::$_periodo_actual]).'"' 
         )
       .'</span>';
-      return $lnk.'<br>';
+      return $lnk;
     }
     return $lnk;
   } //END-getlnkSetPonerAldia

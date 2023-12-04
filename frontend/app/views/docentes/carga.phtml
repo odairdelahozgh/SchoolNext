@@ -49,10 +49,13 @@
       $user = Session::get('id');
       $lnk5p = '';
       if (4 == $periodo) {  
+        // esta parte se debe quitar
         $lnk5p = OdaTags::linkExterno(
           url: "https://windsortemp.schoolnext.space/index.php/+/sAP/ListasClaseProfesorPDF?user_id=$user&periodo=5", 
           text: "Listas de Clase P5",
           attrs: 'class="w3-button w3-green"' );
+
+        $lnk5p = SalAsigProf::getLnkListaClase(5);
       }
 
       echo OdaTags::linkExterno(

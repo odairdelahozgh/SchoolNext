@@ -78,13 +78,16 @@ trait NotaTraitLinks {
 
 
   
-  public static function lnkPageCalificar(int $periodo_id, int $salon_id, int $asignatura_id): string {
+  public static function lnkPageCalificar(int $periodo_id, int $salon_id, int $asignatura_id, $enabled=true): string {
     try {
+      if (!$enabled) {
+        return '';
+      }
       return OdaTags::linkButton(
         action: "docentes/notasCalificar/{$periodo_id}/{$salon_id}/{$asignatura_id}", 
         text: "Calificar <br>P{$periodo_id}", 
         icon: '', 
-        attrs: 'title="Ingresar NOTAS" class="w3-button w3-small w3-pale-green w3-round-large"'
+        attrs: 'title="Ingresar NOTAS" class="w3-button w3-small w3-pale-green w3-round-large"',
       );
 
     } catch (\Throwable $th) {
@@ -94,8 +97,11 @@ trait NotaTraitLinks {
   } //END-lnkPageCalificar
 
 
-  public static function lnkPageSeguimientos(int $periodo_id, int $salon_id, int $asignatura_id): string {
+  public static function lnkPageSeguimientos(int $periodo_id, int $salon_id, int $asignatura_id, $enabled=true): string {
     try {
+      if (!$enabled) {
+        return '';
+      }
       return OdaTags::linkButton(
         action: "docentes/notasCalificarSeguimientos/{$periodo_id}/{$salon_id}/{$asignatura_id}", 
         text: "Seguimientos <br>Intermedios P{$periodo_id}", 
@@ -110,8 +116,11 @@ trait NotaTraitLinks {
   } //END-lnkPageSeguimientos
 
 
-  public static function lnkPagePlanesApoyo(int $periodo_id, int $salon_id, int $asignatura_id): string {
+  public static function lnkPagePlanesApoyo(int $periodo_id, int $salon_id, int $asignatura_id, $enabled=true): string {
     try {
+      if (!$enabled) {
+        return '';
+      }
       return OdaTags::linkButton(
         action: "docentes/notasCalificarPlanesApoyo/{$periodo_id}/{$salon_id}/{$asignatura_id}", 
         text: "Planes de <br>Apoyo P{$periodo_id}", 

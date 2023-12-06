@@ -22,7 +22,11 @@ function md5_dec_to_hex($dec_str)
 }
 
 require_once VENDOR_PATH . 'autoload.php';
+
+
 try {
+  require_once APP_PATH."libs/enums.php";
+  echo Estado::radio('Legend', 'meses', '2');
   //echo substr(bin2hex($bytes), 0, $lenght);
   $entero =2359742;
   echo "Entero: $entero<hr>";

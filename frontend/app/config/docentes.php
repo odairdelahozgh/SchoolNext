@@ -1,19 +1,22 @@
 <?php
+// filtros 
+// [] = todos, [-1] ninguno, [1,2] filtro
+
 return [
   'calificaciones' => [
-    'periodos'    => [4,5],
-    'salones'     => [],
-    'asignaturas' => [],
-    'usuarios'    => [],
+    'periodos'    => [-1],
+    'salones'     => [-1],
+    'asignaturas' => [-1],
+    'usuarios'    => [-1],
   ],
   'seguimientos' => [
-    'periodos'    => [4,5],
-    'salones'     => [],
-    'asignaturas' => [],
-    'usuarios'    => [],
+    'periodos'    => [-1],
+    'salones'     => [-1],
+    'asignaturas' => [-1],
+    'usuarios'    => [-1],
   ],
   'planes_apoyo' => [
-    'periodos'    => [4,5],
+    'periodos'    => [5],
     'salones'     => [],
     'asignaturas' => [],
     'usuarios'    => [],

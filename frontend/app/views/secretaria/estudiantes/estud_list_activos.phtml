@@ -27,11 +27,10 @@
         $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>"
                  ."<h3>{$Estud} {$Estud->isNuevoIco()}</h3>"
                  .$Estud->getCuentaInstit(true).'<br><br>'
-                 ."{$Estud->getPagoPension()} {$Estud->getlnkSetPonerAldia()}
-                   {$Estud->getDebePreicfes()} <br> 
-                   {$Estud->getDebeAlmuerzos()} <br>"
+                 ."{$Estud->getPagoPension()} {$Estud->getlnkSetPonerAldia()} <br> 
+                   {$Estud->getDebePreicfes()} - {$Estud->getDebeAlmuerzos()} <br>"
                  .$Estud->getlnkSetMesPagosTodos().'<br>'
-                 .'Boleitnes '.$Estud->getLnkBoletinesTodos().'<br>'
+                 .'Boletines '.$Estud->getLnkBoletinesTodos().'<br>'
                  //.$Estud->getLnkPlanesApoyoTodos()
                  ;
 

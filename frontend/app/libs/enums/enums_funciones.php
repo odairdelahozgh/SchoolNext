@@ -23,6 +23,21 @@
     return "<select id=\"$id\" name=\"$name\" class=\"w3-input w3-border\">$opts</select>";
   } //END-forSelect
 
+  public static function radio(string $legend='', string $name, string $checked=''): String  {
+    $opts = '';
+    foreach (self::cases() as $case) {
+      $is_checked = ($case->value==$checked) ? 'checked' : '';
+      $opts .= "
+        <input type=\"radio\" id=\"$case->value\" name=\"$name\" value=\"$case->value\" $is_checked />
+        <label for=\"$case->value\">".$case->label()."</label>
+      ";
+    }
+    return "
+      <fieldset>
+        <legend>$legend</legend>
+        $opts
+      </fieldset>";
+  }
 
 } // END-TRAIT
 

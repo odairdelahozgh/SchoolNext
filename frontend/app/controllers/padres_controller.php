@@ -17,12 +17,12 @@ class PadresController extends AppController
 
 
   public function index(): void {
-  $this->page_action = 'Inicio';
+    $this->page_action = 'Inicio';
   } //END-index
   
   
   public function contabilidad(): void {
-  $this->page_action = 'Información Contable';
+    $this->page_action = 'Información Contable';
   } //END-contabilidad
   
 
@@ -42,7 +42,7 @@ class PadresController extends AppController
   
 
   public function matriculas(): void {
-    $this->page_action = 'Módulo de Matrículas';
+    $this->page_action = 'Matr&iacute;culas';
   } //END-matriculas
 
 

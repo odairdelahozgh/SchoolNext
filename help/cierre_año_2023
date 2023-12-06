@@ -4,10 +4,11 @@ Habilitar a Yuli.. desactivar ESTUDIANTES
 
 
 
-**** CIERRE DE AÑO  ****
+**** CIERRE DE AÑO Y MATRÍCULAS ****
 BACKUP - BASE DE DATOS
 ================================================================
-sweb_notas = copia + vaciado de datos
+sweb_estudiantes: 
+sweb_notas = (backup=>sweb_notas_annio) + vaciado de sweb_notas
 sweb_notas = copia + vaciado de datos
 
 PROMOVER ESTUDIANTES

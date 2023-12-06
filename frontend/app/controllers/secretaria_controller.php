@@ -7,6 +7,14 @@
   */
 class SecretariaController extends AppController
 {  
+  
+  protected function before_filter() {
+    if ( !str_contains('secretarias', Session::get('roll')) && !str_contains('admin', Session::get('roll')) ) {
+      OdaFlash::warning('No tiene permiso de acceso al módulo SECRETARIAS, fué redirigido');
+      Redirect::to(Session::get('modulo'));
+    }
+  } //END-before_filter
+
 
   public function index() {
   $this->page_action = 'Inicio';

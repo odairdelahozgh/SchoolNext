@@ -9,6 +9,14 @@
 class ContabilidadController extends AppController
 {
     
+  protected function before_filter() {
+    if ( !str_contains('contables', Session::get('roll')) && !str_contains('admin', Session::get('roll'))) {
+      OdaFlash::warning('No tiene permiso de acceso al módulo CONTABILIDAD, fué redirigido');
+      Redirect::to(Session::get('modulo'));
+    }
+  } //END-before_filter
+
+
     public function index(): void {
       $this->page_action = 'Inicio';
     } //END-

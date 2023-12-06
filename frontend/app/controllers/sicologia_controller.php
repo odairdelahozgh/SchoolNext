@@ -8,6 +8,15 @@
 class SicologiaController extends AppController
 {
     
+  protected function before_filter()
+  {
+    if ( !str_contains('sicologos', Session::get('roll')) && !str_contains('admin', Session::get('roll')) ) {
+      OdaFlash::warning('No tiene permiso de acceso al módulo PSICOLOGÍA, fué redirigido');
+      Redirect::to(Session::get('modulo'));
+    }
+  } //END-before_filter
+
+
     public function index() {
       $this->page_action = 'Inicio';
       $this->data = (new Evento)->getEventosDashboard();

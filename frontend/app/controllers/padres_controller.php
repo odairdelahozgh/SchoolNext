@@ -40,9 +40,10 @@ class PadresController extends AppController
     View::select('estudiantes/index');
   } //END-estudiantes
   
-
+  
   public function matriculas(): void {
     $this->page_action = 'Matr&iacute;culas';
+    View::select('matriculas/index');
   } //END-matriculas
 
 

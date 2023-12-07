@@ -1,12 +1,17 @@
 TAREAS URGENTES
 ================================================================
-Habilitar a Yuli.. desactivar ESTUDIANTES
-ok Actualizar tabla grados... nuevos precios !!!
+Habilitar a Yuli botón de Retiro de Estudiantes.
+
+Retirar ESTUDIANTES: 
+  - Retiro Voluntario, 
+  - Retiro Graduación (11°)
+  - Retiro Institución
+
 
 **** CIERRE DE AÑO Y MATRÍCULAS ****
 BACKUP - BASE DE DATOS
 ================================================================
-ok sweb_grados_2023 -> para actualizar precios !!!
+ok sweb_grados_2023 -> actualizar precios NUEVO AÑO !!!
 
 ok sweb_estudiantes_2023: 
 ok sweb_datosestud_2023: 
@@ -22,10 +27,24 @@ ok sweb_notas_2023
 
 ok sweb_salon_asignat_profesor_2023
 
+
+
 PROMOVER ESTUDIANTES
 ================================================================
+en orden inverso.. primero 11° hacia abajo.
 >> PRIMARIA
   Promover a todos los de primaria
 >> BACHILLERATO
   primero desactivar los que se van
   dejar en espera los que están validando notas
+
+
+
+MATRÍCULAS
+================================================================
+Tabla Estudiantes:
+* todos a Null en campo: numero_mat
+* todos a null en campo: annio_promovido
+
+is_habilitar_mat ¿Eliminar campo?
+is_deudor ¿Eliminar campo?

@@ -8,7 +8,7 @@
  * 'id', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 
  * 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'uuid', 'documento', 'contabilidad_id', 
  * 'nombres', 'apellido1', 'apellido2', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 
- * 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 
+ * 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'retiro', 'fecha_ret', 
  * 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'
  */
   
@@ -396,5 +396,40 @@ class Estudiante extends LiteRecord {
 
     return ($tot[0]->total??0);
   }
+
+  
+  public function setRetirar($motivo = 'Voluntario') {
+    try {
+      // $RegEstud = (new Estudiante)->get($this->id);
+      // if ($RegEstud) {
+      //   $RegEstud->is_active = 0;
+      //   $RegEstud->retiro = $motivo;
+      //   $RegEstud->annio_promovido = 0;
+      //   $RegEstud->numero_mat = '';
+      //   $RegEstud->save();
+      //   return true;
+      // }
+      // return false;
+      $DQL = (new OdaDql(__CLASS__));
+      $DQL->setFrom('sweb_estudiantes');
+      $arrValues = [
+        'is_active' => 0,
+        'retiro'    => $motivo,
+        'annio_promovido'=> 0,
+        'numero_mat'=> '',
+        //'fecha_ret'=> '',
+        //'updated_at'=> '',
+        //'updated_by'=> '',
+      ];
+      $DQL->update($arrValues)
+      ->where('t.id=?')
+      ->setParams([$this->id]);
+      $DQL->execute();
+      return true;
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } // END-setActualizarPago 
 
 }//END-CLASS

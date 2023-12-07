@@ -6,7 +6,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 
 trait EstudianteTraitSetUp {
   
-  use TraitUuid, TraitForms, EstudianteTraitProps, EstudianteTraitLinks, EstudianteTraitDatosPadres;
+  use TraitUuid, TraitForms, EstudianteTraitProps, EstudianteTraitLinks, EstudianteTraitDatosPadres, EstudianteTraitMatriculas, EstudianteTraitCorrecciones;
   
   public function validar($input_post): bool {
     Session::set(index: 'error_validacion', value: '');
@@ -24,11 +24,11 @@ trait EstudianteTraitSetUp {
   private function setUp() {
 
     self::$_fields_show = [
-      'all'      => ['id', 'uuid', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'nombres', 'apellido1', 'apellido2', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
+      'all'      => ['id', 'uuid', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'nombres', 'apellido1', 'apellido2', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'created_at', 'updated_at', 'created_by', 'updated_by', 'tipo_dcto', 'sexo', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
       'index'    => ['is_active', 'id', 'estudiante_nombre', 'salon_id', 'grado_id', 'documento', 'email_instit', 'clave_instit'],
-      'create'   => ['nombres', 'apellido1', 'apellido2', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
-      'edit'     => ['nombres', 'apellido1', 'apellido2', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
-      'editUuid' => ['nombres', 'apellido1', 'apellido2', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'tipo_dcto', 'sexo', 'photo', 'ape1ape1', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
+      'create'   => ['nombres', 'apellido1', 'apellido2', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'tipo_dcto', 'sexo', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
+      'edit'     => ['nombres', 'apellido1', 'apellido2', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'tipo_dcto', 'sexo', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
+      'editUuid' => ['nombres', 'apellido1', 'apellido2', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_deudor', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'telefono2', 'email', 'tipo_dcto', 'sexo', 'retiro', 'fecha_ret', 'mat_bajo_p1', 'mat_bajo_p2', 'mat_bajo_p3', 'mat_bajo_p4', 'email_instit', 'clave_instit', 'annio_pagado'],
     ];
   
     self::$_attribs = [

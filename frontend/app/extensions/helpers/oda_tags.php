@@ -7,7 +7,7 @@ class OdaTags {
     if (!$cache) {
       $src .= '?nocache=' . uniqid();
     }
-    return '<script type="text/javascript" src="' . PUBLIC_PATH . $src . '"  type="module"></script>';
+    return '<script src="'.PUBLIC_PATH.$src.'"  type="module"></script>';
   } //END-js_module
 
   /**

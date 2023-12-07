@@ -84,10 +84,6 @@ class SecretariaController extends AppController
   } // END-setMesPago
   
 
-
-  /**
-   * Activar un Estudiante
-   */
   public function activarEstudiante(int $estudiante_id) {
   try {
     $this->page_action = 'Activar Estudiante';
@@ -104,6 +100,24 @@ class SecretariaController extends AppController
   Redirect::toAction('listadoEstudInactivos');
   } // END-activarEstudiante
   
+
+  public function retirarEstudiante(int $estudiante_id) {
+    try {
+      $this->page_action = 'Retirar Estudiante';
+      $Estud = (new Estudiante)->get($estudiante_id);
+      if ($Estud->setRetirar()) {
+      OdaFlash::valid("$this->page_action: $Estud");
+      } else {
+      OdaFlash::warning("$this->page_action: $Estud");
+      }
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    Redirect::toAction('listadoEstudActivos');
+    } // END-activarEstudiante
+  
+    
 
   /**
    * Editar un Registro de Estudiante: estudiantes/estud_edit_activos

@@ -25,6 +25,7 @@ return [
         '/ayuda'   => 'pages/ayuda',
         '/colores' => 'pages/colores',
         '/iconos'  => 'pages/iconos',
+        '/test'  => 'pages/test',
 
         '/docen-asignar-carga'      => 'docentes/asignar_carga',
         '/docen-carga-academica'    => 'docentes/carga',

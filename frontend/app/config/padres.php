@@ -1,6 +1,8 @@
 <?php
 return [
-  'mostrar_matriculas' => 0,
+  'annio_matricula' => 2024,
+
+  'mostrar_matriculas' => 1,
   
   'mostrar_seguimientos' => 0,
   'periodo_seguimientos' => 3,

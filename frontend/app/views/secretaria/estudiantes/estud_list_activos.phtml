@@ -22,7 +22,8 @@
       foreach($data as $key => $Estud) {
          $col1 = $Estud->is_active_f(true) .'<br/>'
                 .$Estud->getFoto().'<br/>'
-                .$Estud->documento .'<br/>';
+                .$Estud->documento .'<br/>'
+                .Html::linkAction("retirarEstudiante/$Estud->id/", 'Retirar', 'class="w3-btn w3-green w3-block"');
 
         $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>"
                  ."<h3>{$Estud} {$Estud->isNuevoIco()}</h3>"

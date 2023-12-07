@@ -1,13 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
-  console.clear();
   document.getElementById('btn-0').click();
 });
 
 function traer_data(estudiante_id, salon_nombre, periodo) {
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   console.clear();
-
-
 
   // ========================================================================      
   const div_info_estudiante = document.getElementById("info_estudiante");
@@ -21,18 +18,22 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
     if (1==document.getElementById('ver_boletines').value) {
       div_boletines.innerHTML = template_boletines(data_estudiante, ruta_base, periodo_boletines);
     }
-    
-    // temporal
-    // if (16 != data_estudiante.salon_id) {
-    //   document.getElementById('ver_planes_apoyo').value = 0;
-    // }
-
   });
-
   
+  /// matriculas
+  const div_matriculas = document.getElementById('proceso_matriculas');
+  if (1==document.getElementById('ver_matriculas').value) { 
+    div_matriculas.innerHTML = `
+    <div>
+      <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2024</h2>
+    </div>`;
+  }
+  
+
   // ========================================================================      
   const periodo_seguimientos = document.getElementById('periodo_seguimientos').value;
   const div_seguimientos = document.getElementById('seguimientos');
+
   if (1==document.getElementById('ver_seguimientos').value) { 
     getDataSeguimientos(ruta_base, estudiante_id, periodo_seguimientos)
     .then(res => {
@@ -52,12 +53,12 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
         </div>`; 
       }
     });
-  } //END::SEGUIMIENTOS-INTERMEDIOS
+  } //END-if
   
   function getDataSeguimientos(ruta_base, estudiante_id, periodo_id) {
     ruta = ruta_base+'api/seguimientos/by_estudiante_periodo/'+estudiante_id+'/'+periodo_id;
     return fetch(ruta).then(res => res.json() );
-  }//END-getDataPlanesApoyo
+  }//END-getDataSeguimientos
 
   function template_seguimientos(ruta_base, data) {
     let ruta_descarga_seguimientos  = ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+data.uuid;
@@ -76,6 +77,7 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
   // ========================================================================      
   const periodo_planes_apoyo = document.getElementById('periodo_planes_apoyo').value;
   const div_planes_apoyo = document.getElementById('planes_apoyo');
+
   if (1==document.getElementById('ver_planes_apoyo').value) { 
     getDataPlanesApoyo(ruta_base, estudiante_id, periodo_planes_apoyo)
     .then(res => {
@@ -100,6 +102,14 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
   
 
 } //END-traer_data
+
+
+
+function template_proceso_matriculas(data, ruta) {
+  return `
+    <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas</h2>
+  `;
+} //END-template_proceso_matriculas
 
 
 
@@ -153,15 +163,6 @@ function template_datos_estud(data, ruta, salon_nombre) {
 } //END-template_datos_estud
 
 
-
-
-function template_proceso_matriculas(data, ruta) {
-  return `
-    <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas</h2>
-  `;
-} //END-template_proceso_matriculas
-
-
 function template_seguimientos(data, ruta) {
   return `
     <h2 class="w3-panel w3-theme w3-round-xlarge">Seguimientos Intermedios</h2>
@@ -177,8 +178,8 @@ function template_boletines(estudiante, ruta_base, periodo_actual) {
   mes_req[3] = 8;
   mes_req[4] = 11;
   mes_req[5] = 11;
-
-  for (var i= 1; i<=periodo_actual; i++) {
+  let max_periodo = (4==periodo_actual) ? 5 : periodo_actual;
+  for (var i= 1; i<=max_periodo; i++) {
     if (estudiante.mes_pagado>=mes_req[i]) {
       links +=  `
       <a href="${ruta_base}admin/notas/exportBoletinEstudiantePdf/${i}/${estudiante.uuid}" 

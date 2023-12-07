@@ -1,0 +1,31 @@
+TAREAS URGENTES
+================================================================
+Habilitar a Yuli.. desactivar ESTUDIANTES
+ok Actualizar tabla grados... nuevos precios !!!
+
+**** CIERRE DE AÑO Y MATRÍCULAS ****
+BACKUP - BASE DE DATOS
+================================================================
+ok sweb_grados_2023 -> para actualizar precios !!!
+
+ok sweb_estudiantes_2023: 
+ok sweb_datosestud_2023: 
+
+ok sweb_estudiantes_reg_desacacom_2023
+ok sweb_estudiantes_reg_observ_gen_2023
+
+ok sweb_estudiante_adjuntos_2023  - datos vaciados
+ok sweb_estudiante_adjuntos_dos_2023  - datos vaciados
+
+ok sweb_indicadores_2023
+ok sweb_notas_2023
+
+ok sweb_salon_asignat_profesor_2023
+
+PROMOVER ESTUDIANTES
+================================================================
+>> PRIMARIA
+  Promover a todos los de primaria
+>> BACHILLERATO
+  primero desactivar los que se van
+  dejar en espera los que están validando notas

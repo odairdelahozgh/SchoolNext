@@ -44,7 +44,7 @@ class Grado extends LiteRecord {
    */
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
     $DQL = new OdaDql(__CLASS__);
-    $DQL->select('t.*, s.nombre AS seccion_nombre, s.nombre AS seccion')
+    $DQL->select('t.*, t.nombre AS grado_nombre, s.nombre AS seccion_nombre, s.nombre AS seccion')
         ->leftJoin('seccion', 's')
         ->orderBy(self::$_order_by_defa);
 

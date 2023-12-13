@@ -101,11 +101,11 @@ class SecretariaController extends AppController
   } // END-activarEstudiante
   
 
-  public function retirarEstudiante(int $estudiante_id) {
+  public function retirarEstudiante(int $estudiante_id, string $motivo) {
     try {
       $this->page_action = 'Retirar Estudiante';
       $Estud = (new Estudiante)->get($estudiante_id);
-      if ($Estud->setRetirar()) {
+      if ($Estud->setRetirar($motivo, $this->user_id)) {
       OdaFlash::valid("$this->page_action: $Estud");
       } else {
       OdaFlash::warning("$this->page_action: $Estud");

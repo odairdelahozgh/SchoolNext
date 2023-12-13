@@ -14,12 +14,33 @@ function traer_data(estudiante_id) {
     div_info_estudiante.innerHTML = template_datos_estud(data_estudiante, ruta_base, salon_nombre);
   });
   
+
+
+
   // matriculas
   const div_matriculas = document.getElementById('proceso_matriculas');
   if (1==document.getElementById('ver_matriculas').value) { 
+    const arr_estado_mat = [
+      '0: Bloqueado x Contabilidad',
+      '1: No ha subido Documentos',
+      '2: Documentos INCOMPLETOS',
+      '3: Documentos EN REVISIÓN',
+      '4: Documentos RECHAZADOS',
+      '5: Documentos APROBADOS, Falta Asignar Número de Matrícula',
+      '6: Documentos APROBADOS, Faltan FIRMAS del Acudiente',
+      '7: Proceso Terminado',
+    ];
+    const estado_mat = '';
+    if (data_estudiante.mes_pagado!=11) {
+      estado_mat = arr_estado_mat[0];
+    } else {
+      estado_mat = 'Otro estado';
+    }
+
     div_matriculas.innerHTML = `
     <div>
       <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2024</h2>
+      <h5>${estado_mat}<estado_mat/>
     </div>`;
   }
 

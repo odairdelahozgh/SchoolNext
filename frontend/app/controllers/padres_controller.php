@@ -18,6 +18,7 @@ class PadresController extends AppController
 
   public function index(): void {
     $this->page_action = 'Inicio';
+    Redirect::toAction('estudiantes');
   } //END-index
   
   

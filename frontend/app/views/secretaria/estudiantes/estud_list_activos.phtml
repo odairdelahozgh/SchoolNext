@@ -19,11 +19,18 @@
          attrs:         'class="w3-theme"', 
          arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
       );
+      
+      $motivo1 = RetiroEstudiante::Voluntario;
+      $motivo2 = RetiroEstudiante::Institucion;
+      $motivo3 = RetiroEstudiante::Graduacion;
+
       foreach($data as $key => $Estud) {
          $col1 = $Estud->is_active_f(true) .'<br/>'
                 .$Estud->getFoto().'<br/>'
-                .$Estud->documento .'<br/>'
-                .Html::linkAction("retirarEstudiante/$Estud->id/", 'Retirar', 'class="w3-btn w3-green w3-block"');
+                .$Estud->documento .'<br/><br/>Retirar<br/>'
+                .$Estud->getLnkRetirar(RetiroEstudiante::Voluntario)
+                .$Estud->getLnkRetirar(RetiroEstudiante::Institucion)
+                .$Estud->getLnkRetirar(RetiroEstudiante::Graduacion);
 
         $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>"
                  ."<h3>{$Estud} {$Estud->isNuevoIco()}</h3>"

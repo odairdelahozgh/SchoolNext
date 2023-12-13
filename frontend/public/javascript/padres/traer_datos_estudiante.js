@@ -22,7 +22,7 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
 
     /// matriculas
     const div_matriculas = document.getElementById('proceso_matriculas');
-    if (1==document.getElementById('ver_matriculas').value) { 
+    if ( 1==document.getElementById('ver_matriculas').value && 1==data_estudiante.is_active ) { 
       const arr_estado_mat = [
         '[0] Bloqueado x Contabilidad',
         '[1] No ha subido Documentos',
@@ -35,8 +35,6 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
       ];
 
       let estado_mat = '';
-      console.log(data_estudiante.is_debe_preicfes);
-      console.log(data_estudiante.is_debe_almuerzos);
       if ( data_estudiante.mes_pagado!=11 || data_estudiante.is_debe_preicfes==1  || data_estudiante.is_debe_almuerzos==1 ) {
         estado_mat = `
           <div class="w3-panel w3-pale-red w3-leftbar w3-border-red">
@@ -59,12 +57,11 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
         `;
       }
 
+      let link_matriculas = ruta_base+'padres/matriculas';
       div_matriculas.innerHTML = `
       <div>
-        <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2024 
-        </h2> 
-        ${estado_mat}
-        
+        <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2024</h2>
+        <a href="${link_matriculas}" class="w3-btn w3-blue"> Ir a Módulo de Matrículas</a>
       </div>`;
     }
 
@@ -176,6 +173,7 @@ function template_planes_apoyo(ruta_base, data) {
 
 
 function template_datos_estud(data, ruta, salon_nombre) {
+  let estado = (data.is_active==1) ? 'ACTIVO' : 'INACTIVO';
   let debe_almuerzos = (data.is_debe_almuerzos>0) ? 'SI' : 'NO';
   let debe_preicfes = (data.is_debe_preicfes>0) ? 'SI' : 'NO';
   return `
@@ -188,16 +186,17 @@ function template_datos_estud(data, ruta, salon_nombre) {
     <div class="w3-container">
       <table class="w3-table">
         <tr>
-          <td>Cuenta MS Teams:<br>
+          <td>
+            Estado: ${estado}<br><br>
+            Cuenta MS Teams:<br>
             <span class="w3-text-blue">${data.email_instit}@windsorschool.edu.co</span><br>
             Clave de Acceso: <span class="w3-text-blue">${data.clave_instit}</span>
           </td>
 
-          <td>
-          </td>
+          <td> </td>
 
-          <td
-            Última Referencia de Pago:<br> Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado} 
+          <td>
+            Última Referencia de Pago:<br> Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado}  <br>
             <br>Debe Almuerzos: ${debe_almuerzos} 
             <br>Debe Preicfes: ${debe_preicfes} 
           </td>

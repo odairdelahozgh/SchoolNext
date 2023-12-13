@@ -32,9 +32,7 @@ const CORE_PATH        = APP_ROOT_PRIVATE.'core/';
 const PUBLIC_PATH     = 'https://schoolnext.windsorschool.edu.co/';
 $url = $_SERVER['ORIG_PATH_INFO'] ?? '/';
 
-const VENDOR_PATH      = APP_ROOT_PRIVATE.'frontend/vendor/';
-const ABS_PUBLIC_PATH = '/home/windsor1/schoolnext.windsorschool.edu.co/';
-const SCHOOLWEB_PUBLIC_PATH = 'https://schoolweb.windsorschool.edu.co/';
+
 */
 
 
@@ -49,20 +47,8 @@ define('CORE_PATH', dirname(dirname(APP_PATH)).'/core/');
 define('PUBLIC_PATH', substr($_SERVER['SCRIPT_NAME'], 0, -9)); // - index.php string[9]
 $url = $_SERVER['PATH_INFO'] ?? '/';
 
-define('VENDOR_PATH', APP_PATH.'../vendor/');
-const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public';
-const SCHOOLWEB_PUBLIC_PATH = 'https://windsortemp.schoolnext.space/';;
-
-
-const APP_NAME= "SchoolNEXT>>";
-const FILE_UPLOAD_PATH   = PUBLIC_PATH.'files/upload/';
-const FILE_DOWNLOAD_PATH = PUBLIC_PATH.'files/download/';
-const IMG_UPLOAD_PATH    = PUBLIC_PATH.'img/upload/';
-const IMG_DOWNLOAD_PATH  = PUBLIC_PATH.'img/download/';
-
-const IMG_ESTUDIANTES_PATH  = IMG_UPLOAD_PATH.'estudiantes';
-
-require CORE_PATH.'kumbia/bootstrap.php'; //bootstrap del core
+require APP_PATH . 'libs/bootstrap.php'; //bootstrap de app
+//require CORE_PATH.'kumbia/bootstrap.php'; //bootstrap del core
 
 
 /*

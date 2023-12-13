@@ -45,5 +45,37 @@ class EstudiantesController extends ScaffoldController
 
   } //END-exportPdf
 
+  public function promoverMatriculas(int $grado_id) {
+    try {
+      $Grados = (new Grado())::all();
+      $arrGrados = [];
+      foreach ($Grados as $key => $grado) {
+        $arrGrados[$grado->id]['proximo_grado'] = $grado->proximo_grado;
+        $arrGrados[$grado->id]['salon_default'] = $grado->salon_default;
+      }
+      
+      $perdieron_annio = ['2313, 2276, 1769, 1443'];
+      $DQLEstudiantes = new OdaDql('Estudiante');
+      $DQLEstudiantes->setFrom('sweb_estudiantes');
+      
+      $nuevo_grado = $arrGrados[$grado_id]['proximo_grado'];
+      $data = [
+        'is_habilitar_mat' => 1, 
+        'annio_promovido' => 2024, 
+        'grado_promovido' => $nuevo_grado, 
+        'numero_mat' => '', 
+      ];
+      $DQLEstudiantes->update($data)
+        ->where(' (t.is_active=1) and (t.id not in (2313, 2276, 1769, 1443)) and (t.grado_mat=?')
+        ->setParams([$grado_id]);
+      $DQLEstudiantes->execute();
+
+      redirect::to('secre-estud-list-activos');
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-promover
+
 
 } // END CLASS

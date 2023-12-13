@@ -18,16 +18,59 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
     if (1==document.getElementById('ver_boletines').value) {
       div_boletines.innerHTML = template_boletines(data_estudiante, ruta_base, periodo_boletines);
     }
+
+
+    /// matriculas
+    const div_matriculas = document.getElementById('proceso_matriculas');
+    if (1==document.getElementById('ver_matriculas').value) { 
+      const arr_estado_mat = [
+        '[0] Bloqueado x Contabilidad',
+        '[1] No ha subido Documentos',
+        '[2] Documentos INCOMPLETOS',
+        '[3] Documentos EN REVISIÓN',
+        '[4] Documentos RECHAZADOS',
+        '[5] Documentos APROBADOS, Falta Asignar Número de Matrícula',
+        '[6] Documentos APROBADOS, Faltan FIRMAS del Acudiente',
+        '[7] Proceso Terminado',
+      ];
+
+      let estado_mat = '';
+      console.log(data_estudiante.is_debe_preicfes);
+      console.log(data_estudiante.is_debe_almuerzos);
+      if ( data_estudiante.mes_pagado!=11 || data_estudiante.is_debe_preicfes==1  || data_estudiante.is_debe_almuerzos==1 ) {
+        estado_mat = `
+          <div class="w3-panel w3-pale-red w3-leftbar w3-border-red">
+            <p>Estado del proceso:${arr_estado_mat[0]}</p>
+          </div>
+        `;
+      } else {
+        estado_mat = `
+          <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue">
+            <p>Estado del proceso:${arr_estado_mat[1]}</p>
+          </div>
+          ${links_decargas_matricula()}
+          <br><br>
+          <div class="w3-display-container">
+            <div class="w3-display-left w3-small">
+            ¿Requiere Soporte Técnico? <a title="Escríbenos" href="whatsapp://send?phone=+573017153066&amp;text=Requiero+soporte+técnico">
+            <i class="fa-brands fa-whatsapp w3-xlarge" aria-hidden="true"></i> </a>
+            </div>
+          </div>          
+        `;
+      }
+
+      div_matriculas.innerHTML = `
+      <div>
+        <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2024 
+        </h2> 
+        ${estado_mat}
+        
+      </div>`;
+    }
+
   });
   
-  /// matriculas
-  const div_matriculas = document.getElementById('proceso_matriculas');
-  if (1==document.getElementById('ver_matriculas').value) { 
-    div_matriculas.innerHTML = `
-    <div>
-      <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2024</h2>
-    </div>`;
-  }
+
   
 
   // ========================================================================      
@@ -133,6 +176,8 @@ function template_planes_apoyo(ruta_base, data) {
 
 
 function template_datos_estud(data, ruta, salon_nombre) {
+  let debe_almuerzos = (data.is_debe_almuerzos>0) ? 'SI' : 'NO';
+  let debe_preicfes = (data.is_debe_preicfes>0) ? 'SI' : 'NO';
   return `
   <div class="w3-card-1">
 
@@ -147,16 +192,21 @@ function template_datos_estud(data, ruta, salon_nombre) {
             <span class="w3-text-blue">${data.email_instit}@windsorschool.edu.co</span><br>
             Clave de Acceso: <span class="w3-text-blue">${data.clave_instit}</span>
           </td>
+
           <td>
           </td>
-          <td>Última Referencia de Pago:<br> Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado} 
+
+          <td
+            Última Referencia de Pago:<br> Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado} 
+            <br>Debe Almuerzos: ${debe_almuerzos} 
+            <br>Debe Preicfes: ${debe_preicfes} 
           </td>
+
         </tr>
       </table>
     </div>
 
-    <footer class="w3-container w3-light-blue">
-      <h5> notificaciones...</h5>
+    <footer class="w3-container">
     </footer>
   </div>
   `;
@@ -208,4 +258,33 @@ function template_reconocimientos(data, ruta_base) {
 function nombreMes(mes) {
   const meses = ["Mes Indefinido", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
   return meses[mes];
+}
+
+function links_decargas_matricula () {
+  let ruta_base = document.getElementById('public_path').innerHTML.trim()+'files/download/matriculas/';
+  let msg_links_docs =  `
+    <h5>DESCARGAR DOCUMENTOS DE MATRÍCULA<h5>
+    <p class="w3-panel w3-pale-yellow w3-border w3-border-yellow"><small>Debe descargar estos documentos, diligenciarlos y escanearlos en formato pdf cada uno por aparte, para luego subirlos junto con el recibo de pago de la matrícula</small></p>
+    <table>
+      <tr>
+        <td>Pagaré</td>
+        <td><a href="${ruta_base}windsor_formato_pagare.pdf" class="w3-btn w3-pale-green w3-round" target="_blank"><i class="fa-solid fa-file-pdf"></i> Pagaré</a></td>
+      </tr>
+      <tr>
+        <td>Instrucciones pagaré</td>
+        <td><a href="${ruta_base}windsor_formato_instruccion_pagare.pdf" class="w3-btn w3-pale-green w3-round" target="_blank"><i class="fa-solid fa-file-pdf"></i> Instrucción Pagaré</a></td>
+      </tr>
+      <tr>
+        <td>Actualización de datos y autorización</td>
+        <td><a href="${ruta_base}windsor_formato_actualizacion.pdf" class="w3-btn w3-pale-green w3-round" target="_blank"><i class="fa-solid fa-file-pdf"></i> Actualización</a></td>
+      </tr>
+      <tr>
+        <td>formulario SIMPADE, Min de Educación</td>
+        <td><a href="${ruta_base}windsor_formulario_simpade_2024.pdf" class="w3-btn w3-pale-green w3-round" target="_blank"><i class="fa-solid fa-file-pdf"></i> SIMPADDE 2024</a></td>
+      </tr>
+    </table>
+ 
+  `;
+  return msg_links_docs;
+
 }

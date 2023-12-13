@@ -1,2 +1,37 @@
-<?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
-<?php View::flash(); ?>
+<div class="w3-container">
+  <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+  <?php View::flash(); ?>
+</div>
+
+<div class="w3-container">
+  <div class="w3-cell-row">
+    <?php
+    try {
+      
+      $tabs = new OdaTabs();
+      $buttons = [];
+      if (count($data)>0) {
+        foreach ($data as $key => $estud) {
+          $Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estud->id]);
+          $contenido_tab ='';
+          include 'info_estud.phtml';
+          $estado_mat = $estud->getEstadoMat();
+          if (in_array($estado_mat->value, [3,4,5,6])) {
+            include "estado3456.phtml";
+          } else {
+            include "estado{$estado_mat->value}.phtml";          
+          }
+          $tabs->addTab($key, $estud->nombres, $contenido_tab);
+        }
+        echo $tabs;
+      }
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    ?>
+  </div>
+    <pre> <?= print_r(EstadoMatricula::toArray()) ?> </pre>
+</div>
+
+<?=$tabs->getJs();?>

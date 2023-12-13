@@ -30,45 +30,33 @@ class Estudiante extends LiteRecord {
       ->leftJoin('grado', 'g', 's.grado_id=g.id')
       ->where('t.is_active=1')
       ->orderBy(self::$_order_by_defa);
-
+      
     $this->setUp();
   } //END-__construct
 
   
-  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
-    try {
+  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null): array|string {
       $DQL = $this->DQL;
       $DQL->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'estudiante_nombre')
           ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'nombre');
       if (!is_null(self::$_order_by_defa)) { $DQL->orderBy(self::$_order_by_defa); }
       if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
       return $DQL->execute();
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
   } // END-getList
 
   
-  public function getListBySalon(int $salon_id, string $orden='a1,a2,n', string $select='*') {
-    try {
+  public function getListBySalon(int $salon_id, string $orden='a1,a2,n', string $select='*'): array|string {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
           ->concat(explode(',', $orden), 'nombre')
           ->andWhere('t.salon_id=?')
           ->setParams([$salon_id]);
-
       return $DQL->execute();
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
   } // END-getList
 
   
-  public function getListEstudiantes(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
-    try {
+  public function getListEstudiantes(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null): array|string {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
@@ -76,17 +64,10 @@ class Estudiante extends LiteRecord {
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
       if (!is_null($estado))   { $DQL->where('t.salon_id<>0 AND t.is_active=?')->setParams([$estado]); }
       return $DQL->execute();
-
-    } catch (\Throwable $th) {
-      //throw $th;
-        OdaFlash::error($th);
-    }
   } // END-getListEstudiantes.
 
   //proyecto para reemplazar varios list, dependiendo del módulo desde donde se hace la llamada.
-  public function getListActivosByModulo(Modulo $modulo = Modulo::Docen, string $orden='a1,a2,n', array|string $where = null) {
-    try {
-      
+  public function getListActivosByModulo(Modulo $modulo = Modulo::Docen, string $orden='a1,a2,n', array|string $where = null): array|string {
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
 
       $DQL = (new OdaDql(__CLASS__))
@@ -127,17 +108,11 @@ class Estudiante extends LiteRecord {
           $DQL->andWhere($filtro); // el where viene listo
         } 
       }
-
       return $DQL->execute();
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
   } // END-getListActivosByModulo
 
 
-  public function getListSecretaria(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null) {
-    try {
+  public function getListSecretaria(string $orden='a1,a2,n', int|bool $estado=null, string|bool $order_by=null): array|string {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
@@ -146,15 +121,10 @@ class Estudiante extends LiteRecord {
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
       if (!is_null($estado))   { $DQL->where('t.is_active=?')->setParams([$estado]); }
       return $DQL->execute();
-
-    } catch (\Throwable $th) {
-      throw $th;
-    }
   } // END-getListSecretaria
 
 
-  public function getListContabilidad(string $orden='a1,a2,n') {
-    try {
+  public function getListContabilidad(string $orden='a1,a2,n'): array|string {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
@@ -162,15 +132,10 @@ class Estudiante extends LiteRecord {
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
           ->addSelect('de.deudor, de.codeudor, de.codeudor_cc, de.resp_pago_ante_dian');
       return $DQL->execute();
-      
-    } catch (\Throwable $th) {
-        OdaFlash::error($th);
-    }
   } // END-getListContabilidad
 
 
-  public function getListSicologia(string $orden='a1,a2,n') {
-    try {
+  public function getListSicologia(string $orden='a1,a2,n'): array|string {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
@@ -178,16 +143,11 @@ class Estudiante extends LiteRecord {
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
           ->orderBy('g.orden,s.nombre,'.$orden);
       return $DQL->execute();
-
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
   } // END-getListSicologia
 
 
 
-  public function getListEnfermeria(string $orden='a1,a2,n') {
-    try {
+  public function getListEnfermeria(string $orden='a1,a2,n'): array|string {
       $DQL = $this->DQL;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
       $DQL->concat(explode(',', $orden), 'estudiante_nombre')
@@ -195,42 +155,50 @@ class Estudiante extends LiteRecord {
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
           ->orderBy('g.orden,s.nombre,'.$orden);
       return $DQL->execute();
-
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
   } // END-getListEnfermeria
 
 
-  public function getListPadres(int $user_id, string $orden='a1,a2,n') {
-    try {
+  public function getListPadres(int $user_id, string $orden='a1,a2,n'): array|string {
+    $lista = (new EstudiantePadres)->getHijos($user_id);
+    $filtro = implode(',', $lista);
+    $annio_actual = 2023;
+    $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
+
+    $DQL = (new OdaDql(__CLASS__))
+    ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+    ->concat(explode(',', $orden), 'estudiante_nombre')
+    ->concat(explode(',', $orden), 'nombre')
+    ->leftJoin('salon', 's')
+    ->leftJoin('grado', 'g', 's.grado_id=g.id')
+    ->where("t.is_active=1")
+    ->andWhere("t.id IN ($filtro)")
+    ->orderBy('g.orden,s.nombre,'.$orden);
+    
+    $DQL->setFrom('sweb_estudiantes');
+    return $DQL->execute();
+} // END-getListPadres
+
+  public function getListPadresRetirados(int $user_id, string $orden='a1,a2,n'): array|string {
       $lista = (new EstudiantePadres)->getHijos($user_id);
       $filtro = implode(',', $lista);
-      
+      $annio_actual = 2023;
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
 
       $DQL = (new OdaDql(__CLASS__))
-      //->select('de.*, t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
       ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
       ->concat(explode(',', $orden), 'estudiante_nombre')
       ->concat(explode(',', $orden), 'nombre')
-      //->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
       ->leftJoin('salon', 's')
       ->leftJoin('grado', 'g', 's.grado_id=g.id')
-      ->where('t.is_active=1')
+      ->where("t.is_active=1 or (t.is_active=0 and YEAR(t.fecha_ret)={$annio_actual})")
       ->andWhere("t.id IN ($filtro)")
       ->orderBy('g.orden,s.nombre,'.$orden);
       
       $DQL->setFrom('sweb_estudiantes');
       return $DQL->execute();
-
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
   } // END-getListPadres
 
-  public function getListPorProfesor(int $user_id, string $orden='a1,a2,n'): array {
-    try {
+  public function getListPorProfesor(int $user_id, string $orden='a1,a2,n'): array|string {
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
 
       $CargaProfe = (new SalAsigProf)->getSalones_ByProfesor($user_id);
@@ -253,11 +221,6 @@ class Estudiante extends LiteRecord {
           ->orderBy($orden);
 
       return $DQL->execute();
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-    
   } //END-getListPorProfesor
 
   

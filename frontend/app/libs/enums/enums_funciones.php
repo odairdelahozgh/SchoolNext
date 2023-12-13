@@ -1,7 +1,7 @@
 <?php
   trait EnumsFunciones {
 
-  public static function getRandom() { // para pruebas !!
+  public static function getRandom() {
     $enums = self::cases();
     return $enums[array_rand($enums)];
   } //END-getRandom
@@ -37,6 +37,29 @@
         <legend>$legend</legend>
         $opts
       </fieldset>";
+  } //END-radio
+
+
+  public function equals(self|int|string $other): bool {
+    if (! $other instanceof self) {
+      $other = self::from($other);
+    }
+    return $this === $other;
+  }
+
+  public function equalsAny(array $others): bool {
+    foreach ($others as $other) {
+      if ($this->equals($other)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static function toArray(): array {
+    //array_map(static fn (BackedEnum $enum) => $enum->name, self::cases()),
+    //array_map(static fn (BackedEnum $enum) => $enum->value, self::cases()),
+    return array_combine( self::allValues(), self::allNames() );
   }
 
 } // END-TRAIT

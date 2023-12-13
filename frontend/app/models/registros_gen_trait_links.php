@@ -19,11 +19,12 @@ trait RegistrosGenTraitLinks {
   
   public static function lnkPageRegistrosGrupo(): string {
     try {
-      return OdaTags::linkButton(
-        action: "docentes/registros_grupo", 
-        text: "Ver Registros del Grupo",      
-        attrs: 'class="w3-button w3-pale-blue"',
-      );
+      return ''; // temporal
+      // return OdaTags::linkButton(
+      //   action: "docentes/registros_grupo", 
+      //   text: "Ver Registros del Grupo",      
+      //   attrs: 'class="w3-button w3-pale-blue"',
+      // );
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);

@@ -33,7 +33,7 @@ class PadresController extends AppController
     $this->arrData['periodo'] = Session::get('periodo');
 
     $user_id = (1!=$this->user_id) ? $this->user_id : 22482 ; // simular un usuario de padres
-    $this->data = (new Estudiante)->getListPadres($user_id);
+    $this->data = (new Estudiante)->getListPadresRetirados($user_id);
     
     } catch (\Throwable $th) {
     OdaFlash::error($th);

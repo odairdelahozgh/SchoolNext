@@ -12,7 +12,8 @@ class DocentesController extends AppController
 {
 
   protected function before_filter() {
-    if ( !str_contains('docentes', Session::get('roll')) && !str_contains('admin', Session::get('roll')) ) {
+
+    if ( !str_contains('docentes', Session::get('roll')) && !str_contains('admin', Session::get('roll')) && !str_contains('coordinadores', Session::get('roll')) ) {
       OdaFlash::warning('No tiene permiso de acceso al módulo DOCENTES, fué redirigido');
       Redirect::to(Session::get('modulo'));
     }

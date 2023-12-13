@@ -12,10 +12,11 @@
       $buttons = [];
       if (count($data)>0) {
         foreach ($data as $key => $estud) {
-          $Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estud->id]);
+          //$Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estud->id]);
+          $estado_mat = $estud->getEstadoMat();
+
           $contenido_tab ='';
           include 'info_estud.phtml';
-          $estado_mat = $estud->getEstadoMat();
           if (in_array($estado_mat->value, [3,4,5,6])) {
             include "estado3456.phtml";
           } else {
@@ -31,7 +32,12 @@
     }
     ?>
   </div>
-    <pre> <?= print_r(EstadoMatricula::toArray()) ?> </pre>
+    <pre> <?php
+    echo "Activo? $estud->is_active, Grado Actual: $estud->grado_mat, Grado Promovido: $estud->grado_promovido<br>";
+    if (1==$user_id) { 
+      print_r(EstadoMatricula::toArray()); 
+    }
+     ?> </pre>
 </div>
 
 <?=$tabs->getJs();?>

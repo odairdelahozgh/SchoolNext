@@ -14,6 +14,9 @@
   require_once "enums/t_boletin.php";
   require_once "enums/tipo_doc.php";
   require_once "enums/valorativo.php";
+  require_once "enums/estado_matricula.php";
+  require_once "enums/estado_adjuntos.php";
+  require_once "enums/retiro_estudiante.php";
   
   // $estado = Estado::tryFrom($Param) ?? Estado::Inactivo;
 ?>

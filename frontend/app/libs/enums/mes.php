@@ -42,7 +42,7 @@ enum Mes: int {
   }
 
   public static function caption(): string {
-    return 'Mes del a&nacute;o';
+    return 'Mes del año';
   }//END-caption
 
 

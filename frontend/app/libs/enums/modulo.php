@@ -27,6 +27,20 @@ enum Modulo: int {
     };
   } //END-label
 
+  public function carpetas(): string {
+    return match($this) {
+      static::Admin  => 'admin',
+      static::Conta  => 'contabilidad',
+      static::Coord  => 'coordinador',
+      static::Docen  => 'docentes',
+      static::Enfer  => 'enfermeria',
+      static::Padre  => 'padres',
+      static::Psico  => 'sicologia',
+      static::Secre  => 'secretaria',
+      default => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
+    };
+  } //END-label
+
   public function ico(): string {
     return "<i class=\"fa-solid fa-layer-group w3-small\"></i>&nbsp;";
   } //END-ico

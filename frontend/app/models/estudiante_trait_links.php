@@ -97,4 +97,15 @@ trait EstudianteTraitLinks {
   } //END-getLnkBoletin
 
 
+  public function getLnkRetirar(RetiroEstudiante $motivo) {
+    try {
+      return Html::linkAction("retirarEstudiante/{$this->id}/$motivo->name", "{$motivo->label()}", "class=\"w3-button w3-pale-{$motivo->color()} w3-block\"");
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  } //END-getLnkBoletin
+
+  
+
 } //END-TraitLinksOlds

@@ -1,22 +1,18 @@
 <?php
 trait EstudianteAdjuntosTraitCorrecciones {
 
-  public static function setPromoverANuevoAnnio($annio=2024) {
-    try {
-
-      for ($i=11; $i<=1; $i--) { 
-        echo $i;
-      }
-
-      for ($i=15; $i<=12; $i--) { 
-        echo $i;
-      }
-
-  
-    } catch (\Throwable $th) {
-      throw $th;
-    }
-  }//END-setPromoverANuevoAnnio
+  // public static function setPromoverANuevoAnnio($annio=2024) {
+  //   try {
+  //     for ($i=11; $i<=1; $i--) { 
+  //       echo $i;
+  //     }
+  //     for ($i=15; $i<=12; $i--) { 
+  //       echo $i;
+  //     }
+  //   } catch (\Throwable $th) {
+  //     throw $th;
+  //   }
+  // }//END-setPromoverANuevoAnnio
 
 
 

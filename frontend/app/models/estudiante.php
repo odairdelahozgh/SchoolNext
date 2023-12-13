@@ -202,18 +202,26 @@ class Estudiante extends LiteRecord {
   } // END-getListEnfermeria
 
 
-  public function getListPadres(int $user_id, string $orden='a1,a2,n'): array|string {
+  public function getListPadres(int $user_id, string $orden='a1,a2,n') {
     try {
       $lista = (new EstudiantePadres)->getHijos($user_id);
       $filtro = implode(',', $lista);
-
+      
       $orden = str_replace(array('n', 'a1', 'a2'), array('t.nombres', 't.apellido1', 't.apellido2'), $orden );
-      $DQL = $this->DQL;
-      $DQL->concat(explode(',', $orden), 'estudiante_nombre')
-          ->concat(explode(',', $orden), 'nombre')
-          ->andWhere("t.id IN ($filtro)")
-          ->orderBy('g.orden,s.nombre,'.$orden);
 
+      $DQL = (new OdaDql(__CLASS__))
+      //->select('de.*, t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+      ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+      ->concat(explode(',', $orden), 'estudiante_nombre')
+      ->concat(explode(',', $orden), 'nombre')
+      //->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
+      ->leftJoin('salon', 's')
+      ->leftJoin('grado', 'g', 's.grado_id=g.id')
+      ->where('t.is_active=1')
+      ->andWhere("t.id IN ($filtro)")
+      ->orderBy('g.orden,s.nombre,'.$orden);
+      
+      $DQL->setFrom('sweb_estudiantes');
       return $DQL->execute();
 
     } catch (\Throwable $th) {
@@ -398,29 +406,21 @@ class Estudiante extends LiteRecord {
   }
 
   
-  public function setRetirar($motivo = 'Voluntario') {
+  public function setRetirar(string $motivo, int $user_id) {
     try {
-      // $RegEstud = (new Estudiante)->get($this->id);
-      // if ($RegEstud) {
-      //   $RegEstud->is_active = 0;
-      //   $RegEstud->retiro = $motivo;
-      //   $RegEstud->annio_promovido = 0;
-      //   $RegEstud->numero_mat = '';
-      //   $RegEstud->save();
-      //   return true;
-      // }
-      // return false;
+      $hoy = new DateTime();
       $DQL = (new OdaDql(__CLASS__));
       $DQL->setFrom('sweb_estudiantes');
       $arrValues = [
         'is_active' => 0,
-        'retiro'    => $motivo,
-        'annio_promovido'=> 0,
-        'numero_mat'=> '',
-        //'fecha_ret'=> '',
-        //'updated_at'=> '',
-        //'updated_by'=> '',
+        'retiro' => $motivo,
+        'annio_promovido' => 0,
+        'numero_mat' => '',
+        'fecha_ret' => $hoy->format('Y-m-d'),
+        'updated_at' => $hoy->format('Y-m-d'),
+        'updated_by'=> $user_id,
       ];
+      
       $DQL->update($arrValues)
       ->where('t.id=?')
       ->setParams([$this->id]);

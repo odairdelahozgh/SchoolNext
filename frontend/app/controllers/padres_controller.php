@@ -47,8 +47,8 @@ class PadresController extends AppController
     
     $arr_padres_id = [22204, 21985, 22065];
     $rnd =$arr_padres_id[rand(0, count($arr_padres_id)-1)]; 
-    //$user_id = (1!=$this->user_id) ? $this->user_id : $rnd ; // simular un usuario de padres
-    $user_id = 22482;
+    $user_id = (1!=$this->user_id) ? $this->user_id : $rnd ;
+    
     $this->data = (new Estudiante)->getListPadres($user_id);
     foreach ($this->data as $estudiante) {
       $Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante->id]);

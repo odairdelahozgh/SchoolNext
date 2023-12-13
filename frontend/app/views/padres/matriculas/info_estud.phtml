@@ -1,7 +1,7 @@
 <?php
   $contenido_tab .= '<small>¿Requiere Soporte técnico por WhatsApp? '.OdaUtils::linkWhatsApp(telefono: '3017153066', message: '%F0%9F%9B%91%20MATRICULAS:%20Requiero%20Soporte%20tecnico').'</small><br>';
   $contenido_tab .= OdaTags::tag('h2', "$estud");
-  $contenido_tab .= OdaTags::Tag('div', $estud->getFotoCircle().'<br>', 'class="w3-cell w3-padding w3-mobile"');
+  $contenido_tab .= OdaTags::Tag('div', $estud->getFoto().'<br>', 'class="w3-cell w3-padding w3-mobile"');
   $cont = $estud->getPagoPension().'<br>'.$estud->getDebePreicfes().'<br>'.$estud->getDebeAlmuerzos().'<br>';
   $contenido_tab .= OdaTags::Tag('div',  $cont.'<br>', 'class="w3-cell w3-padding w3-mobile"');
 ?>

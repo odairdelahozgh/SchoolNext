@@ -22,7 +22,10 @@
           $arr_calificar_usuarios    = (array) Config::get('docentes.calificaciones.usuarios');
 
           $btn_enabled = true;
-          if (Count($arr_calificar_periodos)>0 and !in_array($periodo, $arr_calificar_periodos) and $user_id!=1 ) {
+          if (Count($arr_calificar_periodos)>0 
+            and !in_array($periodo, $arr_calificar_periodos) 
+            and $user_id!=1 
+          ) {
             $btn_enabled = false;
           }
           if (Count($arr_calificar_salones)>0 and !in_array($arrData['Salon']->id, $arr_calificar_salones) and $user_id!=1 ) {

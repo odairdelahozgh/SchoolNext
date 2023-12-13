@@ -53,14 +53,14 @@ trait EstudianteTraitProps {
     $foto_default = OdaTags::img(
         src:          $img_default, 
         alt:          $id,
-        attrs:        "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"",
+        attrs:        "class=\"$class\" width:\"{$max_width}\"",
         err_message:  'no image'
     );
 
     return $cod_id .OdaTags::img(
       src: "upload/estudiantes/$id.png", 
       alt: $id, 
-      attrs: "class=\"$class\" style=\"width:100%;max-width:".$max_width."px\"",
+      attrs: "class=\"$class\" width=\"{$max_width}\"",
       err_message: $foto_default
     );
   } //END-getFotoEstud

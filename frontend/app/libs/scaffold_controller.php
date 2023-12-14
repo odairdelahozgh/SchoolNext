@@ -54,23 +54,12 @@ abstract class ScaffoldController extends AdminController
   } //END-exportXls
 
 
-
-
-  /**
-   * admin/.../index
-   */
   public function index() {
-    try {
-      $this->page_action = "Listado $this->controller_name" ;
-      $this->data = (new $this->nombre_modelo())->getList();
-      $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__);
-      $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__, true);
-      //OdaLog::debug("mensaje","rastreo");
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-  }//END-list
+    $this->page_action = "Listado $this->controller_name" ;
+    $this->data = (new $this->nombre_modelo())->getList();
+    $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__);
+    $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__, true);
+  }//END-index
   
   /**
    * admin/../create
@@ -120,7 +109,7 @@ abstract class ScaffoldController extends AdminController
       $Registro = new $this->nombre_modelo();
 
       if (!Input::hasPost($this->nombre_post)) {
-        OdaFlash::warning("$this->page_action - No coincide post [$this->nombre_post]");
+        OdaFlash::warning("$this->page_action - Variable Post [$this->nombre_post] vacío.");
         return Redirect::to($redirect);
       }
 

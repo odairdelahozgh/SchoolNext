@@ -1,11 +1,12 @@
 <h2>Editando Registro</h2>
 <?php
 $message = Config::get('messages.comprimir_imagenes');
-$msg_info = OdaTags::createTag('div', $message, 'class="w3-panel w3-theme-l2"');
+$msg_info = OdaTags::Tag('div', $message, 'class="w3-panel w3-theme-l2"');
 
 $model = new RegistroDesempAcad();
 $fieldsToHidden = $model::getFieldsHidden('edit');
 $titulo = '<h3 id="nombre_estud_edit"></h3>';
+
 $myForm = new OdaForm($model, 'admin/registros_desemp_acad/edit_ajax', multipart: true);
 $myForm->setColumnas(2);
 $myForm->setAtrib('id="frm_edit" name="frm_edit"');

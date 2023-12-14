@@ -1,0 +1,39 @@
+<?php
+  $myTabla = new OdaTable();
+  
+  $myTabla->addRow([
+    $myForm->getInput(field:'nombres'), 
+    $myForm->getInput(field:'apellido1'), 
+    $myForm->getInput(field:'apellido2'),
+  ]);
+
+  $myTabla->addRow([
+    $myForm->getSelect(field:'sexo', data: Sexo::toArray()),
+    $myForm->getSelect(field:'tipo_dcto', data: TipoDoc::toArray()),
+    $myForm->getInput(field:'documento'),
+  ]);
+
+  //TipoDoc::forSelect()
+
+  $myTabla->addRow([
+    $myForm->getInput(field:'fecha_nac', tipo:'date'),
+    '<br>'.$myForm->getCheck(field:'is_active'),
+    $myForm->getSelect(field:'retiro', data: RetiroEstudiante::toArray() ),
+  ]);
+
+  $myTabla->addRow([
+    $myForm->getInput(field:'email_instit'),
+    $myForm->getInput(field:'clave_instit'),
+  ]);
+
+  /*
+  $form->getColCampo('Datosestud/pais_nac')
+  $form->getColCampo('Datosestud/depto_nac')
+  $form->getColCampo('Datosestud/ciudad_nac')
+
+  $form->getColCampo('Datosestud/religion')
+  $form->getColCampo('Datosestud/observacion')
+  
+  */
+
+  $myTabs->addTab('basic', 'Datos Básicos', $myTabla);

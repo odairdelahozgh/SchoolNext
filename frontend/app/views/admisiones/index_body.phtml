@@ -37,7 +37,7 @@
 
     echo  $FormAspir->getOpenForm()
           .$tabs
-          .$FormAspir->getCloseForm();
+          .$FormAspir->close();
   
   } catch (\Throwable $th) {
     OdaFlash::error($th);

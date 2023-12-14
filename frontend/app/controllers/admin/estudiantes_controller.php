@@ -8,20 +8,11 @@
 class EstudiantesController extends ScaffoldController
 {
 
-  /**
-   * admin/.../index
-   */
-  public function index() {
-    try {
-      $this->page_action = "Listado $this->controller_name" ;
-      $this->fieldsToShow = (new Estudiante())->getFieldsShow(__FUNCTION__);
-      $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
-      $this->data = (new Estudiante())->getListEstudiantes($orden='n,a1,a2');
-      //OdaLog::debug("mensaje","rastreo");
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
+  public function index(): void {
+    $this->page_action = "Listado $this->controller_name" ;
+    $this->fieldsToShow = (new Estudiante())->getFieldsShow(__FUNCTION__);
+    $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
+    $this->data = (new Estudiante())->getListEstudiantes($orden='n,a1,a2');
   }//END-list
   
   public function exportPdf() {
@@ -75,7 +66,50 @@ class EstudiantesController extends ScaffoldController
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-promover
+  } //END-promoverMatriculas
+
+
+  public function editEstudiante(int $id, string $redirect='') {
+    try {
+      $redirect = str_replace('.','/', $redirect);
+      $this->page_action = 'EDITAR Registro Estudiante';
+      
+       var_dump(
+         array_filter($_POST, function($k) {
+         return $k == 'estudiantes';
+         }, ARRAY_FILTER_USE_KEY)
+       );
+      //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      
+
+      View::select(null, null);
+
+      $Registro = (new $this->nombre_modelo())::get($id);
+
+      if (!Input::hasPost($this->nombre_post)) {
+        OdaFlash::warning("$this->page_action - No coincide post [$this->nombre_post]");
+        return Redirect::to($redirect);
+      }
+
+      if (!$Registro->validar(Input::post($this->nombre_post))) {
+        OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
+        return Redirect::to($redirect);
+      }
+
+      if ( $Registro->update(Input::post($this->nombre_post)) ) {
+        OdaFlash::valid($this->page_action);
+      } else {
+        $this->data = Input::post($this->nombre_post);
+        OdaFlash::warning("$this->page_action - No actualizó el Registro.");
+      }
+      return Redirect::to($redirect);
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return Redirect::to($redirect);
+    }
+
+  }//END-edit_ajax
 
 
 } // END CLASS

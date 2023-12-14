@@ -7,7 +7,7 @@
  * @source   frontend\app\extensions\helpers\odaodaform.php
  */
 class OdaForm extends Form {
-   private $version = '2023.08.17';
+   private $version = '2023.12.12';
    private $_style = ' class="w3-input w3-border" ';
    private $_modelo = '';
    private $_fname   = '';
@@ -18,7 +18,7 @@ class OdaForm extends Form {
    private $_ffields = array(1=>' ', 2=>' ');
    private $_isEdit = false;
    private $_isMultipart = false;
-
+   private $_fields_in_form = [];
    const ICO_SEARCH = '<i class="fa-solid fa-search w3-large"></i>';
    const ICO_SEARCH_SMALL = '<i class="fa-solid fa-search w3-small"></i>';
 
@@ -43,7 +43,7 @@ class OdaForm extends Form {
           default => [1=>' '],
       };
       $this->_isMultipart = $multipart;
-   } // END-__construct
+   } // END-function
 
    public function __toString(): string {
       $cols_max = array_key_last($this->_ffields);
@@ -58,13 +58,7 @@ class OdaForm extends Form {
         $data_sets .= OdaTags::tag('div', $fieldset, 'class="w3-col w3-container"');
       }
 
-      $form  = '';
-      if ($this->_isMultipart) {
-        $form .= self::openMultipart($this->_faction, $this->_fattrs);
-      } else {
-        $form .= self::open($this->_faction, $this->_fmethod, $this->_fattrs);
-      }
-
+      $form  = $this->getOpenForm();
       $form .= self::getHiddens();
       $form .= OdaTags::tag('div', $data_sets, 'class="w3-row"');
       $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar', 'onclick="cancelar()"');
@@ -72,14 +66,8 @@ class OdaForm extends Form {
       return $form;
    } // END-__toString
   
-  
-  /**
-   * OdaForm->getFields('legend Fieldset');
-   */
-  public function getFields($legend_fieldset): string {
-    return self::getHiddens() . self::createFieldset($this->_ffields[1], $legend_fieldset);
-  } // END-getFields
- 
+
+  public function getFields($legend_fieldset): string { return self::getHiddens().self::createFieldset($this->_ffields[1], $legend_fieldset); } // END-function
 
    /**
     * Retorna un campos Input dependiendo del "tipo".
@@ -87,7 +75,8 @@ class OdaForm extends Form {
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     * week url time text tel submit search reset range radio password number month image hidden file email datetime-local date color checkbox button
     */
-   public function addInput(int $columna=1, string|bool $tipo=null, string $field='', $attr='', $inline=false) {
+   public function addInput(int $columna=1, string|bool $tipo=null, string $field='', $attr='', $inline=false): void {
+      $this->_fields_in_form[] = $field;
       $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = $this->_fname.'.'.trim($field);
       $label      = $this->getLabel($field, $inline);
@@ -101,6 +90,7 @@ class OdaForm extends Form {
    } // END-addInput
 
    public function getInput(string|bool $tipo=null, string $field='', $attrs='', $inline=false): string {
+    $this->_fields_in_form[] = $field;
     $attr = $this->_style . (($attrs) ? $attrs : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
     $fieldname    = $this->_fname.'.'.trim($field);
     $place_holder =  $this->getAttrib($field). ' '. $this->getPlaceholder($field);
@@ -115,10 +105,10 @@ class OdaForm extends Form {
   } //END-getInput
 
    /**
-    * Retorna un campo FILE.
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
     */
-   public function addFile(int $columna=1, string $field='', $attr='', $inline=false) {
+   public function addFile(int $columna=1, string $field='', $attr='', $inline=false): void {
+    $this->_fields_in_form[] = $field;
     $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
     $fieldname  = trim($field);
     $label      = $this->getLabel($field, $inline);
@@ -131,7 +121,8 @@ class OdaForm extends Form {
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
-    public function addInput2(int $columna=1, string|bool $tipo=null, string $field='', $attr='', $inline=true) {
+    public function addInput2(int $columna=1, string|bool $tipo=null, string $field='', $attr='', $inline=true): void {
+      $this->_fields_in_form[] = $field;
       $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = $this->_fname.'.'.trim($field);
       $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
@@ -148,7 +139,8 @@ class OdaForm extends Form {
     * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
-    public function addTextarea(int $columna=1, string $field='', $attr='', $inline=true) {
+    public function addTextarea(int $columna=1, string $field='', $attr='', $inline=true): void {
+      $this->_fields_in_form[] = $field;
       $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = $this->_fname.'.'.trim($field);
       $label      = $this->getLabel($field, $inline);
@@ -160,6 +152,7 @@ class OdaForm extends Form {
    } // END-addTextarea
 
   public function getTextarea(string $field='', $attr='', $inline=true): string {
+    $this->_fields_in_form[] = $field;
     $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
     $fieldname  = $this->_fname.'.'.trim($field);
     $label      = $this->getLabel($field, $inline);
@@ -175,6 +168,7 @@ class OdaForm extends Form {
     * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
     */
    public function addSelect(int $columna=1, string $field='', array $data=[], string $attr=''): void {
+      $this->_fields_in_form[] = $field;
       $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
       $fieldname  = trim($this->_fname.'.'.$field);
       $label       = $this->getLabel($field);
@@ -186,6 +180,7 @@ class OdaForm extends Form {
    } // END-addSelect
 
   public function getSelect(string $field='', array $data=[], string $attr=''): string {
+    $this->_fields_in_form[] = $field;
     $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
     $fieldname = trim($this->_fname.'.'.$field);
     $label     = $this->getLabel($field);
@@ -203,7 +198,8 @@ class OdaForm extends Form {
     * @example echo $myForm->addCheck(2, 'is_active', 'class="w3-red"');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
     */
-    public function addCheck(int $columna=1, string $field='', string|array $attr=''){
+    public function addCheck(int $columna=1, string $field='', string|array $attr=''): void {
+      $this->_fields_in_form[] = $field;
       $fieldname  = trim($this->_fname.'.'.$field);
       $label = $this->getLabel($field);
       $help  = $this->getHelp($field);
@@ -215,7 +211,8 @@ class OdaForm extends Form {
       $this->_ffields[(int)$columna] .= "<br><label> $label $check </label><br>";
    }
 
-  public function getCheck(string $field='', string|array $attr=''){
+  public function getCheck(string $field='', string|array $attr=''): string {
+    $this->_fields_in_form[] = $field;
     $fieldname  = trim($this->_fname.'.'.$field);
     $label = $this->getLabel($field, true);
     $help  = $this->getHelp($field);
@@ -228,137 +225,72 @@ class OdaForm extends Form {
   }
 
    /**
-    * Retorna un campos radio button.
-    * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
     * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
     */
-   public function addRadio(int $columna=1, string $field='', string|array $attrs='', bool $checked=false){
-      /*
-      <fieldset>
-         <legend>Select a maintenance drone:</legend>
-         <div>
-            <input type="radio" id="huey" name="drone" value="huey"
-                  checked>
-            <label for="huey">Huey</label>
-         </div>
-         <div>
-            <input type="radio" id="louie" name="drone" value="louie">
-            <label for="louie">Louie</label>
-         </div>
-      </fieldset>
-       */
-      $value_defa = ($this->_isEdit) ? $this->_modelo->$field : 1;
-      $help  = $this->getHelp($field);
+  public function addRadio(int $columna=1, string $field='', string|array $attrs='', bool $checked=false): void {
+    $this->_fields_in_form[] = $field;
+    $value_defa = ($this->_isEdit) ? $this->_modelo->$field : 1;
+    $help  = $this->getHelp($field);
       
-      $radio_group = '<div class="w3-bar">';
-      foreach ($this->getDefault($field) as $key_radio => $value_radio) {
-         $checked = ($value_defa==$key_radio) ? true : false ;
-         $radio_group .= "<div class=\"w3-bar-item\">$value_radio&nbsp;&nbsp;".Form::radio($field, $key_radio, $attrs, $checked).'</div>  ';
-      }
-      $radio_group .= '</div>'.$help;
+    $radio_group = '<div class="w3-bar">';
+    foreach ($this->getDefault($field) as $key_radio => $value_radio) {
+      $checked = ($value_defa==$key_radio) ? true : false ;
+      $radio_group .= "<div class=\"w3-bar-item\">$value_radio&nbsp;&nbsp;".Form::radio($field, $key_radio, $attrs, $checked).'</div>  ';
+    }
+    $radio_group .= '</div>'.$help;
 
-      $label = $this->getLabel($field);
-      $campo_radio = self::createFieldset($radio_group, $label);
-      $this->_ffields[(int)$columna] .= '<br>'.$campo_radio;
-   }
+    $label = $this->getLabel($field);
+    $campo_radio = self::createFieldset($radio_group, $label);
+    $this->_ffields[(int)$columna] .= '<br>'.$campo_radio;
+  }
 
-   /**
-    * Lo declara como formulario de edición.
-    * @param int $max_cols: número de columnas del formulario.
-    * @return void
-    * @example echo $myForm->setColumnas(2);
-    */
-   public function setEdit() {
-      $this->_isEdit = true;
-   }
+  public function setEdit(): void { $this->_isEdit = true; }
+  
+  public function setColumnas(int $max_cols=1): void { $this->_ffields  = array_fill(1, (int)$max_cols, ' '); }
+  
+  public function setAtrib(string|array $attrs = ''): void { $this->_fattrs = Tag::getAttrs($attrs); }
+  
+  private function isRequired($field): bool { return str_contains($this->_modelo->getAttrib($field), 'required'); }
 
-   /**
-    * Establece el número de columnas que tendrá el formuario.
-    * @example echo $myForm->setColumnas(2);
-    */
-   public function setColumnas(int $max_cols=1) {
-      $this->_ffields  = array_fill(1, (int)$max_cols, ' ');
-   }
+  private function getDefault($field) { return (($this->_modelo->getDefault($field)) ? $this->_modelo->getDefault($field) : ''); } // END-getDefault
 
-   /**
-    * Establece los atributos que tendrá el formuario.
-    * @example echo $myForm->setColumnas(2);
-    */
-   public function setAtrib(string|array $attrs = '') {
-      $this->_fattrs = self::getAttrs($attrs);
-   }
+  public function getLabel($field, $inline=false) {
+    $requerido = ($this->isRequired($field)) ? '<i class="fa-solid fa-bolt"></i> ' : '' ;
+    $in_line = ($inline) ? '' : '<br>' ;
+    return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
+  } // END-function
 
-   private function isRequired($field) {
-      $attribs = $this->_modelo->getAttrib($field);
-      return str_contains($attribs, 'required');
-   }
-
-   private function getDefault($field) {
-      return (($this->_modelo->getDefault($field)) ? $this->_modelo->getDefault($field) : '') ;
-   } // END-getDefault
-
-   /**
-    * 
-    */
-   public function getLabel($field, $inline=false) {
-      $requerido = ($this->isRequired($field)) ? '<i class="fa-solid fa-bolt"></i> ' : '' ;
-      $in_line = ($inline) ? '' : '<br>' ;
-      return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
-   } // END-getLabel
-
-   public function getDataLabel($field, $inline=false) {
+  public function getDataLabel($field, $inline=false) {
     $in_line = ($inline) ? '' : '<br>' ;
     $label = (($this->_modelo->getLabel($field)) ? '<b>'.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
     $data = $this->_modelo->$field;
     return $label.$data;
- } // END-getLabel
+  } // END-function
 
 
 
-   private function getHelp($field) {
-      return (($this->_modelo->getHelp($field)) ? '<i class="fa-solid fa-circle-info"></i> <small>'.$this->_modelo->getHelp($field).'</small>' : '') ;
-   } // END-getHelp
+  private function getHelp(string $field): string { return (($this->_modelo->getHelp($field)) ? '<i class="fa-solid fa-circle-info"></i> <small>'.$this->_modelo->getHelp($field).'</small>' : ''); } // END-function
 
-   private function getPlaceholder($field) {
-      return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$this->_modelo->getPlaceholder($field).'" ' : '') ;
-   } // END-getPlaceholder
+  private function getPlaceholder(string $field): string { return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$this->_modelo->getPlaceholder($field).'" ' : '') ; } // END-function
 
-   private function getAttrib($field) {
-      return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : '') ;
-   } // END-getAttrib
+  private function getAttrib(string $field): string { return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : ''); } // END-function
 
+  private function getWidget(string $field) { return (($this->_modelo->getWidget($field)) ? $this->_modelo->getWidget($field) : 'input'); } // END-function
+  
+  public function addHiddens(string $fields='id'): void { $this->_fhiddens = str_replace(' ', '', $fields); } // END-function
 
-   private function getWidget($field) {
-    return (($this->_modelo->getWidget($field)) ? $this->_modelo->getWidget($field) : 'input') ;
-  } // END-getWidget
-
-   /**
-    * Establece cuáles campos serán ocultos (type="hide") en el formulario.
-    * @example        echo $myForm->setHiddens('id, created_by, updated_by, created_at, updated_at, is_active');
-    */
-    public function addHiddens($fields='id') {
-      $this->_fhiddens = str_replace(' ', '', $fields);
-   } // END-setHiddens
-
-   /**
-    * Retorna todos los campos tipo "hidden" que están en $_fhiddens.
-    * @example echo OdaForm->getHiddens();
-    */
-   public function getHiddens() {
-      $campos = explode(',',$this->_fhiddens);
-      $result = '';
-      foreach ($campos as $campo) {
-        $value_input = ($this->_isEdit) ? $this->_modelo->$campo : $this->getDefault($campo) ;
-        $result .= form::hidden($this->_fname.'.'.trim($campo), '', $value_input);
-      }
-      return $result;
-   } // END-getHiddens
+  public function getHiddens() {
+    $result = '';
+    foreach (explode(',',$this->_fhiddens) as $campo) {
+      $value_input = ($this->_isEdit) ? $this->_modelo->$campo : $this->getDefault($campo) ;
+      $result .= form::hidden($this->_fname.'.'.trim($campo), '', $value_input);
+    }
+    return $result;
+  } // END-function
    
 
    /**
-    * Crea un Input 'Search' para filtrar dentro de una tabla de datos
     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search
-    * @example echo OdaForm::inputSerach();
     */
    public static function inputSearch(string $input_search_id='inputSearch', string $table_id='mytable', string $placeholder="Filtrar") {
      $input = self::input(
@@ -371,55 +303,29 @@ class OdaForm extends Form {
           <div class=\"w3-bar-item\">".self::ICO_SEARCH."</div>
           <div class=\"w3-bar-item\">$input</div>
         </div>";
-   } // END-inputSerach
+   } // END-function
 
   
 
-    /**
-     * Crea un fieldset
-     * @example echo OdaForm->->createFielset('Contenido', 'Columna 1', 'class="w3-half"');
-     * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
-     * */
-   private static function createFieldset($content, $legend = '', $attrs = ''): string {
-      return "<fieldset $attrs> 
-                  <legend> $legend </legend>
-                  $content
-              </fieldset>";
-    }
+  /**
+   * Crea un fieldset
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
+   **/
+  private static function createFieldset($content, $legend = '', $attrs = ''): string { return "<fieldset $attrs> <legend>$legend</legend> $content </fieldset>"; }
 
-    
-    /**
-     * Convierte los argumentos de un metodo de parametros por nombre a un string con los atributos
-     * @return string
-     */
-   public static function getAttrs($params): string {
-      if (!is_array($params)) { return (string)$params; }
-      $data = '';
-      foreach ($params as $k => $v) {
-          $data .= "$k=\"$v\" ";
-      }
-      return trim($data);
-   }
-
-   public function getOpenForm(): string {
-    if ($this->_isMultipart) {
-      return self::openMultipart($this->_faction, $this->_fattrs);
-    } else {
-      return self::open($this->_faction, $this->_fmethod, $this->_fattrs);
-    }
-  } // END-getOpenForm
-
-  public function getSubmitForm(string $submit_caption ='Guardar', $attrs = ''): string {
-    return self::submit($submit_caption, $attrs);
-  } // END-getOpenForm
+  public function getOpenForm(): string {
+    if ($this->_isMultipart) { return self::openMultipart($this->_faction, $this->_fattrs); }
+    return self::open($this->_faction, $this->_fmethod, $this->_fattrs);
+  } //END-function
   
-  public function getCloseForm(): string {
-    return self::close();
-  } // END-getOpenForm
+  public function getFieldsInForm(): array { return $this->_fields_in_form; } // END-function
+  
+  public function getFieldsNotInForm(string $tipo_form='edit'): array { return array_diff($this->_modelo::getFieldsShow($tipo_form), $this->_fields_in_form ); } // END-function
 
+  public function v(): string {
+    $version = \DateTime::createFromFormat(format: 'Y.m.d', datetime: $this->version);
+    return 'PHP Helper OdaForm -> Version '.$version->format(format: 'd M Y');
+  }//END-function
 
-   public function v(): string {
-      $version = \DateTime::createFromFormat(format: 'Y.m.d', datetime: $this->version);
-      return 'PHP Helper OdaForm -> Version '.$version->format(format: 'd M Y');
-   }
+   
 } // END-Class

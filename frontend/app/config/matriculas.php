@@ -25,5 +25,5 @@ return [
   'file_5_titulo' => 'Formulario SIMPADE [Min de Educación]',
 
   'file_6'  => '',
-  'file_6_titulo'  => 'Recibo de Pago del 50% del Curso PRE-ICFES',
+  'file_6_titulo'  => 'Recibo de Pago del 50% del Curso PRE-ICFES <br> [Solo para los grados 9, 10, 11]',
 ];

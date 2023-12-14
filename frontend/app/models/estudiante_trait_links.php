@@ -1,6 +1,13 @@
 <?php
 trait EstudianteTraitLinks {
 
+  public function getLnkEditPage(string $caption, string $attrs=''): string {
+    return OdaTags::link(
+      action: "secretaria/editEstudiante/$this->id", 
+      text: $caption, 
+      attrs: $attrs);
+  } //END-getLnkEditPage
+
   public function getLnkBoletin(int $periodo) {
     try {
       return OdaTags::linkButton (

@@ -6,7 +6,7 @@
         </header>
         <div class="page-section">
         <?= Form::open('aspirante/create', 'post') ?>
-            <?= form_oda::text_basic(new Aspirante, 'nombres', array('placeholder'=>'nada', 'help'=>'nada de help')); ?>
+            <?= Form::text(new Aspirante, 'nombres', array('placeholder'=>'nada', 'help'=>'nada de help')); ?>
             <?php //form_oda::text_basic($model, 'apellido1'); ?>
             <?php //Form::textarea('apellido1') ?> 
             <?php //Form::text('apellido2') ?>

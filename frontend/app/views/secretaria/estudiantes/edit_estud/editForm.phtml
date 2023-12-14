@@ -1,0 +1,40 @@
+<div class="w3-container">
+   <?= View::Encab($controller_name, $page_action, $breadcrumb); ?>
+   <?= View::flash(); ?>
+</div>
+
+<div class="w3-container">
+  <h2><?=$arrData['Estudiante']?> </h2>
+  <?php
+    $model = $arrData['Estudiante'];    
+    $myForm = new OdaForm($model, 'admin/estudiantes/editEstudiante/'.$arrData['Estudiante']->id.'/secretaria.listadoEstudActivos', multipart: true);
+    $myForm->setAtrib('id="frm_edit" name="frm_edit"');
+    $myForm->setEdit();
+    $myTabs = new OdaTabs();
+    include 'basicos.phtml';
+    
+    $fieldsToHidden = $model::getFieldsHidden('edit');
+    $myForm->addHiddens(implode(",", $fieldsToHidden));
+
+    $formulario  = $myForm->getOpenForm();
+    $formulario .= $myTabs;
+    $formulario .= $myForm->getHiddens();
+    $formulario .= $myForm->submit('Guardar').'  '.$myForm->reset('Cancelar');
+    $formulario .= $myForm->close();
+
+    echo  "<div class=\"w3-container\">$formulario</div>";
+  ?>
+
+  <pre>
+    <?php
+      if ($user_id==1) {
+        echo "<p>Campos que faltan</p>";
+        print_r( $myForm->getFieldsNotInForm() );
+  
+        echo "<p>Campos Ocultos</p>";
+        print_r($fieldsToHidden);
+      }
+    ?>
+  </pre>
+  
+</div>

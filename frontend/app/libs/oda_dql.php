@@ -68,7 +68,7 @@ class OdaDql {
     };
   } //END-renderlog()
 
-  public function execute(bool $write_log = false): array|string {
+  public function execute(bool $write_log = false) {
     try {
       if ($write_log) { 
         OdaLog::debug($this->renderlog().PHP_EOL.'Params: ' .$this->getParams());
@@ -80,7 +80,7 @@ class OdaDql {
     }
   } //END-execute
   
-  public function executeFirst(bool $write_log = false): array|string {
+  public function executeFirst(bool $write_log = false) {
     try {
       if ($write_log) {
         OdaLog::debug($this->renderlog().PHP_EOL.'Params: ' .$this->getParams());

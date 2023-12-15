@@ -12,7 +12,7 @@
       $buttons = [];
       if (count($data)>0) {
         foreach ($data as $key => $estud) {
-          //$Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estud->id]);
+          $Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estud->id]);
           $estado_mat = $estud->getEstadoMat();
 
           $contenido_tab ='';

@@ -38,7 +38,16 @@ class SecretariaController extends AppController
   public function editEstudiante(int $estudiante_id): void {
     $this->page_action = 'Editando Estudiante';
     $this->arrData = [];
-    $this->arrData['Estudiante'] = (new Estudiante)::get($estudiante_id);
+
+    $Estudiante = (new Estudiante())::get($estudiante_id);
+    
+    $tabla_datos_estud = Config::get('tablas.datosestud');
+    $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$Estudiante->id]);
+
+
+    $this->arrData['Estudiante'] = $Estudiante;
+    $this->arrData['DatosEstud'] = $DatosEstud;
+
     View::select('estudiantes/edit_estud/editForm');
   } // END-editEstudiante
   

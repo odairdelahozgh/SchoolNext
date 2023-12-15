@@ -37,7 +37,7 @@ class OdaTabs {
     $display  = (1!=$this->_tab_cnt) ? "style=\"display:none\"" : '' ;
     $theme_act = (1==$this->_tab_cnt) ? "w3-theme-action" : '' ;
     $tabCaption = ($show_index) ? "$this->_tab_cnt. $tabCaption" : $tabCaption ;
-    $this->_arrTabs[$this->_tab_cnt] = "<button class=\"w3-bar-item w3-mobile w3-button tablink $theme_act\" onclick=\"openTab(event,'$tabId')\">$tabCaption</button>";
+    $this->_arrTabs[$this->_tab_cnt] = "<div class=\"w3-bar-item w3-mobile w3-button tablink $theme_act\" onclick=\"openTab(event,'$tabId')\">$tabCaption</div>";
     $this->_arrContenido[$this->_tab_cnt] = "<div id=\"$tabId\" class=\"tab w3-card-4 w3-padding w3-animate-opacity\" $display> $tabContent </div>";
   }
 

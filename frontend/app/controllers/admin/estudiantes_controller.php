@@ -74,34 +74,52 @@ class EstudiantesController extends ScaffoldController
       $redirect = str_replace('.','/', $redirect);
       $this->page_action = 'EDITAR Registro Estudiante';
       
-       var_dump(
-         array_filter($_POST, function($k) {
-         return $k == 'estudiantes';
-         }, ARRAY_FILTER_USE_KEY)
-       );
-      //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      //  var_dump(
+      //    array_filter($_POST, function($k) {
+      //    return $k == 'datosestuds';
+      //    }, ARRAY_FILTER_USE_KEY)
+      //  );
+      echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
       
 
       View::select(null, null);
 
-      $Registro = (new $this->nombre_modelo())::get($id);
-
-      if (!Input::hasPost($this->nombre_post)) {
-        OdaFlash::warning("$this->page_action - No coincide post [$this->nombre_post]");
+      $Estudiante = (new Estudiante())::get($id);
+      $tabla_datos_estud = Config::get('tablas.datosestud');
+      $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$Estudiante->id]);
+      
+      // ============================================================================
+      // TABLA ESTUDIANTES
+      if (!Input::hasPost('estudiantes')) {
+        OdaFlash::warning("$this->page_action - No coincide post 'estudiantes'");
         return Redirect::to($redirect);
       }
-
-      if (!$Registro->validar(Input::post($this->nombre_post))) {
-        OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
+      if (!$Estudiante->validar(Input::post('estudiantes'))) {
+        OdaFlash::warning("$this->page_action - tabla ESTUDIANTES - ".Session::get('error_validacion'));
         return Redirect::to($redirect);
       }
-
-      if ( $Registro->update(Input::post($this->nombre_post)) ) {
-        OdaFlash::valid($this->page_action);
+      if ( $Estudiante->update(Input::post('estudiantes')) ) {
+        OdaFlash::valid("$this->page_action - Se actualizó tabla ESTUDIANTES");
       } else {
-        $this->data = Input::post($this->nombre_post);
-        OdaFlash::warning("$this->page_action - No actualizó el Registro.");
+        OdaFlash::warning("$this->page_action - No actualizó el Registro en ESTUDIANTES.");
       }
+
+      // ============================================================================
+      // TABLA DATOSESTUDS
+      if (!Input::hasPost('datosestuds')) {
+        OdaFlash::warning("$this->page_action - No coincide post DATOSESTUDS");
+      }
+      if (!$DatosEstud->validar(Input::post('datosestuds'))) {
+        OdaFlash::warning("$this->page_action. No pudo validar DATOSESTUDS");
+      }
+      if ( $DatosEstud->update(Input::post('datosestuds')) ) {
+        OdaFlash::valid("$this->page_action - Se actualizó tabla DATOSESTUDS"); 
+      } else {
+        OdaFlash::warning("$this->page_action - No actualizó el Registro en DATOSESTUDS.");
+      }
+      // ============================================================================
+
+
       return Redirect::to($redirect);
 
     } catch (\Throwable $th) {

@@ -2,38 +2,36 @@
   $myTabla = new OdaTable();
   
   $myTabla->addRow([
-    $myForm->getInput(field:'nombres'), 
-    $myForm->getInput(field:'apellido1'), 
-    $myForm->getInput(field:'apellido2'),
+    $frmEstud->getInput(field:'nombres'), 
+    $frmEstud->getInput(field:'apellido1'), 
+    $frmEstud->getInput(field:'apellido2'),
   ]);
 
   $myTabla->addRow([
-    $myForm->getSelect(field:'sexo', data: Sexo::toArray()),
-    $myForm->getSelect(field:'tipo_dcto', data: TipoDoc::toArray()),
-    $myForm->getInput(field:'documento'),
-  ]);
-
-  //TipoDoc::forSelect()
-
-  $myTabla->addRow([
-    $myForm->getInput(field:'fecha_nac', tipo:'date'),
-    '<br>'.$myForm->getCheck(field:'is_active'),
-    $myForm->getSelect(field:'retiro', data: RetiroEstudiante::toArray() ),
+    $frmEstud->getSelect(field:'sexo', data: Sexo::toArray()),
+    $frmEstud->getSelect(field:'tipo_dcto', data: TipoDoc::toArray()),
+    $frmEstud->getInput(field:'documento'),
   ]);
 
   $myTabla->addRow([
-    $myForm->getInput(field:'email_instit'),
-    $myForm->getInput(field:'clave_instit'),
+    $frmEstud->getInput(field:'fecha_nac', tipo:'date'),
+    '',
+    '',
   ]);
 
-  /*
-  $form->getColCampo('Datosestud/pais_nac')
-  $form->getColCampo('Datosestud/depto_nac')
-  $form->getColCampo('Datosestud/ciudad_nac')
-
-  $form->getColCampo('Datosestud/religion')
-  $form->getColCampo('Datosestud/observacion')
+  $myTabla->addRow([
+    $frmDataEstud->getInput(field:'pais_nac'),
+    $frmDataEstud->getInput(field:'depto_nac'),
+    $frmDataEstud->getInput(field:'ciudad_nac'),
+  ]);
   
-  */
+  $myTabla2 = new OdaTable();
+  $myTabla2->addRow([
+    $frmEstud->getCheck(field:'is_active'),
+    $frmEstud->getInput(field:'retiro'),
+    $frmEstud->getInput(field:'fecha_ret'),
+  ]);
 
-  $myTabs->addTab('basic', 'Datos Básicos', $myTabla);
+  
+
+  $myTabs->addTab('basic', 'Datos Básicos', $myTabla.'<br>'.$myTabla2);

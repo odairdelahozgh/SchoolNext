@@ -1,4 +1,26 @@
 <?php
+  $myTabla = new OdaTable();
+
+  $myTabla->addRow([
+    $frmEstud->getInput(field:'grado_mat'),
+    $frmEstud->getInput(field:'salon_id'),
+    '',
+  ]);
+
+  $myTabla->addRow([
+    $frmEstud->getCheck(field:'is_habilitar_mat'),
+    $frmEstud->getInput(field:'numero_mat'),
+  ]);
+
+  $myTabla->addRow([
+    $frmEstud->getInput(field:'annio_promovido'),
+    $frmEstud->getInput(field:'grado_promovido'),
+  ]);
+
+
+
+  $myTabs->addTab('matri', 'Matrícula', $myTabla);
+
 /*
 echo _Tag'p.t_medium_azul', "Archivos Adjuntos a la Matrícula");
 
@@ -8,7 +30,7 @@ $html_params_oculto = array('hidden'=>'hidden');
 echo $form->getCampo('Adjuntos/estudiante_id', $html_params_oculto);
 echo $form->getCampo('AdjuntosDos/estudiante_id', $html_params_oculto);
 
-echo $form->getColCampo('is_habilitar_mat');
+echo $form->getColCampo('');
 
 $arch = _open('table');
 for ($i=1; $i<=5; $i++) {

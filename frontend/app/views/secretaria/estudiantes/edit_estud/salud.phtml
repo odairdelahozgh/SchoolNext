@@ -1,0 +1,45 @@
+<?php
+  $myTabla = new OdaTable();
+
+  $myTabla->addRow([
+    $frmDataEstud->getInput(field:'salud_eps'),
+    $frmDataEstud->getInput(field:'grupo_sang'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_antec_med_fam') 
+  ]);
+  
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_cirugias'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_alergico'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_tratamientos'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_enfermedades'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_medicam_prohibi'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_trastornos_alim'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_aliment_prohibi'),
+  ]);
+
+  $myTabla->addRow([
+    $frmDataEstud->getTextarea(field:'salud_comentarios'),
+  ]);
+
+  $myTabs->addTab('salud', 'Salud', $myTabla);

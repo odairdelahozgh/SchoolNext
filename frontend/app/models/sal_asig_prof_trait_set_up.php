@@ -8,10 +8,9 @@ trait SalAsigProfTraitSetUp {
   
   use TraitUuid, TraitForms, SalAsigProfTraitProps, SalAsigProfTraitLinks;
   
-  public function validar($input_post) {
+  public function validar($input_post): bool {
     Session::set('error_validacion', '');
     try{
-      validar::number()->length(1)->min(0)->max(1)->assert($input_post['is_active']);
       return true;
     } catch(NestedValidationException $exception) {
       Session::set('error_validacion', $exception->getFullMessage());

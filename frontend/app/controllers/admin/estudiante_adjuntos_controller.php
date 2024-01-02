@@ -10,15 +10,11 @@ class EstudianteAdjuntosController extends ScaffoldController
 
   public function edit_ajax(int $id, string $redirect='') {
     $this->page_action = 'EDITAR Archivos Adjuntos de Matriculas';
-
     try {
-      
       $redirect = "padres/matriculas";
-      //  var_dump(array_filter($_POST, function($k) {
-      //   return $k == 'notas';
-      //   }, ARRAY_FILTER_USE_KEY));
-      echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
-
+      if (1==$this->user_id) {
+        echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      }
       View::select(null, null);
       $post_name = 'estudianteadjuntos';
       $Registro = (new EstudianteAdjuntos)::get($id);

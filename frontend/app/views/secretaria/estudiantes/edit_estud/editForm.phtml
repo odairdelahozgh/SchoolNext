@@ -37,8 +37,8 @@
     $formulario .= $frmEstud->getHiddens();
     $formulario .= $frmDataEstud->getHiddens();
     
-    $formulario .= $frmEstud->submit('Guardar').'  '.$frmEstud->reset('Cancelar');
-    $formulario .= $frmEstud->close();
+    $formulario .= $frmEstud::submit('Guardar').'  '.$frmEstud::reset('Cancelar');
+    $formulario .= $frmEstud::close();
 
     echo  "<div class=\"w3-container\">$formulario</div>";
   ?>
@@ -48,14 +48,13 @@
       if ($user_id==1) {
         echo "<p>Campos que faltan Estudiantes</p>";
         print_r( $frmEstud->getFieldsNotInForm() );
-        //echo "<p>Campos Ocultos</p>";
-        //print_r($fieldsToHidden_Estud);
+        echo "<p>Campos Ocultos</p>";
+        print_r($fieldsToHidden_Estud);
         echo "<hr>";
         echo "<p>Campos que faltan DatosEstud</p>";
         print_r( $frmDataEstud->getFieldsNotInForm() );
-        //echo "<p>Campos Ocultos</p>";
-        //print_r($fieldsToHidden_DataEstud);
-  
+        echo "<p>Campos Ocultos</p>";
+        print_r($fieldsToHidden_DataEstud);
       }
     ?>
   </pre>

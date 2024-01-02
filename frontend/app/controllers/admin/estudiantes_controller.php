@@ -74,14 +74,9 @@ class EstudiantesController extends ScaffoldController
       $redirect = str_replace('.','/', $redirect);
       $this->page_action = 'EDITAR Registro Estudiante';
       
-      //  var_dump(
-      //    array_filter($_POST, function($k) {
-      //    return $k == 'datosestuds';
-      //    }, ARRAY_FILTER_USE_KEY)
-      //  );
-      echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
-      
-
+      if (1==$this->user_id) {
+        echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      }
       View::select(null, null);
 
       $Estudiante = (new Estudiante())::get($id);

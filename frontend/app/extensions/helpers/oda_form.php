@@ -7,7 +7,7 @@
  * @source   frontend\app\extensions\helpers\oda_form.php
  */
 class OdaForm extends Form {
-   private $version = '2023.12.14';
+   private $version = '2024.01.03';
    private $_style = ' class="w3-input w3-border" ';
    private $_modelo = '';
    private $_fname   = '';
@@ -64,96 +64,84 @@ class OdaForm extends Form {
     $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar', 'onclick="cancelar()"');
     $form .= self::close();
     return $form;
-  } // END-function
-  
+  } // END  
 
   public function getFields(string $legend_fieldset): string { 
     return self::getHiddens().self::createFieldset($this->_ffields[1], $legend_fieldset); 
-  } // END-function
+  } // END
 
-   /**
-    * Retorna un campos Input dependiendo del "tipo".
-    * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
-    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
-    * week url time text tel submit search reset range radio password number month image hidden file email datetime-local date color checkbox button
-    */
+  /**
+   * @example echo $myForm->addInput('cantidad', 2, 'number', 'w3-red');
+   */
   public function addInput(string $field, int $columna=1, string|bool $tipo=null, string $attr='', bool $inline=false): void {
-    $this->_fields_in_form[] = $field;
-    $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-    $fieldname  = $this->_fname.'.'.trim($field);
-    $label      = $this->getLabel($field, $inline);
-    $help       = $this->getHelp($field);
-    $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-    $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
+    $this->_ffields[$columna] .= '<br>'.$this->getInput($field, $tipo, $attr, $inline);
+  } // END
 
-    $campo_input = $this::input($widget, $fieldname, $attr, $value);
-
-    $this->_ffields[$columna] .= ($tipo=='hidden') ? $campo_input : "<br><label> $label" .$campo_input .$help ."</label>";
-  } // END-function
-
+  /**
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+   */
   public function getInput(string $field, string|bool $tipo=null, string $attrs='', bool $inline=false): string {
     $this->_fields_in_form[] = $field;
     $attr = $this->_style . (($attrs) ? $attrs : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-    $fieldname    = $this->_fname.'.'.trim($field);
-    $place_holder =  $this->getAttrib($field). ' '. $this->getPlaceholder($field);
-    $label        = $this->getLabel($field, $inline);
-    $help         = $this->getHelp($field);
+    $fieldname = $this->_fname.'.'.trim($field);
+    //$place_holder =  $this->getAttrib($field). ' '. $this->getPlaceholder($field);
+    $label = $this->getLabel($field, $inline);
+    $help = $this->getHelp($field);
 
-    $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-    
-    $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
+    $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+    $widget = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
     $campo_input = $this::input($widget, $fieldname, $attr, $value);
     return ($tipo=='hidden') ? $campo_input : "<label> $label" .$campo_input .$help ."</label>";
-  } // END-function
+  } // END
 
-   /**
-    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
-    */
-   public function addFile(string $field, int $columna=1, string $attr='', bool $inline=false): void {
+  /**
+   * Retorna un campos Input dependiendo del "tipo".
+   * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
+   * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
+   */
+  // public function addInput2(string $field, int $columna=1, string|bool $tipo=null, string $attr='', bool $inline=true): void {
+  //   $this->_fields_in_form[] = $field;
+  //   $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+  //   $fieldname  = $this->_fname.'.'.trim($field);
+  //   $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
+  //   $label      = $this->getLabel($field, $inline);
+  //   $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
+
+  //   $campo_input = $this::input($widget, $fieldname, $attr, $value);
+  //   $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<label>$label" .$campo_input."</label>";
+  //  } // END
+
+
+  /**
+   * 
+   */
+  public function addFile(string $field, int $columna=1, string $attr='', bool $inline=false): void {
+    $this->_ffields[$columna] .= '<br>'.$this->getFile($field, $attr, $inline);
+  } // END
+
+  /**
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+   */
+  public function getFile(string $field, string $attr='', bool $inline=false): string {
     $this->_fields_in_form[] = $field;
-    $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-    $fieldname  = trim($field);
-    $label      = $this->getLabel($field, $inline);
-    $help       = $this->getHelp($field);
-    $campo_file  = $this::file($fieldname, $attr);
-    $this->_ffields[$columna] .= "<br><label> $label" .$campo_file .$help ."</label>";
-   } // END-function
+    $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+    $fieldname = trim($field);
+    $label = $this->getLabel($field, $inline);
+    $help = $this->getHelp($field);
+    $campo_file = $this::file($fieldname, $attr);
+    return "<label> $label" .$campo_file .$help ."</label>";
+  } // END
 
-   /**
-    * Retorna un campos Input dependiendo del "tipo".
-    * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
-    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
-    */
-    public function addInput2(string $field, int $columna=1, string|bool $tipo=null, string $attr='', bool $inline=true): void {
-      $this->_fields_in_form[] = $field;
-      $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-      $fieldname  = $this->_fname.'.'.trim($field);
-      $widget     = (is_null($tipo)) ? $this->getWidget($field) : $tipo;
-      $label      = $this->getLabel($field, $inline);
-      $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-
-      $campo_input = $this::input($widget, $fieldname, $attr, $value);
-      $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<label>$label" .$campo_input."</label>";
-   } // END-function
-
-   
-   /**
-    * Retorna un campos Texarea.
-    * @example echo $myForm->addInput(2, 'number', 'cantidad', '1', 'w3-red');
-    * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
-    */
+  /**
+   * @example echo $myForm->addTextarea('descripcion', 2, 'w3-red');
+   */
   public function addTextarea(string $field, int $columna=1, string $attr='', bool $inline=true): void {
-    $this->_fields_in_form[] = $field;
-    $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-    $fieldname  = $this->_fname.'.'.trim($field);
-    $label      = $this->getLabel($field, $inline);
-    $help       = $this->getHelp($field);
-    $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-
-    $campo_textarea = $this::textarea($fieldname, $attr, $value);
-    $this->_ffields[$columna] .= "<br><label>$label" .$campo_textarea .$help ."</label>";
-  } // END-function
+    $this->_ffields[$columna] .= '<br>'.$this->getTextarea($field, $attr, $inline);
+  } // END
   
+  /**
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea
+   */
   public function getTextarea(string $field, string $attr='', $inline=true): string {
     $this->_fields_in_form[] = $field;
     $attr       = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
@@ -161,27 +149,21 @@ class OdaForm extends Form {
     $label      = $this->getLabel($field, $inline);
     $help       = $this->getHelp($field);
     $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-
     $campo_textarea = $this::textarea($fieldname, $attr, $value);
     return "<label>$label" .$campo_textarea .$help ."</label>";
-  } // END-function
+  } // END
 
-   /**
-    * Retorna un campo Select.
-    * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
-    */
+  /**
+   * Retorna un campo Select.
+   * @example $myForm->addSelect(2, 'seccion_id', '1', 'w3-red');
+   */
   public function addSelect(string $field, int $columna=1, array $data=[], string $attr=''): void {
-    $this->_fields_in_form[] = $field;
-    $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
-    $fieldname  = trim($this->_fname.'.'.$field);
-    $label       = $this->getLabel($field);
-    $help        = $this->getHelp($field);
-    $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
+    $this->_ffields[$columna] .= '<br>'.$this->getSelect($field, $data, $attr);
+  } // END
 
-    $campo_select = $this::select($fieldname, $data, $attr, $value);
-    $this->_ffields[(int)$columna] .= "<br><label> $label $campo_select $help </label>";
-  } // END-addSelect
-
+  /**
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select
+   */
   public function getSelect(string $field, array $data=[], string $attr=''): string {
     $this->_fields_in_form[] = $field;
     $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
@@ -191,27 +173,16 @@ class OdaForm extends Form {
     $value     = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
 
     $campo_select = $this::select($fieldname, $data, $attr, $value);
-    return "<label> $label $campo_select $help </label>";
-  } // END-addSelect
+    return "<label>$label $campo_select $help</label>";
+  } // END
 
- 
-   
-  /**
-   * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
-   */
   public function addCheck(string $field, int $columna=1, string|array $attr=''): void {
-    $this->_fields_in_form[] = $field;
-    $fieldname  = trim($this->_fname.'.'.$field);
-    $label = $this->getLabel($field);
-    $help  = $this->getHelp($field);
-    $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
-    $value = ($value) ? 1 : 0 ;
-    $is_checked = ($value) ? true : false ;
+    $this->_ffields[$columna] .= '<br>'.$this->getCheck($field, $attr);
+  } // END
 
-    $check = Form::check($fieldname, $value, $attr, $is_checked).'<br>'.$help;
-    $this->_ffields[(int)$columna] .= "<br><label> $label $check </label><br>";
-  } // END-function
-
+  /**
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+   */
   public function getCheck(string $field, string|array $attr=''): string {
     $this->_fields_in_form[] = $field;
     $fieldname  = trim($this->_fname.'.'.$field);
@@ -223,12 +194,16 @@ class OdaForm extends Form {
 
     $check = Form::check($fieldname, $value, $attr, $is_checked).'<br>'.$help;
     return "<label>$label $check</label><br>";
-  } // END-function
+  } // END
+
+  public function addRadio(string $field, int $columna=1, string|array $attrs='', bool $checked=false): void {
+    $this->_ffields[$columna] .= $this->getRadio($field, $attrs, $checked);
+  } // END
 
   /**
-   * @link    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input 
+   * @link  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio
    */
-  public function addRadio(string $field, int $columna=1, string|array $attrs='', bool $checked=false): void {
+  public function getRadio(string $field, string|array $attrs='', bool $checked=false): string {
     $this->_fields_in_form[] = $field;
     $value_defa = ($this->_isEdit) ? $this->_modelo->$field : 1;
     $help  = $this->getHelp($field);
@@ -242,61 +217,64 @@ class OdaForm extends Form {
 
     $label = $this->getLabel($field);
     $campo_radio = self::createFieldset($radio_group, $label);
-    $this->_ffields[(int)$columna] .= '<br>'.$campo_radio;
-  } // END-function
+    return '<br>'.$campo_radio;
+  } // END
 
+  /**
+   * Establece el Formulario en modo Edición
+   */
   public function setEdit(): void { 
     $this->_isEdit = true; 
-  } // END-getDefault
+  } // END
   
   public function setColumnas(int $max_cols=1): void { 
-    $this->_ffields  = array_fill(1, (int)$max_cols, ' '); 
-  } // END-getDefault
+    $this->_ffields  = array_fill(1, $max_cols, ' '); 
+  } // END
   
   public function setAtrib(string|array $attrs = ''): void { 
     $this->_fattrs = Tag::getAttrs($attrs); 
-  } // END-getDefault
+  } // END
   
   private function isRequired(string $field): bool { 
     return str_contains($this->_modelo->getAttrib($field), 'required'); 
-  } // END-getDefault
+  } // END
 
   private function getDefault(string $field) { 
     return (($this->_modelo->getDefault($field)) ? $this->_modelo->getDefault($field) : ''); 
-  } // END-getDefault
+  } // END
 
   public function getLabel(string $field, bool $inline=false): string {
     $requerido = ($this->isRequired($field)) ? '<i class="fa-solid fa-bolt"></i> ' : '' ;
     $in_line = ($inline) ? '' : '<br>' ;
     return (($this->_modelo->getLabel($field)) ? '<b>'.$requerido.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
-  } // END-function
+  } // END
 
   public function getDataLabel(string $field, bool $inline=false): string {
     $in_line = ($inline) ? '' : '<br>' ;
     $label = (($this->_modelo->getLabel($field)) ? '<b>'.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
     $data = $this->_modelo->$field;
     return $label.$data;
-  } // END-function
+  } // END
 
   private function getHelp(string $field): string { 
     return (($this->_modelo->getHelp($field)) ? '<i class="fa-solid fa-circle-info"></i> <small>'.$this->_modelo->getHelp($field).'</small>' : ''); 
-  } // END-function
+  } // END
 
   private function getPlaceholder(string $field): string { 
     return (($this->_modelo->getPlaceholder($field)) ? ' placeholder="'.$this->_modelo->getPlaceholder($field).'" ' : '') ; 
-  } // END-function
+  } // END
 
   private function getAttrib(string $field): string { 
     return (($this->_modelo->getAttrib($field)) ? ' '.$this->_modelo->getAttrib($field).' ' : ''); 
-  } // END-function
+  } // END
 
   private function getWidget(string $field) { 
     return (($this->_modelo->getWidget($field)) ? $this->_modelo->getWidget($field) : 'input'); 
-  } // END-function
+  } // END
   
   public function addHiddens(string $fields='id'): void { 
     $this->_fhiddens = str_replace(' ', '', $fields); 
-  } // END-function
+  } // END
 
   public function getHiddens(): string {
     $result = '';
@@ -305,7 +283,7 @@ class OdaForm extends Form {
       $result .= form::hidden($this->_fname.'.'.trim($campo), '', $value_input);
     }
     return $result;
-  } // END-function
+  } // END
 
   /**
    * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search
@@ -321,32 +299,32 @@ class OdaForm extends Form {
           <div class=\"w3-bar-item\">".self::ICO_SEARCH."</div>
           <div class=\"w3-bar-item\">$input</div>
         </div>";
-  } // END-function
+  } // END
 
   /**
    * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset
    **/
   private static function createFieldset(string $content, string $legend = '', $attrs = ''): string { 
     return "<fieldset $attrs> <legend>$legend</legend> $content </fieldset>"; 
-  } // END-function
+  } // END
 
   public function getOpenForm(): string {
     if ($this->_isMultipart) { return self::openMultipart($this->_faction, $this->_fattrs); }
     return self::open($this->_faction, $this->_fmethod, $this->_fattrs);
-  } //END-function
+  } //END
   
   public function getFieldsInForm(): array { 
     return $this->_fields_in_form; 
-  } // END-function
+  } // END
   
   public function getFieldsNotInForm(string $tipo_form='edit'): array { 
     return array_diff($this->_modelo::getFieldsShow($tipo_form), $this->getFieldsInForm() ); 
-  } // END-function
+  } // END
 
   public function v(): string {
     $version = \DateTime::createFromFormat(format: 'Y.m.d', datetime: $this->version);
     return 'PHP Helper OdaForm -> Version '.$version->format(format: 'd M Y');
-  }//END-function
+  }//END
 
    
 } // END-Class

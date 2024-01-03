@@ -78,21 +78,19 @@ class EstudiantesController extends ScaffoldController
       }
       View::select(null, null);
 
-      $Estudiante = (new Estudiante())::get($id);
-      $tabla_datos_estud = Config::get('tablas.datosestud');
-      $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$Estudiante->id]);
-      
       // ============================================================================
       // TABLA ESTUDIANTES
       if (!Input::hasPost('estudiantes')) {
         OdaFlash::warning("$this->page_action - No coincide post 'estudiantes'");
         return Redirect::to($redirect);
       }
-      if (!$Estudiante->validar(Input::post('estudiantes'))) {
+
+      if (!(new Estudiante)->validar(Input::post('estudiantes'))) {
         OdaFlash::warning("$this->page_action - tabla ESTUDIANTES - ".Session::get('error_validacion'));
         return Redirect::to($redirect);
       }
-      if ( $Estudiante->update(Input::post('estudiantes')) ) {
+
+      if ( (new Estudiante)->update(Input::post('estudiantes')) ) {
         OdaFlash::valid("$this->page_action - Se actualizó tabla ESTUDIANTES");
       } else {
         OdaFlash::warning("$this->page_action - No actualizó el Registro en ESTUDIANTES.");
@@ -103,12 +101,12 @@ class EstudiantesController extends ScaffoldController
       if (!Input::hasPost('datosestuds')) {
         OdaFlash::warning("$this->page_action - No coincide post DATOSESTUDS");
       }
-      if (!$DatosEstud->validar(Input::post('datosestuds'))) {
+
+      if (!(new DatosEstud)->validar(Input::post('datosestuds'))) {
         OdaFlash::warning("$this->page_action. No pudo validar DATOSESTUDS");
       }
-      if ( $DatosEstud->update(Input::post('datosestuds')) ) {
-        OdaFlash::valid("$this->page_action - Se actualizó tabla DATOSESTUDS"); 
-      } else {
+
+      if ( !(new DatosEstud)->update(Input::post('datosestuds')) ) {
         OdaFlash::warning("$this->page_action - No actualizó el Registro en DATOSESTUDS.");
       }
       // ============================================================================

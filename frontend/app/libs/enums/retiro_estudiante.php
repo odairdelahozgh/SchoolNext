@@ -2,14 +2,14 @@
 
 enum RetiroEstudiante: string {
   Use EnumsFunciones;
-  case Default  = '';
+  case Activo  = 'Activo';
   case Voluntario  = 'Voluntario';
   case Institucion = 'Institución';
   case Graduacion  = 'Graduación';
 
   public function label(bool $abrev = false): string {
     return match($this) {
-      static::Default     => '',
+      static::Activo     => 'Aún Activo',
       static::Voluntario  => 'Retiro Voluntario',
       static::Institucion => 'Retiro Institución',
       static::Graduacion  => 'Se Graduó',
@@ -19,7 +19,7 @@ enum RetiroEstudiante: string {
 
   public function color(): string {
     return match($this) {
-        static::Default     => '',
+        static::Activo     => '',
         static::Voluntario  => 'blue',
         static::Institucion => 'red',
         static::Graduacion  => 'green',

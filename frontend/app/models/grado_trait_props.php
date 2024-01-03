@@ -13,6 +13,13 @@
 
   public function __toString() { return $this->nombre; }
 
+  public static function getGradosArray() { 
+    $arrResult = [];
+    foreach ((new Grado())->getList(1) as $grado) { $arrResult[$grado->id] = $grado->nombre; }
+    return $arrResult;
+  } //END-getGradosArray
+
+
   public static function getSelectGrados(string $id, string $name, int $grado_selected_id=0): string { 
     $listaGrados = (new Grado())->getList(1);
     $opts = '';

@@ -50,15 +50,19 @@
         print_r( $frmEstud->getFieldsNotInForm() );
         echo "<p>Campos Ocultos</p>";
         print_r($fieldsToHidden_Estud);
+        
         echo "<hr>";
         echo "<p>Campos que faltan DatosEstud</p>";
         print_r( $frmDataEstud->getFieldsNotInForm() );
         echo "<p>Campos Ocultos</p>";
         print_r($fieldsToHidden_DataEstud);
+
+        echo "<hr> F A L T A<br>";
+        echo "CHECK DE Debe Preicfes<br>";
+        echo "CHECK DE Debe Almuerzos<br>";
       }
     ?>
   </pre>
   
 </div>
-
 <?= $myTabs::getJs() ?>

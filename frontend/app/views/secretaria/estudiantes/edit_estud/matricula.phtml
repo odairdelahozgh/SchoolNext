@@ -1,24 +1,20 @@
 <?php
   $myTabla = new OdaTable();
-
   $myTabla->addRow([
-    $frmEstud->getInput(field:'grado_mat'),
-    $frmEstud->getInput(field:'salon_id'),
+    $frmEstud->getSelect(field:'grado_mat', data: (new Grado)::getGradosArray() ),
+    $frmEstud->getSelect(field:'salon_id', data: (new Salon)::getSalonesArray() ),
     '',
   ]);
-
   $myTabla->addRow([
     $frmEstud->getCheck(field:'is_habilitar_mat'),
     $frmEstud->getInput(field:'numero_mat'),
   ]);
-
   $myTabla->addRow([
     $frmEstud->getInput(field:'annio_promovido'),
-    $frmEstud->getInput(field:'grado_promovido'),
+    $frmEstud->getSelect(field:'grado_promovido', data: (new Grado)::getGradosArray() ),
   ]);
 
-
-
+  
   $myTabs->addTab('matri', 'Matrícula', $myTabla);
 
 /*

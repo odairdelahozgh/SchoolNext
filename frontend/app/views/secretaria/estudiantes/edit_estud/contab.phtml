@@ -2,7 +2,7 @@
   $myTabla = new OdaTable();
 
   $myTabla->addRow([
-    $frmEstud->getInput(field:'mes_pagado'),
+    $frmEstud->getSelect(field:'mes_pagado', data: Mes::toArray()),
     $frmEstud->getInput(field:'annio_pagado'),
   ]);
 

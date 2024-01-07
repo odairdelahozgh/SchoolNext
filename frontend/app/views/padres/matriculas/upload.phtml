@@ -5,40 +5,42 @@
 
 <div class="w3-container">
   <?php
-    $message = Config::get('messages.comprimir_imagenes');
-    echo OdaTags::tag('div', $message, 'class="w3-panel w3-theme-l2"');
-
-  // uuid, estudiante_id, 
-  // nombre_archivo1, coment_archivo1, estado_archivo1
-  // nombre_archivo2, coment_archivo2, estado_archivo2
-  // nombre_archivo3, coment_archivo3, estado_archivo3
-  // nombre_archivo4, coment_archivo4, estado_archivo4
-  // nombre_archivo5, coment_archivo5, estado_archivo5
-  // nombre_archivo6, coment_archivo6, estado_archivo6
-  // created_at, updated_at, created_by, updated_by
-  // print_r($arrData['Adjuntos'][0]);
+  $message = Config::get('messages.comprimir_imagenes');
   
-  //
-  $model = new EstudianteAdjuntos();
-  $fieldsToHidden = $model::getFieldsHidden('edit');
   $id = $arrData['Adjuntos'][0]->id;
-
-  $myForm = new OdaForm($model, "admin/estudiante_adjuntos/edit_ajax/$id/padres.matriculas", multipart: true);
+  $model = (new EstudianteAdjuntos())::get($id);
+  $fieldsToHidden = $model::getFieldsHidden('edit');
+  
+  $myForm = new OdaForm(
+    $model, "admin/estudiante_adjuntos/edit_ajax/$id/padres.matriculas", 
+    multipart: true,
+    url_back: 'padres/matriculas',
+  );
+  $myForm->setEdit();
   $myForm->setColumnas(2);
   $myForm->setAtrib('id="frm_edit" name="frm_edit"');
-
-  $myForm->addFile(field:'nombre_archivo1', columna:1);
-  $myForm->addFile(field:'nombre_archivo2', columna:1);
-  $myForm->addFile(field:'nombre_archivo3', columna:1);
-
-  $myForm->addFile(field:'nombre_archivo4', columna:2);
-  $myForm->addFile(field:'nombre_archivo5', columna:2);
-  $myForm->addFile(field:'nombre_archivo6', columna:2);
-
-
+  $myForm->addFile2('nombre_archivo1');
+  $myForm->addFile2('nombre_archivo2');
+  $myForm->addFile2('nombre_archivo3');  
+  $myForm->addFile2('nombre_archivo4', 2);
+  $myForm->addFile2('nombre_archivo5', 2);
+  $myForm->addFile2('nombre_archivo6', 2);
   $myForm->addHiddens(implode(",", $fieldsToHidden));
-  //$form->setEdit = true;
-  
-  echo "<div class=\"w3-container\">$msg_info $titulo $myForm</div>";
+  echo OdaTags::tag('div', $message, 'class="w3-panel"');
+  echo "<div class=\"w3-container\">$myForm</div>";
   ?>
+
+  <pre>
+    <?php
+      if (1==$user_id && 1==Config::get('config.application.modo_depuracion_admin')) {
+        echo "<p>Campos Incluidos</p>";
+        print_r( $myForm->getFieldsInForm() );
+        echo "<p>Campos que faltan</p>";
+        print_r( $myForm->getFieldsNotInForm() );
+        echo "<p>Campos Ocultos</p>";
+        print_r($fieldsToHidden);
+      }
+    ?>
+  </pre>
+
 </div>

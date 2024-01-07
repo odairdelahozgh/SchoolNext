@@ -51,6 +51,7 @@ abstract class AppController extends Controller
   public string $_instit_name = '';
   public int $_periodo_actual = 0;
   public int $_annio_actual = 0;
+  public string $_ahora = '';
 
   final protected function initialize() {
     try {
@@ -78,7 +79,7 @@ abstract class AppController extends Controller
       
       $this->nombre_post   = strtolower(OdaUtils::pluralize($this->controller_name));
       $this->nombre_modelo = ucfirst(OdaUtils::singularize($this->controller_name));
-      
+      $this->_ahora = date('Y-m-d H:i:s', time());
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }

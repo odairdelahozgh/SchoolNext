@@ -1,4 +1,7 @@
 <?php
+
+use Kumbia\ActiveRecord\QueryGenerator;
+
 /**
   * Controlador Secretaria  
   * @category App
@@ -14,14 +17,16 @@ class SecretariaController extends AppController
       Redirect::to(Session::get('modulo'));
     }
   } //END-before_filter
-
-
+  
+  
   public function index(): void {
     $this->page_action = 'Inicio';
     $this->data = (new Evento)->getEventosDashboard();
   } //END-index
   
   public function listadoEstudActivos(): void {
+    $tabla_datos_adju = Config::get('tablas.estud_adjuntos'); 
+
     $this->page_action = 'Listado de Estudiantes Activos';
     $this->data = (new Estudiante)->getListSecretaria(estado:1);
     $this->arrData['Salones'] = (array)(new Salon)->getList(estado:1);
@@ -38,16 +43,30 @@ class SecretariaController extends AppController
   public function editEstudiante(int $estudiante_id): void {
     $this->page_action = 'Editando Estudiante';
     $this->arrData = [];
-
-    $Estudiante = (new Estudiante())::get($estudiante_id);
-    
-    $tabla_datos_estud = Config::get('tablas.datosestud');
-    $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$Estudiante->id]);
-
-
-    $this->arrData['Estudiante'] = $Estudiante;
-    $this->arrData['DatosEstud'] = $DatosEstud;
-
+    try {
+      $Estudiante = (new Estudiante())::get($estudiante_id);
+      $tabla_datos_estud = Config::get('tablas.datosestud');
+      $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$Estudiante->id]);
+      $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
+      $Adjuntos = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$Estudiante->id]);
+      
+      if(!$Adjuntos) {
+        $Adjuntos = new EstudianteAdjuntos();
+        $Adjuntos->save([
+          'estudiante_id' => $Estudiante->id,
+          'created_by' => $this->user_id,
+          'updated_by' => $this->user_id,
+          'created_at' => $this->_ahora,
+          'updated_at' => $this->_ahora,
+        ]);
+      }
+      $this->arrData['Estudiante'] = $Estudiante;
+      $this->arrData['DatosEstud'] = $DatosEstud;
+      $this->arrData['Adjuntos'] = $Adjuntos;
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
     View::select('estudiantes/edit_estud/editForm');
   } // END-editEstudiante
   
@@ -184,5 +203,11 @@ class SecretariaController extends AppController
     View::select('admisiones/edit/edit');
   } //END-admisiones_edit
 
-    
+  
+  public function subirAdjuntosMatricula(int $estudiante_id): void {
+    $this->page_action = 'Subir Archivos';
+    $this->arrData['Adjuntos'] = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante_id]);
+    View::select('estudiantes/edit_estud/upload');
+  } //END
+
 } // END CLASS

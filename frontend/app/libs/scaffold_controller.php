@@ -74,7 +74,7 @@ abstract class ScaffoldController extends AdminController
 
       if (Input::hasPost($this->nombre_post)) {
         if (!$this->Modelo->validar(Input::post($this->nombre_post))) {
-          OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
+          OdaFlash::warning("$this->page_action. Error de Validación ".Session::get('error_validacion'));
           return Redirect::to($redirect);
         }
   
@@ -158,7 +158,7 @@ abstract class ScaffoldController extends AdminController
           OdaFlash::warning("$this->page_action. Guardar.");
           return Redirect::to($redirect);
         } else {
-          OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
+          OdaFlash::warning("$this->page_action. Error de Validación ".Session::get('error_validacion'));
           return Redirect::to($redirect);
         }
       }
@@ -182,8 +182,8 @@ abstract class ScaffoldController extends AdminController
       $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
       $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
 
-      if (Input::hasPost($this->nombre_post)) { // valida si hay datos a guardar
-        if ( $this->Modelo->update(Input::post($this->nombre_post)) ) { // ´procede a guardar
+      if (Input::hasPost($this->nombre_post)) {
+        if ( $this->Modelo->update(Input::post($this->nombre_post)) ) {
           OdaFlash::valid("$this->page_action: $uuid");
           return Redirect::to();
         }
@@ -215,7 +215,7 @@ abstract class ScaffoldController extends AdminController
       }
 
       if (!$Registro->validar(Input::post($this->nombre_post))) {
-        OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
+        OdaFlash::warning("$this->page_action. Error de Validación ".Session::get('error_validacion'));
         return Redirect::to($redirect);
       }
 

@@ -13,18 +13,18 @@ class PadresController extends AppController
       OdaFlash::warning('No tiene permiso de acceso al módulo PADRES, fué redirigido');
       Redirect::to(Session::get('modulo'));
     }
-  } //END-before_filter
+  } //END
 
 
   public function index(): void {
     $this->page_action = 'Inicio';
     Redirect::toAction('estudiantes');
-  } //END-index
+  } //END
   
   
   public function contabilidad(): void {
     $this->page_action = 'Información Contable';
-  } //END-contabilidad
+  } //END
   
 
   public function estudiantes(): void {
@@ -39,7 +39,7 @@ class PadresController extends AppController
     OdaFlash::error($th);
     }
     View::select('estudiantes/index');
-  } //END-estudiantes
+  } //END
   
   
   public function matriculas(): void {
@@ -51,7 +51,9 @@ class PadresController extends AppController
     
     $this->data = (new Estudiante)->getListPadres($user_id);
     foreach ($this->data as $estudiante) {
-      $Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante->id]);
+      $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
+      $Adjuntos = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante->id]);
+      //$Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante->id]);
       if (!$Adjuntos) {
         $Adjuntos = (new EstudianteAdjuntos());
         $Adjuntos->save([
@@ -72,18 +74,13 @@ class PadresController extends AppController
     }
 
     View::select('matriculas/index');
-  } //END-matriculas
+  } //END
   
   public function subirArchivos($estudiante_id): void {
-    try {
-      $this->page_action = 'Subir Archivos';
-      $this->arrData['Adjuntos'] = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante_id]);
-      View::select('matriculas/upload');
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-  } //END-subirArchivos
+    $this->page_action = 'Subir Archivos';
+    $this->arrData['Adjuntos'] = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante_id]);
+    View::select('matriculas/upload');
+  } //END
 
 
 } // END CLASS

@@ -2,25 +2,19 @@
   <?php 
   try {    
     require('indexHeader.phtml');
-
     echo OdaForm::inputSearch();
 
     if ($tot_regs = count($data)) {
       $tabla = new OdaTable();
-      $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels]);
+      $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels, '']);
       foreach ($data as $key => $item_data) {
-        
-
         $lnkSetupCalificar = '';
         if ('salones'==$controller_name and 1==$item_data->is_active) {
           $item_data->setNumeroEstudiantes();
           $lnkSetupCalificar = $item_data->getLnkSetupCalificarSalon();
         }
-
+        
         $uuid_ok   = (property_exists(object_or_class: $item_data, property: 'uuid') && !is_null(value: $item_data->uuid));
-        
-        
-        
         $edit_id   = ($uuid_ok) ? "editUuid/$item_data->uuid" : "edit/$item_data->id";
         $lnkEditar = OdaTags::linkIcon(
           action: "admin/$controller_name/$edit_id", 
@@ -36,7 +30,6 @@
           attrs: 'title="Eliminar Registro" onclick="return confirm(\'Atención: ¿Quiere eliminar? \n'.$msg_name.'\')"'
         );
         
-        
         $lnkSetPass = '';
         if ('usuarios'==$controller_name) {
           $lnkSetPass = Html::linkAction(
@@ -45,19 +38,13 @@
             attrs: 'title="Actualizar Password" onclick="return confirm(\'Atención: ¿Quiere establecer password por default?)\'"'
           );
         }
-        
 
         $arrFields = [];
         foreach ($fieldsToShow as $key => $field) {
           //$arrFields[]= (('is_active'==$field)? $item_data->is_active_f(true): $item_data->$field);
           $dato = $item_data->$field;
-          if ('is_active'==$field) {
-            $dato = $item_data->is_active_enum(show_ico: true);
-          }
-
-          if ('nombre'==$field) {
-            $dato = OdaUtils::nombrePersona(string: (string)$item_data->$field).' ['.$item_data->id.']';
-          }
+          if ('is_active'==$field) { $dato = $item_data->is_active_enum(show_ico: true); }
+          if ('nombre'==$field) { $dato = OdaUtils::nombrePersona(string: (string)$item_data->$field).' ['.$item_data->id.']'; }
 
           if (str_ends_with(haystack: $field, needle: '_id')) {
             $field_with_name = substr(string: $field, offset: 0, length: strlen(string: $field)-3).'_nombre';
@@ -71,8 +58,8 @@
         }
 
         $arrBody = [
-          $lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar.'&nbsp;&nbsp;'.$lnkSetupCalificar, 
-          ...$arrFields
+          $lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar.'&nbsp;&nbsp;', 
+          ...$arrFields, $lnkSetupCalificar
         ];
         $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"', 'class="searchTdata"']);
       }
@@ -88,7 +75,6 @@
 
 <script>
       document.getElementById("inputSearch").focus();
-
       document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'b') {
           document.getElementById('inputSearch').select();

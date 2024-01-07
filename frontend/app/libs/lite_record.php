@@ -53,10 +53,10 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   const ICO_IS_ACTIVE = [0=>'face-frown', 1=>'face-smile']; /// esto se eliminará
 
   public function __construct() {
-    self::$_user_id = Session::get('id');
-    self::$_username = Session::get('username');
-    self::$_periodo_actual = Session::get('periodo');
-    self::$_annio_actual = Session::get('annio');
+    self::$_user_id = Session::get('id') ?? 0;
+    self::$_username = Session::get('username') ?? 'Anonimo';
+    self::$_periodo_actual = Session::get('periodo') ?? 0;
+    self::$_annio_actual = Session::get('annio') ?? 0;
   } // END-__construct
   
   public function __toString() { return $this->id; }
@@ -64,11 +64,8 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
   public function _beforeCreate() { // ANTES de Crear el Registro
     $ahora = date('Y-m-d H:i:s', time());
     if (property_exists($this, 'is_active'))  { $this->is_active = 1; }
-    // if (property_exists($this, 'uuid')) { 
-    //   if (method_exists($this, 'setUUID')) { $this->uuid = $this->setUUID(); }
-    // }
-    if (property_exists($this, 'uuid')) { 
-      if (method_exists($this, 'setHash')) { $this->uuid = $this->setHash(); }
+    if (property_exists($this, 'uuid') and method_exists($this, 'setHash') ) { 
+      $this->uuid = $this->setHash();
     }
     if (property_exists($this, 'created_by')) { $this->created_by = self::$_user_id; }
     if (property_exists($this, 'created_at')) { $this->created_at = $ahora; }
@@ -82,23 +79,20 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
       if (is_null($this->is_active)) { $this->is_active = 0; }
     }
     if (property_exists($this, 'uuid')) {
-      // if (method_exists($this, 'setUUID')) { 
-      //   if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setUUID(); }
-      // }
       if (method_exists($this, 'setHash')) { 
         if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setHash(); }
       }
     }
     if (property_exists($this, 'updated_by')) { $this->updated_by = self::$_user_id; }
     if (property_exists($this, 'updated_at')) { $this->updated_at = $ahora; }
-  } // END-_beforeCreate
+  } // END
   
-  public function _afterUpdate() { // DESPUÉS de ACTUALIZAR el Registro
-  } // END-_afterUpdate
+  public function _afterUpdate(): void { // DESPUÉS de ACTUALIZAR el Registro
+  } // END
   
   public function _afterCreate() { // DESPUÉS de CREAR el Registro
-    echo $this->id;
-  } // END-_afterUpdate
+    //echo $this->id;
+  } // END
   
 
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
@@ -111,15 +105,15 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
       ->setParams([$estado]);
     }
     return $DQL->execute();
-  } // END-getList
+  } // END
 
   public function getListActivos(string $select='*', string|bool $order_by=null): array|string {
     return $this->getList(1,  $select, $order_by);
-  } //END-getListActivos
+  } //END
 
   public function getListInactivos(string $select='*', string|bool $order_by=null): array|string {
     return $this->getList(0,  $select, $order_by);
-  } //END-getListInactivos
+  } //END
 
 
   public function is_active_f(bool $show_ico=false, string $attr="w3-small"): string {
@@ -138,16 +132,12 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
      $estado = Estado::tryFrom((int)$this->is_active) ?? Estado::Inactivo;
     return '<span class="'.$attr.' w3-text-'.$estado->color().'">'. (($show_ico) ? $estado->label_ico() : $estado->label()).'</span>';
    }
-
    
    public function nombre_mes_enum(int $mes): string {
     $nombre_mes = Mes::tryFrom(value: $mes) ?? Mes::Enero;
    return $nombre_mes->label();
   }
 
-  /**
-   * Activar un registro.
-   */
   public function setActivar(): bool {
     try {
       $this->is_active = 1;
@@ -157,11 +147,8 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
       throw $th;
       return false;
     }
-  } // END-setActivar
-    
-  /**
-   * Desactivar un registro
-   */
+  } // END
+  
   public function setDesactivar(): bool {
     try {
       $this->is_active = 0;
@@ -171,21 +158,14 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
       throw $th;
       return false;
     }
-  } // END-setDesactivar
-    
+  } // END
   
-  /**
-   * Devuelve un numero con formato moneda.
-   */
   public static function valor_moneda(int $val_num): string {
     return '$'.number_format($val_num);
   } //END-valor_moneda
   
-  /**
-   * Devuelve un numero convertido en letras
-   */
   public function valor_letras(int $val_num): string {
     return strtolower(OdaUtils::getNumeroALetras($val_num));
-  } //END-valor_letras
+  } //END
   
 } //END-CLASS

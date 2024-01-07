@@ -4,21 +4,20 @@ trait EstudianteAdjuntosTraitProps {
     return (
       ( strlen($this->nombre_archivo1 .$this->nombre_archivo2 .$this->nombre_archivo3
       .$this->nombre_archivo4 .$this->nombre_archivo5 .$this->nombre_archivo6) >0 ) ? true : false);
-  } //END-tieneDocumentos
+  } //END
 
   
   public function getLinkArchivo(int $num_archivo): string {
-    $arch = 'nombre_archivo'.$num_archivo;
-    $nombre = "nombre_archivo$num_archivo";
-
-    if ($this->$nombre) {
+    $arch = "nombre_archivo$num_archivo";
+    $nombre_archivo = Config::get("matriculas.file_{$num_archivo}_titulo");
+    if ($this->$arch) {
       return OdaTags::linkExterno(
         url: FILE_UPLOAD_PATH.'matriculas_adjuntos/'.$this->$arch, 
-        text: 'Ver Archivo',
-        attrs:'class="w3-button"');
+        text: "Ver Archivo : $nombre_archivo",
+        attrs:'class="w3-button w3-blue"');
     }
-    return 'No file upload';
-  }
+    return 'Archivo no subido: '.$nombre_archivo;
+  } //END
 
   public function getEstadoDocsMatricula(int $grado_id): EstadoMatricula {
     $cant_docs_requeridos = ($grado_id>=9 and $grado_id<=11) ? 5 : 4; // documentos requerido
@@ -26,7 +25,6 @@ trait EstudianteAdjuntosTraitProps {
     $cant_docs_en_revision = 0;
     $cant_docs_rechazados = 0;
     $cant_docs_aprobados = 0;
-
     for ($i=1; $i<=$cant_docs_requeridos; $i++) { 
       $nombre = "nombre_archivo$i";
       if ($this->$nombre) {
@@ -45,7 +43,6 @@ trait EstudianteAdjuntosTraitProps {
         }
       }
     }
-
     $estado_result = EstadoMatricula::SinDocumentos;
     if ($cant_docs_subidos==0) { return EstadoMatricula::SinDocumentos; }
     if ($cant_docs_subidos!=$cant_docs_requeridos) { return EstadoMatricula::DocIncompletos; }
@@ -53,7 +50,7 @@ trait EstudianteAdjuntosTraitProps {
     if ($cant_docs_en_revision>0) { return EstadoMatricula::DocEnRevision; }
     if ($cant_docs_aprobados>0) { return EstadoMatricula::DocAprobados; }
     return $estado_result;
-  }//END-getEstadoDocsMatricula
+  }//END
 
 
 } //END-Trait

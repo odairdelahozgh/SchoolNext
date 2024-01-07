@@ -20,15 +20,16 @@ trait TraitForms {
   protected static $_helps        = [];
   protected static $_labels       = [];
   protected static $_placeholders = [];
-  protected static $_rules_validators = [];
-  // numeric, int, maxlength, length, range, select, email, url, ip, required, alphanum, alpha, date, pattern, decimal, equal
+  protected static $_rules_validators = [
+    'numeric', 'int', 'maxlength', 'length', 'range', 'select', 'email', 'url', 'ip', 'required', 'alphanum', 'alpha', 'date', 'pattern', 'decimal', 'equal',
+  ];
 
   public static function getDefault($field)     { return ((array_key_exists($field, self::$_defaults)) ? self::$_defaults[$field] : null); }
   public static function getLabel($field)       { return ((array_key_exists($field, self::$_labels)) ? self::$_labels[$field] : $field.': '); }
   public static function getPlaceholder($field) { return ((array_key_exists($field, self::$_placeholders)) ? self::$_placeholders[$field] : ''); }
   public static function getHelp($field)        { return ((array_key_exists($field, self::$_helps)) ? self::$_helps[$field]: ''); }
   public static function getAttrib($field)      { return ((array_key_exists($field, self::$_attribs)) ? self::$_attribs[$field]: ''); }
-  public static function getWidget($field)      { return ((array_key_exists($field, self::$_widgets)) ? self::$_widgets[$field]: 'input'); }
+  public static function getWidget($field)      { return ((array_key_exists($field, self::$_widgets)) ? self::$_widgets[$field]: 'text'); }
   public static function getValidators($field)  { return ((array_key_exists($field, self::$_rules_validators)) ? self::$_rules_validators[$field]: ''); }
   
   public static function getFieldsShow(string $show='index', bool $show_labels = false, $prefix=''): array {

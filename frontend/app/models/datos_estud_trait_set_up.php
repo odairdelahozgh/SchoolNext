@@ -71,6 +71,10 @@ trait DatosEstudTraitSetUp {
     self::$_attribs = [
       'id'       => 'required',
       'uuid'     => 'required',
+      'madre' => ' size="45"',
+      'madre_email' => ' size="45"',
+      'padre' => ' size="45"',
+      'padre_email' => ' size="45"',
     ];
   
     self::$_defaults = [
@@ -152,6 +156,11 @@ trait DatosEstudTraitSetUp {
     self::$_placeholders = [
     ];
   
+
+    self::$_widgets = [
+      'ante_fecha_ret' => 'date',
+    ];
+    
     // numeric, int, maxlength, length, range, select, email, url, ip, required, alphanum, alpha, date, pattern, decimal, equal
     self::$_rules_validators = [
         /*

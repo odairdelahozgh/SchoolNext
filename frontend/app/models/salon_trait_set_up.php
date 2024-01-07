@@ -1,6 +1,6 @@
 <?php
 require_once VENDOR_PATH.'autoload.php';
-use Respect\Validation\Validator as validar;
+use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
 // https://respect-validation.readthedocs.io/en/latest/
 
@@ -8,9 +8,10 @@ trait SalonTraitSetUp {
   
   use TraitUuid, TraitForms, SalonTraitCallBacks, SalonTraitProps, SalonTraitLinks;
   
-  public function validar($input_post) {
+  public function validar($input_post): bool {
     Session::set('error_validacion', '');
     try {
+      //return v::IntType()->validate($input_post['orden']);
       return true;
     } catch(NestedValidationException $exception) {
       Session::set('error_validacion', $exception->getFullMessage());
@@ -21,16 +22,8 @@ trait SalonTraitSetUp {
   /**
    * CONFIGURACIÓN DEL MODELO
    */
-  private function setUp() {
+  private function setUp(): void {
 
-    // self::$_fields_show = [
-    //   'all'      => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at'],
-    //   'index'    => ['is_active', 'nombre', 'grado_nombre', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'],
-    //   'create'   => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ],
-    //   'edit'     => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
-    //   'editUuid' => ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'print_state', 'is_active' ],
-    // ];
-  
     self::$_fields_show['all'] = ['nombre', 'grado_id', 'director_id', 'codirector_id', 'tot_estudiantes', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'id', 'uuid', 'is_active', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     self::$_fields_show['index'] = ['is_active', 'nombre', 'grado_nombre', 'director_id', 'codirector_id', 'tot_estudiantes', 'print_state'];
     self::$_fields_show['create'] = ['nombre', 'grado_id', 'director_id', 'codirector_id', 'position', 'print_state1', 'print_state2', 'print_state3', 'print_state4', 'print_state5', 'is_ready_print', 'print_state', 'is_active' ];
@@ -44,6 +37,10 @@ trait SalonTraitSetUp {
       'tot_estudiantes' => [ 'caption'=>'Estudiantes', 'data_type'=>'integer' ], 
     ];
 
+    self::$_widgets = [ 
+      'grado_id'  =>  'number',
+    ];
+
     self::$_attribs = [
       'nombre'    =>  'required', 
       'grado_id'  =>  'required',
@@ -54,7 +51,7 @@ trait SalonTraitSetUp {
   
     self::$_defaults = [
       'tot_estudiantes' => 0, 
-      'position'        => 0,
+      'position'        => 1,
       'print_state1'    => 'En Calificación',
       'print_state2'    => 'En Calificación',
       'print_state3'    => 'En Calificación',

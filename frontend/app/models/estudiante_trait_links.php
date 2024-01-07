@@ -6,7 +6,7 @@ trait EstudianteTraitLinks {
       action: "secretaria/editEstudiante/$this->id", 
       text: $caption, 
       attrs: $attrs);
-  } //END-getLnkEditPage
+  } //END
 
   public function getLnkBoletin(int $periodo) {
     try {
@@ -18,7 +18,7 @@ trait EstudianteTraitLinks {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getLnkBoletin
+  } //END
   
   public function getLnkBoletinesTodos() {
     try {
@@ -32,7 +32,7 @@ trait EstudianteTraitLinks {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getLnkBoletinesTodos
+  } //END
 
 
   public function getLnkPlanApoyo(int $periodo) {
@@ -46,7 +46,7 @@ trait EstudianteTraitLinks {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getLnkBoletin
+  } //END
   
   public function getLnkPlanesApoyoTodos() {
     try {
@@ -59,7 +59,7 @@ trait EstudianteTraitLinks {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getLnkBoletinesTodos
+  } //END
 
 
   public function getlnkSetMesPagosTodos(): string {
@@ -69,7 +69,7 @@ trait EstudianteTraitLinks {
       $lnk .= '<span class="w3-tag w3-blue w3-round">' .Html::linkAction(action: "setMesPago/$this->id/$i", text: "$nombre_mes"). '</span>&nbsp &nbsp';
     }
     return $lnk.'<br>';
-  } //END-getlnkSetMesPagosTodos
+  } //END
 
   
 
@@ -86,7 +86,7 @@ trait EstudianteTraitLinks {
       return $lnk;
     }
     return $lnk;
-  } //END-getlnkSetPonerAldia
+  } //END
 
 
 
@@ -101,7 +101,7 @@ trait EstudianteTraitLinks {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getLnkBoletin
+  } //END
 
 
   public function getLnkRetirar(RetiroEstudiante $motivo) {
@@ -111,8 +111,8 @@ trait EstudianteTraitLinks {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getLnkBoletin
+  } //END
 
   
 
-} //END-TraitLinksOlds
+} //END-Trait

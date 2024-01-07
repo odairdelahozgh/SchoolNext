@@ -38,12 +38,14 @@ trait EstudianteTraitSetUp {
       'edit'     => ['nombres', 'apellido1', 'apellido2', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'grado_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'email', 'tipo_dcto', 'sexo', 'retiro', 'fecha_ret', 'email_instit', 'clave_instit', 'annio_pagado', ],
       'editUuid' => ['nombres', 'apellido1', 'apellido2', 'is_active', 'mes_pagado', 'is_debe_preicfes', 'is_debe_almuerzos', 'is_habilitar_mat', 'salon_id', 'grado_mat', 'numero_mat', 'annio_promovido', 'grado_promovido', 'documento', 'contabilidad_id', 'fecha_nac', 'direccion', 'barrio', 'telefono1', 'email', 'tipo_dcto', 'sexo', 'retiro', 'fecha_ret', 'email_instit', 'clave_instit', 'annio_pagado', ],
     ];
-  
+    
     self::$_attribs = [
       'id'        => 'required',
       'uuid'      => 'required',
       'nombres'   => 'required',
       'apellido1' => 'required',
+      'direccion' => ' size="45"',
+      'email' => ' size="45"',
     ];
   
     self::$_defaults = [
@@ -97,7 +99,6 @@ trait EstudianteTraitSetUp {
       'email_instit'      => 'Usuario MS Teams',
       'clave_instit'      => 'Clave MS Teams',
       
-      
       'contabilidad_id' => 'Código Contabilidad',
       
       'retiro'     => 'Motivo Retiro',
@@ -111,6 +112,11 @@ trait EstudianteTraitSetUp {
     ];
   
     self::$_placeholders = [
+    ];
+
+    self::$_widgets = [
+      'nombres' => 'text',
+      'fecha_ret' => 'date',
     ];
 
   }//END-setUp

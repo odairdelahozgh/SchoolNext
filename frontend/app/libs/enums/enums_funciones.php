@@ -4,15 +4,15 @@
   public static function getRandom() {
     $enums = self::cases();
     return $enums[array_rand($enums)];
-  } //END-getRandom
+  } //END
 
   public static function allValues(): array {
      return array_column(self::cases(), 'value');
-  } //END-allValues
+  } //END
   
   public static function allNames(): array {
     return array_column(self::cases(), 'name');
-  } //END-allNames
+  } //END
 
   public static function forSelect(string $id, string $name, string $selected=''): String  {
     $opts = '';
@@ -57,9 +57,11 @@
   }
 
   public static function toArray(): array {
-    //array_map(static fn (BackedEnum $enum) => $enum->name, self::cases()),
-    //array_map(static fn (BackedEnum $enum) => $enum->value, self::cases()),
-    return array_combine( self::allValues(), self::allNames() );
+    return array_combine( 
+      array_map(static fn (BackedEnum $enum) => $enum->name, self::cases()),
+      array_map(static fn (BackedEnum $enum) => $enum->value, self::cases()),
+    );
+    //return array_combine( self::allValues(), self::allNames() );
   }
 
 } // END-TRAIT

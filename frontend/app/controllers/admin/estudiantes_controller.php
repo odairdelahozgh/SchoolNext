@@ -73,9 +73,9 @@ class EstudiantesController extends ScaffoldController
     try {
       $redirect = str_replace('.','/', $redirect);
       $this->page_action = 'EDITAR Registro Estudiante';
-      if (1==$this->user_id) {
-        echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
-      }
+      
+      echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      
       View::select(null, null);
 
       // ============================================================================

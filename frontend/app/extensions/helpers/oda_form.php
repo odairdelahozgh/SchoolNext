@@ -16,6 +16,7 @@ class OdaForm extends Form {
    private $_fattrs = '';
    private $_fhiddens = '';
    private $_ffields = array(1=>' ', 2=>' ');
+   private $_url_back = '';
    private $_isEdit = false;
    private $_isMultipart = false;
    private $_fields_in_form = [];
@@ -31,7 +32,7 @@ class OdaForm extends Form {
    * @example echo $myForm = new OdaForm('Grado', 'admin/grados/create', 2);
    * @source  frontend\app\extensions\helpers\odaodaform.php
    */
-  public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1, bool $multipart=false) {
+  public function __construct(object $modelo, string $action, string $method = self::METHOD['POST'], $cols=1, bool $multipart=false, string $url_back='') {
     $this->_modelo   = $modelo;
     $this->_fname    = strtolower(OdaUtils::pluralize($modelo::class));
     $this->_faction  = $action;
@@ -43,7 +44,8 @@ class OdaForm extends Form {
         default => [1=>' '],
     };
     $this->_isMultipart = $multipart;
-  } // END-function
+    $this->_url_back = $url_back;
+  } // END
 
   public function __toString(): string {
     $cols_max = array_key_last($this->_ffields);
@@ -57,15 +59,19 @@ class OdaForm extends Form {
       $fieldset   = self::createFieldset($this->_ffields[1], 'Registro', ' style="width:50%" ');
       $data_sets .= OdaTags::tag('div', $fieldset, 'class="w3-col w3-container"');
     }
-
     $form  = $this->getOpenForm();
     $form .= self::getHiddens();
     $form .= OdaTags::tag('div', $data_sets, 'class="w3-row"');
-    $form .= '<br>' .$this->submit('Guardar'). ' ' .$this->reset('Cancelar', 'onclick="cancelar()"');
+    $form .= "<div class=\"w3-padding w3-bar\">
+              {$this::getSubmit()} {$this->getBtnBack()}
+              </div>";
     $form .= self::close();
     return $form;
-  } // END  
+  } // END
 
+  /**
+   * @deprecated mejor usar $_class_name
+   */
   public function getFields(string $legend_fieldset): string { 
     return self::getHiddens().self::createFieldset($this->_ffields[1], $legend_fieldset); 
   } // END
@@ -84,7 +90,6 @@ class OdaForm extends Form {
     $this->_fields_in_form[] = $field;
     $attr = $this->_style . (($attrs) ? $attrs : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
     $fieldname = $this->_fname.'.'.trim($field);
-    //$place_holder =  $this->getAttrib($field). ' '. $this->getPlaceholder($field);
     $label = $this->getLabel($field, $inline);
     $help = $this->getHelp($field);
 
@@ -111,10 +116,6 @@ class OdaForm extends Form {
   //   $this->_ffields[(int)$columna] .= ($tipo=='hidden') ? $campo_input : "<label>$label" .$campo_input."</label>";
   //  } // END
 
-
-  /**
-   * 
-   */
   public function addFile(string $field, int $columna=1, string $attr='', bool $inline=false): void {
     $this->_ffields[$columna] .= '<br>'.$this->getFile($field, $attr, $inline);
   } // END
@@ -124,13 +125,35 @@ class OdaForm extends Form {
    */
   public function getFile(string $field, string $attr='', bool $inline=false): string {
     $this->_fields_in_form[] = $field;
-    $attr = $this->_style . (($attr) ? $attr : $this->getAttrib($field)) .$this->getPlaceholder($field) ;
+    $attr = ( (strlen($attr)>0) ? $attr : ('class="w3-input w3-border w3-hover-text-black"' . $this->getAttrib($field) .$this->getPlaceholder($field)) ) ;
     $fieldname = trim($field);
     $label = $this->getLabel($field, $inline);
     $help = $this->getHelp($field);
     $campo_file = $this::file($fieldname, $attr);
     return "<label> $label" .$campo_file .$help ."</label>";
   } // END
+
+
+  /**
+   * 
+   */
+  public function addFile2(string $field, int $columna=1, string $attr='', bool $inline=false): void {
+    $this->_ffields[$columna] .= '<br>'.$this->getFile2($field, $attr, $inline);
+  } // END
+
+  /**
+   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+   */
+  public function getFile2(string $field, string $attr='', bool $inline=false): string {
+    $this->_fields_in_form[] = $field;
+    $attr = ( (strlen($attr)>0) ? $attr : ('class="w3-input w3-border w3-hover-text-black"' . $this->getAttrib($field) .$this->getPlaceholder($field)) ) ;
+    $fieldname = $this->_fname.'.'.trim($field);
+    $label = $this->getLabel($field, $inline);
+    $help = $this->getHelp($field);
+    $campo_file = $this::file($fieldname, $attr);
+    return "<label> $label" .$campo_file .$help ."</label>";
+  } // END
+
 
   /**
    * @example echo $myForm->addTextarea('descripcion', 2, 'w3-red');
@@ -150,6 +173,7 @@ class OdaForm extends Form {
     $help       = $this->getHelp($field);
     $value      = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
     $campo_textarea = $this::textarea($fieldname, $attr, $value);
+
     return "<label>$label" .$campo_textarea .$help ."</label>";
   } // END
 
@@ -171,8 +195,8 @@ class OdaForm extends Form {
     $label     = $this->getLabel($field);
     $help      = $this->getHelp($field);
     $value     = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field) ;
-
     $campo_select = $this::select($fieldname, $data, $attr, $value);
+
     return "<label>$label $campo_select $help</label>";
   } // END
 
@@ -191,8 +215,8 @@ class OdaForm extends Form {
     $value = ($this->_isEdit) ? $this->_modelo->$field : $this->getDefault($field);
     $value = ($value) ? 1 : 0 ;
     $is_checked = ($value) ? true : false ;
-
     $check = Form::check($fieldname, $value, $attr, $is_checked).'<br>'.$help;
+
     return "<label>$label $check</label><br>";
   } // END
 
@@ -207,16 +231,15 @@ class OdaForm extends Form {
     $this->_fields_in_form[] = $field;
     $value_defa = ($this->_isEdit) ? $this->_modelo->$field : 1;
     $help  = $this->getHelp($field);
-      
     $radio_group = '<div class="w3-bar">';
     foreach ($this->getDefault($field) as $key_radio => $value_radio) {
       $checked = ($value_defa==$key_radio) ? true : false ;
       $radio_group .= "<div class=\"w3-bar-item\">$value_radio&nbsp;&nbsp;".Form::radio($field, $key_radio, $attrs, $checked).'</div>  ';
     }
     $radio_group .= '</div>'.$help;
-
     $label = $this->getLabel($field);
     $campo_radio = self::createFieldset($radio_group, $label);
+
     return '<br>'.$campo_radio;
   } // END
 
@@ -269,7 +292,7 @@ class OdaForm extends Form {
   } // END
 
   private function getWidget(string $field) { 
-    return (($this->_modelo->getWidget($field)) ? $this->_modelo->getWidget($field) : 'input'); 
+    return (($this->_modelo->getWidget($field)) ? $this->_modelo->getWidget($field) : 'text'); 
   } // END
   
   public function addHiddens(string $fields='id'): void { 
@@ -308,11 +331,22 @@ class OdaForm extends Form {
     return "<fieldset $attrs> <legend>$legend</legend> $content </fieldset>"; 
   } // END
 
+  /**
+   * Devuelve el HTML de la apertura del formulario.
+   **/
   public function getOpenForm(): string {
     if ($this->_isMultipart) { return self::openMultipart($this->_faction, $this->_fattrs); }
     return self::open($this->_faction, $this->_fmethod, $this->_fattrs);
   } //END
+
+  public function getBtnBack(string $attrs = 'class="w3-button"'): string {
+    return (($this->_url_back) ? OdaTags::linkButton(action: "$this->_url_back", text: 'Volver', attrs: $attrs) : '');
+  }
   
+  private static function getSubmit($attrs='class="w3-button"'): string {
+    return form::submit('Guardar', $attrs);
+  }
+
   public function getFieldsInForm(): array { 
     return $this->_fields_in_form; 
   } // END
@@ -325,6 +359,5 @@ class OdaForm extends Form {
     $version = \DateTime::createFromFormat(format: 'Y.m.d', datetime: $this->version);
     return 'PHP Helper OdaForm -> Version '.$version->format(format: 'd M Y');
   }//END
-
-   
+  
 } // END-Class

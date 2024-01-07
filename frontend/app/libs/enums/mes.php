@@ -14,7 +14,10 @@ enum Mes: int {
   case Octubre = 10;
   case Noviembre = 11;
   case Diciembre = 12;
-  
+  public static function toArray(): array {
+    return array_combine( self::allValues(), self::allNames() );
+  }
+
   public function label(bool $abrev=false): string {
     return match($this) {
       static::Enero      => (($abrev)?'Ene':'Enero'),

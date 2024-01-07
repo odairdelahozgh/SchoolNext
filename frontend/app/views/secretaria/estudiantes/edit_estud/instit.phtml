@@ -2,18 +2,18 @@
   $myTabla = new OdaTable();
 
   $myTabla->addRow([
-    $frmDataEstud->getInput(field:'ante_instit'),
-    $frmDataEstud->getInput(field:'ante_instit_dir'),
+    $frmDataEstud->getInput('ante_instit'),
+    $frmDataEstud->getInput('ante_instit_dir'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getInput(field:'ante_instit_tel'),
+    $frmDataEstud->getInput('ante_instit_tel'),
     '',
   ]);
   
   $myTabla->addRow([
-    $frmDataEstud->getInput(field:'ante_grado'),
-    $frmDataEstud->getInput(field:'ante_fecha_ret'),
+    $frmDataEstud->getInput('ante_grado'),
+    $frmDataEstud->getInput('ante_fecha_ret'),
   ]);
 
   $myTabs->addTab('instit', 'Instit Anterior', $myTabla);

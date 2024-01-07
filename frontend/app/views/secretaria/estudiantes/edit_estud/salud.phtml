@@ -2,44 +2,44 @@
   $myTabla = new OdaTable();
 
   $myTabla->addRow([
-    $frmDataEstud->getInput(field:'salud_eps'),
-    $frmDataEstud->getInput(field:'grupo_sang'),
+    $frmDataEstud->getInput('salud_eps'),
+    $frmDataEstud->getInput('grupo_sang'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_antec_med_fam') 
+    $frmDataEstud->getTextarea('salud_antec_med_fam'),
   ]);
   
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_cirugias'),
+    $frmDataEstud->getTextarea('salud_cirugias'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_alergico'),
+    $frmDataEstud->getTextarea('salud_alergico'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_tratamientos'),
+    $frmDataEstud->getTextarea('salud_tratamientos'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_enfermedades'),
+    $frmDataEstud->getTextarea('salud_enfermedades'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_medicam_prohibi'),
+    $frmDataEstud->getTextarea('salud_medicam_prohibi'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_trastornos_alim'),
+    $frmDataEstud->getTextarea('salud_trastornos_alim'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_aliment_prohibi'),
+    $frmDataEstud->getTextarea('salud_aliment_prohibi'),
   ]);
 
   $myTabla->addRow([
-    $frmDataEstud->getTextarea(field:'salud_comentarios'),
+    $frmDataEstud->getTextarea('salud_comentarios'),
   ]);
 
   $myTabs->addTab('salud', 'Salud', $myTabla);

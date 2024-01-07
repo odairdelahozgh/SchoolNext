@@ -6,8 +6,12 @@
 <div class="w3-container">
   <h2><?=$arrData['Estudiante']?> </h2>
   <?php
-    $modelEstud = $arrData['Estudiante'];  
-    $frmEstud = new OdaForm($modelEstud, 'admin/estudiantes/editEstudiante/'.$arrData['Estudiante']->id.'/secretaria.listadoEstudActivos', multipart: true);
+    $modelEstud = $arrData['Estudiante'];
+    $frmEstud = new OdaForm(
+      $modelEstud, 'admin/estudiantes/editEstudiante/'.$arrData['Estudiante']->id.'/secretaria.listadoEstudActivos', 
+      multipart: true,
+      url_back: 'secre-estud-list-activos',
+    );
     $frmEstud->setAtrib('id="frm_edit1" name="frm_edit1"');
     $frmEstud->setEdit();
     $fieldsToHidden_Estud = $modelEstud::getFieldsHidden('edit');
@@ -19,6 +23,8 @@
     $frmDataEstud->setEdit();
     $fieldsToHidden_DataEstud = $modelDataEstud::getFieldsHidden('edit');
     $frmDataEstud->addHiddens(implode(",", $fieldsToHidden_DataEstud));
+
+    $modelAdjuntos = $arrData['Adjuntos'];
 
     $myTabs = new OdaTabs();
     include 'basicos.phtml';
@@ -37,7 +43,7 @@
     $formulario .= $frmEstud->getHiddens();
     $formulario .= $frmDataEstud->getHiddens();
     
-    $formulario .= $frmEstud::submit('Guardar').'  '.$frmEstud::reset('Cancelar');
+    $formulario .= '<br><div class="w3-bar">'.$frmEstud::submit('Guardar', 'class="w3-button"') . $frmEstud->getBtnBack().'</div>';
     $formulario .= $frmEstud::close();
 
     echo  "<div class=\"w3-container\">$formulario</div>";
@@ -45,7 +51,7 @@
 
   <pre>
     <?php
-      if ($user_id==1) {
+      if (1==$user_id && 1==Config::get('config.application.modo_depuracion_admin')) {
         echo "<p>Campos que faltan Estudiantes</p>";
         print_r( $frmEstud->getFieldsNotInForm() );
         echo "<p>Campos Ocultos</p>";

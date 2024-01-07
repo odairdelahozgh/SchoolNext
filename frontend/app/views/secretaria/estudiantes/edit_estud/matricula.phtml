@@ -1,21 +1,42 @@
 <?php
-  $myTabla = new OdaTable();
-  $myTabla->addRow([
-    $frmEstud->getSelect(field:'grado_mat', data: (new Grado)::getGradosArray() ),
-    $frmEstud->getSelect(field:'salon_id', data: (new Salon)::getSalonesArray() ),
-    '',
-  ]);
-  $myTabla->addRow([
-    $frmEstud->getCheck(field:'is_habilitar_mat'),
-    $frmEstud->getInput(field:'numero_mat'),
-  ]);
-  $myTabla->addRow([
-    $frmEstud->getInput(field:'annio_promovido'),
-    $frmEstud->getSelect(field:'grado_promovido', data: (new Grado)::getGradosArray() ),
-  ]);
-
+$myTabla1 = new OdaTable();
+$myTabla1->addRow([
+  $frmEstud->getSelect(field:'grado_mat', data: (new Grado)::getGradosArray() ),
+  $frmEstud->getSelect(field:'salon_id', data: (new Salon)::getSalonesArray() ),
+  '',
+]);
+$myTabla1->addRow([
+  $frmEstud->getCheck(field:'is_habilitar_mat'),
+  $frmEstud->getInput(field:'numero_mat'),
+]);
+$myTabla1->addRow([
+  $frmEstud->getInput(field:'annio_promovido'),
+  $frmEstud->getSelect(field:'grado_promovido', data: (new Grado)::getGradosArray() ),
+]);
   
-  $myTabs->addTab('matri', 'Matrícula', $myTabla);
+$myTabla2 = new OdaTable();
+$myTabla2->addRow([
+  '1. '.$modelAdjuntos->getLinkArchivo(1),
+]);
+$myTabla2->addRow([
+  '2. '.$modelAdjuntos->getLinkArchivo(2),
+]);
+$myTabla2->addRow([
+  '3. '.$modelAdjuntos->getLinkArchivo(3),
+]);
+$myTabla2->addRow([
+  '4. '.$modelAdjuntos->getLinkArchivo(4),
+]);
+$myTabla2->addRow([
+  '5. '.$modelAdjuntos->getLinkArchivo(5),
+]);
+$myTabla2->addRow([
+  '6. '.$modelAdjuntos->getLinkArchivo(6),
+]);
+
+$lnk = OdaTags::linkButton("secretaria/subirAdjuntosMatricula/{$modelEstud->id}", 'subir archivos');
+
+$myTabs->addTab('matri', 'Matrícula', $myTabla1.'<br><hr>'.$myTabla2."<br>$lnk<br>");
 
 /*
 echo _Tag'p.t_medium_azul', "Archivos Adjuntos a la Matrícula");

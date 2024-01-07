@@ -20,26 +20,32 @@ return [
         'namespace_auth' => 'default',  // espacio de nombres por defecto para Auth
         'breadcrumb' => false, // activa breadcrumb
         'routes' => '1',  // descomentar para activar routes en routes.php
+        'modo_depuracion_admin' => 0,
     ],
+
     'theme' => [
       'admin'  => 'w3', //w3 looper
       'users'  => 'w3',
     ],
+
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2023,
       'periodo_actual' => 4,
       'asignar_carga' => ['*'],
     ],
+
     'boletines' => [
       'imprimir_plan_apoyo' => false,
       'imprimir_nota'       => false,
     ],
+
     'calificaciones' => [
       'periodos_excep' => '1',
       'salones_excep'  => '11-A',
       'usuarios_excep' => '',
     ],
+
     'construxzion' => [
       'name'      => 'ConstruxZion Soft CO',
       'ceo'       => 'Odair De La Hoz Rojas',
@@ -52,6 +58,7 @@ return [
       'app_name'  => APP_NAME,
       'app_description'  => 'SchoolNext>> Es una Aplicación Web Moderna para la Gestión de Instituciones Educativas de Colombia',
     ],
+
     'institution' => [
       'nombre'          => 'Windsor School',
       'razon_social'    => 'Windsor Group SAS',
@@ -83,6 +90,7 @@ return [
       'contador'        => 'Mary Monachello',
       'contador_cc'     => '',
     ],
+
     'bitly' => [
       'access_token' => '8814d2e204427b9b31d89603afda9a3f87a980e7',
       'servicio_web' => 'https://api-ssl.bitly.com/v4/bitlinks',

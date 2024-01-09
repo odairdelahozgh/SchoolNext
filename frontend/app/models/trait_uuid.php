@@ -3,9 +3,9 @@ trait TraitUuid {
   
   /**
    * UUID Generator Optimized
-   * UUID: Universally Unique IDentifier
    */
-  public function UUIDReal(int $lenght=36): string {
+  public function UUIDReal(int $lenght=36): string 
+  {
     if ($lenght <= parent::$lim_tam_campo_uuid) {
       if (function_exists("random_bytes")) {
         $bytes = random_bytes(ceil($lenght / 2));
@@ -18,45 +18,60 @@ trait TraitUuid {
       throw new Exception('lenght must be <= '.parent::$lim_tam_campo_uuid);
     }
     return substr(bin2hex($bytes), 0, $lenght);
-  }//END-UUIDReal
+  }
   
+  /**
+   * Devuelve un valor hash, método xxh3
+   */
+  public function xxh3Hash(): string 
+  {
+    $data = date('ymdhis').rand(1, 1000);
+    return hash("xxh3", $data, options: ["seed" => rand(1, 1000)]);
+  }
 
-  public function xxh3Hash(): string {
-    try {
-      $data = date('ymdhis').rand(1, 1000);
-      return hash("xxh3", $data, options: ["seed" => rand(1, 1000)]);
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-  } //END-xxh3Hash
-
-  public function setHash(): void {
+  /**
+   * Guarda el valor gnerado con hash(xxh3) en el campo uuid del registro actual
+   */
+  public function setHash(): void 
+  {
     $this->uuid = $this->xxh3Hash();
-  } //END-setHash
+  }
 
-  public function setUUID(int $lenght=20) {
-    $this->uuid = $this->UUIDReal($lenght); // Asigna un numero UUID
-  } //END-setUUID
-  
-  public static function getByUUID(string $uuid, string $fields = '*') {
+  /**
+   * Guarda el valor gnerado con UUIDReal() en el campo uuid del registro actual
+   */
+  public function setUUID(int $lenght=20): void 
+  {
+    $this->uuid = $this->UUIDReal($lenght);
+  }
+
+  /**
+   * Devuelve un Registro por su UUID.
+   */
+  public static function getByUUID(string $uuid, string $fields = '*') 
+  {
     $sql = "SELECT $fields FROM ".static::getSource().' WHERE uuid = ?';
-    return static::query($sql, [$uuid])->fetch(); // Devuelve un Registro por su UUID.
-  } //END-getByUUID
+    return static::query($sql, [$uuid])->fetch();
+  }
 
-  public static function deleteByUUID(string $uuid): bool {
-    $source  = static::getSource(); // Elimina un registro por su UUID.
+  /**
+   * Elimina un Registro por su UUID.
+   */
+  public static function deleteByUUID(string $uuid): bool 
+  {
+    $source  = static::getSource();
     return static::query("DELETE FROM $source WHERE uuid = ?", [$uuid])->rowCount() > 0;
   } //END-deleteByUUID
 
-
-  public function setUUID_All_ojo(int $long=20) { // Instancia UUID de todos
+  /**
+   * @deprecated 
+   */
+  public function setUUID_All_ojo(int $long=20) 
+  {
     try {
       $Todos = $this::all();
       $RG = new RegistrosGen();
-      
       $DQL = new OdaDql($RG);
-      OdaLog::debug($DQL);
       
       // foreach ($Todos as $reg) {
       //   $new_uuid = $this->UUIDReal($long);
@@ -72,18 +87,18 @@ trait TraitUuid {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-setUUID_All_ojo
+  }
 
-
-  public function setUUID_All($tabla) { // Instancia UUID de todos
+  /**
+   * @deprecated 
+   */
+  public function setUUID_All($tabla) 
+  {
     try {
-      
-    
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-setUUID_All_ojo
-
+  }
 
 
 } //END-TraitUuid

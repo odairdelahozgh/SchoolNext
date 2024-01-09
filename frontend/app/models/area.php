@@ -13,10 +13,17 @@ class Area extends LiteRecord
 {
   use AreaTraitSetUp;
 
-  public function __construct() {
+  public function __construct() 
+  {
     parent::__construct();
     self::$table = Config::get('tablas.areas');
     $this->setUp();
-  } //END-__construct
+  }
+
+  public static function getLista(string $fields = '*') 
+  {
+    $sql = "SELECT $fields FROM ".static::getSource();
+    return static::query($sql);
+  }
 
 } //END-CLASS

@@ -6,13 +6,11 @@
 <div class="w3-container">
   <?php
   $message = Config::get('messages.comprimir_imagenes');
-  
-  $id = $arrData['Adjuntos'][0]->id;
-  $model = (new EstudianteAdjuntos())::get($id);
+  $model = $arrData['Adjuntos'];
   $fieldsToHidden = $model::getFieldsHidden('edit');
   
   $myForm = new OdaForm(
-    $model, "admin/estudiante_adjuntos/edit_ajax/$id/padres.matriculas", 
+    $model, "admin/estudiante_adjuntos/edit_ajax/$model->id/padres.matriculas", 
     multipart: true,
     url_back: 'padres/matriculas',
   );

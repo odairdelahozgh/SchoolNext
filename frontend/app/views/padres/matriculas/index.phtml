@@ -12,9 +12,8 @@
       $buttons = [];
       if (count($data)>0) {
         foreach ($data as $key => $estud) {
-          $Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estud->id]);
+          $Adjuntos = $arrData['Adjuntos'][$estud->id];
           $estado_mat = $estud->getEstadoMat();
-
           $contenido_tab ='';
           include 'info_estud.phtml';
           if (in_array($estado_mat->value, [3,4,5,6])) {

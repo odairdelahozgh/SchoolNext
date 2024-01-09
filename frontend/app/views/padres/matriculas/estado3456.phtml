@@ -1,19 +1,20 @@
 <?php
   try {
     $tabla = new OdaTable();
-    $tabla->setHead(['#', 'Comentario Archivo', 'Estado', 'Ver o Descargar']);
-    $tabla->addRow(['1', $Adjuntos[0]->coment_archivo1, $Adjuntos[0]->estado_archivo1, $Adjuntos[0]->getLinkArchivo(1)]);
-    $tabla->addRow(['2', $Adjuntos[0]->coment_archivo2, $Adjuntos[0]->estado_archivo2, $Adjuntos[0]->getLinkArchivo(2)]);
-    $tabla->addRow(['3', $Adjuntos[0]->coment_archivo3, $Adjuntos[0]->estado_archivo3, $Adjuntos[0]->getLinkArchivo(3)]);
-    $tabla->addRow(['4', $Adjuntos[0]->coment_archivo4, $Adjuntos[0]->estado_archivo4, $Adjuntos[0]->getLinkArchivo(4)]);
-    $tabla->addRow(['5', $Adjuntos[0]->coment_archivo5, $Adjuntos[0]->estado_archivo5, $Adjuntos[0]->getLinkArchivo(5)]);
-    $tabla->addRow(['6', $Adjuntos[0]->coment_archivo6, $Adjuntos[0]->estado_archivo6, $Adjuntos[0]->getLinkArchivo(6)]);
+    $tabla->setHead(['#', 'Estado', 'Ver o Descargar']);
+    $tabla->addRow(['1', $Adjuntos->estado_archivo1, $Adjuntos->getLinkArchivo(1)]);
+    $tabla->addRow(['2', $Adjuntos->estado_archivo2, $Adjuntos->getLinkArchivo(2)]);
+    $tabla->addRow(['3', $Adjuntos->estado_archivo3, $Adjuntos->getLinkArchivo(3)]);
+    $tabla->addRow(['4', $Adjuntos->estado_archivo4, $Adjuntos->getLinkArchivo(4)]);
+    $tabla->addRow(['5', $Adjuntos->estado_archivo5, $Adjuntos->getLinkArchivo(5)]);
+    $tabla->addRow(['6', $Adjuntos->estado_archivo6, $Adjuntos->getLinkArchivo(6)]);
  
     $btn_subir_arch = OdaTags::linkButton("padres/subirArchivos/$estud->id", 'Subir Archivos');
 
     $contenido_tab .= "
     <div class=\"w3-panel w3-pale-red w3-leftbar w3-border-red\">
       <p>Estado del proceso [{$estado_mat->value}]: <b>{{$estado_mat->label()}}</b></p>
+      <p>{$estado_mat->comments()}</p>
     </div>
     $tabla
     <div class=\"w3-display-container\">

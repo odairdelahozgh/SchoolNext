@@ -206,7 +206,8 @@ class SecretariaController extends AppController
   
   public function subirAdjuntosMatricula(int $estudiante_id): void {
     $this->page_action = 'Subir Archivos';
-    $this->arrData['Adjuntos'] = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante_id]);
+    $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
+    $this->arrData['Adjuntos'] = (new EstudianteAdjuntos)::first("SELECT * FROM $tabla_datos_adju WHERE estudiante_id=?", [$estudiante_id]);
     View::select('estudiantes/edit_estud/upload');
   } //END
 

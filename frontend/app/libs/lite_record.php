@@ -65,7 +65,7 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     $ahora = date('Y-m-d H:i:s', time());
     if (property_exists($this, 'is_active'))  { $this->is_active = 1; }
     if (property_exists($this, 'uuid') and method_exists($this, 'setHash') ) { 
-      $this->uuid = $this->setHash();
+      $this->setHash();
     }
     if (property_exists($this, 'created_by')) { $this->created_by = self::$_user_id; }
     if (property_exists($this, 'created_at')) { $this->created_at = $ahora; }
@@ -78,9 +78,9 @@ class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
     if (property_exists($this, "is_active")) {
       if (is_null($this->is_active)) { $this->is_active = 0; }
     }
-    if (property_exists($this, 'uuid')) {
-      if (method_exists($this, 'setHash')) { 
-        if (is_null($this->uuid) or (strlen($this->uuid)==0)) { $this->setHash(); }
+    if (property_exists($this, 'uuid') and method_exists($this, 'setHash') ) {
+      if (is_null($this->uuid) or (strlen($this->uuid)==0)) { 
+        $this->setHash(); 
       }
     }
     if (property_exists($this, 'updated_by')) { $this->updated_by = self::$_user_id; }

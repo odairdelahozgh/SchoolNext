@@ -6,8 +6,11 @@
   <h2>Test</h2>
   <?php
   try {
-    $Estudiantes = new Estudiante();
-    echo $Estudiantes::setPromoverANuevoAnnio();
+    $Regs = new Area();
+    $Lista = $Regs::getLista();
+    foreach ($Lista as $key => $value) {
+      echo "$key => $value<br>";
+    }
 
   } catch (\Throwable $th) {
     OdaFlash::error($th);

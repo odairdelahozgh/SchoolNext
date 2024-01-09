@@ -1,7 +1,7 @@
 <?php
 
 trait TraitForms {
-  /// PARA TODOS LO SMODELOS !!
+  
   protected static $_fields_show = [
     'all'      => ['id', 'uuid', 'is_active', 'nombre', 'created_by', 'created_at', 'updated_by', 'updated_at'], 
     'index'    => ['id', 'uuid', 'is_active', 'nombre', 'created_by', 'created_at', 'updated_by', 'updated_at'], 

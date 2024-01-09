@@ -5,14 +5,13 @@
 
 <div class="w3-container">
   <?php
+  try {
   $message = Config::get('messages.comprimir_imagenes');
-  
-  $id = $arrData['Adjuntos'][0]->id;
-  $model = (new EstudianteAdjuntos())::get($id);
+  $model = $arrData['Adjuntos'];
   $fieldsToHidden = $model::getFieldsHidden('edit');
   
   $myForm = new OdaForm(
-    $model, "admin/estudiante_adjuntos/edit_ajax/$id/secretaria.listadoEstudActivos", 
+    $model, "admin/estudiante_adjuntos/edit_ajax/$model->id/secretaria.listadoEstudActivos", 
     multipart: true,
     url_back: 'secre-estud-list-activos',
   );
@@ -39,6 +38,11 @@
   
   echo OdaTags::tag('div', $message, 'class="w3-panel"');
   echo "<div class=\"w3-container\">$myForm</div>";
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  
   ?>
 
   <pre>

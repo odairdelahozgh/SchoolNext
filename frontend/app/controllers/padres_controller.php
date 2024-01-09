@@ -53,14 +53,13 @@ class PadresController extends AppController
     foreach ($this->data as $estudiante) {
       $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
       $Adjuntos = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante->id]);
-      //$Adjuntos = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante->id]);
       if (!$Adjuntos) {
-        $Adjuntos = (new EstudianteAdjuntos());
-        $Adjuntos->save([
+        $Adjuntos = new EstudianteAdjuntos;
+        $Adjuntos->create([
           'estudiante_id'=>$estudiante->id, 
           'uuid'=>$Adjuntos->xxh3Hash(), 
-          'created_at'=> '',
-          'updated_at'=> '',
+          'created_at'=> $this->_ahora,
+          'updated_at'=> $this->_ahora,
           'created_by'=> $user_id,
           'updated_by'=> $user_id,
           'estado_archivo1'=> EstadoAdjuntos::Revision->value,
@@ -71,14 +70,15 @@ class PadresController extends AppController
           'estado_archivo6'=> EstadoAdjuntos::Revision->value,
         ]);
       }
+      $this->arrData['Adjuntos'][$estudiante->id] = $Adjuntos;
     }
-
     View::select('matriculas/index');
   } //END
   
   public function subirArchivos($estudiante_id): void {
     $this->page_action = 'Subir Archivos';
-    $this->arrData['Adjuntos'] = (new EstudianteAdjuntos())::filter("WHERE estudiante_id=?", [$estudiante_id]);
+    $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
+    $this->arrData['Adjuntos'] = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante_id]);
     View::select('matriculas/upload');
   } //END
 

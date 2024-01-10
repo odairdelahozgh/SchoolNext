@@ -23,9 +23,9 @@ class EstudiantesController extends ScaffoldController
     View::select(view: "export_pdf_$this->controller_name", template: 'pdf/mpdf');
   } //END-exportPdf
 
-  public function exportEstudiantesBySalonPdf(string $salon_uuid) {
+  public function exportEstudiantesBySalonPdf(string $salon_uuid) 
+  {
     $RegSalon = (new Salon)::getByUUID($salon_uuid);
-    
     $this->file_tipo = "Listado de $this->controller_name";
     $this->file_title = "Listado de $this->controller_name de $RegSalon->nombre";
     $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name-salon-$RegSalon->nombre");
@@ -36,7 +36,8 @@ class EstudiantesController extends ScaffoldController
 
   } //END-exportPdf
 
-  public function promoverMatriculas(int $grado_id) {
+  public function promoverMatriculas(int $grado_id) 
+  {
     try {
       $Grados = (new Grado())::all();
       $arrGrados = [];
@@ -69,13 +70,12 @@ class EstudiantesController extends ScaffoldController
   } //END-promoverMatriculas
 
 
-  public function editEstudiante(int $id, string $redirect='') {
+  public function editEstudiante(int $id, string $redirect='') 
+  {
     try {
       $redirect = str_replace('.','/', $redirect);
       $this->page_action = 'EDITAR Registro Estudiante';
-      
       echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
-      
       View::select(null, null);
 
       // ============================================================================
@@ -121,5 +121,26 @@ class EstudiantesController extends ScaffoldController
 
   }//END-edit_ajax
 
+  public function exportDocsMatricula(int $estudiante_id) 
+  {
+    try {
+      $this->data = (new Estudiante())->get($estudiante_id);
+      $tabla_datosestud = Config::get('tablas.datosestud');
+      $tabla_grados = Config::get('tablas.grados');
+      $this->arrData['DatosEstud'] = (new DatosEstud())->first("SELECT * FROM {$tabla_datosestud} WHERE estudiante_id=?", [$estudiante_id]);
+      $this->arrData['Grado'] = (new Grado())->first("SELECT * FROM {$tabla_grados} WHERE id=?", [$this->data->grado_promovido]);
+      $this->file_tipo = '';
+      $this->file_name = OdaUtils::getSlug("DOC-MAT-ESTUD");
+      $this->file_title = OdaUtils::getSlug("DOC-MAT-ESTUD");
+      View::select(
+        view: "export_pdf_docs_matriculas", 
+        template: null
+      );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }
 
-} // END CLASS
+
+}

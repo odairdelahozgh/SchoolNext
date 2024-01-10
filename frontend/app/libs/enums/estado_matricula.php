@@ -31,7 +31,7 @@ enum EstadoMatricula: int {
   public function comments(): string 
   {
     return match($this) {
-      static::Bloqueado       => 'Debe comunicarse con el depratamento de contabilidad',
+      static::Bloqueado       => 'Debe comunicarse con el departamento de contabilidad',
       static::NoPromovido     => 'EL estudiante está pendiente de validar planes de apoyo del año anterior',
       static::SinDocumentos   => 'Debe subir la totalidad de los documentos exigidos',
       static::DocIncompletos  => 'Debe subir los documentos faltantes',

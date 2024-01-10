@@ -34,44 +34,14 @@ $myTabla2->addRow([
   '6. '.$modelAdjuntos->getLinkArchivo(6),
 ]);
 
-$lnk = OdaTags::linkButton("secretaria/subirAdjuntosMatricula/{$modelEstud->id}", 'subir archivos');
+$lnk_subir_adjuntos = '<br>'.OdaTags::linkButton("secretaria/subirAdjuntosMatricula/{$modelEstud->id}", 'subir archivos');
 
-$myTabs->addTab('matri', 'Matrícula', $myTabla1.'<br><hr>'.$myTabla2."<br>$lnk<br>");
-
-/*
-echo _Tag'p.t_medium_azul', "Archivos Adjuntos a la Matrícula");
-
-$html_params = array();
-$html_params_oculto = array('hidden'=>'hidden');
-
-echo $form->getCampo('Adjuntos/estudiante_id', $html_params_oculto);
-echo $form->getCampo('AdjuntosDos/estudiante_id', $html_params_oculto);
-
-echo $form->getColCampo('');
-
-$arch = _open('table');
-for ($i=1; $i<=5; $i++) {
-	$link_descarga = $form->getObject()->getAdjuntos()->getLinkAchivoAdjunto($i).'<br/>';
-	$campo_archivo = $form->getCampo('Adjuntos/nombre_archivo'.$i).'<br/>';
-	$campo_estado = $form->getCampo('Adjuntos/estado_archivo'.$i).'<br/>';
-	$campo_coment = $form->getCampo('Adjuntos/coment_archivo'.$i).'<br/>';
-	$arch .= _Tag'tr', _Tag'td', $campo_estado.'Comentarios: '.$campo_coment) 
-				._Tag'td', $link_descarga .$campo_archivo)
-			);
-}
-
-for ($i=1; $i<=2; $i++) {
-	$link_descarga = $form->getObject()->getAdjuntosDos()->getLinkAchivoAdjunto($i).'<br/>';
-	$campo_archivo = $form->getCampo('AdjuntosDos/nombre_archivo'.$i).'<br/>';
-	$campo_estado = $form->getCampo('AdjuntosDos/estado_archivo'.$i).'<br/>';
-	$campo_coment = $form->getCampo('AdjuntosDos/coment_archivo'.$i).'<br/>';
-	$arch .= _Tag'tr', _Tag'td', $campo_estado.'Comentarios: '.$campo_coment) 
-				._Tag'td', $link_descarga .$campo_archivo)
-			);
-}
+$lnk_docs_mat = '<br>'.OdaTags::linkButton(
+  action: "admin/estudiantes/exportDocsMatricula/{$modelEstud->id}", 
+  text: 'Descargar Documentos Mat', 
+  attrs: 'class="w3-button w3-green" target="_blank"'
+);
 
 
-$arch .= _close('table');
+$myTabs->addTab('matri', 'Matrícula', $myTabla1.'<br><hr>'.$myTabla2."<br>$lnk_subir_adjuntos<br>$lnk_docs_mat");
 
-echo $arch;
-*/

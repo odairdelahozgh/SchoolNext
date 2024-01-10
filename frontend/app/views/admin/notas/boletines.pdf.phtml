@@ -96,7 +96,4 @@ $Params_pie = [ $img_rango_notas,
 $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
 
 $archivoPDF->showWatermarkText = false;
-//$archivoPDF->SetWatermarkText($file_title);
-//$archivoPDF->watermarkTextAlpha = (('Preboletín' == $file_tipo) ? 0.2 : 0.1);
-
 $archivoPDF->Output("$file_name.pdf", 'D');

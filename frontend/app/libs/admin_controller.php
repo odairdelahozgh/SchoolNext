@@ -46,6 +46,7 @@ abstract class AdminController extends Controller
   public ?string $file_title = null;
   public bool $file_download = true;
   public string $file_orientation = 'L';
+  public $_now = null;
   
   final protected function initialize()
   {
@@ -60,6 +61,7 @@ abstract class AdminController extends Controller
       
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
       $this->nombre_post   = strtolower(OdaUtils::pluralize( $this->nombre_modelo ));
+      $this->_now = new DateTime("now", new DateTimeZone("America/Bogota"));
       
     } catch (\Throwable $th) {
       OdaFlash::error($th);

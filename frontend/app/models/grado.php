@@ -4,13 +4,12 @@
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
+ *  
+ *  id, uuid, is_active, orden, nombre, abrev, seccion_id, 
+ *  proximo_grado, salon_default, 
+ *  valor_matricula, matricula_palabras, valor_pension, pension_palabras, proximo_salon, 
+ *  created_by, updated_by, created_at, updated_at
  */
- /*
-  /* id, uuid, is_active, orden, nombre, abrev, seccion_id, 
-  *  proximo_grado, salon_default, 
-  *  valor_matricula, matricula_palabras, valor_pension, pension_palabras, proximo_salon, 
-  *  created_by, updated_by, created_at, updated_at
-  */
   
 class Grado extends LiteRecord {
 

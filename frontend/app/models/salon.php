@@ -1,6 +1,6 @@
 <?php
 /**
- * Modelo Salon * 
+ * Modelo
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord

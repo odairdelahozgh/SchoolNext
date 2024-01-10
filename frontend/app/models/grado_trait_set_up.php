@@ -44,8 +44,9 @@ trait GradoTraitSetUp {
   private function setUp() {
 
     self::$_fields_show = [
-      'all'      => ['nombre', 'salon_default', 'proximo_salon', 'proximo_grado', 'seccion_id', 'orden', 'abrev', 'valor_matricula', 'matricula_palabras', 'valor_pension', 'pension_palabras', 
-                      'id', 'uuid', 'is_active', 'created_by', 'updated_by', 'created_at', 'updated_at'],
+      'all'      => ['nombre', 'salon_default', 'proximo_salon', 'proximo_grado', 'seccion_id', 'orden', 'abrev', 
+                     'valor_matricula', 'matricula_palabras', 'valor_pension', 'pension_palabras', 
+                     'id', 'uuid', 'is_active', 'created_by', 'updated_by', 'created_at', 'updated_at'],
       'index'    => ['is_active', 'nombre', 'abrev', 'seccion_id', 'valor_matricula', 'valor_pension'],
       'create'   => ['nombre', 'salon_default', 'proximo_salon', 'proximo_grado', 'seccion_id', 'orden', 'abrev', 'valor_matricula', 'valor_pension'],
       'edit'     => ['nombre', 'salon_default', 'proximo_salon', 'proximo_grado', 'seccion_id', 'orden', 'abrev', 'valor_matricula', 'valor_pension'],

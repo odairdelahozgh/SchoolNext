@@ -19,7 +19,7 @@
 
 class DatosEstud extends LiteRecord {
 
-  use DatosEstudTraitSetUp;
+  use DatosEstudTraitSetUp, DatosEstudTraitProps;
 
   public function __construct() {
     parent::__construct();

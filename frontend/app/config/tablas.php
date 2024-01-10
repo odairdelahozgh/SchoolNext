@@ -48,6 +48,7 @@ return [
 
   'periodo'              => 'sweb_periodos',
   'periodos'             => 'sweb_periodos',
+  'plantillas'           => 'snxt_plantillas',
   'rango'                => 'sweb_rangos',
   'rangos'               => 'sweb_rangos',
   

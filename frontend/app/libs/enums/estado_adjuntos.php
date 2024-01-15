@@ -2,15 +2,15 @@
 
 enum EstadoAdjuntos: string {
   Use EnumsFunciones;
-  case Revision  = 'En Revisión';
-  case Rechazado = 'Rechazado';
-  case Aprobado  = 'Aprobado';
+  case ENREVISION  = 'En Revisión';
+  case RECHAZADO = 'Rechazado';
+  case APROBADO  = 'Aprobado';
 
   public function label(bool $abrev = false): string {
     return match($this) {
-      static::Revision  => 'Archivo en Revisión',
-      static::Rechazado => 'Archivo Rechazado',
-      static::Aprobado  => 'Archivo Aprobado',
+      static::ENREVISION  => 'En Revisión',
+      static::RECHAZADO => 'Rechazado',
+      static::APROBADO  => 'Aprobado',
       default  => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }//END-label

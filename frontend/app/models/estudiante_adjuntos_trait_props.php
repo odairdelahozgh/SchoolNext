@@ -16,8 +16,19 @@ trait EstudianteAdjuntosTraitProps {
         text: "Ver Archivo : $nombre_archivo",
         attrs:'class="w3-button w3-blue"');
     }
-    return 'Archivo no subido: '.$nombre_archivo;
+    return $nombre_archivo;
   } //END
+  
+  public function getEstadoArchivo(int $num_archivo): string 
+  {
+    $arch = "nombre_archivo$num_archivo";
+    $estado = "estado_archivo$num_archivo";
+    if ($this->$arch) {
+      return $this->$estado;
+    }
+    return 'Archivo no Subido';
+  }
+
 
   public function getEstadoDocsMatricula(int $grado_id): EstadoMatricula {
     $cant_docs_requeridos = ($grado_id>=9 and $grado_id<=11) ? 5 : 4; // documentos requerido

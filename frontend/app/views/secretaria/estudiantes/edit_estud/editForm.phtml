@@ -23,8 +23,13 @@
     $frmDataEstud->setEdit();
     $fieldsToHidden_DataEstud = $modelDataEstud::getFieldsHidden('edit');
     $frmDataEstud->addHiddens(implode(",", $fieldsToHidden_DataEstud));
-
+    
     $modelAdjuntos = $arrData['Adjuntos'];
+    $frmAdjuntos = new OdaForm($modelAdjuntos, '');
+    $frmAdjuntos->setAtrib('id="frm_edit3" name="frm_edit3"');
+    $frmAdjuntos->setEdit();
+    $fieldsToHidden_Adjuntos = $modelAdjuntos::getFieldsHidden('edit');
+    $frmAdjuntos->addHiddens(implode(",", $fieldsToHidden_DataEstud));
 
     $myTabs = new OdaTabs();
     include 'basicos.phtml';
@@ -41,6 +46,7 @@
     $formulario .= $myTabs;
     $formulario .= $frmEstud->getHiddens();
     $formulario .= $frmDataEstud->getHiddens();
+    $formulario .= $frmAdjuntos->getHiddens();
     
     $formulario .= '<br><div class="w3-bar">'.$frmEstud::submit('Guardar', 'class="w3-button"') . $frmEstud->getBtnBack().'</div>';
     $formulario .= $frmEstud::close();
@@ -51,7 +57,7 @@
   <pre>
     <?php
       if (1==$user_id && 1==Config::get('config.application.modo_depuracion_admin')) {
-        echo "<p>Campos que faltan Estudiantes</p>";
+/*         echo "<p>Campos que faltan Estudiantes</p>";
         print_r( $frmEstud->getFieldsNotInForm() );
         echo "<p>Campos Ocultos</p>";
         print_r($fieldsToHidden_Estud);
@@ -61,10 +67,14 @@
         print_r( $frmDataEstud->getFieldsNotInForm() );
         echo "<p>Campos Ocultos</p>";
         print_r($fieldsToHidden_DataEstud);
+ */
+        
+        echo "<hr>";
+        echo "<p>Campos que faltan Adjuntos</p>";
+        print_r( $frmAdjuntos->getFieldsNotInForm() );
+        echo "<p>Campos Ocultos</p>";
+        print_r($fieldsToHidden_Adjuntos);
 
-        echo "<hr> F A L T A<br>";
-        echo "CHECK DE Debe Preicfes<br>";
-        echo "CHECK DE Debe Almuerzos<br>";
       }
     ?>
   </pre>

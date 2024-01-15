@@ -4,7 +4,7 @@
   
   $nota = '<br><p>Diligencie lo demás campos, sólo si el acudiente es diferente a padre o madre</p>';
   $myTabla->addRow([
-    $frmDataEstud->getInput('tipo_acudi'),
+    $frmDataEstud->getSelect(field:'tipo_acudi', data: TipoAcudiente::toArray()),
     $nota,
   ]);
 

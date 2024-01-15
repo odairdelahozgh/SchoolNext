@@ -20,19 +20,28 @@
   $myForm->setAtrib('id="frm_edit" name="frm_edit"');
   
   $myForm->addFile2('nombre_archivo1');
-  $myForm->addSelect('estado_archivo1', 1, EstadoAdjuntos::toArray() );
+  $myForm->addSelect('estado_archivo1', 1, EstadoAdjuntos::toArray(false) );
+  $myForm->addInput('coment_archivo1');
+
   $myForm->addFile2('nombre_archivo2');
-  $myForm->addSelect('estado_archivo2', 1, EstadoAdjuntos::toArray() );
+  $myForm->addSelect('estado_archivo2', 1, EstadoAdjuntos::toArray(false) );
+  $myForm->addInput('coment_archivo2');
+
   $myForm->addFile2('nombre_archivo3');
-  $myForm->addSelect('estado_archivo3', 1, EstadoAdjuntos::toArray() );
-  
+  $myForm->addSelect('estado_archivo3', 1, EstadoAdjuntos::toArray(false) );
+  $myForm->addInput('coment_archivo3');
   
   $myForm->addFile2('nombre_archivo4', 2);
-  $myForm->addSelect('estado_archivo4', 2, EstadoAdjuntos::toArray() );
+  $myForm->addSelect('estado_archivo4', 2, EstadoAdjuntos::toArray(false) );
+  $myForm->addInput('coment_archivo4', 2);
+
   $myForm->addFile2('nombre_archivo5', 2);
-  $myForm->addSelect('estado_archivo5', 2, EstadoAdjuntos::toArray() );
+  $myForm->addSelect('estado_archivo5', 2, EstadoAdjuntos::toArray(false) );
+  $myForm->addInput('coment_archivo5', 2);
+  
   $myForm->addFile2('nombre_archivo6', 2);
-  $myForm->addSelect('estado_archivo6', 2, EstadoAdjuntos::toArray() );
+  $myForm->addSelect('estado_archivo6', 2, EstadoAdjuntos::toArray(false) );
+  $myForm->addInput('coment_archivo6', 2);
   
   $myForm->addHiddens(implode(",", $fieldsToHidden));
   

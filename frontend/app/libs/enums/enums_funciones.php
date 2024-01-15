@@ -56,10 +56,15 @@
     return false;
   }
 
-  public static function toArray(): array {
-    return array_combine( 
-      array_map(static fn (BackedEnum $enum) => $enum->name, self::cases()),
+  public static function toArray($orden = true): array {
+    return ($orden) 
+    ? array_combine( 
+        array_map(static fn (BackedEnum $enum) => $enum->name, self::cases()),
+        array_map(static fn (BackedEnum $enum) => $enum->value, self::cases()),
+      )
+    : array_combine( 
       array_map(static fn (BackedEnum $enum) => $enum->value, self::cases()),
+      array_map(static fn (BackedEnum $enum) => $enum->label(), self::cases()),
     );
     //return array_combine( self::allValues(), self::allNames() );
   }

@@ -6,9 +6,6 @@
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
 
- /* 
-  id, nombre, orden, created_by, updated_by, created_at, updated_at, is_active
-*/
 class Area extends LiteRecord
 {
   use AreaTraitSetUp;
@@ -22,6 +19,7 @@ class Area extends LiteRecord
 
   public static function getLista(string $fields = '*') 
   {
+    //$sql = QueryGenerator::select(static::getSource(), 'mysql', []);
     $sql = "SELECT $fields FROM ".static::getSource();
     return static::query($sql);
   }

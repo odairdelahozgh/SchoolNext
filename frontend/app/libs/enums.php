@@ -5,6 +5,7 @@
   require_once "enums/aspir_traslado.php";
   require_once "enums/aspir_llamadas.php";
   require_once "enums/dia_semana.php";
+  require_once "enums/estado_debe.php";
   require_once "enums/estado.php";
   require_once "enums/mes.php";
   require_once "enums/modulo.php";
@@ -17,6 +18,7 @@
   require_once "enums/estado_matricula.php";
   require_once "enums/estado_adjuntos.php";
   require_once "enums/retiro_estudiante.php";
+  require_once "enums/tipo_acudiente.php";
   
   // $estado = Estado::tryFrom($Param) ?? Estado::Inactivo;
 ?>

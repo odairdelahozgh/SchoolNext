@@ -62,12 +62,12 @@ class PadresController extends AppController
           'updated_at'=> $this->_ahora,
           'created_by'=> $user_id,
           'updated_by'=> $user_id,
-          'estado_archivo1'=> EstadoAdjuntos::Revision->value,
-          'estado_archivo2'=> EstadoAdjuntos::Revision->value,
-          'estado_archivo3'=> EstadoAdjuntos::Revision->value,
-          'estado_archivo4'=> EstadoAdjuntos::Revision->value,
-          'estado_archivo5'=> EstadoAdjuntos::Revision->value,
-          'estado_archivo6'=> EstadoAdjuntos::Revision->value,
+          'estado_archivo1'=> EstadoAdjuntos::ENREVISION->value,
+          'estado_archivo2'=> EstadoAdjuntos::ENREVISION->value,
+          'estado_archivo3'=> EstadoAdjuntos::ENREVISION->value,
+          'estado_archivo4'=> EstadoAdjuntos::ENREVISION->value,
+          'estado_archivo5'=> EstadoAdjuntos::ENREVISION->value,
+          'estado_archivo6'=> EstadoAdjuntos::ENREVISION->value,
         ]);
       }
       $this->arrData['Adjuntos'][$estudiante->id] = $Adjuntos;

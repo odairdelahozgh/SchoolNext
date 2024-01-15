@@ -7,14 +7,15 @@
 class IndexController extends AppController
 {
     const MODULOS = array(
-            'admin'         => 'admin', 
-            'docentes'      => 'docentes', 
-            'coordinadores' => 'docentes', 
-            'padres'        => 'padres', 
-            'secretarias'   => 'secretaria', 
-            'sicologos'     => 'sicologia', 
-            'contables'     => 'contabilidad', 
-            'enfermeras'    => 'enfermeria',
+            'admin' => 'admin',
+            'docentes'  => 'docentes',
+            'coordinadores' => 'docentes',
+            'padres'  => 'padres',
+            'secretarias' => 'secretaria',
+            'matriculas'  => 'secretaria',
+            'sicologos'=> 'sicologia',
+            'contables'=> 'contabilidad',
+            'enfermeras'=> 'enfermeria',
         );
     
     public function index() {

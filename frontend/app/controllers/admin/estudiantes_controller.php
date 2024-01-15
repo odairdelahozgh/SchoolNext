@@ -109,9 +109,23 @@ class EstudiantesController extends ScaffoldController
       if ( !(new DatosEstud)->update(Input::post('datosestuds')) ) {
         OdaFlash::warning("$this->page_action - No actualizó el Registro en DATOSESTUDS.");
       }
+
       // ============================================================================
+      // TABLA EstudianteAdjuntos
+      if (!Input::hasPost('estudianteadjuntos')) {
+        OdaFlash::warning("$this->page_action - No coincide post estudianteadjuntos");
+      }
 
+      if (!(new EstudianteAdjuntos)->validar(Input::post('estudianteadjuntos'))) {
+        OdaFlash::warning("$this->page_action. No pudo validar estudianteadjuntos");
+      }
 
+      if ( !(new EstudianteAdjuntos)->update(Input::post('estudianteadjuntos')) ) {
+        OdaFlash::warning("$this->page_action - No actualizó el Registro en estudianteadjuntos.");
+      }
+
+      // ============================================================================
+      
       return Redirect::to($redirect);
 
     } catch (\Throwable $th) {

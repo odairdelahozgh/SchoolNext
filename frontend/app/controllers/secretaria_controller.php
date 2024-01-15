@@ -1,7 +1,5 @@
 <?php
 
-use Kumbia\ActiveRecord\QueryGenerator;
-
 /**
   * Controlador Secretaria  
   * @category App
@@ -25,7 +23,7 @@ class SecretariaController extends AppController
   } //END-index
   
   public function listadoEstudActivos(): void {
-    $tabla_datos_adju = Config::get('tablas.estud_adjuntos'); 
+    //$tabla_datos_adju = Config::get('tablas.estud_adjuntos'); 
 
     $this->page_action = 'Listado de Estudiantes Activos';
     $this->data = (new Estudiante)->getListSecretaria(estado:1);
@@ -40,20 +38,20 @@ class SecretariaController extends AppController
   } // END-listadoEstudInactivos
   
   
-  public function editEstudiante(int $estudiante_id): void {
+  public function editEstudiante(int $estudiante_id) {
     $this->page_action = 'Editando Estudiante';
     $this->arrData = [];
     try {
       $Estudiante = (new Estudiante())::get($estudiante_id);
       $tabla_datos_estud = Config::get('tablas.datosestud');
-      $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$Estudiante->id]);
+      $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$estudiante_id]);
       $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
-      $Adjuntos = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$Estudiante->id]);
+      $Adjuntos = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante_id]);
       
       if(!$Adjuntos) {
         $Adjuntos = new EstudianteAdjuntos();
         $Adjuntos->save([
-          'estudiante_id' => $Estudiante->id,
+          'estudiante_id' => $estudiante_id,
           'created_by' => $this->user_id,
           'updated_by' => $this->user_id,
           'created_at' => $this->_ahora,

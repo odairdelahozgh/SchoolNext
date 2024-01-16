@@ -30,7 +30,212 @@ class Aspirante extends LiteRecord {
       if (!is_null($order_by)) { $DQL->orderBy($order_by); }
 
      return $DQL->execute();
-   } // END-getList
+   }
+   
+  public static function trasladar(int $id) {
+    $Aspirante = (new Aspirante)::get($id);
+    $table_apsico = Config::get('tablas.aspirantes_psico');
+    $AspirantePsico = (new AspirantePsico)::first("SELECT * FROM $table_apsico WHERE aspirante_id = ?", [$id]);
+     
+    if ($Aspirante && $AspirantePsico) {
+      $Grado = (new Grado)::get($Aspirante->grado_aspira);
+       
+      $tabla_estud = Config::get('tablas.estudiante');
+      $Estud = (new Estudiante())::first("SELECT * FROM {$tabla_estud} WHERE documento=?", [$Aspirante->documento]);
+       
+      //================================================================
+      // 1) Crear Estudiante
+      $data = [ 
+        'uuid' => $AspirantePsico->xxh3Hash(),
+        'nombres' => $Aspirante->nombres, 
+        'apellido1' => $Aspirante->apellido1, 
+        'apellido2' => $Aspirante->apellido2,  
+        'documento' => $Aspirante->documento, 
+        'tipo_dcto' => $Aspirante->tipo_dcto, 
+        'fecha_nac' => $Aspirante->fecha_nac, 
+        'direccion' => $Aspirante->direccion, 
+        'barrio' => $Aspirante->barrio, 
+        'telefono1' => $Aspirante->telefono1, 
+        'telefono2' => $Aspirante->telefono2, 
+
+        'email' => "{$Aspirante->documento}@mimail.com", 
+        'is_debe_preicfes' => 0, 
+        'is_debe_almuerzos' => 0, 
+        'is_deudor' => 0, 
+        'is_habilitar_mat' => 1, 
+        'annio_pagado' => 2023, 
+        'mes_pagado' => 11, 
+        'annio_promovido' => 2024,
+
+        'grado_promovido' => $Aspirante->grado_aspira, 
+        'grado_mat' => $Aspirante->grado_aspira, 
+        'salon_id' => $Grado->salon_default, 
+        'numero_mat' => '', 
+        'contabilidad_id' => 0, 
+        'sexo' => $Aspirante->sexo, 
+        'retiro' => '', 
+        //'fecha_ret' => NULL, 
+        'email_instit' => '', 
+        'clave_instit' => '', 
+        'mat_bajo_p1' => 0, 
+        'mat_bajo_p2' => 0, 
+        'mat_bajo_p3' => 0, 
+        'mat_bajo_p4' => 0,
+        
+        'is_active' => 1, 
+        'created_at' => date('Y-m-d H:i:s', time()), 
+        'updated_at' => date('Y-m-d H:i:s', time()), 
+        'created_by' => Session::get('id'), 
+        'updated_by' => Session::get('id'), 
+      ];
+
+      $estudiante_id = 0;
+      if (!$Estud) { 
+        $DQL = new OdaDql('Estudiante');
+        $DQL->setFrom('sweb_estudiantes');
+        $DQL->insert($data)
+            ->execute(true);
+        
+        $LastInsertId = $DQL->getLastInsertId();
+        $estudiante_id = $LastInsertId->last_id;
+        //OdaFlash::info("Se creó estudiante. ID: {$LastInsertId->last_id}");
+      } else {
+        $estudiante_id = $Estud->id;
+        //OdaFlash::info('ya estaba creado');
+      }
+
+      // 2) Crear DatosEstud
+      $data = [ 
+        'estudiante_id' => $estudiante_id, 
+        'pais_nac' => $Aspirante->pais_nac, 
+        'depto_nac' => $Aspirante->depto_nac, 
+        'ciudad_nac' => $Aspirante->ciudad_nac, 
+      //   'religion' => , 
+        'madre' => $Aspirante->madre, 
+        'madre_id' => $Aspirante->madre_id, 
+      //   'madre_dir' => , 
+      'madre_tel_1' => $Aspirante->madre_tel_per, 
+      'madre_tel_2' => $Aspirante->madre_tel_ofi, 
+      'madre_email' => $Aspirante->madre_email, 
+      'madre_ocupa' => $Aspirante->madre_cargo, 
+      'madre_lugar_tra' => $Aspirante->madre_empresa, 
+      //   'madre_tiempo_ser' => , 
+
+      'padre' => $Aspirante->Padre, 
+      'padre_id' => $Aspirante->padre_id, 
+      //   'padre_dir' => , 
+        'padre_tel_1' => $Aspirante->padre_tel_per, 
+        'padre_tel_2' => $Aspirante->padre_tel_ofi, 
+        'padre_email' => $Aspirante->padre_email, 
+        'padre_ocupa' => $Aspirante->padre_cargo, 
+        'padre_lugar_tra' => $Aspirante->padre_empresa, 
+      //   'padre_tiempo_ser' => ,
+
+      //   'tipo_acudi' => , 
+      //   'parentesco' => , 
+      //   'acudiente' => , 
+      //   'acudi_id' => , 
+      //   'acudi_dir' => , 
+      //   'acudi_tel_1' => , 
+      //   'acudi_tel_2' => , 
+      //   'acudi_email' => , 
+      //   'acudi_ocupa' => , 
+      //   'acudi_lugar_tra' => , 
+      
+      //   'resp_pago_ante_dian' => , 
+      //   'ante_instit' => , 
+      //   'ante_instit_dir' => , 
+      //   'ante_grado' => , 
+      //   'ante_fecha_ret' => , 
+      //   'ante_instit_tel' => , 
+      //   'grupo_sang' => , 
+      //   'salud_eps' => , 
+      //   'salud_antec_med_fam' => , 
+      //   'salud_alergico' => , 
+      //   'salud_cirugias' => , 
+      //   'salud_enfermedades' => , 
+      //   'salud_tratamientos' => , 
+      //   'salud_trastornos_alim' => , 
+      //   'salud_medicam_prohibi', 
+      //   'salud_aliment_prohibi', 
+      //   'salud_comentarios', 
+      //   'deudor', 
+      //   'codeudor', 
+      //   'codeudor_cc', 
+      //   'observacion', 
+      'created_at' => date('Y-m-d H:i:s', time()), 
+      'updated_at' => date('Y-m-d H:i:s', time()), 
+      'created_by' => Session::get('id'), 
+      'updated_by' => Session::get('id'), 
+      ];
+      $DQL = new OdaDql('DatosEstud');
+      $DQL->setFrom('sweb_datosestud');
+      $DQL->insert($data)
+          ->execute(true);
+
+
+      // 3) Crear sweb_estudiante_adjuntos
+      $data = [ 
+        'estudiante_id' => $estudiante_id, 
+        'created_at' => date('Y-m-d H:i:s', time()), 
+        'updated_at' => date('Y-m-d H:i:s', time()), 
+        'created_by' => Session::get('id'), 
+        'updated_by' => Session::get('id'), 
+      ];
+      $DQL = new OdaDql('EstudianteAdjuntos');
+      $DQL->setFrom('sweb_estudiante_adjuntos');
+      $DQL->insert($data)
+          ->execute(true);
+
+      // 4) Crear sweb_estudiante_adjuntos_dos
+      $DQL = new OdaDql('EstudianteAdjuntosDos');
+      $DQL->setFrom('sweb_estudiante_adjuntos_dos');
+      $DQL->insert($data)
+          ->execute(true);
+
+      // 5) Crear Usuario Madre
+      $data = [
+        'uuid' =>$Aspirante->xxh3Hash(), 
+        'username' =>$Aspirante->madre_id, 
+        'roll' =>'padres', 
+        'nombres' =>$Aspirante->madre, 
+        'apellido1' =>'', 
+        'apellido2' =>'', 
+        'documento' =>$Aspirante->madre_id, 
+        'email' =>$Aspirante->madre_email, 
+        'telefono1' =>$Aspirante->madre_tel_per, 
+        'telefono2' =>$Aspirante->madre_tel_ofi, 
+        'algorithm' =>'sha1', 
+        //'salt' =>, 
+        //'password' =>, 
+        //'is_super_admin' =>, 
+        //'last_login' =>, 
+        //'forgot_password_code' =>, 
+        'is_active' =>1, 
+        'created_at' =>date('Y-m-d H:i:s', time()), 
+        'updated_at' =>date('Y-m-d H:i:s', time()), 
+      ];
+
+      $DQL = new OdaDql('Usuario');
+      $DQL->setFrom('dm_user');
+      //$DQL->insert([$data])->execute(true);
+
+      // 6) Crear Usuario Padre      
+      // 7) Crear Registro Usuario-Estudiante
+
+      // 8) Actualizar estatus Aspirante
+      $DQL = new OdaDql('Aspirante');
+      $DQL->setFrom(Config::get('tablas.aspirantes'));
+      $DQL->update(['estatus' => AspirEstatus::Trasladado->name])
+          ->where('id=?')->setParams([$Aspirante->id]);
+      $DQL->execute(true);
+      
+
+    } else {
+      //OdaFlash::warning('Algo falló');
+    }
+
+   }
   
 
 } //END-CLASS

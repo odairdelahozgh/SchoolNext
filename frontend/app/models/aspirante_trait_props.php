@@ -35,14 +35,10 @@ trait AspiranteTraitProps {
     }
   } //END-estatus_enum
 
-  public function estatus_f(): string {
-    try {
-      return self::estatus_enum((string)$this->estatus);
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-  } //END-is_pago_f
+  public function estatus_f(): string 
+  {
+    return self::estatus_enum((string)$this->estatus);
+  }
 
 
   
@@ -109,6 +105,14 @@ trait AspiranteTraitProps {
     $date = new DateTimeImmutable($this->fecha_eval, $timezone);
       return ( ($this->fecha_eval=='0000-00-00 00:00:00') ? '' : $date->format('M-d H:iA'));
   } //END-fecha_eval_f
+
+  public function lnkTrasladar(): string {
+    return OdaTags::link(
+      action: "admin/aspirantes/trasladar/{$this->id}",
+      text: "Admitido",
+      attrs: 'style="color:seagreen"',
+    );
+  }
 
 
 } //END-TraitProps

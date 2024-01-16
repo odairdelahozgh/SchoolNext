@@ -19,7 +19,7 @@ class MpdfDocsMatricula extends Mpdf {
     $this->SetTitle('DOCUMENTOS DE MATRICULA');
     $this->SetDefaultFont('helvetica');
     $this->SetDefaultFontSize(10);
-    $this->SetMargins(10, 10, 48 );
+    $this->SetMargins(20, 10, 48 );
     $this->SetDisplayMode('fullpage');
     $this->watermark_font = 'DejaVuSansCondensed';
 

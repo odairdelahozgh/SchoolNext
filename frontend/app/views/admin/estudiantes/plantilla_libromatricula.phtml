@@ -1,0 +1,314 @@
+<?php
+
+echo 
+'
+<div style="text-align: center;">
+<b style=""><span style="font-size: 16pt; line-height: 115%; font-family: " trebuchet="">República de Colombia</span></b><br />
+<b style=""><span style="font-size: 16pt; line-height: 115%; font-family: " trebuchet="">Departamento del Cesar</span></b><br />
+
+<b style=""><span style="font-size: 16pt; line-height: 115%; font-family: " trebuchet="">Libro de Matrícula</span></b><br />
+<br />
+<table border="0" cellpadding="2" cellspacing="2" style="text-align: left; width: 700px;">
+  <tbody>
+    <tr>
+      <td style="white-space: nowrap; width: 120px; font-family: Trebuchet MS;">
+        Ciudad y Fecha:</td>
+      <td style="font-family: Trebuchet MS;">
+        $CIUDAD_FECHA$</td>
+    </tr>
+  </tbody>
+</table>
+<p align="center">
+  <b style=""><span style="font-family: " trebuchet="">1. Datos del Alumno (a)</span></b></p>
+</div>
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Nombre completo:</td>
+    <td colspan="2" style="font-family: Trebuchet MS;">
+      $NOMBRE_ESTUDIANTE$</td>
+    <td style="font-family: Trebuchet MS;">
+      $CODIGO_ESTUD$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Lugar de Nacimiento:</td>
+    <td style="font-family: Trebuchet MS;">
+      País: $PAIS_NAC$</td>
+    <td style="font-family: Trebuchet MS;">
+      Dpto: $DEPTO_NAC$</td>
+    <td style="font-family: Trebuchet MS;">
+      Ciudad: $CIUDAD_NAC$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Fecha de Nacimiento:</td>
+    <td colspan="2" rowspan="1" style="font-family: Trebuchet MS;">
+      Año: $ANNIO_NAC$  Mes: $MES_NAC$  Día: $DIA_NAC$</td>
+    <td style="font-family: Trebuchet MS;">
+      Edad: $EDAD$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Tarjeta de Identidad No.:</td>
+    <td style="font-family: Trebuchet MS;">
+      $IDENTIFICACION$</td>
+    <td style="font-family: Trebuchet MS;">
+       </td>
+    <td style="font-family: Trebuchet MS;">
+      Religión: $RELIGION$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Dirección Residencia:</td>
+    <td colspan="2" rowspan="1" style="font-family: Trebuchet MS;">
+      $DIRECCION$</td>
+    <td style="font-family: Trebuchet MS;">
+      Teléfono: $TELEFONO$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Matriculado en<span style="">  </span>el Grado:</td>
+    <td style="font-family: Trebuchet MS;">
+      $GRADO_MAT$</td>
+    <td style="font-family: Trebuchet MS;">
+       </td>
+    <td style="font-family: Trebuchet MS;">
+       </td>
+  </tr>
+</tbody>
+</table>
+<br />
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td colspan="2" rowspan="1" style="font-family: Trebuchet MS;">
+      ¿Ha Estudiado en otra Institución?:</td>
+    <td style="font-family: Trebuchet MS;">
+      Si: $SI$   No: $NO$</td>
+    <td style="font-family: Trebuchet MS;">
+       </td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Nombre Del Plantel:</td>
+    <td colspan="2" rowspan="1" style="font-family: Trebuchet MS;">
+      $PLANTEL$</td>
+    <td style="font-family: Trebuchet MS;">
+      Grado: $GRADO_PLANTEL$</td>
+  </tr>
+  <tr>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      Dirección: </td>
+    <td colspan="2" rowspan="1" style="font-family: Trebuchet MS;">
+      $DIR_PLANTEL$</td>
+    <td style="font-family: Trebuchet MS;">
+      Teléfono: $TEL_PLANTEL$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Fecha De Retiro:</td>
+    <td style="font-family: Trebuchet MS;">
+      $FECHA_RET_PLANTEL$</td>
+    <td style="font-family: Trebuchet MS;">
+       </td>
+    <td style="font-family: Trebuchet MS;">
+       </td>
+  </tr>
+</tbody>
+</table>
+<div style="text-align: center;">
+<span style="font-weight: bold; font-family: Trebuchet MS;">2. Datos De Los Padres</span></div>
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Nombre del Padre:</td>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      $PADRE$</td>
+    <td style="text-align: right; font-family: Trebuchet MS;">
+      Cédula:  </td>
+    <td style="font-family: Trebuchet MS;">
+      $ID_PADRE$</td>
+  </tr>
+  <tr>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      Ocupación:</td>
+    <td style="font-family: Trebuchet MS;">
+      $OCUPA_PADRE$</td>
+    <td style="text-align: right; font-family: Trebuchet MS;">
+      Lugar de trabajo:  </td>
+    <td style="font-family: Trebuchet MS;">
+      $TRAB_PADRE$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Tiempo de  servicio:</td>
+    <td style="font-family: Trebuchet MS;">
+      $TSERV_PADRE$</td>
+    <td style="text-align: right; font-family: Trebuchet MS;">
+      Teléfono Oficina:  </td>
+    <td style="font-family: Trebuchet MS;">
+      $TEL_OF_PADRE$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Celular:</td>
+    <td style="font-family: Trebuchet MS;">
+      $CEL_PADRE$</td>
+    <td colspan="1" rowspan="1" style="text-align: right; font-family: Trebuchet MS;">
+            E-Mail:  </td>
+    <td style="font-family: Trebuchet MS;">
+      $EMAIL_PADRE$</td>
+  </tr>
+</tbody>
+</table>
+<br />
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Nombre de la Madre:</td>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      $MADRE$</td>
+    <td style="text-align: right;">
+      <span style="font-family: Trebuchet MS;">Cédula:  </span></td>
+    <td style="font-family: Trebuchet MS;">
+      $ID_MADRE$</td>
+  </tr>
+  <tr>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      Ocupación:</td>
+    <td style="font-family: Trebuchet MS;">
+      $OCUPA_MADRE$</td>
+    <td style="text-align: right; font-family: Trebuchet MS;">
+      Lugar de trabajo:  </td>
+    <td style="font-family: Trebuchet MS;">
+      $TRAB_MADRE$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Tiempo de  servicio:</td>
+    <td style="font-family: Trebuchet MS;">
+      $TSERV_MADRE$</td>
+    <td style="text-align: right; font-family: Trebuchet MS;">
+      Teléfono Oficina:  </td>
+    <td style="font-family: Trebuchet MS;">
+      $TEL_OF_MADRE$</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Celular:</td>
+    <td style="font-family: Trebuchet MS;">
+      $CEL_MADRE$</td>
+    <td colspan="1" rowspan="1" style="text-align: right; font-family: Trebuchet MS;">
+            E-Mail:  </td>
+    <td style="font-family: Trebuchet MS;">
+      $EMAIL_MADRE$</td>
+  </tr>
+</tbody>
+</table>
+<br />
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Nombre del Acudiente:</td>
+    <td colspan="2" rowspan="1" style="font-family: Trebuchet MS;">
+      $ACUDIENTE$</td>
+    <td style="font-family: Trebuchet MS;">
+       </td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      Teléfono Oficina:</td>
+    <td style="font-family: Trebuchet MS;">
+      $TEL_ACUDIENTE1$</td>
+    <td style="font-family: Trebuchet MS; text-align: right;">
+      Celular:</td>
+    <td style="font-family: Trebuchet MS;">
+      $TEL_ACUDIENTE2$</td>
+  </tr>
+  <tr>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      Dirección: </td>
+    <td style="font-family: Trebuchet MS;">
+      $DIR_ACUDIENTE$</td>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS; text-align: right;">
+      E-Mail: </td>
+    <td style="font-family: Trebuchet MS;">
+      $EMAIL_ACUDIENTE$</td>
+  </tr>
+</tbody>
+</table>
+<div style="font-family: Trebuchet MS; text-align: left;">
+Aceptamos las normas reglamentarias establecidas por el plantel.<br />
+ </div>
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      <br />
+      ______________________________<br />
+      Firma del Padre y/o Acudiente<br />
+      C.C. No.</td>
+    <td style="font-family: Trebuchet MS;">
+      <br />
+      ______________________________<br />
+      Firma del Estudiante<br />
+      T.I. No.</td>
+  </tr>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      <br />
+      <br />
+      ______________________________<br />
+      Fima de la Rectora<br />
+      C.C. No. 57.401.865</td>
+    <td style="font-family: Trebuchet MS;">
+      <br />
+      <br />
+      ______________________________<br />
+      Firma de la Secretaria<br />
+      C.C. No.</td>
+  </tr>
+</tbody>
+</table>
+<div style="text-align: center; font-family: Trebuchet MS;">
+<br />
+<span style="font-weight: bold;">______________________________________________________________________________________________</span><br />
+<span style="font-weight: bold;">Cancelación de Matrícula</span></div>
+<br />
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      Fecha: _________________________</td>
+    <td colspan="1" rowspan="1" style="font-family: Trebuchet MS;">
+      Motivo: ___________________________________________</td>
+  </tr>
+</tbody>
+</table>
+<br />
+<table border="0" cellpadding="0" cellspacing="0" style="text-align: left; width: 700px;">
+<tbody>
+  <tr>
+    <td style="font-family: Trebuchet MS;">
+      <br />
+      <br />
+      ______________________________<br />
+      Fima de la Rectora<br />
+      C.C. No. 57.401.865</td>
+    <td style="font-family: Trebuchet MS;">
+      <br />
+      <br />
+      ______________________________<br />
+      Fima del Padre de Familia o Acudiente<br />
+      C.C. No.</td>
+  </tr>
+</tbody>
+</table>
+<div style="text-align: center;">
+</div>
+';

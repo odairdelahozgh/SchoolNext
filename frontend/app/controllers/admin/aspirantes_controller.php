@@ -1,6 +1,6 @@
 <?php
 /**
-  * Controlador Aspirante
+  * Controlador
   * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
@@ -9,6 +9,22 @@
   {
   protected function before_filter() {
     $this->nombre_modelo = 'Aspirante';
+  }
+
+  function trasladar(int $id) 
+  {
+    try {
+      $redirect = "sicologia/admisiones";
+      $this->page_action = 'TRASLADAR Aspirante';
+      echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      View::select(null, null);
+
+      Aspirante::trasladar($id);
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    return Redirect::to($redirect);
   }
 
   function crear() {
@@ -245,8 +261,8 @@
     }
     return Redirect::to($redirect);
 
-  } //END-actualizarSecretaria
+  }
 
 
 
-} //END-class
+}

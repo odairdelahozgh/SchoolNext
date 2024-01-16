@@ -40,3 +40,4 @@ core20/*
 .scannerwork
 sonar-project.properties
 desktop.ini
+help/*

@@ -24,9 +24,19 @@ trait EstudianteAdjuntosTraitProps {
     $arch = "nombre_archivo$num_archivo";
     $estado = "estado_archivo$num_archivo";
     if ($this->$arch) {
-      return $this->$estado;
+      return $this->$estado ?? '';
     }
     return 'Archivo no Subido';
+  }
+  
+  public function getComentAPapa(int $num_archivo): string 
+  {
+    $arch = "nombre_archivo$num_archivo";
+    $coment = "coment_archivo$num_archivo";
+    if ($this->$arch) {
+      return $this->$coment ?? '';
+    }
+    return '';
   }
 
 

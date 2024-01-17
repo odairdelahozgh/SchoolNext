@@ -46,6 +46,7 @@ trait EstudianteTraitSetUp {
       'apellido1' => 'required',
       'direccion' => ' size="45"',
       'email' => ' size="45"',
+      'numero_mat' => 'readonly',
     ];
   
     self::$_defaults = [
@@ -65,7 +66,7 @@ trait EstudianteTraitSetUp {
       'is_active'    => 'Indica si está activo el registro.',
     ];
   
-    self::$_labels = [
+    $labels = [
       'id' => 'id',
       'nombres'    => 'Nombres',
       'apellido1'  => 'Primer Apellido',
@@ -103,14 +104,9 @@ trait EstudianteTraitSetUp {
       
       'retiro'     => 'Motivo Retiro',
       'fecha_ret'  => 'Fecha Ingreso/Retiro',
-
-      'is_active'       => '¿Está Activo?',
-      'created_at'      => 'Creado el',
-      'created_by'      => 'Creado por',
-      'updated_at'      => 'Actualizado el',
-      'updated_by'      => 'Actualizado por',
     ];
-  
+    self::$_labels = array_merge(self::$_labels, $labels);
+
     self::$_placeholders = [
     ];
 
@@ -119,7 +115,7 @@ trait EstudianteTraitSetUp {
       'fecha_ret' => 'date',
     ];
 
-  }//END-setUp
+  }
 
 
-} //END-SetUp
+}

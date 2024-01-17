@@ -17,7 +17,7 @@ trait EstudianteTraitMatriculas {
       return $estado_docs; // Atascado en revisión de documentos
     }
 
-    if (strlen($this->numero_mat) == 0) { 
+    if ( empty($this->numero_mat) ) { 
       return EstadoMatricula::DocAprobados; // Aprobados pero sin firmas de documentos
     }
 
@@ -36,7 +36,7 @@ trait EstudianteTraitMatriculas {
   
   public function numero_mat_f(): string
   {
-    if (strlen($this->numero_mat)==0) {
+    if ( empty($this->numero_mat) ) {
       return '';
     }
     return str_pad($this->numero_mat, 4, '0', STR_PAD_LEFT);

@@ -61,7 +61,9 @@ $lnk_subir_adjuntos = '<br>'.OdaTags::linkButton("secretaria/subirAdjuntosMatric
 
 $lnk_docs_mat = OdaTags::tag('span', "Descargar Documentos", 'class="w3-button w3-grey"')
   .'<br><small>NOTA: Para descargar, se debe generar primero el Número de Matrícula</small>';
-if ( strlen($modelEstud->numero_mat)>0 ) {
+
+//if ( (0==$modelEstud->numero_mat) or (is_null($modelEstud->numero_mat)) ) {
+if ( !empty($modelEstud->numero_mat) ) {
   $lnk_docs_mat = '<br>'.OdaTags::linkButton(
     action: "admin/estudiantes/exportDocsMatricula/{$modelEstud->id}", 
     text: "Descargar Documentos [Matrícula #{$modelEstud->numero_mat_f()}]", 

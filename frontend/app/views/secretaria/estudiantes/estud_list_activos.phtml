@@ -21,6 +21,16 @@
       );
       
       foreach($data as $key => $Estud) {
+        $num_mat_f = '24-'.str_pad($Estud->numero_mat, 4, '0', STR_PAD_LEFT);
+        $lnk_gen_num_mat = '<br>'.OdaTags::tag('span', "Matrícula #$num_mat_f", 'class="w3-tag"');
+        if (0==strlen($Estud->numero_mat)) {
+          $lnk_gen_num_mat = '<br>'.OdaTags::linkButton(
+            action: "admin/estudiantes/generarNumeroMatricula/{$Estud->id}", 
+            text: 'Generar Número Matricula', 
+            attrs: 'class="w3-button w3-green"',
+          );
+        }
+
          $col1 = $Estud->is_active_f(true) .'<br/>'
                 .$Estud->getFoto().'<br/>'
                 .$Estud->documento .'<br/><br/>Retirar Estudiante<br/>'
@@ -48,7 +58,8 @@
                     $Estud->padre_email <br>
                     C.C. $Estud->padre_id <br>"
                   .OdaUtils::linkWhatsApp(telefono: (string)$Estud->padre_tel_1)
-                  .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true).'<br>';
+                  .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true).'<br>'
+                  .$lnk_gen_num_mat;
          $data=[$col1, $col2, $col3];
          $tabla->addRow(
             data: $data, 

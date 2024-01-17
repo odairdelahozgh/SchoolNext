@@ -138,13 +138,6 @@ class EstudiantesController extends ScaffoldController
   public function exportDocsMatricula(int $estudiante_id) 
   {
     try {
-      $Estud = (new Estudiante())->get($estudiante_id);
-      if ( ($Estud) and (0==strlen($Estud->numero_mat)) ){
-        $DQL = new OdaDql('Estudiante');
-        $DQL->setFrom('sweb_estudiantes');
-        $next_numero_mat = (int)$DQL->getMax('numero_mat') + 1;
-        $DQL->update(['numero_mat' => $next_numero_mat])->where('t.id=?')->setParams([$estudiante_id])->execute(true);
-      }
       $this->data = (new Estudiante())->get($estudiante_id);
       $tabla_datosestud = Config::get('tablas.datosestud');
       $tabla_grados = Config::get('tablas.grados');
@@ -162,6 +155,25 @@ class EstudiantesController extends ScaffoldController
       OdaFlash::error($th);
     }
   }
+
+  public function generarNumeroMatricula(int $estudiante_id) 
+  {
+    try {
+      $Estud = (new Estudiante())->get($estudiante_id);
+      if ( ($Estud) and (0==strlen($Estud->numero_mat)) ){
+        $DQL = new OdaDql('Estudiante');
+        $DQL->setFrom('sweb_estudiantes');
+        $next_numero_mat = (int)$DQL->getMax('numero_mat') + 1;
+        $DQL->update(['numero_mat' => $next_numero_mat])->where('t.id=?')->setParams([$estudiante_id])->execute(true);
+      }
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+    
+    return redirect::to('secre-estud-list-activos');
+  }
+
+
 
 
 }

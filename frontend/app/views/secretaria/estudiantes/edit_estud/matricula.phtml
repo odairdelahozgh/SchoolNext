@@ -59,11 +59,12 @@ $myTabla2->addRow([
 $lnk_subir_adjuntos = '<br>'.OdaTags::linkButton("secretaria/subirAdjuntosMatricula/{$modelEstud->id}", 'subir archivos');
 
 
-$lnk_docs_mat = OdaTags::tag('span', "Descargar Documentos", 'class="w3-button w3-grey"');
+$lnk_docs_mat = OdaTags::tag('span', "Descargar Documentos", 'class="w3-button w3-grey"')
+  .'<br><small>NOTA: Para descargar, se debe generar primero el Número de Matrícula</small>';
 if ( strlen($modelEstud->numero_mat)>0 ) {
   $lnk_docs_mat = '<br>'.OdaTags::linkButton(
     action: "admin/estudiantes/exportDocsMatricula/{$modelEstud->id}", 
-    text: "Descargar Documentos [{$modelEstud->numero_mat_f()}]", 
+    text: "Descargar Documentos [Matrícula #{$modelEstud->numero_mat_f()}]", 
     attrs: 'class="w3-button w3-green" target="_blank"  onclick="load()"'
   );
 }

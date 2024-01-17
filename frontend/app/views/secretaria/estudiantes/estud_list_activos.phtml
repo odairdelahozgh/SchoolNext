@@ -47,18 +47,14 @@
                  //.$Estud->getLnkPlanesApoyoTodos()
                  ;
 
-         $col3  = $Estud->getSalonesCambiar('secretaria').'<br><br>'
-                  ."$Estud->madre <br>
-                    $Estud->madre_email <br>
-                    C.C. $Estud->madre_id <br>"
+        $col3  = $lnk_gen_num_mat.'<br><br>'
+                ."$Estud->madre <br> $Estud->madre_email <br>C.C. $Estud->madre_id <br>"
                   .OdaUtils::linkWhatsApp(telefono: (string)$Estud->madre_tel_1)
                   .OdaUtils::linkTelefono(telefono: (string)$Estud->madre_tel_1, show_tel:true).'<br><br>'
-                  ."$Estud->padre <br>
-                    $Estud->padre_email <br>
-                    C.C. $Estud->padre_id <br>"
+                  ."$Estud->padre <br> $Estud->padre_email <br> C.C. $Estud->padre_id <br>"
                   .OdaUtils::linkWhatsApp(telefono: (string)$Estud->padre_tel_1)
-                  .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true).'<br>'
-                  .$lnk_gen_num_mat;
+                  .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true).'<br><br>'
+                  .'Cambiar de Salón  '.$Estud->getSalonesCambiar('secretaria').'<br>';
          $data=[$col1, $col2, $col3];
          $tabla->addRow(
             data: $data, 

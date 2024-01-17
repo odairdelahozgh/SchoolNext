@@ -12,17 +12,87 @@ trait TraitForms {
       'id'     => [ 'caption'=>'ID', 'data_type'=>'integer' ], 
       'nombre' => [ 'caption'=>'Nombre', 'data_type'=>'string' ], 
     ],
+  ];
 
+  protected static $_attribs  = [
+    'nombre' => 'required',
   ];
-  protected static $_attribs      = [];
-  protected static $_widgets      = [];
-  protected static $_defaults     = [];
-  protected static $_helps        = [];
-  protected static $_labels       = [];
-  protected static $_placeholders = [];
+  protected static $_widgets  = [
+    'nombre' => 'text',
+    'uuid' => 'text',
+  ];
+  protected static $_defaults = [
+    'is_active' => 1, 
+  ];
+  protected static $_helps = [
+    'is_active' => 'Está activo el registro?',
+  ];
+  protected static $_labels = [
+    'nombre' => 'Nombre',
+    'is_active' => 'Está Activo',
+    'created_at' => 'Creado el',
+    'created_by' => 'Creado por',
+    'updated_at' => 'Actualizado el',
+    'updated_by' => 'Actualizado por',
+  ];
+  protected static $_placeholders = [
+  ];
   protected static $_rules_validators = [
-    'numeric', 'int', 'maxlength', 'length', 'range', 'select', 'email', 'url', 'ip', 'required', 'alphanum', 'alpha', 'date', 'pattern', 'decimal', 'equal',
   ];
+  
+  /* 
+  'numeric', 
+  'int', 
+  'maxlength', 
+  'length', 
+  'range', 
+  'select', 
+  'email', 
+  'url', 
+  'ip', 
+  'required', 
+  'alphanum', 
+  'alpha', 
+  'date', 
+  'pattern', 
+  'decimal', 
+  'equal',
+  
+  'nombre' => [
+    'required' => [ 'error' => 'es requerido.' ],
+    'alphanum' => [ 'error' => 'debe contener solo números y letras.' ],
+  ],
+  'orden'  => [
+    'int'      => [ 'error' => 'debe contener solo numeros enteros.' ],
+  ],
+  'campo_on_off'  => [
+    'pattern'  => ['regexp' => '[0-1]', 'error'  => 'debe contener solo: 0 y 1'],
+    'int'      => [ 'error' => 'debe contener solo numeros enteros.' ],
+  ],
+  'NombreCompleto' => [
+    'required' => ['error' => 'Indique su nombre.'],
+    'alpha'    => ['error' => 'Nombre incompleto o incorrecto.']
+  ],
+  'Email' => [
+    'required' => ['error' => 'Indique su email.'],
+    'email'    => ['error' => 'Email incorrecto.']
+  ],
+  'Movil' => [
+    'required' => ['error' => 'Indique su teléfono / móvil.'],
+    'length'   => ['min' => '9',
+    'max' => '17',
+                              'error' => 'Teléfono / móvil incorrecto'],
+      'pattern'  => ['regexp' => '/^\+(?:[0-9] ?){6,14}[0-9]$/', 
+                              'error'  => 'Teléfono incorrecto. Formato ejemplo. +34 862929929']
+    ],
+    'Asunto' => [
+      'required' => ['error' => 'Indique un asunto.'],
+    ],
+    'Mensaje' => [
+      'required' => ['error' => 'Indique un mensaje.'],
+      'length'   => ['min' => 100,
+                              'error' => 'Si es posible, concrete más en su mensaje.'],
+    ] */
 
   public static function getDefault($field)     { return ((array_key_exists($field, self::$_defaults)) ? self::$_defaults[$field] : null); }
   public static function getLabel($field)       { return ((array_key_exists($field, self::$_labels)) ? self::$_labels[$field] : $field.': '); }

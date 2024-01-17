@@ -8,10 +8,6 @@
    
    <?php 
    try {
-      
-      foreach ($arrData['Salones'] as $key => $value) {
-        echo (new Estudiante)::getLnkListaGenerica($value->id) ;
-      }
 
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(
@@ -20,7 +16,11 @@
          arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
       );
       
+      $arrMatriculas = [];
+      $tot_estudiantes = 0;
+      $tot_matriculados = 0;
       foreach($data as $key => $Estud) {
+        $tot_estudiantes += 1;
         $lnk_gen_num_mat = '<br>'.OdaTags::tag('span', "Matrícula #{$Estud->numero_mat_f()}", 'class="w3-tag"');
         if ( empty($Estud->numero_mat) ) {
           $lnk_gen_num_mat = '<br>'.OdaTags::linkButton(
@@ -28,6 +28,9 @@
             text: 'Generar Número Matricula', 
             attrs: 'class="w3-button w3-green"',
           );
+        } else {
+          $arrMatriculas[$Estud->grado_promovido] += 1;
+          $tot_matriculados += 1;
         }
 
          $col1 = $Estud->is_active_f(true) .'<br/>'
@@ -61,6 +64,39 @@
             attrs_td: ['class="searchTdata w3-center"', 'class="searchTdata"']
          );
       }
+      
+      $btns_listas_clase = '';
+      foreach ($arrData['Salones'] as $key => $value) {
+        $btns_listas_clase .= (new Estudiante)::getLnkListaGenerica($value->id) ;
+      }
+
+
+      $arrGrados = Grado::getGradosArray();
+      $resultados_mat = '';
+      foreach ($arrMatriculas as $key => $value) {
+        $resultados_mat .= OdaTags::Badges($arrGrados[$key], $value);
+      }
+      $tot_sin_matricula = $tot_estudiantes-$tot_matriculados;
+      echo "
+      <div class=\"w3-row\">
+
+        <div class=\"w3-half\">
+          <div class=\"w3-padding\">
+            <h3>Listas de Clase</h3>
+            $btns_listas_clase
+          </div>
+        </div>
+
+        <div class=\"w3-half\">
+          <div class=\"w3-padding w3-bar\">
+            <h3>Recuento de Matriculados [$tot_matriculados]</h3>
+            $resultados_mat
+          </div>
+          Sin Matrícula: {$tot_sin_matricula}
+        </div>
+
+      </div>
+      ";
       echo $tabla;
 
 

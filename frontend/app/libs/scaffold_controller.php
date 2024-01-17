@@ -15,31 +15,36 @@ abstract class ScaffoldController extends AdminController
   public string $scaffold = 'schoolnext'; // en views/_shared/scaffolds/
   public string $model = ''; //Nombre del modelo en CamelCase
 
-  public function info($view) {
+  public function info($view) 
+  {
     View::response($view);
-  } //END-info
+  }
   
-  public function exportPdf() {
+  public function exportPdf() 
+  {
     $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name");
     $this->file_title = "Listado de $this->controller_name";
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
     $this->file_download = false;
     View::select(view: "export_pdf_$this->controller_name", template: 'pdf/mpdf');
-  } //END-exportPdf
+  }
 
-  public function exportCsv() {
+  public function exportCsv() 
+  {
     $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
     View::select(view: null, template: "csv");
-  } //END-exportCsv
+  }
   
-  public function exportXml() {
+  public function exportXml() 
+  {
     $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name");
     $this->data = (new $this->nombre_modelo())->getList(estado:1);
     View::select(view: null, template: "xml");
-  } //END-exportXml
+  }
   
-  public function exportXls() {
+  public function exportXls() 
+  {
     $this->Modelo = new $this->nombre_modelo();
     View::select(view: "export_xls_$this->controller_name", template: 'xls');
     $this->file_name = OdaUtils::getSlug(string: "listado-de-$this->controller_name");
@@ -51,20 +56,21 @@ abstract class ScaffoldController extends AdminController
     //   $this->header[$fields->caption] = $fields->data_type;
     // }
     
-  } //END-exportXls
+  }
 
-
-  public function index() {
+  public function index() 
+  {
     $this->page_action = "Listado $this->controller_name" ;
     $this->data = (new $this->nombre_modelo())->getList();
     $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__);
     $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow(__FUNCTION__, true);
-  }//END-index
+  }
   
   /**
    * admin/../create
    */
-  public function create() {
+  public function create() 
+  {
     try {
       $this->page_action = 'CREAR Registro';
       $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
@@ -74,7 +80,7 @@ abstract class ScaffoldController extends AdminController
 
       if (Input::hasPost($this->nombre_post)) {
         if (!$this->Modelo->validar(Input::post($this->nombre_post))) {
-          OdaFlash::warning("$this->page_action. Error de Validación ".Session::get('error_validacion'));
+          OdaFlash::warning($this->page_action.Session::get('error_validacion'));
           return Redirect::to($redirect);
         }
   
@@ -93,14 +99,14 @@ abstract class ScaffoldController extends AdminController
       OdaFlash::error($th);
       return Redirect::to($redirect);
     }
-
-  }//END-create
+  }
 
    
   /**
    * admin/../create_ajax
    */
-  public function create_ajax(string $redirect='') {
+  public function create_ajax(string $redirect='') 
+  {
     $this->page_action = 'CREAR Registro ';
     $redirect = str_replace('.','/', $redirect);
 
@@ -114,7 +120,7 @@ abstract class ScaffoldController extends AdminController
       }
 
       if (!$Registro->validar(Input::post($this->nombre_post))) {
-        OdaFlash::warning("$this->page_action. ".Session::get('error_validacion'));
+        OdaFlash::warning($this->page_action.Session::get('error_validacion'));
         return Redirect::to($redirect);
       }
 
@@ -132,33 +138,30 @@ abstract class ScaffoldController extends AdminController
       return Redirect::to($redirect);
     }
 
-  }//END-create_ajax
-
-
+  }
 
   /**
    * admin/.../edit/{id}
    */
-  public function edit(int $id) {
+  public function edit(int $id) 
+  {
     $this->page_action = 'Editar Registro';
-
     try {
       $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
       $this->fieldsToHidden = (new $this->nombre_modelo())::getFieldsHidden(__FUNCTION__);
       $this->Modelo = (new $this->nombre_modelo())::get($id);
-
       $redirect = "admin/$this->controller_name/edit/$id";
 
       if (Input::hasPost($this->nombre_post)) {
         if ($this->Modelo->validar(Input::post($this->nombre_post))) {
-          if ($this->Modelo->update(Input::post($this->nombre_post))) { // procede a guardar
+          if ($this->Modelo->update(Input::post($this->nombre_post))) {
             OdaFlash::valid("$this->page_action $id");
             return Redirect::to();
           }
           OdaFlash::warning("$this->page_action. Guardar.");
           return Redirect::to($redirect);
         } else {
-          OdaFlash::warning("$this->page_action. Error de Validación ".Session::get('error_validacion'));
+          OdaFlash::warning($this->page_action.Session::get('error_validacion'));
           return Redirect::to($redirect);
         }
       }
@@ -167,16 +170,16 @@ abstract class ScaffoldController extends AdminController
       OdaFlash::error($th);
       return Redirect::to();
     }
-  }//END-edit
+  }
 
 
 
   /**
    * admin/.../editUuid/{$uuid}
    */
-  public function editUuid(string $uuid) {
+  public function editUuid(string $uuid) 
+  {
     $this->page_action = 'Editar Registro';
-
     try {
       $this->Modelo = (new $this->nombre_modelo())::getByUUID($uuid);
       $this->fieldsToShow = (new $this->nombre_modelo())::getFieldsShow(__FUNCTION__);
@@ -195,13 +198,14 @@ abstract class ScaffoldController extends AdminController
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  }//END-
+  }
 
 
   /**
    * admin/../edit_ajax
    */
-  public function edit_ajax(int $id, string $redirect='') {
+  public function edit_ajax(int $id, string $redirect='') 
+  {
     $this->page_action = 'EDITAR Registro ';
     $redirect = str_replace('.','/', $redirect);
 
@@ -238,7 +242,8 @@ abstract class ScaffoldController extends AdminController
   /**
    * admin/.../del/{id}
    */
-  public function del(int $id, string $redirect='') {
+  public function del(int $id, string $redirect='') 
+  {
     $this->page_action = 'Eliminar Registro';
     $redirect = str_replace('.','/', $redirect);
 
@@ -255,14 +260,14 @@ abstract class ScaffoldController extends AdminController
       OdaFlash::error($th);
       return Redirect::to($redirect);
     }
-
-  }//END-del
+  }
 
 
   /**
    * admin/.../delUuid/{uuid}/{redirect}
    */
-  public function delUuid(string $uuid, string $redirect='') {
+  public function delUuid(string $uuid, string $redirect='') 
+  {
     $this->page_action = 'Eliminar Registro';
     $redirect = str_replace('.','/', $redirect);
 
@@ -280,14 +285,16 @@ abstract class ScaffoldController extends AdminController
       OdaFlash::error($th);
       return Redirect::to("$redirect");
     }
-  }//END-delUuid
+  }
 
   /**
    * admin/.../ver/{id}
    */
-  public function ver(int $id) {
+  public function ver(int $id) 
+  {
     $this->data = (new $this->nombre_modelo())::get($id);
-  }//END-ver
+  }
 
 
-} //END-CLASS
+
+}

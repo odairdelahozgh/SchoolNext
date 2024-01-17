@@ -8,7 +8,7 @@ require_once CORE_PATH . 'kumbia/controller.php';
  * Controlador principal que heredan los controladores
  *
  * Todos las controladores heredan de esta clase en un nivel superior
- * por lo tanto los métodos aquií definidos estan disponibles para
+ * por lo tanto los métodos aquí definidos estan disponibles para
  * cualquier controlador.
  *
  * @category Kumbia

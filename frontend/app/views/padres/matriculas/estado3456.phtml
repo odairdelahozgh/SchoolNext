@@ -1,13 +1,19 @@
 <?php
-  try {
+/*
+[DocIncompletos] => 3
+[DocEnRevision] => 4
+[DocRechazados] => 5
+[DocAprobados] => 6
+ */  
+try {
     $tabla = new OdaTable();
     $tabla->setHead(['#', 'Estado', 'Ver o Descargar']);
-    $tabla->addRow(['1', $Adjuntos->estado_archivo1, $Adjuntos->getLinkArchivo(1)]);
-    $tabla->addRow(['2', $Adjuntos->estado_archivo2, $Adjuntos->getLinkArchivo(2)]);
-    $tabla->addRow(['3', $Adjuntos->estado_archivo3, $Adjuntos->getLinkArchivo(3)]);
-    $tabla->addRow(['4', $Adjuntos->estado_archivo4, $Adjuntos->getLinkArchivo(4)]);
-    $tabla->addRow(['5', $Adjuntos->estado_archivo5, $Adjuntos->getLinkArchivo(5)]);
-    $tabla->addRow(['6', $Adjuntos->estado_archivo6, $Adjuntos->getLinkArchivo(6)]);
+    $tabla->addRow(['1', $Adjuntos->estado_archivo1.'<br>'.$Adjuntos->getComentAPapa(1), $Adjuntos->getLinkArchivo(1)]);
+    $tabla->addRow(['2', $Adjuntos->estado_archivo2.'<br>'.$Adjuntos->getComentAPapa(2), $Adjuntos->getLinkArchivo(2)]);
+    $tabla->addRow(['3', $Adjuntos->estado_archivo3.'<br>'.$Adjuntos->getComentAPapa(3), $Adjuntos->getLinkArchivo(3)]);
+    $tabla->addRow(['4', $Adjuntos->estado_archivo4.'<br>'.$Adjuntos->getComentAPapa(4), $Adjuntos->getLinkArchivo(4)]);
+    $tabla->addRow(['5', $Adjuntos->estado_archivo5.'<br>'.$Adjuntos->getComentAPapa(5), $Adjuntos->getLinkArchivo(5)]);
+    $tabla->addRow(['6', $Adjuntos->estado_archivo6.'<br>'.$Adjuntos->getComentAPapa(6), $Adjuntos->getLinkArchivo(6)]);
  
     $btn_subir_arch = OdaTags::linkButton("padres/subirArchivos/$estud->id", 'Subir Archivos');
 

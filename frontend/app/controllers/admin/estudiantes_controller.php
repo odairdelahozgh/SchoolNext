@@ -160,7 +160,7 @@ class EstudiantesController extends ScaffoldController
   {
     try {
       $Estud = (new Estudiante())->get($estudiante_id);
-      if ( ($Estud) and ((0==$Estud->numero_mat) or (is_null($Estud->numero_mat))) ){
+      if ( ($Estud) and (empty($Estud->numero_mat)) ) {
         $DQL = new OdaDql('Estudiante');
         $DQL->setFrom('sweb_estudiantes');
         $next_numero_mat = $DQL->getMax('numero_mat') + 1;

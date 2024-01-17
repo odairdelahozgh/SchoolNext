@@ -74,7 +74,6 @@ class Aspirante extends LiteRecord {
         'contabilidad_id' => 0, 
         'sexo' => $Aspirante->sexo, 
         'retiro' => '', 
-        //'fecha_ret' => NULL, 
         'email_instit' => '', 
         'clave_instit' => '', 
         'mat_bajo_p1' => 0, 
@@ -94,14 +93,12 @@ class Aspirante extends LiteRecord {
         $DQL = new OdaDql('Estudiante');
         $DQL->setFrom('sweb_estudiantes');
         $DQL->insert($data)
-            ->execute(true);
+            ->execute();
         
         $LastInsertId = $DQL->getLastInsertId();
         $estudiante_id = $LastInsertId->last_id;
-        //OdaFlash::info("Se creó estudiante. ID: {$LastInsertId->last_id}");
       } else {
         $estudiante_id = $Estud->id;
-        //OdaFlash::info('ya estaba creado');
       }
 
       // 2) Crear DatosEstud
@@ -110,68 +107,29 @@ class Aspirante extends LiteRecord {
         'pais_nac' => $Aspirante->pais_nac, 
         'depto_nac' => $Aspirante->depto_nac, 
         'ciudad_nac' => $Aspirante->ciudad_nac, 
-      //   'religion' => , 
         'madre' => $Aspirante->madre, 
         'madre_id' => $Aspirante->madre_id, 
-      //   'madre_dir' => , 
-      'madre_tel_1' => $Aspirante->madre_tel_per, 
-      'madre_tel_2' => $Aspirante->madre_tel_ofi, 
-      'madre_email' => $Aspirante->madre_email, 
-      'madre_ocupa' => $Aspirante->madre_cargo, 
-      'madre_lugar_tra' => $Aspirante->madre_empresa, 
-      //   'madre_tiempo_ser' => , 
-
-      'padre' => $Aspirante->Padre, 
-      'padre_id' => $Aspirante->padre_id, 
-      //   'padre_dir' => , 
+        'madre_tel_1' => $Aspirante->madre_tel_per, 
+        'madre_tel_2' => $Aspirante->madre_tel_ofi, 
+        'madre_email' => $Aspirante->madre_email, 
+        'madre_ocupa' => $Aspirante->madre_cargo, 
+        'madre_lugar_tra' => $Aspirante->madre_empresa, 
+        'padre' => $Aspirante->Padre, 
+        'padre_id' => $Aspirante->padre_id, 
         'padre_tel_1' => $Aspirante->padre_tel_per, 
         'padre_tel_2' => $Aspirante->padre_tel_ofi, 
         'padre_email' => $Aspirante->padre_email, 
         'padre_ocupa' => $Aspirante->padre_cargo, 
         'padre_lugar_tra' => $Aspirante->padre_empresa, 
-      //   'padre_tiempo_ser' => ,
-
-      //   'tipo_acudi' => , 
-      //   'parentesco' => , 
-      //   'acudiente' => , 
-      //   'acudi_id' => , 
-      //   'acudi_dir' => , 
-      //   'acudi_tel_1' => , 
-      //   'acudi_tel_2' => , 
-      //   'acudi_email' => , 
-      //   'acudi_ocupa' => , 
-      //   'acudi_lugar_tra' => , 
-      
-      //   'resp_pago_ante_dian' => , 
-      //   'ante_instit' => , 
-      //   'ante_instit_dir' => , 
-      //   'ante_grado' => , 
-      //   'ante_fecha_ret' => , 
-      //   'ante_instit_tel' => , 
-      //   'grupo_sang' => , 
-      //   'salud_eps' => , 
-      //   'salud_antec_med_fam' => , 
-      //   'salud_alergico' => , 
-      //   'salud_cirugias' => , 
-      //   'salud_enfermedades' => , 
-      //   'salud_tratamientos' => , 
-      //   'salud_trastornos_alim' => , 
-      //   'salud_medicam_prohibi', 
-      //   'salud_aliment_prohibi', 
-      //   'salud_comentarios', 
-      //   'deudor', 
-      //   'codeudor', 
-      //   'codeudor_cc', 
-      //   'observacion', 
-      'created_at' => date('Y-m-d H:i:s', time()), 
-      'updated_at' => date('Y-m-d H:i:s', time()), 
-      'created_by' => Session::get('id'), 
-      'updated_by' => Session::get('id'), 
+        'created_at' => date('Y-m-d H:i:s', time()), 
+        'updated_at' => date('Y-m-d H:i:s', time()), 
+        'created_by' => Session::get('id'), 
+        'updated_by' => Session::get('id'), 
       ];
       $DQL = new OdaDql('DatosEstud');
       $DQL->setFrom('sweb_datosestud');
       $DQL->insert($data)
-          ->execute(true);
+          ->execute();
 
 
       // 3) Crear sweb_estudiante_adjuntos
@@ -185,41 +143,41 @@ class Aspirante extends LiteRecord {
       $DQL = new OdaDql('EstudianteAdjuntos');
       $DQL->setFrom('sweb_estudiante_adjuntos');
       $DQL->insert($data)
-          ->execute(true);
+          ->execute();
 
       // 4) Crear sweb_estudiante_adjuntos_dos
       $DQL = new OdaDql('EstudianteAdjuntosDos');
       $DQL->setFrom('sweb_estudiante_adjuntos_dos');
       $DQL->insert($data)
-          ->execute(true);
+          ->execute();
 
       // 5) Crear Usuario Madre
       $data = [
-        'uuid' =>$Aspirante->xxh3Hash(), 
-        'username' =>$Aspirante->madre_id, 
-        'roll' =>'padres', 
-        'nombres' =>$Aspirante->madre, 
-        'apellido1' =>'', 
-        'apellido2' =>'', 
-        'documento' =>$Aspirante->madre_id, 
-        'email' =>$Aspirante->madre_email, 
-        'telefono1' =>$Aspirante->madre_tel_per, 
-        'telefono2' =>$Aspirante->madre_tel_ofi, 
-        'algorithm' =>'sha1', 
-        //'salt' =>, 
-        //'password' =>, 
-        //'is_super_admin' =>, 
-        //'last_login' =>, 
-        //'forgot_password_code' =>, 
-        'is_active' =>1, 
-        'created_at' =>date('Y-m-d H:i:s', time()), 
-        'updated_at' =>date('Y-m-d H:i:s', time()), 
+        'uuid' => $Aspirante->xxh3Hash(), 
+        'username' => $Aspirante->madre_id, 
+        'roll' => 'padres', 
+        'nombres' => $Aspirante->madre, 
+        'apellido1' => '', 
+        'apellido2' => '', 
+        'documento' => $Aspirante->madre_id, 
+        'email' => $Aspirante->madre_email, 
+        'telefono1' => $Aspirante->madre_tel_per, 
+        'telefono2' => $Aspirante->madre_tel_ofi, 
+        'algorithm' => 'sha1', 
+        'salt' => '', 
+        'password' => '', 
+        'is_super_admin' => 0, 
+        //'last_login' => '', 
+        //'forgot_password_code' => '', 
+        'is_active' => 1, 
+        'created_at' => date('Y-m-d H:i:s', time()), 
+        'updated_at' => date('Y-m-d H:i:s', time()), 
       ];
 
       $DQL = new OdaDql('Usuario');
       $DQL->setFrom('dm_user');
-      //$DQL->insert([$data])->execute(true);
-
+      $DQL->insert([$data])->execute(true);
+      
       // 6) Crear Usuario Padre      
       // 7) Crear Registro Usuario-Estudiante
 
@@ -228,8 +186,7 @@ class Aspirante extends LiteRecord {
       $DQL->setFrom(Config::get('tablas.aspirantes'));
       $DQL->update(['estatus' => AspirEstatus::Trasladado->name])
           ->where('id=?')->setParams([$Aspirante->id]);
-      $DQL->execute(true);
-      
+      $DQL->execute();      
 
     } else {
       //OdaFlash::warning('Algo falló');

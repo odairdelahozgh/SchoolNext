@@ -100,9 +100,10 @@ trait TareaTraitSetUp {
       'descripcion'    => '',
     ];
   
-    // numeric, int, maxlength, length, range, select, email, url, ip, required, alphanum, alpha, date, pattern, decimal, equal
     self::$_rules_validators = [
     ];
 
   }
-} //END-SetUp
+
+
+}

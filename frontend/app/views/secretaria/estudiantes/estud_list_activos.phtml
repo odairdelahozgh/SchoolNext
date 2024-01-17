@@ -21,8 +21,7 @@
       );
       
       foreach($data as $key => $Estud) {
-        $num_mat_f = '24-'.str_pad($Estud->numero_mat, 4, '0', STR_PAD_LEFT);
-        $lnk_gen_num_mat = '<br>'.OdaTags::tag('span', "Matrícula #$num_mat_f", 'class="w3-tag"');
+        $lnk_gen_num_mat = '<br>'.OdaTags::tag('span', "Matrícula #{$Estud->numero_mat_f()}", 'class="w3-tag"');
         if (0==strlen($Estud->numero_mat)) {
           $lnk_gen_num_mat = '<br>'.OdaTags::linkButton(
             action: "admin/estudiantes/generarNumeroMatricula/{$Estud->id}", 

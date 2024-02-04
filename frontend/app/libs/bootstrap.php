@@ -11,6 +11,7 @@ const ABS_PUBLIC_PATH = '/home/windsor1/schoolnext.windsorschool.edu.co/';
 
 const APP_ROOT_PRIVATE = '/home/windsor1/schoolnext_private/';
 define('VENDOR_PATH', APP_PATH.'../vendor/');
+define('HELPERS_PATH', APP_PATH.'extensions/helpers/');
 //const VENDOR_PATH      = APP_ROOT_PRIVATE.'frontend/vendor/';
 
 const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public'; // '/home/windsor1/schoolnext.windsorschool.edu.co/';

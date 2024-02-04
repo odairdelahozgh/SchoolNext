@@ -7,13 +7,44 @@
  * @source   frontend\app\extensions\helpers
  */
 
+require __DIR__.'/bootstrap/alert.php';
+//require __DIR__.'/bootstrap/base.php';
+require __DIR__.'/bootstrap/theme_enums.php';
 
-class Theme {
+class Theme extends Tag {
   
-  use ThemeTraitEnums, ThemeTraitButtons;
+  use ThemeEnums; //, Base;
 
-  public function __construct() {
-    
+  private string $html = '';
+
+  public function __construct(
+    private ThemeColor $color = ThemeColor::PRIMARY, 
+    private ThemeSize $size = ThemeSize::MD, 
+    private string $additionalClasses = ''
+  )  {}
+
+  public function __toString() 
+  {
+    return $this->html;
   }
 
-} //END-Class
+  function setColor(ThemeColor $color): void 
+  {
+    $this->color = $color;
+  }
+
+  function setSize(ThemeSize $size): void 
+  {
+    $this->size = $size;
+  }
+
+  public function addAlert(
+    string $message, 
+    ThemeColor $color = ThemeColor::PRIMARY) 
+  {
+    $a = new Alert();
+    $this->html .= $a->getAlert($message, $color);
+    return $this;
+  }
+
+}

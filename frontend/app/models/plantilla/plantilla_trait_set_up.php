@@ -1,16 +1,9 @@
 <?php
-//require_once VENDOR_PATH.'autoload.php';
 
-trait PlantillasTraitSetUp 
+trait PlantillaTraitSetUp 
 {  
-  use TraitForms, PlantillasTraitProps;
+  use TraitForms, TraitValidar, PlantillaTraitProps;
   
-  public function validar($input_post): bool 
-  {
-    Session::set(index: 'error_validacion', value: '');
-    return true;
-  }
-
   private function setUp(): void 
   {
     self::$_fields_show = [

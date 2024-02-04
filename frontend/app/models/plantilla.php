@@ -6,10 +6,13 @@
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  * 
  */
-  
-class Plantillas extends LiteRecord 
+
+include "plantilla/plantilla_trait_props.php";
+include "plantilla/plantilla_trait_set_up.php";
+
+class Plantilla extends LiteRecord 
 {
-  use PlantillasTraitSetUp;
+  use PlantillaTraitSetUp;
 
   public function __construct() 
   {
@@ -19,4 +22,6 @@ class Plantillas extends LiteRecord
     $this->setUp();
   }
 
-} //END-CLASS
+
+
+}

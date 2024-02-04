@@ -18,12 +18,16 @@ try {
     // more variables in https://mpdf.github.io/reference/mpdf-variables/overview.html
   ]);
   
-  $Plantillas = new Plantillas();
+  $Plantillas = new Plantilla();
   
   // initialize
   $annio_mat = Config::get('matriculas.annio_mat');
   $direccion = Config::get('config.institution.direccion');
-  $fecha = $_now->format('Y-F-d');
+  
+  $datetimezone = new DateTimeZone('America/Bogota');
+  $ahora = new DateTimeImmutable('now', $datetimezone);
+  $fecha = $ahora->format("D, d M Y");
+
   $representante = strtoupper(Config::get('config.institution.rep_legal'));
   $ciudad = Config::get('config.institution.ciudad');
   $razon_social = strtoupper(Config::get('config.institution.razon_social'));
@@ -52,6 +56,13 @@ try {
   $PLibroMat = $Plantillas::first("SELECT t.contenido FROM snxt_plantillas AS t WHERE t.nombre=?", ['mat_libro_matricula']);
   $si = $arrData['DatosEstud']->ante_instit ? 'X' : '';
   $no = !$arrData['DatosEstud']->ante_instit ? '' : 'X';
+
+  // $acudi = ucwords(strtolower(trim($arrData['DatosEstud']->getAcudiente())));
+  // $acudiente_nombre = $arrData['DatosEstud']->$acudi;
+  // $acudiente_nombre = $arrData['DatosEstud']->"$acudi_tel";
+  // $acudiente_nombre = $arrData['DatosEstud']->$acudi;
+  
+
   $libro_mat = str_replace(
     [ 
       '$CIUDAD_FECHA$', '$NOMBRE_ESTUDIANTE$', '$CODIGO_ESTUD$', 
@@ -59,10 +70,10 @@ try {
       '$ANNIO_NAC$', '$MES_NAC$', '$DIA_NAC$', '$EDAD$', 
       '$IDENTIFICACION$', '$RELIGION$', '$DIRECCION$', '$TELEFONO$', 
       '$GRADO_MAT$', '$SI$', '$NO$', '$PLANTEL$', '$GRADO_PLANTEL$', '$DIR_PLANTEL$', 
-      '$TEL_PLANTEL$', '$FECHA_RET_PLANTEL$', '$PADRE$', '$ID_PADRE$', '$OCUPA_PADRE$', 
-      '$TRAB_PADRE$', '$TSERV_PADRE$', '$TEL_OF_PADRE$', '$CEL_PADRE$', '$EMAIL_PADRE$',
-      '$MADRE$', '$ID_MADRE$', '$OCUPA_MADRE$', 
-      '$TRAB_MADRE$', '$TSERV_MADRE$', '$TEL_OF_MADRE$', '$CEL_MADRE$', '$EMAIL_MADRE$',
+      '$TEL_PLANTEL$', '$FECHA_RET_PLANTEL$', 
+      
+      '$PADRE$', '$ID_PADRE$', '$OCUPA_PADRE$', '$TRAB_PADRE$', '$TSERV_PADRE$', '$TEL_OF_PADRE$', '$CEL_PADRE$', '$EMAIL_PADRE$',
+      '$MADRE$', '$ID_MADRE$', '$OCUPA_MADRE$', '$TRAB_MADRE$', '$TSERV_MADRE$', '$TEL_OF_MADRE$', '$CEL_MADRE$', '$EMAIL_MADRE$',
       '$ACUDIENTE$', '$TEL_ACUDIENTE1$', '$TEL_ACUDIENTE2$', '$DIR_ACUDIENTE$', '$EMAIL_ACUDIENTE$', 
     ],
     [ 
@@ -72,14 +83,16 @@ try {
       $data->documento, $arrData['DatosEstud']->religion, $data->direccion, $data->telefono1, 
       $arrData['Grado']->nombre, $si, $no, $arrData['DatosEstud']->ante_instit, $arrData['DatosEstud']->ante_grado, 
       $arrData['DatosEstud']->ante_instit_dir, $arrData['DatosEstud']->ante_instit_tel, $arrData['DatosEstud']->ante_fecha_ret, 
+
       $arrData['DatosEstud']->padre, $arrData['DatosEstud']->padre_id, $arrData['DatosEstud']->padre_ocupa,
       $arrData['DatosEstud']->padre_lugar_tra, $arrData['DatosEstud']->padre_tiempo_ser, $arrData['DatosEstud']->padre_tel_1, 
       $arrData['DatosEstud']->padre_tel_2, $arrData['DatosEstud']->padre_email, 
+
       $arrData['DatosEstud']->madre, $arrData['DatosEstud']->madre_id, $arrData['DatosEstud']->madre_ocupa,
       $arrData['DatosEstud']->madre_lugar_tra, $arrData['DatosEstud']->madre_tiempo_ser, $arrData['DatosEstud']->madre_tel_1, 
       $arrData['DatosEstud']->madre_tel_2, $arrData['DatosEstud']->madre_email, 
-      $arrData['DatosEstud']->acudiente, $arrData['DatosEstud']->acudi_tel_1, $arrData['DatosEstud']->acudi_tel_2, 
-      $arrData['DatosEstud']->acudi_dir, $arrData['DatosEstud']->acudi_email,
+
+      strtoupper($arrData['DatosEstud']->getAcudiente()), '', '', '', '',
     ], 
     $PLibroMat->contenido
   );

@@ -25,7 +25,7 @@ class OdaTags {
     return "<$tag $attrs>$content</$tag>";
   }
 
-  public static function Badges(string $caption, string|int $value, $color =''): string 
+  public static function Badges(string|null $caption, string|int $value, $color =''): string 
   {
     return "<span class=\"w3-bar-item w3-tag w3-small w3-$color w3-round w3-margin-right\">
                 $caption <span class=\"w3-badge w3-white w3-margin-left\">$value</span> 

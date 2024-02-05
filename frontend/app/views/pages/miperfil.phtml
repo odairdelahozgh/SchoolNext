@@ -1,17 +1,14 @@
-<?php 
-  $Usuario = (new Empleado())::get($user_id);
-?>
 <div class="w3-container">
    <?= View::flash().View::Encab($controller_name, $page_action, '') ?>
 </div>
 
 <div class="w3-container">
-
+  
   <div class="w3-row-padding w3-center">
     <div class="w3-card-4 w3-dark-grey">
-        <h3><?= $Usuario->getNombreCompleto() ?></h3>
-        <?= $Usuario->getFoto(show_cod: false) ?>
-        <h4><?= $Usuario->cargo ?></h4>
+        <h3><?= $MiUsuario->getNombreCompleto() ?></h3>
+        <?= $MiUsuario->getFoto(false) ?>
+        <h4><?= $MiUsuario->cargo ?></h4>
     </div>
   </div>
   
@@ -22,27 +19,28 @@
       <br>
       <?php 
         $tabla = new OdaTable();
-        $tabla->addRow(data: ['Documento', $Usuario->documento ]);
-        $tabla->addRow(data: ['Direccion', $Usuario->direccion ]);
-        $tabla->addRow(data: ['Email', $Usuario->email ]);
-        $tabla->addRow(data: ['Teléfono(s)', "$Usuario->telefono1 $Usuario->telefono2" ]);
-        $tabla->addRow(data: ['Fecha Nac.', $Usuario->fecha_nac ]);
+        $tabla->addRow(['Documento:', $MiUsuario->documento ]);
+        $tabla->addRow(['Direccion:', $MiUsuario->direccion ]);
+        $tabla->addRow(['Email:', $MiUsuario->email ]);
+        $tabla->addRow(['Teléfono(s):', "$MiUsuario->telefono1 $MiUsuario->telefono2" ]);
+        $tabla->addRow(['Fecha Nac:', $MiUsuario->fecha_nac ]);
         echo $tabla;
         ?>
       <br>
     </div>
+
     <div class="w3-half  w3-cell w3-dark-grey">
       <br>
       <?php 
         $tabla = new OdaTable();
-        $tabla->addRow(data: ['Username', "$Usuario->username [$Usuario->id]" ]);
-        $tabla->addRow(data: ['MS TEAMS', $Usuario->getCuentaInstit() ]);
-        $tabla->addRow(data: ['Roll', $Usuario->roll ]);
-        $tabla->addRow(data: ['Fecha Ingreso', $Usuario->fecha_ing ]);
+        $tabla->addRow( ['Username:', "$MiUsuario->username [$MiUsuario->id]" ]);
+        $tabla->addRow( ['MS TEAMS:', $MiUsuario->getCuentaInstit() ]);
+        $tabla->addRow( ['Roll:', $MiUsuario->roll ]);
+        $tabla->addRow( ['Fecha Ingreso:', $MiUsuario->fecha_ing ]);
         echo $tabla;
         ?>
       <br>
     </div>
-  </div>
 
+  </div>
 </div>

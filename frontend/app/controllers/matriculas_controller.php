@@ -10,11 +10,14 @@ class MatriculasController extends AppController
   
   public function index() 
   {
-    try {
+    try 
+    {
       $this->page_action = 'Listado de Estudiantes Activos';
       $this->data = (new Estudiante)->getListSecretaria(estado:1);
       $this->arrData['Salones'] = (array)(new Salon)->getList(estado:1);
-    } catch (\Throwable $th) {
+    } 
+    catch (\Throwable $th) 
+    {
       OdaFlash::error($th);
     }
   }

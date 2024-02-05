@@ -8,20 +8,34 @@
 class EstudiantesController extends ScaffoldController
 {
 
-  public function index(): void {
+  public function index(): void 
+  {
     $this->page_action = "Listado $this->controller_name" ;
     $this->fieldsToShow = (new Estudiante())->getFieldsShow(__FUNCTION__);
     $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
     $this->data = (new Estudiante())->getListEstudiantes($orden='n,a1,a2');
-  }//END-list
+  }
+
+
+  public function exportListMatriculadosPdf(): void 
+  {
+    $this->file_title = "Listado de Estudiantes Matriculados";
+    $this->file_name = OdaUtils::getSlug($this->file_title);
+    $this->data = (new Estudiante)->getListMatriculados();
+    $this->file_download = false;
+    View::select(view: "export_pdf_matriculados", template: 'pdf/mpdf');
+  }
   
-  public function exportPdf() {
+
+  public function exportPdf(): void 
+  {
     $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name");
     $this->file_title = "Listado de $this->controller_name";
     $this->data = (new Estudiante)->getList(estado:1);
     $this->file_download = false;
     View::select(view: "export_pdf_$this->controller_name", template: 'pdf/mpdf');
-  } //END-exportPdf
+  }
+
 
   public function exportEstudiantesBySalonPdf(string $salon_uuid) 
   {
@@ -33,8 +47,8 @@ class EstudiantesController extends ScaffoldController
     $this->data = (new Estudiante)->getListActivosByModulo(modulo: Modulo::Secre, where: ['salon_id'=>$RegSalon->id]);
     
     View::select(view: "secre_pdf_estudiantes_by_salon", template: 'pdf/mpdf');
+  }
 
-  } //END-exportPdf
 
   public function promoverMatriculas(int $grado_id) 
   {
@@ -67,7 +81,7 @@ class EstudiantesController extends ScaffoldController
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-promoverMatriculas
+  }
 
 
   public function editEstudiante(int $id, string $redirect='') 
@@ -132,8 +146,8 @@ class EstudiantesController extends ScaffoldController
       OdaFlash::error($th);
       return Redirect::to($redirect);
     }
+  }
 
-  }//END-edit_ajax
 
   public function exportDocsMatricula(int $estudiante_id) 
   {
@@ -156,15 +170,21 @@ class EstudiantesController extends ScaffoldController
     }
   }
 
+
   public function generarNumeroMatricula(int $estudiante_id) 
   {
     try {
       $Estud = (new Estudiante())->get($estudiante_id);
+
       if ( ($Estud) and (empty($Estud->numero_mat)) ) {
+        $next_numero_mat = $DQL->getMax('numero_mat') + 1;
+
         $DQL = new OdaDql('Estudiante');
         $DQL->setFrom('sweb_estudiantes');
-        $next_numero_mat = $DQL->getMax('numero_mat') + 1;
-        $DQL->update(['numero_mat' => $next_numero_mat])->where('t.id=?')->setParams([$estudiante_id])->execute(true);
+        $DQL->update(['numero_mat' => $next_numero_mat])
+            ->where('t.id=?')
+            ->setParams([$estudiante_id])
+            ->execute();
       }
     } catch (\Throwable $th) {
       OdaFlash::error($th);

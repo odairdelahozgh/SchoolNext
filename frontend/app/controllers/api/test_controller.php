@@ -6,18 +6,15 @@
   * @author odairdelahoz@gmail.com
   * @example http://username:password@URL/api/asignaturas/all
   */
-class AsignaturasController extends RestController
+class TestController extends RestController
 {
 
-  /**
-   * Obtiene todos los registros de asignaturas
-   * @link ../api/asignaturas/all
-   */
-  public function get_all() 
+  public function get_test1() 
   {
-    $this->data = (new Asignatura)->getListActivos();
+    View::select(null, null);
+    echo '<p>resultado '.rand(100, 200).'</p>';
   }
-
-
   
+
+
 }

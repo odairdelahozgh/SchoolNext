@@ -203,7 +203,7 @@ class NotasController extends ScaffoldController
       $this->arrData['Annio'] = $annio;
       $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
       $this->arrData['Estud'] = $Estud;
-      $Salon = (new Salon())::get($salon_id);
+      $Salon = (new Salon())::get($Estud->salon_id);
       $this->arrData['Salon'] = $Salon;
       $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
       $this->arrData['Seccion'] = $this->arrData['Grado']->seccion_id;

@@ -14,5 +14,19 @@ class UsuariosController extends ScaffoldController
       OdaFlash::error($th);
     }
   }
+  
+  
+  public function retirar(int $id_retirar) 
+  {
+    try {  
+      $usuario = (new Usuario())::get($id_retirar);
+      $usuario->setRetirar();
+  
+      return Redirect::to("admin/$this->controller_name/index");
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }
 
 }

@@ -25,26 +25,37 @@
  */
 class PagesController extends AppController
 {
-    protected function before_filter()
-    {
-        // Si es AJAX enviar solo el view
-        if (Input::isAjax()) {
-          View::template(null);
-        }
-    }
-    
-    public function __call($name, $params)
-    {
-        array_unshift($params, $name);
-        View::select(implode('/', $params));
-    }
+  
+  public function __call($name, $params)
+  {
+    array_unshift($params, $name);
+    View::select(implode('/', $params));
+  }
 
-    public function miperfil() {
+
+  public function miperfil() 
+  {
+    try 
+    {
+      $this->MiUsuario = (new Empleado())->get($this->user_id);
       $this->page_action = 'Mi Perfil';
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
     }
+  }
 
-    public function index() {
-    }
+  public function index() 
+  {
+  }
 
 
-} //END-CLASS
+  public function bootstrap() 
+  {
+    View::template('looper/layout-pagenavs');
+  }
+
+
+
+}

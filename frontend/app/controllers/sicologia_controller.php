@@ -10,57 +10,71 @@ class SicologiaController extends AppController
     
   protected function before_filter()
   {
-    if ( !str_contains('sicologos', Session::get('roll')) && !str_contains('admin', Session::get('roll')) ) {
+    parent::before_filter();
+
+    if ( !str_contains('sicologos', Session::get('roll')) && 
+         !str_contains('admin', Session::get('roll')) ) 
+    {
       OdaFlash::warning('No tiene permiso de acceso al módulo PSICOLOGÍA, fué redirigido');
       Redirect::to(Session::get('modulo'));
     }
-  } //END-before_filter
+  }
 
 
-    public function index() {
-      $this->page_action = 'Inicio';
-      $this->data = (new Evento)->getEventosDashboard();
-    }
+  public function index() 
+  {
+    $this->page_action = 'Inicio';
+    $this->data = (new Evento)->getEventosDashboard();
+  }
     
-    public function estudiantes() {
+  public function estudiantes() 
+  {
+    try 
+    {
       $this->page_action = 'Estudiantes Activos';
-      try {
-        $this->data = (new Estudiante)->getListSicologia();
-      
-      } catch (\Throwable $th) {
-        OdaFlash::error($th);
-      }
-      View::select('estudiantes/index');
-    } //END-estudiantes
-    
+      $this->data = (new Estudiante)->getListSicologia();
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
+    }
+    View::select('estudiantes/index');
+  }    
 
 
-    public function admisiones() {
-      try {
+  public function admisiones() 
+  {
+    try 
+    {
         $this->page_action = 'M&oacute;dulo de Admisiones';
         $this->data = (new Aspirante)->getListActivos();
-  
-      } catch (\Throwable $th) {
+    } 
+    catch (\Throwable $th) 
+    {
         OdaFlash::error($th);
-      }
-  
-      View::select('admisiones/index');
-    } //END-admisiones
+    }
+    View::select('admisiones/index');
+  }
 
     
-    public function admisiones_edit(int $aspirante_id) {
-      try {
-        $this->page_action = 'Admisiones - Editando Aspirante';
-        $this->data = [0];
-        $this->arrData['Aspirante'] = (new Aspirante)->get($aspirante_id);
-        $this->arrData['AspirantePsico'] = (new AspirantePsico)::first('SELECT * FROM sweb_aspirantepsico WHERE aspirante_id=?', [$aspirante_id]);
-      
-      } catch (\Throwable $th) {
-        OdaFlash::error($th);
-      }
+  public function admisiones_edit(int $aspirante_id) 
+  {
+    try 
+    {
+      $this->page_action = 'Admisiones - Editando Aspirante';
+      $this->data = [0];
+      $this->arrData['Aspirante'] = (new Aspirante)->get($aspirante_id);
+      $this->arrData['AspirantePsico'] = (new AspirantePsico)::first(
+        'SELECT * FROM sweb_aspirantepsico WHERE aspirante_id=?', [$aspirante_id]
+      );
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
+    }
+    View::select('admisiones/edit/edit');
+  }
+  
 
-      View::select('admisiones/edit/edit');
-    } //END-admisiones_edit
-    
 
-} // END CLASS
+}

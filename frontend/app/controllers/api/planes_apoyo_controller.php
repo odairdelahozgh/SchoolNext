@@ -1,6 +1,6 @@
 <?php
 /**
-  * Controlador API ESTUDIANTES  
+  * Controlador
   * @category API
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   * @author odairdelahoz@gmail.com
@@ -9,17 +9,22 @@
 class PlanesApoyoController extends RestController
 {
 
-  public function get_all() {
-    try {
+  public function get_all() 
+  {
+    try 
+    {
       $this->data = (new PlanesApoyo)->all();
-          
-    } catch (\Throwable $th) {
+    } 
+    catch (\Throwable $th)
+    {
       OdaLog::error($th);
       $this->error('Excepcion interna capturada', 404);
     }
-  } //END-get_all
+  }
 
-  public function get_singleuuid(string $uuid) {
+
+  public function get_singleuuid(string $uuid) 
+  {
     // try {
     //   $record = (new PlanesApoyo)->getByUUID($uuid);
     //   if (isset($record)) {
@@ -34,7 +39,9 @@ class PlanesApoyoController extends RestController
     // }
   } //END-get_singleuuid
 
-  public function get_singleid(int $id) {
+
+  public function get_singleid(int $id) 
+  {
     // try {
     //   $record = (new PlanesApoyo)::get($id);
     //   if (isset($record)) {
@@ -47,22 +54,31 @@ class PlanesApoyoController extends RestController
     //   OdaLog::error($th);
     //   $this->error('Excepcion interna capturada', 404);
     // }
-  } //END-get_singleid
+  }
+  
 
-  public function get_by_estudiante_periodo(int $estudiante_id, int $periodo_id) {
-    try {
+  public function get_by_estudiante_periodo(
+    int $estudiante_id, 
+    int $periodo_id) 
+  {
+    try 
+    {
       $record = (new PlanesApoyo)->getByEstudiantePeriodo($estudiante_id, $periodo_id);
-      
-      if (isset($record)) {
+      if ( isset($record) ) 
+      {
         $this->data = $record;
-      } else {
+      } 
+      else 
+      {
         $this->error('No hay registros que coincidan con la busqueda', 404);
       }
-      
-    } catch (\Throwable $th) {
+    } 
+    catch (\Throwable $th) 
+    {
       $this->error('Excepcion interna capturada', 404);
     }
-  } //END-get_by_estudiante_periodo
+  }
 
 
-} //END-CLASS
+
+}

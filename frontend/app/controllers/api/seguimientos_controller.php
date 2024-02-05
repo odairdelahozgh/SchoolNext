@@ -1,6 +1,6 @@
 <?php
 /**
-  * Controlador API SEGUIMIENTOS  
+  * Controlador
   * @category API
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   * @author odairdelahoz@gmail.com
@@ -9,17 +9,23 @@
 class SeguimientosController extends RestController
 {
 
-  public function get_all() {
-    try {
-      $this->data = (new Seguimientos)->all();
-          
-    } catch (\Throwable $th) {
+
+  public function get_all()
+  {
+    try
+    {
+      $this->data = (new Seguimientos)->all();          
+    }
+    catch (\Throwable $th)
+    {
       OdaLog::error($th);
       $this->error('Excepcion interna capturada', 404);
     }
-  } //END-get_all
+  }
 
-  public function get_singleuuid(string $uuid) {
+
+  public function get_singleuuid(string $uuid) 
+  {
     // try {
     //   $record = (new PlanesApoyo)->getByUUID($uuid);
     //   if (isset($record)) {
@@ -32,9 +38,11 @@ class SeguimientosController extends RestController
     //   OdaLog::error($th);
     //   $this->error('Excepcion interna capturada', 404);
     // }
-  } //END-get_singleuuid
+  }
+  
 
-  public function get_singleid(int $id) {
+  public function get_singleid(int $id) 
+  {
     // try {
     //   $record = (new PlanesApoyo)::get($id);
     //   if (isset($record)) {
@@ -47,37 +55,54 @@ class SeguimientosController extends RestController
     //   OdaLog::error($th);
     //   $this->error('Excepcion interna capturada', 404);
     // }
-  } //END-get_singleid
+  }
+  
 
-  public function get_by_estudiante_periodo(int $estudiante_id, int $periodo_id) {
-    try {
+  public function get_by_estudiante_periodo(
+    int $estudiante_id, 
+    int $periodo_id) 
+  {
+    try 
+    {
       $record = (new Seguimientos)->getByEstudiantePeriodo($estudiante_id, $periodo_id);
-      if (isset($record)) {
+      if (isset($record))
+      {
         $this->data = $record;
-      } else {
+      }
+      else
+      {
         $this->error('No hay registros que coincidan con la busqueda', 404);
       }
-      
-    } catch (\Throwable $th) {
+    }
+    catch (\Throwable $th)
+    {
       $this->error('Excepcion interna capturada', 404);
     }
-  } //END-get_by_estudiante_periodo
+  }
 
 
-  public function get_by_salon_periodo(string $salon_uuid, int $periodo_id) {
-    try {
+  public function get_by_salon_periodo(
+    string $salon_uuid, 
+    int $periodo_id) 
+  {
+    try 
+    {
       $record = (new Seguimientos)->getConsolidadoBySalonPeriodo($salon_uuid, $periodo_id);
-      if (isset($record)) {
+      if ( isset($record) )
+      {
         $this->data = $record;
-      } else {
+      } 
+      else
+      {
         $this->error('No hay registros que coincidan con la busqueda', 404);
       }
-      
-    } catch (\Throwable $th) {
+    }
+    catch (\Throwable $th)
+    {
       $this->error('Excepcion interna capturada', 404);
     }
-  } //END-get_by_estudiante_periodo
+  }
 
 
-  ////$this->data = (new Seguimientos())::('fde6d4554a101204ca5c', 3);
-} //END-CLASS
+
+}

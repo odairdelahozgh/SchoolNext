@@ -7,16 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'setasign\\Fpdi\\' => array($vendorDir . '/setasign/fpdi/src'),
-    'Vtiful\\Kernel\\' => array($vendorDir . '/viest/php-ext-xlswriter-ide-helper/src'),
     'Symfony\\Polyfill\\Php72\\' => array($vendorDir . '/symfony/polyfill-php72'),
-    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Intl\\Normalizer\\' => array($vendorDir . '/symfony/polyfill-intl-normalizer'),
     'Symfony\\Polyfill\\Intl\\Idn\\' => array($vendorDir . '/symfony/polyfill-intl-idn'),
-    'Spatie\\Url\\' => array($vendorDir . '/spatie/url/src'),
-    'Spatie\\Menu\\' => array($vendorDir . '/spatie/menu/src'),
-    'Spatie\\Macroable\\' => array($vendorDir . '/spatie/macroable/src'),
-    'Respect\\Validation\\' => array($vendorDir . '/respect/validation/library'),
-    'Respect\\Stringifier\\' => array($vendorDir . '/respect/stringifier/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Mpdf\\' => array($vendorDir . '/mpdf/mpdf/src'),

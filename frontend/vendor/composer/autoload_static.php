@@ -15,8 +15,6 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
-        '2df68f9e79c919e2d88506611769ed2e' => __DIR__ . '/..' . '/respect/stringifier/src/stringify.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -24,24 +22,11 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         array (
             'setasign\\Fpdi\\' => 14,
         ),
-        'V' => 
-        array (
-            'Vtiful\\Kernel\\' => 14,
-        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php72\\' => 23,
-            'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
-            'Spatie\\Url\\' => 11,
-            'Spatie\\Menu\\' => 12,
-            'Spatie\\Macroable\\' => 17,
-        ),
-        'R' => 
-        array (
-            'Respect\\Validation\\' => 19,
-            'Respect\\Stringifier\\' => 20,
         ),
         'P' => 
         array (
@@ -77,17 +62,9 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         array (
             0 => __DIR__ . '/..' . '/setasign/fpdi/src',
         ),
-        'Vtiful\\Kernel\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/viest/php-ext-xlswriter-ide-helper/src',
-        ),
         'Symfony\\Polyfill\\Php72\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
-        ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
         'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
         array (
@@ -96,26 +73,6 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         'Symfony\\Polyfill\\Intl\\Idn\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-idn',
-        ),
-        'Spatie\\Url\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/spatie/url/src',
-        ),
-        'Spatie\\Menu\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/spatie/menu/src',
-        ),
-        'Spatie\\Macroable\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/spatie/macroable/src',
-        ),
-        'Respect\\Validation\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/respect/validation/library',
-        ),
-        'Respect\\Stringifier\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/respect/stringifier/src',
         ),
         'Psr\\Log\\' => 
         array (
@@ -155,6 +112,16 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'J' => 
+        array (
+            'JShrink' => 
+            array (
+                0 => __DIR__ . '/..' . '/tedivm/jshrink/src',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
@@ -165,6 +132,7 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1::$classMap;
 
         }, null, ClassLoader::class);

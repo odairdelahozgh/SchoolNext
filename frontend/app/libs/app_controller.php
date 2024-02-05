@@ -54,6 +54,15 @@ abstract class AppController extends Controller
   public string $_ahora = '';
   public $_now = null;
 
+  
+  protected function before_filter()
+  {
+    if (Input::isAjax()) {
+        View::template(null);
+    }
+  }
+
+
   final protected function initialize() {
     try {
       

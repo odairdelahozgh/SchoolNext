@@ -48,9 +48,17 @@ abstract class AdminController extends Controller
   public string $file_orientation = 'L';
   public $_now = null;
   
-  final protected function initialize()
+  
+  protected function before_filter()
   {
-    try {
+    if (Input::isAjax()) {
+        View::template(null);
+    }
+  }
+
+
+  final protected function initialize(): void
+  {
       $this->breadcrumb = new OdaBreadcrumb();
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');
@@ -62,22 +70,15 @@ abstract class AdminController extends Controller
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
       $this->nombre_post   = strtolower(OdaUtils::pluralize( $this->nombre_modelo ));
       $this->_now = new DateTime("now", new DateTimeZone("America/Bogota"));
-      
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-
-  } //END-initialize
+  }
 
   
-  final protected function finalize() {
-    try {
+  final protected function finalize(): void 
+  {
       $this->page_action = (!$this->page_action) ? $this->action_name : $this->page_action;
       $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .APP_NAME;
-      
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-  } //END-finalize
+  }
+
+
 
 }

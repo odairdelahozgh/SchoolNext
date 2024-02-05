@@ -15,7 +15,7 @@
 use Kumbia\ActiveRecord\LiteRecord as ORM;
 require_once "enums.php";
 
-class LiteRecord extends \Kumbia\ActiveRecord\LiteRecord
+class LiteRecord extends ORM
 { 
   protected static $_periodo_actual = 0;
   protected static $_annio_actual = 0;

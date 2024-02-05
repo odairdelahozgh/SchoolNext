@@ -1,0 +1,21 @@
+<div class="w3-container">
+   <?= View::flash() ?>
+</div>
+
+<div class="w3-container">
+  <h2>Test</h2>
+  <?php
+  try {
+    $Theme = new Theme();
+    $Theme->addAlert('test', ThemeColor::DARK);
+
+    //$Theme->setColor(ThemeColor::DARK);
+    $Theme->addAlert('test2', ThemeColor::DANGER)
+          ->addAlert('test', ThemeColor::DARK);
+    echo $Theme;
+
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
+  ?>
+</div>

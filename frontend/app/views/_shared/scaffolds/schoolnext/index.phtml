@@ -13,6 +13,12 @@
           $item_data->setNumeroEstudiantes();
           $lnkSetupCalificar = $item_data->getLnkSetupCalificarSalon();
         }
+
+        $lnkRetirar = '';
+        if ('usuarios'==$controller_name and 1==$item_data->is_active) {
+          $lnkRetirar = $item_data->getLnkRetirar();
+        }
+
         
         $uuid_ok   = (property_exists(object_or_class: $item_data, property: 'uuid') && !is_null(value: $item_data->uuid));
         $edit_id   = ($uuid_ok) ? "editUuid/$item_data->uuid" : "edit/$item_data->id";
@@ -58,7 +64,7 @@
         }
 
         $arrBody = [
-          $lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar.'&nbsp;&nbsp;', 
+          $lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar.'&nbsp;&nbsp;'.$lnkRetirar.'&nbsp;&nbsp;', 
           ...$arrFields, $lnkSetupCalificar
         ];
         $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"', 'class="searchTdata"']);

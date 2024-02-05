@@ -1,8 +1,5 @@
 {
     "require": {
-        "respect/validation": "^2.2",
-        "spatie/menu": "^3.0",
-        "viest/php-ext-xlswriter-ide-helper": "dev-master",
         "mpdf/mpdf": "^8.1",
         "codehaveli/bitly-php": "dev-master",
         "tedivm/jshrink": "~1.0"

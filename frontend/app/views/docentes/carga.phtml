@@ -46,25 +46,14 @@
     <?php 
     try {
       $periodo = Config::get('config.academic.periodo_actual');
-      $user = Session::get('id');
+      $lnk_lista_de_clase = SalAsigProf::getLnkListaClase($periodo);
       $lnk5p = '';
-      if (4 == $periodo) {  
-        // esta parte se debe quitar
-        // $lnk5p = SalAsigProf::getLnkListaClase(5);
 
-        $lnk5p = OdaTags::linkExterno(
-          url: "https://windsortemp.schoolnext.space/index.php/+/sAP/ListasClaseProfesorPDF?user_id=$user&periodo=5", 
-          text: "Listas de Clase P5",
-          attrs: 'class="w3-button w3-green"' );
-
+      if (4 == $periodo) { 
+        $lnk_lista_de_clase_5p = SalAsigProf::getLnkListaClase(5);
       }
 
-      echo OdaTags::linkExterno(
-        url: "https://windsortemp.schoolnext.space/index.php/+/sAP/ListasClaseProfesorPDF?user_id=$user", 
-        text: "Listas de Clase P$periodo",
-        attrs: 'class="w3-button w3-green"' )
-        .'<br>'.$lnk5p;
-    
+      echo $lnk_lista_de_clase . $lnk_lista_de_clase_5p;
       
     } catch (\Throwable $th) {
       OdaFlash::error($th);

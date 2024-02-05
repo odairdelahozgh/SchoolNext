@@ -50,7 +50,9 @@
                  //.$Estud->getLnkPlanesApoyoTodos()
                  ;
 
+        //$estado = $Estud->getEstadoMat();
         $col3  = $lnk_gen_num_mat.'<br><br>'
+                //.$estado->value  .'<br><br>'
                 ."$Estud->madre <br> $Estud->madre_email <br>C.C. $Estud->madre_id <br>"
                   .OdaUtils::linkWhatsApp(telefono: (string)$Estud->madre_tel_1)
                   .OdaUtils::linkTelefono(telefono: (string)$Estud->madre_tel_1, show_tel:true).'<br><br>'
@@ -77,6 +79,14 @@
         $resultados_mat .= OdaTags::Badges($arrGrados[$key], $value);
       }
       $tot_sin_matricula = $tot_estudiantes-$tot_matriculados;
+
+
+      $lnk_listado_mat = OdaTags::linkButton(
+        action: "admin/estudiantes/exportListMatriculadosPdf", 
+        text: 'Listado Matriculados PDF', 
+        attrs: 'class="w3-button w3-green" target="_blank"'
+      );
+      
       echo "
       <div class=\"w3-row\">
 
@@ -89,10 +99,10 @@
 
         <div class=\"w3-half\">
           <div class=\"w3-padding w3-bar\">
-            <h3>Recuento de Matriculados [$tot_matriculados]</h3>
+            <h3>Matriculados [$tot_matriculados] / Faltan {$tot_sin_matricula}</h3>
             $resultados_mat
           </div>
-          Sin Matrícula: {$tot_sin_matricula}
+          <p>$lnk_listado_mat<p>
         </div>
 
       </div>

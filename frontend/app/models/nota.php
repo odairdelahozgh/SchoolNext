@@ -1,64 +1,62 @@
 <?php
 /**
- * Modelo Nota * 
+ * Modelo
+ *  
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
 
- /* 
-  'id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 
-  QUITAR A FUTURO :: 'asignatura', 'estudiante', 'email_envios', 'asi_num_envios', 
-  'definitiva', 'plan_apoyo', 'nota_final', 'profesor_id', 
-  'i01', 'i02', 'i03', 'i04', 'i05', 'i06', 'i07', 'i08', 'i09', 'i10', 
-  'i11', 'i12', 'i13', 'i14', 'i15', 'i16', 'i17', 'i18', 'i19', 'i20', 
-  
-  /// seguimiento intermedio
-  'i21', 'i22', 'i23', 'i24', 'i25', 'i26', 'i27', 'i28', 'i29', 'i30', 
-  'asi_desempeno', 'asi_activ_profe', 'asi_activ_estud', 'asi_fecha_entrega', 
-  'is_asi_validar_ok', 'asi_calificacion', 'is_asi_ok_dirgrupo', 'is_asi_ok_coord', 
-  'asi_link_externo1', 'asi_link_externo2', 
-
-  /// planes de apoyo
-  'i31', 'i32', 'i33', 'i34', 'i35', 'i36', 'i37', 'i38', 'i39', 'i40', 
-  'paf_link_externo1', 'paf_link_externo2', 
-  'paf_temas', 'paf_acciones', 'paf_activ_estud', 'paf_activ_profe', 'paf_fecha_entrega', 
-  'is_paf_ok_coord', 'is_paf_validar_ok', 'is_paf_ok_dirgrupo', 'paf_num_envios', 
-
-  'ausencias', 'inthoraria', 'created_at', 'updated_at', 'created_by', 'updated_by'
-*/
+include "nota/nota_trait_correcciones.php";
+include "nota/nota_trait_links.php";
+include "nota/nota_trait_props.php";
+include "nota/nota_trait_set_up.php";
 
 class Nota extends LiteRecord {
 
   use NotaTraitSetUp;
 
-  public function __construct() {
+  public function __construct() 
+  {
     parent::__construct();
     self::$table = Config::get('tablas.nota');
     self::$_order_by_defa = 't.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres';
     $this->setUp();
-  } //END-__construct
+  }
 
   
-  public function setUpdateCalificacion() {
+  public function setUpdateCalificacion() 
+  {
     try {
-      $this::query("UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id])->rowCount() > 0;
+      // $this::query(
+      //   "UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", 
+      //   [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id]
+      // )->rowCount() > 0;
+
     } catch (\Throwable $th) {
       OdaLog::error($th);
     }
-  } //END-setUpdateCalificacion
+  }
 
 
-  public function cambiarSalonEstudiante(int $nuevo_salon_id, int $nuevo_grado_id, int $estudiante_id) {
-    try {
-      $this::query("UPDATE ".self::$table." SET salon_id=$nuevo_salon_id, grado_id=$nuevo_grado_id WHERE estudiante_id=$estudiante_id")->rowCount() > 0;
-    } catch (\Throwable $th) {
-      OdaLog::error($th);
-    }
-  } //END-cambiarSalonEstudiante
+  public function cambiarSalonEstudiante(
+    int $nuevo_salon_id, 
+    int $nuevo_grado_id, 
+    int $estudiante_id
+  ) 
+  {
+    $this::query(
+      "UPDATE ".self::$table." SET salon_id=$nuevo_salon_id, grado_id=$nuevo_grado_id WHERE estudiante_id=$estudiante_id"
+    )->rowCount() > 0;
+  }
   
 
-  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
+  public function getList(
+    int|bool $estado=null, 
+    string $select='*', 
+    string|bool $order_by=null
+  ) 
+  {
     $DQL = (new OdaDql(__CLASS__))
         ->select('t.*')
         ->addSelect('CONCAT(e.apellido1, " ", e.apellido2, " ", e.nombres) as estudiante_nombre')
@@ -72,15 +70,21 @@ class Nota extends LiteRecord {
         ->where('t.salon_id=17')
         ->orderBy(self::$_order_by_defa);
 
-   if (!is_null($order_by)) { $DQL->orderBy($order_by); }
-   return $DQL->execute();
-//    return (new Nota)::all("SELECT count(t.id) as cnt, t.*  FROM sweb_notas as t GROUP BY t.id, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id HAVING count(id)>0");
- } // END-getList
-
+    if (!is_null($order_by)) { 
+      $DQL->orderBy($order_by); 
+    }
+    
+    return $DQL->execute();
+  }
 
    
-  public function getByPeriodoEstudiante(int $periodo_id, int $estudiante_id): array|string {
+  public function getByPeriodoEstudiante(
+    int $periodo_id, 
+    int $estudiante_id
+  ): array|string 
+  {
     $DQL = new OdaDql(__CLASS__);
+
     $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
           t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
           t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
@@ -91,10 +95,17 @@ class Nota extends LiteRecord {
         ->where('t.periodo_id=? AND t.estudiante_id=?')
         ->orderBy('a.nombre')
         ->setParams([$periodo_id, $estudiante_id]);
-    return $DQL->execute();
-  } // END-getByPeriodoEstudiante
 
-  public function getByAnnioPeriodoEstudiante(int $annio, int $periodo_id, int $estudiante_id): array|string {
+    return $DQL->execute();
+  }
+
+
+  public function getByAnnioPeriodoEstudiante(
+    int $annio, 
+    int $periodo_id, 
+    int $estudiante_id
+  ): array|string 
+  {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $DQL = new OdaDql(__CLASS__);
     $DQL->setFrom($tbl_notas);
@@ -109,11 +120,18 @@ class Nota extends LiteRecord {
         ->where('t.periodo_id=? AND t.estudiante_id=?')
         ->orderBy('a.nombre')
         ->setParams([$periodo_id, $estudiante_id]);
-    return $DQL->execute();
-  } // END-getByAnnioPeriodoEstudiante
 
-  public function getByPeriodoSalon(int $periodo_id, int $salon_id): array|string {
+    return $DQL->execute();
+  }
+
+
+  public function getByPeriodoSalon(
+    int $periodo_id, 
+    int $salon_id
+  ): array|string 
+  {
     $DQL = new OdaDql(__CLASS__);
+
     $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
           t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
           t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
@@ -124,13 +142,21 @@ class Nota extends LiteRecord {
         ->where('t.periodo_id=? AND t.salon_id=?')
         ->orderBy('estudiante_nombre, a.nombre')
         ->setParams([$periodo_id, $salon_id]);
+
     return $DQL->execute();
-  } // END-getByPeriodoSalon
+  }
 
 
-  public function getByAnnioPeriodoSalon(int $annio, int $periodo_id, int $salon_id): array|string {
+  public function getByAnnioPeriodoSalon(
+    int $annio, 
+    int $periodo_id, 
+    int $salon_id
+  ): array|string 
+  {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
+    
     $DQL = new OdaDql(__CLASS__);
+    
     $DQL->setFrom($tbl_notas);
     
     $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
@@ -143,12 +169,13 @@ class Nota extends LiteRecord {
         ->where('t.periodo_id=? AND t.salon_id=?')
         ->orderBy('estudiante_nombre, a.nombre')
         ->setParams([$periodo_id, $salon_id]);
+
     return $DQL->execute();
-  } // END-getByPeriodoSalon
+  }
 
 
-  //====================
-  public function getNotasSalon(int $salon_id) {
+  public function getNotasSalon(int $salon_id) 
+  {
     return (new Nota)->all(
       "SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
       FROM sweb_notas as n
@@ -156,11 +183,15 @@ class Nota extends LiteRecord {
       WHERE n.salon_id=? 
       ORDER BY n.periodo_id, e.apellido1, e.apellido2, e.nombres",  array($salon_id)
     );
-  } //END-getNotasSalon
+  }
 
 
-  //====================
-  public function getNotasSalonAsignatura(int $salon_id, int $asignatura_id, $annio=null) {
+  public function getNotasSalonAsignatura(
+    int $salon_id, 
+    int $asignatura_id, 
+    $annio=null
+  )
+  {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
 
     return (new Nota)->all("SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
@@ -170,10 +201,16 @@ class Nota extends LiteRecord {
       ORDER BY n.annio, n.periodo_id, n.salon_id, e.apellido1, e.apellido2, e.nombres",
       array((int)$salon_id, (int)$asignatura_id)
     );
-  } //END-getNotasSalonAsignatura
+  }
 
   
-  public static function getBySalonAsignaturaPeriodos(int $salon_id, int $asignatura_id, array $periodos=[], $annio=null) {
+  public static function getBySalonAsignaturaPeriodos(
+    int $salon_id, 
+    int $asignatura_id, 
+    array $periodos=[], 
+    $annio=null
+  ) 
+  {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $str_p = implode(',', $periodos);
 
@@ -189,23 +226,34 @@ class Nota extends LiteRecord {
       ORDER BY t.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres",
       array($salon_id, $asignatura_id)
     );
-  } //END-getBySalonAsignaturaPeriodos
+  }
 
 
-  //====================
-  public static function getVistaNotasTodasExportar(int $salon_id) {
+  public static function getVistaNotasTodasExportar(int $salon_id): array 
+  {
     $aResult = [];
-    $registros = static::query("SELECT * FROM vista_notas_todas_exportar WHERE salon_id = ?", [$salon_id])->fetchAll();
+    $registros = static::query(
+      "SELECT * FROM vista_notas_todas_exportar WHERE salon_id = ?", 
+      [$salon_id]
+    )->fetchAll();
+    
     foreach ($registros as $reg) {
-      $aResult["$reg->salon;$reg->salon_id"]["$reg->estudiante;$reg->estudiante_id"][$reg->periodo_id]["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
+      $aResult
+        ["$reg->salon;$reg->salon_id"]
+        ["$reg->estudiante;$reg->estudiante_id"]
+        [$reg->periodo_id]
+        ["$reg->asignatura;$reg->asignatura_abrev"] = "$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno";
     }
-    return $aResult;
-  } //END-getVistaNotasTodasExportar
 
+    return $aResult;
+  }
   
 
-  //====================
-  public static function getNotasConsolidado(int $salon_id, $annio=null) {
+  public static function getNotasConsolidado(
+    int $salon_id, 
+    $annio=null
+  ) 
+  {
     try {
       if (!is_null($annio)) {
         $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
@@ -249,26 +297,34 @@ class Nota extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getNotasConsolidado
+  }
 
 
-  public static function getNotasPromAnnioPeriodoSalon(int $periodo_id, int $salon_id): array|string {
+  public static function getNotasPromAnnioPeriodoSalon(
+    int $periodo_id, 
+    int $salon_id
+  ): array|string 
+  {
     $DQL = (new OdaDql(__CLASS__))
-    ->select('t.periodo_id, a.nombre as asignatura_nombre')
-    ->addSelect('round(AVG(if(t.nota_final>0, t.nota_final, t.definitiva)), 2) as avg')
-    ->leftJoin('asignatura', 'a')
-    ->where('t.asignatura_id NOT IN (30,35,36,37,38,39,40) AND t.periodo_id = ? AND t.salon_id = ?')
-    ->groupBy('t.periodo_id, a.nombre')
-    ->setParams([$periodo_id, $salon_id]);
-    return $DQL->execute();
-  } //END-getNotasPromAnnioPeriodoSalon
+      ->select('t.periodo_id, a.nombre as asignatura_nombre')
+      ->addSelect('round(AVG(if(t.nota_final>0, t.nota_final, t.definitiva)), 2) as avg')
+      ->leftJoin('asignatura', 'a')
+      ->where('t.asignatura_id NOT IN (30,35,36,37,38,39,40) AND t.periodo_id = ? AND t.salon_id = ?')
+      ->groupBy('t.periodo_id, a.nombre')
+      ->setParams([$periodo_id, $salon_id]);
 
-  //
+    return $DQL->execute();
+  }
+
   
-  public static function getSalonesCoordinadorByAnnio(int $coordinador_id, int $annio) {
+  public static function getSalonesCoordinadorByAnnio(
+    int $coordinador_id, 
+    int $annio) 
+  {
     $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
 
     $DQL = new OdaDql(__CLASS__);
+
     $DQL->select('DISTINCT t.annio, t.salon_id, s.nombre AS salon_nombre')
         ->leftJoin('salon', 's')
         ->leftJoin('grado', 'g')
@@ -282,43 +338,46 @@ class Nota extends LiteRecord {
     }
 
     return $DQL->execute();
-  } //END-getSalonesByAnnio
+  }
 
 
-  public static function getSalonesByAnnio(int $annio) {
-    try {
-      $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
-      $DQL = new OdaDql(__CLASS__);
-      $DQL->select('DISTINCT t.annio, t.salon_id, s.nombre AS salon_nombre, max(t.periodo_id) as max_periodos')
-          ->leftJoin('salon', 's')
-          ->groupBy('t.annio, t.salon_id')
-          ->orderBy('t.annio, s.nombre')
-          ->setFrom($tbl_notas);
-      return $DQL->execute();
+  public static function getSalonesByAnnio(int $annio) 
+  {
+    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+
+    $DQL = new OdaDql(__CLASS__);
+
+    $DQL->select('DISTINCT t.annio, t.salon_id, s.nombre AS salon_nombre, max(t.periodo_id) as max_periodos')
+        ->leftJoin('salon', 's')
+        ->groupBy('t.annio, t.salon_id')
+        ->orderBy('t.annio, s.nombre')
+        ->setFrom($tbl_notas);
+
+    return $DQL->execute();
+  }
+
+
+  public static function getGradosByAnnio(int $annio) 
+  {
+    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+
+    $DQL = new OdaDql(__CLASS__);
+
+    $DQL->select('DISTINCT t.annio, t.grado_id, g.abrev AS grado_abrev, max(t.periodo_id) as max_periodos')
+        ->leftJoin('grado', 'g')
+        ->groupBy('t.annio, t.grado_id')
+        ->orderBy('t.annio, g.orden DESC')
+        ->setFrom($tbl_notas);
     
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-  } //END-getSalonesByAnnio
-
-  public static function getGradosByAnnio(int $annio) {
-    try {
-      $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
-      $DQL = new OdaDql(__CLASS__);
-      $DQL->select('DISTINCT t.annio, t.grado_id, g.abrev AS grado_abrev, max(t.periodo_id) as max_periodos')
-          ->leftJoin('grado', 'g')
-          ->groupBy('t.annio, t.grado_id')
-          ->orderBy('t.annio, g.orden DESC')
-          ->setFrom($tbl_notas);
-      return $DQL->execute();
-    
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
-  } //END-getGradosByAnnio
+    return $DQL->execute();
+  }
 
   
-  public static function getNotasConsolidadoByGradoAnnio(int $grado_id, int $annio) {
+  public static function getNotasConsolidadoByGradoAnnio(
+    int $grado_id, 
+    int $annio
+  ) 
+  {
     try {
       $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
   
@@ -346,67 +405,74 @@ class Nota extends LiteRecord {
                 ["$reg->asignatura_nombre;$reg->asignatura_abrev"] 
         = "$reg->id;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final";
       }
+
       return $aResult;
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-getNotasConsolidadoByGradoAnnio
-
-
-
-  public static function getCuadroHonorGeneralPrimariaPDF(int $periodo_id, null|int $annio = null): array|string {
-    try {
-    $annio = $annio ?? config::get('config.academic.annio_actual');
-    $secciones = implode(',', (new Seccion)::segSecPrimaria());
-    
-    $DQL = new OdaDql(__CLASS__);
-    $DQL->setFrom('sweb_notas');
-    $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
-        ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
-        ->leftJoin('salon', 's')
-        ->leftJoin('estudiante', 'e')
-        ->groupBy('t.salon_id, t.estudiante_id')
-        ->where('t.asignatura_id NOT IN (30, 35)')
-        ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
-        ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grados G1 WHERE G1.seccion_id IN ($secciones) )")
-        ->orderBy('s.nombre ASC, prom DESC');
-      
-    return $DQL->execute();
-      
-  } catch (\Throwable $th) {
-    OdaFlash::error($th);
-    return '';
   }
 
-  } //END-getCuadroHonorGeneralPrimariaPDF
+
+  public static function getCuadroHonorGeneralPrimariaPDF(
+    int $periodo_id, 
+    null|int $annio = null
+  ): array|string 
+  {
+    try {
+      $annio = $annio ?? config::get('config.academic.annio_actual');
+      $secciones = implode(',', (new Seccion)::segSecPrimaria());
+      
+      $DQL = new OdaDql(__CLASS__);
+
+      $DQL->setFrom('sweb_notas');
+
+      $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
+          ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
+          ->leftJoin('salon', 's')
+          ->leftJoin('estudiante', 'e')
+          ->groupBy('t.salon_id, t.estudiante_id')
+          ->where('t.asignatura_id NOT IN (30, 35)')
+          ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
+          ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grados G1 WHERE G1.seccion_id IN ($secciones) )")
+          ->orderBy('s.nombre ASC, prom DESC');
+        
+      return $DQL->execute();
+        
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
+  }
 
   
   public static function getCuadroHonorGeneralBachilleratoPDF(int $periodo_id, null|int $annio = null): array|string {
     try {
-    $annio = $annio ?? config::get('config.academic.annio_actual');
-    $secciones = implode(',', (new Seccion)::segSecBachillerato());
-    
-    $DQL = new OdaDql(__CLASS__);
-    $DQL->setFrom('sweb_notas');
-    $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
-        ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
-        ->leftJoin('salon', 's')
-        ->leftJoin('estudiante', 'e')
-        ->groupBy('t.salon_id, t.estudiante_id')
-        ->where('t.asignatura_id NOT IN (30, 35)')
-        ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
-        ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grados G1 WHERE G1.seccion_id IN ($secciones) )")
-        ->orderBy('s.nombre ASC, prom DESC');
-      
-    return $DQL->execute();
-      
-  } catch (\Throwable $th) {
-    OdaFlash::error($th);
-    return '';
-  }
+      $annio = $annio ?? config::get('config.academic.annio_actual');
 
-  } //END-getCuadroHonorGeneralBachilleratoPDF
+      $secciones = implode(',', (new Seccion)::segSecBachillerato());
+      
+      $DQL = new OdaDql(__CLASS__);
+
+      $DQL->setFrom('sweb_notas');
+
+      $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
+          ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
+          ->leftJoin('salon', 's')
+          ->leftJoin('estudiante', 'e')
+          ->groupBy('t.salon_id, t.estudiante_id')
+          ->where('t.asignatura_id NOT IN (30, 35)')
+          ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
+          ->aNdWhere("t.grado_id IN (SELECT G1.id FROM sweb_grados G1 WHERE G1.seccion_id IN ($secciones) )")
+          ->orderBy('s.nombre ASC, prom DESC');
+      
+      return $DQL->execute();
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
+  }
 
 
   public static function getCuadroHonorPrimariaPDF(int $periodo_id, null|int $annio = null): array|string {
@@ -415,7 +481,9 @@ class Nota extends LiteRecord {
       $secciones = implode(',', (new Seccion)::segSecPrimaria());
   
       $DQL = new OdaDql(__CLASS__);
+
       $DQL->setFrom('sweb_notas');
+
       $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
           ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
           ->leftJoin('salon', 's')
@@ -434,16 +502,23 @@ class Nota extends LiteRecord {
       OdaFlash::error($th);
       return '';
     }
-  } //END-getCuadroHonorPrimariaPDF
+  }
 
 
-  public static function getCuadroHonorBachilleratoPDF(int $periodo_id, null|int $annio = null): array|string {
+  public static function getCuadroHonorBachilleratoPDF(
+    int $periodo_id, 
+    null|int $annio = null
+  ): array|string 
+  {
     try {
       $annio = $annio ?? config::get('config.academic.annio_actual');
+
       $secciones = implode(',', (new Seccion)::segSecBachillerato());
   
       $DQL = new OdaDql(__CLASS__);
+
       $DQL->setFrom('sweb_notas');
+
       $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
           ->addSelect("concat(e.nombres,' ',e.apellido1,' ',e.apellido2) AS estudiante_nombre")
           ->leftJoin('salon', 's')
@@ -462,7 +537,8 @@ class Nota extends LiteRecord {
       OdaFlash::error($th);
       return '';
     } 
-  } //END-getCuadroHonorBachilleratoPDF
+  }
 
 
-} //END-CLASS
+
+}

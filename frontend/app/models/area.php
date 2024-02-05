@@ -1,10 +1,12 @@
 <?php
 /**
- * Modelo Area
+ * Modelo
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
+
+include "area/area_trait_set_up.php";
 
 class Area extends LiteRecord
 {
@@ -24,4 +26,5 @@ class Area extends LiteRecord
     return static::query($sql);
   }
 
-} //END-CLASS
+  
+}

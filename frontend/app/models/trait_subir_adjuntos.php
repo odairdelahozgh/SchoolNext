@@ -26,26 +26,37 @@ trait TraitSubirAdjuntos {
         self::$_upload_errors .= "File Error : $key -> $error " . $this->getUploadMaxFilesize();
       }
     }
+
     foreach ($arrArchMov as $key => $value) {
       $_POST[$frm_name][$key]=$value;
     }
+    
     return count($arrArchMov);
-  } //END
+  }
   
-  public function setRutaDestino(string $ruta_destino): void {
+  public function setRutaDestino(string $ruta_destino): void 
+  {
     self::$_ruta_destino = $ruta_destino;
-  } //END
+  }
   
-  public function setUploadMaxFilesize(): void {
+
+  public function setUploadMaxFilesize(): void 
+  {
     self::$_upload_max_filesize = ini_get('upload_max_filesize');
-  } //END
+  }
+  
 
-  public function getUploadMaxFilesize(): string {
+  public function getUploadMaxFilesize(): string 
+  {
     return self::$_upload_max_filesize;
-  } //END
+  }
 
-  public function getUploadErrors() {
+
+  public function getUploadErrors() 
+  {
     return self::$_upload_errors;
-  } //END
+  }
 
-} //END-trait
+
+
+}

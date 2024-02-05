@@ -7,6 +7,8 @@
  * 
  */
 
+include "usuario/usuario_trait_props.php";
+include "usuario/usuario_trait_set_up.php";
   
 class Usuario extends LiteRecord {
 
@@ -20,7 +22,7 @@ class Usuario extends LiteRecord {
     $this->setUp();
   }
   
-  public function misGrupos()
+  public function misGrupos(): array
   { // int $user_id // mejorar !!!
     try {
       $user_id = Session::get('id');
@@ -72,4 +74,39 @@ class Usuario extends LiteRecord {
   }
 
 
-} //END-CLASS
+
+  public function setRetirar() 
+  {
+      $id = $this->id;
+      $fecha_ret = date('Y-m-d', time());
+      $usuario_instit = '';
+      $clave_instit = '';
+      $updated_at = date('Y-m-d', time());
+      $updated_by = Session::get('id');
+      $is_carga_acad_ok = 0;
+      $is_active = 0;
+
+      $DQL = new OdaDql(self::$table);
+      
+      $DQL->setFrom(self::$table);
+
+      $DQL->update([
+        'fecha_ret' => $fecha_ret,
+        'usuario_instit' => $usuario_instit,
+        'clave_instit' => $clave_instit,
+        'updated_at' => $updated_at,
+        'updated_by' => $updated_by,
+        'is_carga_acad_ok' => $is_carga_acad_ok,
+        'is_active' => $is_active,
+      ]);
+
+      $DQL->where('t.id=?')
+          ->setParams([$id]);
+
+      $DQL->execute(true);
+  }
+
+  
+
+
+}

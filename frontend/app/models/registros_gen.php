@@ -1,32 +1,30 @@
 <?php
-
-use Mpdf\Tag\Select;
-
 /**
- * Modelo RegistrosGen
+ * Modelo
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
- /* 
-  id, uuid, tipo_reg, estudiante_id, annio, periodo_id, grado_id, salon_id, 
-  fecha, asunto, acudiente, foto_acudiente, director, foto_director, 
-  created_at, updated_at, created_by, updated_by
-*/
-  
+
+include "registros/registros_gen_trait_links.php";
+include "registros/registros_gen_trait_props.php";
+include "registros/registros_gen_trait_set_up.php";
+
 class RegistrosGen extends LiteRecord {
 
   use RegistrosGenTraitSetUp;
 
-  public function __construct() {
+  public function __construct() 
+  {
     parent::__construct();
     self::$table = Config::get('tablas.estud_reg_obs_gen');
     $this->setUp();
     self::$_order_by_defa = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
-  } //END-__construct
+  }
 
   
-  public function getRegistrosProfesor(int $user_id) {
+  public function getRegistrosProfesor(int $user_id) 
+  {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, s.nombre as salon_nombre')
         ->concat(['e.nombres','e.apellido1','e.apellido2'],  'estudiante_nombre')
@@ -40,10 +38,11 @@ class RegistrosGen extends LiteRecord {
     }
     $DQL->orderBy('t.fecha DESC');
     return $DQL->execute();
-  } // END-getListProfesor
+  }
 
   
-  public function saveWithPhoto($data) {
+  public function saveWithPhoto($data) 
+  {
     try {
       $this->begin();
       if ($this->update($data)) {
@@ -58,10 +57,11 @@ class RegistrosGen extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-saveWithPhoto
+  }
 
   
-  public function createWithPhoto($data) {
+  public function createWithPhoto($data) 
+  {
     try {
       $this->begin();
       if ($this->create($data)) {
@@ -76,10 +76,11 @@ class RegistrosGen extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-saveWithPhoto
+  }
 
 
-  public function updatePhoto($id) {
+  public function updatePhoto($id) 
+  {
     // if ($foto_acudiente = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
     //   $this->foto_acudiente = $foto_acudiente;
     //   Session::set('foto_acudiente',$foto_acudiente);
@@ -100,10 +101,11 @@ class RegistrosGen extends LiteRecord {
       OdaFlash::error($th);
     }
     
-  } //END-updatePhoto 
+  }
   
 
-  public function uploadPhoto($imageField)  {
+  public function uploadPhoto($imageField)  
+  {
     try {
       $file = Upload::factory($imageField, 'file');
       $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg'));
@@ -115,10 +117,13 @@ class RegistrosGen extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-uploadPhoto
+  }
 
   
-  public function getByAnnioSalon(int $annio, int $salon_id) {
+  public function getByAnnioSalon(
+    int $annio, 
+    int $salon_id
+  ) {
     try {
       $annio_actual = Config::get('config.academic.annio_actual');
       $sufijo = ($annio != $annio_actual) ? '_'.$annio : '' ;
@@ -142,16 +147,22 @@ class RegistrosGen extends LiteRecord {
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } // END-getRegistrosAnnio
+  }
     
 
-  public function cambiarSalonEstudiante(int $nuevo_salon_id, int $nuevo_grado_id, int $estudiante_id) {
-    try {
-      $this::query("UPDATE ".self::$table." SET salon_id=$nuevo_salon_id, grado_id=$nuevo_grado_id WHERE estudiante_id=$estudiante_id")->rowCount() > 0;
-    } catch (\Throwable $th) {
-      OdaLog::error($th);
-    }
-  } //END-cambiarSalonEstudiante
+  public function cambiarSalonEstudiante(
+    int $nuevo_salon_id, 
+    int $nuevo_grado_id, 
+    int $estudiante_id
+  ) {
+    // cambiar por instrucciones DQL
+    $this::query(
+      "UPDATE ".self::$table
+      ." SET salon_id=$nuevo_salon_id, grado_id=$nuevo_grado_id 
+         WHERE estudiante_id=$estudiante_id"
+      )->rowCount() > 0;
+  }
 
 
-} //END-CLASS
+
+}

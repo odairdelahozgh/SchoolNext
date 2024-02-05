@@ -1,24 +1,28 @@
 <?php
 /**
- * Modelo Asignatura  
+ * Modelo
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  * 
- * id, nombre, abrev, orden, created_by, updated_by, created_at, updated_at, area_id, is_active, calc_prom
  */
   
+include "asignatura/asignatura_trait_props.php";
+include "asignatura/asignatura_trait_set_up.php";
+
 class Asignatura extends LiteRecord {
 
   use AsignaturaTraitSetUp;
 
-  public function __construct() {
+  public function __construct() 
+  {
     parent::__construct();
     self::$table = Config::get('tablas.asignatura');
     $this->setUp();
-  } //END-__construct
+  }
 
-  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
+  public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) 
+  {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, a.nombre AS area_nombre')
         ->leftJoin('area', 'a')
@@ -33,4 +37,8 @@ class Asignatura extends LiteRecord {
     }
     return $DQL->execute();
   }
-} //END-CLASS
+
+
+
+
+}

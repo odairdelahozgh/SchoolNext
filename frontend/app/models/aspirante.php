@@ -1,38 +1,46 @@
 <?php
 /**
- * Modelo Aspirante  
+ * Modelo  
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
   
+include "aspirante/aspirante_trait_props.php";
+include "aspirante/aspirante_trait_set_up.php";
+
 class Aspirante extends LiteRecord {
   use AspiranteTraitSetUp;
   
-  public function __construct() {
-    try {
-      parent::__construct();
-      self::$table = Config::get('tablas.aspirante');
-      self::$_order_by_defa = 't.is_active DESC,t.fecha_insc DESC, t.estatus,t.grado_aspira,t.apellido1,t.apellido2,t.nombres';
-      $this->setUp();
-      } catch (\Throwable $th) {
-        OdaFlash::error($th);
-      }
-    } //END-__construct
+  public function __construct() 
+  {
+    parent::__construct();
+    self::$table = Config::get('tablas.aspirante');
+    self::$_order_by_defa = 't.is_active DESC,t.fecha_insc DESC, t.estatus,t.grado_aspira,t.apellido1,t.apellido2,t.nombres';
+    $this->setUp();
+  }
   
-    public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) {
-      $DQL = (new OdaDql(__CLASS__))
-          ->select($select)
-          ->concat(['apellido1, " ", apellido2, " ", nombres'], 'aspirante_nombre')
-          ->addSelect('t.grado_aspira, g.nombre as aspirante_grado')
-          ->leftJoin('grado', 'g', 't.grado_aspira = g.id')
-          ->orderBy(self::$_order_by_defa);
-      if (!is_null($order_by)) { $DQL->orderBy($order_by); }
 
-     return $DQL->execute();
-   }
-   
-  public static function trasladar(int $id) {
+  public function getList(
+    int|bool $estado = null, 
+    string $select = '*', 
+    string|bool $order_by = null
+  ) 
+  {
+    $DQL = (new OdaDql(__CLASS__))
+        ->select($select)
+        ->concat(['apellido1, " ", apellido2, " ", nombres'], 'aspirante_nombre')
+        ->addSelect('t.grado_aspira, g.nombre as aspirante_grado')
+        ->leftJoin('grado', 'g', 't.grado_aspira = g.id')
+        ->orderBy(self::$_order_by_defa);
+    if (!is_null($order_by)) { $DQL->orderBy($order_by); }
+
+    return $DQL->execute();
+  }
+  
+  
+  public static function trasladar(int $id) 
+  {
     $Aspirante = (new Aspirante)::get($id);
     $table_apsico = Config::get('tablas.aspirantes_psico');
     $AspirantePsico = (new AspirantePsico)::first("SELECT * FROM $table_apsico WHERE aspirante_id = ?", [$id]);
@@ -174,9 +182,9 @@ class Aspirante extends LiteRecord {
         'updated_at' => date('Y-m-d H:i:s', time()), 
       ];
 
-      $DQL = new OdaDql('Usuario');
-      $DQL->setFrom('dm_user');
-      $DQL->insert([$data])->execute(true);
+      // $DQL = new OdaDql('Usuario');
+      // $DQL->setFrom('dm_user');
+      // $DQL->insert([$data])->execute(true);
       
       // 6) Crear Usuario Padre      
       // 7) Crear Registro Usuario-Estudiante
@@ -192,7 +200,8 @@ class Aspirante extends LiteRecord {
       //OdaFlash::warning('Algo falló');
     }
 
-   }
-  
+  }
 
-} //END-CLASS
+
+
+}

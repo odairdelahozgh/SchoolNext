@@ -1,36 +1,44 @@
 <?php
 /**
- * Modelo EstudiantePadres
+ * Modelo
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  * 
- * id, dm_user_id, estudiante_id, relacion, created_at, updated_at, created_by, updated_by FROM sweb_dmuser_estudiantes
  */
-  
-class EstudiantePadres extends LiteRecord {
+
+include "estudiante/estudiante_padres_trait_set_up.php";
+
+class EstudiantePadres extends LiteRecord 
+{
   
   use EstudiantePadresTraitSetUp;
   
-  public function __construct() {
+  public function __construct() 
+  {
     parent::__construct();
     self::$table = Config::get(var: 'tablas.usuarios_estudiantes');
     $this->setUp();
-  } //END-__construct
+  }
+
   
-  public function getPadres(int $estudiante_id): array {
+  public function getPadres(int $estudiante_id): array 
+  {
     $DQL = new OdaDql(_from: __CLASS__);
     $DQL->select( 't.dm_user_id as id')
         ->where( 't.estudiante_id=?')->setParams(params: [$estudiante_id]);
     return $DQL->execute();
-  } //END-getPadres
+  }
   
-  public function getHijos(int $padre_id): array {
+  
+  public function getHijos(int $padre_id): array 
+  {
     $DQL = new OdaDql(_from: __CLASS__);
     $DQL->select('t.estudiante_id as id')
         ->where('t.dm_user_id=?')->setParams(params: [$padre_id]);
     return $DQL->execute();
-  } //END-getHijos
+  }
   
+
   
-} //END-CLASS
+}

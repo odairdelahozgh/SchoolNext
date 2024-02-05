@@ -1,33 +1,29 @@
 <?php
 /**
- * Modelo RegistrosDesemp 
+ * Modelo
  * @author   ConstruxZion Soft (odairdelahoz@gmail.com).
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
- 
-/* 
-'id', 'uuid', 'estudiante_id', 'annio', 'periodo_id', 'grado_id', 'salon_id', 
-'fortalezas', 'dificultades', 'compromisos', 'fecha', 
-'acudiente', 'foto_acudiente', 'director', 'foto_director', 
-'created_at', 'updated_at', 'created_by', 'updated_by'
-*/
-  
+
+include "registros/registro_desemp_acad_trait_props.php";
+include "registros/registro_desemp_acad_trait_set_up.php";
+
 class RegistroDesempAcad extends LiteRecord {
 
   use RegistroDesempAcadTraitSetUp;
 
-  public function __construct() {
+  public function __construct() 
+  {
     parent::__construct();
     self::$table = Config::get('tablas.estud_reg_academ');
     self::$_order_by_defa = 't.estudiante_id, t.fecha DESC';
     $this->setUp();
-  } //END-__construct
+  }
 
   
-  
-  // =============
-  public function getByAnnioSalon(int $annio, int $salon_id) {
+  public function getByAnnioSalon(int $annio, int $salon_id) 
+  {
     $annio_actual = Config::get('config.academic.annio_actual');
     $sufijo = ($annio!=$annio_actual) ? '_'.$annio : '' ;
 
@@ -45,11 +41,11 @@ class RegistroDesempAcad extends LiteRecord {
         ->orderBy('t.annio, t.grado_id, e.apellido1, e.apellido2, e.nombres, t.fecha DESC');
     $DQL->setParams([$salon_id]);
     return $DQL->execute();
-  } // END-getRegistrosAnnio
-    
+  }    
 
 
-  public function getRegistrosProfesor(int $user_id) {
+  public function getRegistrosProfesor(int $user_id) 
+  {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select('t.*, s.nombre as salon_nombre')
         ->concat(['e.nombres','e.apellido1','e.apellido2'],  'estudiante_nombre')
@@ -63,9 +59,11 @@ class RegistroDesempAcad extends LiteRecord {
     }
     $DQL->orderBy('t.fecha DESC');
     return $DQL->execute();
-  }//END-getRegistrosProfesor
+  }
+  
 
-  public function saveWithPhoto($data) {
+  public function saveWithPhoto($data) 
+  {
     $this->begin();
     if ($this->update($data)) {
       if ($this->updatePhoto($this->id)) {
@@ -75,7 +73,7 @@ class RegistroDesempAcad extends LiteRecord {
     }
     $this->rollback();
     return false;
-  } //END-saveWithPhoto
+  }
 
   
   public function createWithPhoto($data) {
@@ -88,9 +86,10 @@ class RegistroDesempAcad extends LiteRecord {
     }
     $this->rollback();
     return false;
-  } //END-saveWithPhoto
+  }
 
-  public function updatePhoto($id) {
+  public function updatePhoto($id) 
+  {
     if ($foto_acudiente = $this->uploadPhoto('foto_acudiente')) { //Intenta subir la foto que viene en el campo 'foto_acudiente'
       $this->foto_acudiente = $foto_acudiente;
       Session::set('foto_acudiente',$foto_acudiente);
@@ -107,26 +106,25 @@ class RegistroDesempAcad extends LiteRecord {
       'foto_director'  => $foto_director,
     ]);
     return true;
-  } //END-updatePhoto 
+  }
+  
 
-  public function uploadPhoto($imageField)  {
+  public function uploadPhoto($imageField)  
+  {
     $file = Upload::factory($imageField, 'file');
     $file->setExtensions(array('jpg', 'png', 'gif', 'jpeg'));
     if ($file->isUploaded()) {
       return $file->saveRandom('estud_reg_des_aca_com');
     }
     return false;
-  } //END-uploadPhoto
+  }  
 
   
+  public function cambiarSalonEstudiante(int $nuevo_salon_id, int $nuevo_grado_id, int $estudiante_id) 
+  {
+    $this::query("UPDATE ".self::$table." SET salon_id=$nuevo_salon_id, grado_id=$nuevo_grado_id WHERE estudiante_id=$estudiante_id")->rowCount() > 0;
+  }
 
-  
-  public function cambiarSalonEstudiante(int $nuevo_salon_id, int $nuevo_grado_id, int $estudiante_id) {
-    try {
-      $this::query("UPDATE ".self::$table." SET salon_id=$nuevo_salon_id, grado_id=$nuevo_grado_id WHERE estudiante_id=$estudiante_id")->rowCount() > 0;
-    } catch (\Throwable $th) {
-      OdaLog::error($th);
-    }
-  } //END-cambiarSalonEstudiante
 
-} //END-CLASS
+
+}

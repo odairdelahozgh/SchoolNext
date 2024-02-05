@@ -6,15 +6,25 @@
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  * 
  */
-  
-class EstudianteAdjuntos extends LiteRecord {
+
+include "estudiante/estudiante_adjuntos_trait_correcciones.php";
+include "estudiante/estudiante_adjuntos_trait_props.php";
+include "estudiante/estudiante_adjuntos_trait_set_up.php";
+
+class EstudianteAdjuntos extends LiteRecord 
+{
 
   use EstudianteAdjuntosTraitSetUp;
 
-  public function __construct() {
+  public function __construct() 
+  {
     parent::__construct();
-    self::$table = Config::get('tablas.estud_adjuntos');
-    $this->setUp();
-  } //END
 
-} //END-CLASS
+    self::$table = Config::get('tablas.estud_adjuntos');
+    
+    $this->setUp();
+  }
+  
+
+
+}

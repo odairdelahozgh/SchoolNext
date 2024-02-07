@@ -26,6 +26,7 @@ abstract class AdminController extends Controller
   public string $themei = 'd';
   public ?int $user_id = 0;
   public ?string $user_name = '';
+  public ?string $user_nombre_completo = '';
 
   public string $page_module = '';
   public string $id_instit = '';
@@ -62,6 +63,8 @@ abstract class AdminController extends Controller
       $this->breadcrumb = new OdaBreadcrumb();
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');
+      $this->user_nombre_completo = trim(Session::get('nombres').' '.Session::get('apellido1').' '.Session::get('apellido2'));
+      
       $this->id_instit = Config::get('config.institution.id_name');
       $this->_instit_name = Config::get('config.institution.nombre');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;

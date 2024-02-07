@@ -45,10 +45,14 @@ abstract class AppController extends Controller
 
   public string $theme = 'dark';
   public string $themei = 'd';
+  
   public ?int $user_id = 0;
   public ?string $user_name = '';
+  public ?string $user_nombre_completo = '';
+
   public string $id_instit = '';
   public string $_instit_name = '';
+  
   public int $_periodo_actual = 0;
   public int $_annio_actual = 0;
   public string $_ahora = '';
@@ -58,19 +62,20 @@ abstract class AppController extends Controller
   protected function before_filter()
   {
     if (Input::isAjax()) {
-        View::template(null);
+      View::template(null);
     }
   }
 
 
-  final protected function initialize() {
-    try {
-      
-      if (!Session::get('usuario_logged')) {
+  final protected function initialize() 
+  {
+    try 
+    {
+      if (!Session::get('usuario_logged'))
+      {
         Redirect::to("auth/login");
         return false;
       }
-      
       //if(Auth::is_valid()) $this->userRol = Auth::get("rol");
       $this->data = [0];
       $this->breadcrumb = new OdaBreadcrumb();
@@ -78,6 +83,8 @@ abstract class AppController extends Controller
       
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');
+      $this->user_nombre_completo = trim(Session::get('nombres').' '.Session::get('apellido1').' '.Session::get('apellido2'));
+
       $this->_periodo_actual = Config::get(var: 'config.academic.periodo_actual');
       $this->_annio_actual = Config::get(var: 'config.academic.annio_actual');
 
@@ -92,11 +99,11 @@ abstract class AppController extends Controller
       
       $this->_ahora = date('Y-m-d H:i:s', time());
       $this->_now = new DateTime("now", new DateTimeZone("America/Bogota"));
-      
-    } catch (\Throwable $th) {
+    }
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
-    
   }
   
   

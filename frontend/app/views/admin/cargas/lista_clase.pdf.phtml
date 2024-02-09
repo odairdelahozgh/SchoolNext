@@ -25,6 +25,8 @@ try {
   
   $stylesheet = file_get_contents(dirname(__DIR__).'/cargas/style.css');
   $archivoPDF->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
+  
+  //$archivoPDF->WriteHTML('<p>Nota: listas de clase 2024 aún no están cuadradas<p>');
 
   foreach ($data as $key => $item) {
     $archivoPDF->AddPage();        

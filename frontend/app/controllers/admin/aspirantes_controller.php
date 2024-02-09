@@ -5,96 +5,96 @@
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
   
-  class AspirantesController extends ScaffoldController
-  {
-  protected function before_filter() {
-    $this->nombre_modelo = 'Aspirante';
-  }
+class AspirantesController extends ScaffoldController
+{
+
 
   function trasladar(int $id) 
   {
-    try {
+    try
+    {
       $redirect = "sicologia/admisiones";
       $this->page_action = 'TRASLADAR Aspirante';
       echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
       View::select(null, null);
-
       Aspirante::trasladar($id);
-
-    } catch (\Throwable $th) {
+    }
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
     return Redirect::to($redirect);
   }
 
-  function crear() {
+
+  function crear() 
+  {
     $id = 0;
-    try {
+    try
+    {
       $this->page_action = "Crear Aspirante";
       $redirect = "admisiones/success";
-      //  var_dump(array_filter($_POST, function($k) {
-      //   return $k == 'notas';
-      //   }, ARRAY_FILTER_USE_KEY));
       //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
-      
-      // =================================================================
       // =================================================================
       $post_name_aspir = 'aspirantes';
-      if (!Input::hasPost($post_name_aspir)) { 
+      if ( !Input::hasPost($post_name_aspir) )
+      {
         OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); 
       }
-      
       $documento = '';
-      if (Input::hasPost($post_name_aspir)) {
+      if ( Input::hasPost($post_name_aspir) )
+      {
         $Post = Input::post($post_name_aspir);
         $dataAspir = [];
-        foreach ($Post as $field_name => $value) {
+        foreach ($Post as $field_name => $value)
+        {
           $dataAspir[$field_name] = $value;
-          //echo "[$field_name] = $value<br>";
-          if ('documento'==$field_name) {
+          if ( 'documento'==$field_name )
+          {
             $documento = $value;
           }
         }
-      }//end-foreach
-
+      }
+      // =================================================================
       // AGREGA CAMPOS $dataAdicAspir (DE CONTROL)
       $dataAdicAspir =[];
       $dataAdicAspir['uuid'] = (new Aspirante())->xxh3Hash();
       $dataAdicAspir['created_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspir['created_by']= 0;
       $dataAdicAspir['updated_at'] = date('Y-m-d H:i:s', time());
-      $dataAdicAspir['updated_by']= 0;
-      
-      // OJO :: despuiés buscar otra alternativa mas eficiente
-      $AspExiste = (new Aspirante())::first('Select documento from sweb_aspirantes where documento =?', [$documento]);
-      if (isset($AspExiste)) {
+      $dataAdicAspir['updated_by']= 0;      
+      // OJO :: después buscar otra alternativa mas eficiente
+      $AspExiste = (new Aspirante())::first(
+        'Select documento from sweb_aspirantes where documento =?', [$documento]
+      );
+      if (isset($AspExiste)) 
+      {
         (new Aspirante())::query("DELETE FROM sweb_aspirantes WHERE documento = ?", [$AspExiste->documento]);
         (new AspirantePsico())::query("DELETE FROM sweb_aspirantepsico WHERE aspirante_id = ?", [$AspExiste->id]);
       }
-      
       $DQL = new OdaDql((new Aspirante)::class);
       $DQL->insert($dataAspir)
       ->addInsert($dataAdicAspir)
       ->execute();
-      
-      
-      // =================================================================
       // =================================================================
       $aspirante_id = $DQL->getLastInsertId();
-      $id = $aspirante_id->last_id??0;
-      
+      $id = $aspirante_id->last_id??0;      
       $post_name_aspir_psico = 'aspirantepsicos';
-      if (!Input::hasPost($post_name_aspir_psico)) { OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir_psico</b>, no llegó"); }
-      
-      if (Input::hasPost($post_name_aspir_psico)) {
+      if ( !Input::hasPost($post_name_aspir_psico) )
+      {
+        OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir_psico</b>, no llegó"); 
+      }      
+      if ( Input::hasPost($post_name_aspir_psico) )
+      {
         $Post = Input::post($post_name_aspir_psico);
         $dataAspirPsico = [];
-        foreach ($Post as $field_name => $value) {
+        foreach ($Post as $field_name => $value)
+        {
           $dataAspirPsico[$field_name] = $value;
           //echo "[$field_name] = $value<br>";
         }
-      }//end-foreach
-      
+      }
+      // =================================================================
       // AGREGA CAMPOS DE CONTROL
       $dataAdicAspirPsico =[];
       $dataAdicAspirPsico['uuid'] = (new AspirantePsico())->xxh3Hash();
@@ -103,38 +103,39 @@
       $dataAdicAspirPsico['created_by']= 0;
       $dataAdicAspirPsico['updated_at'] = date('Y-m-d H:i:s', time());
       $dataAdicAspirPsico['updated_by']= 0;
-      
       $DQL = new OdaDql((new AspirantePsico)::class);
       $DQL->insert($dataAspirPsico)
       ->addInsert($dataAdicAspirPsico)
       ->execute();
-      
       OdaFlash::valid("El registro de aspirante #$id ha sido creado satisfactoriamente");
-      
-    } catch (\Throwable $th) {
+    }
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
     return Redirect::to($redirect."/{$id}");
-    
-  } //END-crear
+  }
 
 
-
-  function actualizarPsicologia() {
-    try {
+  function actualizarPsicologia() 
+  {
+    try
+    {
       $debug = false;
-      if ($debug) { 
+      if ($debug)
+      { 
         echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
       }
 
       $this->page_action = "Actualizar Aspirante";
       $redirect = "sicologia/admisiones";
-
       $post_name_aspir = 'aspirantes';
-      if (!Input::hasPost($post_name_aspir)) { 
+
+      if ( !Input::hasPost($post_name_aspir) )
+      {
         OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); 
       }
-      
+
       // CARGA LOS DATOS DEL POST EN UN ARRAY
       $arrCamposValidos = [
         "estatus"         => '',
@@ -153,23 +154,32 @@
       ];
 
       $aspirante_id = 0;
-      if (Input::hasPost($post_name_aspir)) {
-        $Post = Input::post($post_name_aspir);
-        
+      if (Input::hasPost($post_name_aspir)) 
+      {
+        $Post = Input::post($post_name_aspir);        
         $is_active_ctrl = false;
         $is_fecha_entrev = false;
         $is_fecha_eval = false;
-
-        foreach ($Post as $field_name => $value) {
-          
-          if ('is_active'==$field_name) { $is_active_ctrl = true; }
-          if ('is_fecha_entrev'==$field_name) { $is_fecha_entrev = true; }
-          if ('is_fecha_eval'==$field_name) { $is_fecha_eval = true; }
-
-          if (array_key_exists($field_name, $arrCamposValidos) and strlen($value)>0) {
+        foreach ($Post as $field_name => $value)
+        {          
+          if ('is_active'==$field_name) 
+          {
+            $is_active_ctrl = true; 
+          }
+          if ('is_fecha_entrev'==$field_name)
+          {
+            $is_fecha_entrev = true; 
+          }
+          if ('is_fecha_eval'==$field_name)
+          {
+            $is_fecha_eval = true; 
+          }
+          if ( array_key_exists($field_name, $arrCamposValidos) and strlen($value)>0 )
+          {
             $arrCamposValidos[$field_name] = $value;
           }
-          if ('id'==$field_name) {
+          if ('id'==$field_name)
+          {
             $aspirante_id = $value;
           }
         }
@@ -181,86 +191,86 @@
       // AGREGA CAMPOS DE CONTROL
       $dataAdicAspir =[];
       $dataAdicAspir['updated_at'] = date('Y-m-d H:i:s', time());
-      $dataAdicAspir['updated_by'] = $this->user_id;
-      
+      $dataAdicAspir['updated_by'] = $this->user_id;      
       $DQL = new OdaDql((new Aspirante)::class);
       $DQL->update($arrCamposValidos)
           ->addUpdate($dataAdicAspir)
           ->where('id=?')
           ->setParams([$aspirante_id]);
       $DQL->execute($debug);
-      
-
-      OdaFlash::valid('Actualización exitosa.');
-    
-    } catch (\Throwable $th) {
+      OdaFlash::valid('Actualización exitosa.');    
+    }
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
     return Redirect::to($redirect);
-
-  } //END-actualizarPsicologia
-
+  }
 
 
 
-  function actualizarSecretaria() {
-    try {
+
+  function actualizarSecretaria() 
+  {
+    try
+    {
       $debug = false;
-      if ($debug) { 
+      if ($debug)
+      {
         echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
       }
-
       $this->page_action = "Actualizar Aspirante";
       $redirect = "secretaria/admisiones";
-
       $post_name_aspir = 'aspirantes';
-      if (!Input::hasPost($post_name_aspir)) { 
+      if (!Input::hasPost($post_name_aspir)) 
+      { 
         OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$post_name_aspir</b>, no llegó"); 
-      }
-      
+      }      
       // CARGA LOS DATOS DEL POST EN UN ARRAY
       $arrCamposValidos = [
         "ctrl_llamadas" => '', 
         'is_pago'       => 0,
         'grado_aspira'  => '',
       ];
-
       $aspirante_id = 0;
-      if (Input::hasPost($post_name_aspir)) {
+      if (Input::hasPost($post_name_aspir)) 
+      {
         $Post = Input::post($post_name_aspir);
         $is_pago_ctrl = false;
-        foreach ($Post as $field_name => $value) {
-          if ('is_pago'==$field_name) { $is_pago_ctrl = true; }
-          if (array_key_exists($field_name, $arrCamposValidos) and strlen($value)>0) {
+        foreach ($Post as $field_name => $value) 
+        {
+          if ('is_pago'==$field_name)
+          {
+            $is_pago_ctrl = true;
+          }
+          if (array_key_exists($field_name, $arrCamposValidos) and strlen($value)>0)
+          {
             $arrCamposValidos[$field_name] = $value;
           }
-          if ('id'==$field_name) {
+          if ('id'==$field_name)
+          {
             $aspirante_id = $value;
           }
         }
         $arrCamposValidos['is_pago'] = ($is_pago_ctrl) ? 1 : 0 ;
       }
-
       // AGREGA CAMPOS DE CONTROL
       $dataAdicAspir =[];
       $dataAdicAspir['updated_at'] = date('Y-m-d H:i:s', time());
-      $dataAdicAspir['updated_by'] = $this->user_id;
-      
+      $dataAdicAspir['updated_by'] = $this->user_id;      
       $DQL = new OdaDql((new Aspirante)::class);
       $DQL->update($arrCamposValidos)
           ->addUpdate($dataAdicAspir)
           ->where('id=?')
           ->setParams([$aspirante_id]);
       $DQL->execute($debug);
-      
-
-      OdaFlash::valid('Actualización exitosa.');
-    
-    } catch (\Throwable $th) {
+      OdaFlash::valid('Actualización exitosa.');    
+    }
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
     return Redirect::to($redirect);
-
   }
 
 

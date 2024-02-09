@@ -1,6 +1,6 @@
 <?php
 /**
-  * Controlador Tareas  
+  * Controlador
   * @category App
   * @package Controllers https://github.com/KumbiaPHP/Documentation/blob/master/es/controller.md
   */
@@ -8,4 +8,4 @@
 class TareasController extends ScaffoldController
 {
 
-} // END CLASS
+}

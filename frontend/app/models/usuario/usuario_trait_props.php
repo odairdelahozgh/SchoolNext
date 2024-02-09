@@ -86,6 +86,22 @@ trait UsuarioTraitProps {
   }
 
 
+  public function getCuentaInstit($show_ico=false) 
+  { 
+    try {
+      $ico = ($show_ico) ? OdaTags::img(src:'msteams_logo.svg', attrs:'width="16"', err_message:'').' '  : '';
+  
+      return $ico.(
+        ($this->usuario_instit) 
+        ? $this->usuario_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit 
+        : 'No tiene usuario en MS TEAMS'
+      );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
+  }
 
 
 }

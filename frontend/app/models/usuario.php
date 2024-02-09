@@ -106,7 +106,7 @@ class Usuario extends LiteRecord {
       $DQL->execute(true);
   }
 
-  
+ 
 
 
 }

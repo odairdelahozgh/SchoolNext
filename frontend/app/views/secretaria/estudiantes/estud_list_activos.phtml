@@ -126,7 +126,18 @@
       document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'b') {
           inputSearch.value = "Segundo";
-          inputSearch.select();
+          inputSearch.focus();
         }
       });
+</script>
+
+<script>
+  document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && (event.key === 'B' || event.key === 'b')) {
+      var inputSearch = document.getElementById('inputSearch');
+      inputSearch.value = 'Quinto';
+      inputSearch.focus();
+      inputSearch.click();
+    }
+  });
 </script>

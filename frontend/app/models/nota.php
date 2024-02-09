@@ -203,13 +203,15 @@ class Nota extends LiteRecord {
     );
   }
 
-  
+  /**
+   * Devuelve: RegNota, estudiante_nombre,asignatura_nombre
+   */
   public static function getBySalonAsignaturaPeriodos(
     int $salon_id, 
     int $asignatura_id, 
     array $periodos=[], 
     $annio=null
-  ) 
+  ): array
   {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $str_p = implode(',', $periodos);

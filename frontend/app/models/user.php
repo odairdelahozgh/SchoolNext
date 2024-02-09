@@ -112,8 +112,6 @@ class User extends ActiveRecord
         $auth->setAlgos('sha1');
         $auth->setKey('usuario_logged');
         
-
-        
         Session::set('ip', OdaUtils::getIp() );
         $estePeriodo = (new Periodo)->getPeriodoActual();
         Session::set('annio',        (int)Config::get('config.academic.annio_actual'));

@@ -14,7 +14,7 @@ foreach ($data as $key => $item) {
   if ($brake <> $item->grado_nombre) {
     if ( !empty($brake) ) {
       $tot = $cnt_int_grado-1;
-      $tabla->addRow(['', '', '', '', "<b>Total Matriculados: {$tot}</b>"]);
+      $tabla->addRow(['', '', '', '', "<b>Total: {$tot}</b>"]);
     }
     $tabla->addRow(['<hr>', '<hr>', '<hr>', '<hr>', '<hr>']);
     $tabla->addRow($head);

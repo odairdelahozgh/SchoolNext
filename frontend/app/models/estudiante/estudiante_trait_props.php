@@ -96,7 +96,6 @@ trait EstudianteTraitProps {
       ($this->isPazYSalvo()) 
       ? ' <span class="w3-text-green">'._Icons::solid('coins', 'w3-large').'</span>' 
       : ' <span class="w3-text-red">'._Icons::solid('coins', 'w3-large').'</span>';
-
     return $result;
   }
 

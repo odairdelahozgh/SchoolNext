@@ -83,10 +83,16 @@
 
       $lnk_listado_mat = OdaTags::linkButton(
         action: "admin/estudiantes/exportListMatriculadosPdf", 
-        text: 'Listado Matriculados PDF', 
+        text: 'Matriculados PDF', 
         attrs: 'class="w3-button w3-green" target="_blank"'
       );
-      
+
+      $lnk_listado_pendientes_mat = OdaTags::linkButton(
+        action: "admin/estudiantes/exportListPendientesMatriculaPdf", 
+        text: 'Pendientes x Matricular PDF', 
+        attrs: 'class="w3-button w3-blue" target="_blank"'
+      );
+
       echo "
       <div class=\"w3-row\">
 
@@ -102,7 +108,7 @@
             <h3>Matriculados [$tot_matriculados] / Faltan {$tot_sin_matricula}</h3>
             $resultados_mat
           </div>
-          <p>$lnk_listado_mat<p>
+          <p>$lnk_listado_mat $lnk_listado_pendientes_mat<p>
         </div>
 
       </div>

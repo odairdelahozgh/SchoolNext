@@ -8,6 +8,7 @@
  */
 
 include "usuario/usuario_trait_props.php";
+include "usuario/usuario_trait_setters.php";
 include "usuario/usuario_trait_set_up.php";
   
 class Usuario extends LiteRecord {
@@ -47,6 +48,7 @@ class Usuario extends LiteRecord {
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);
+      return [];
     }
   }
 
@@ -63,42 +65,16 @@ class Usuario extends LiteRecord {
   }
 
 
-  public function setPassword(string $seed=null): bool
-  {
-    try 
-    {
-      $salt = md5(rand(100000, 999999).$this->username);
-      if ( is_null($seed) )
-      {
-        $seed = ($this->documento == $this->username) ? $this->documento: substr($this->documento, -4);  // true:padres  false:empleados
-      }
-      return $this->update(
-        [
-          'salt' => $salt,
-          'password' => hash('sha1', $salt.$seed),
-        ]
-      );
-    }
-    catch (\Throwable $th)
-    {
-      OdaFlash::error($th);
-      return false;
-    }
+  public function getPadres()
+  { 
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select("t.*")
+      ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'usuario_nombre')
+      ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'nombre')
+      ->where('t.username = t.documento')
+      ->orderBy(self::$_order_by_defa);
+    return $DQL->execute();
   }
-
-
-  public function setRetirar(): bool 
-  {    
-    return $this->update(
-      [
-        'id' => $this->id,
-        'fecha_ret' => date('Y-m-d', time()),
-        'is_carga_acad_ok' => 0,
-        'is_active' => 0,
-      ]
-    );
-  }
-
 
 
 }

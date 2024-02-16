@@ -154,13 +154,16 @@ class Aspirante extends LiteRecord {
           ->execute();
 
       // 4) Crear sweb_estudiante_adjuntos_dos
+      /*
       $DQL = new OdaDql('EstudianteAdjuntosDos');
       $DQL->setFrom('sweb_estudiante_adjuntos_dos');
       $DQL->insert($data)
           ->execute();
+      */
 
       // 5) Crear Usuario Madre
-      $data = [
+      /*
+       $data = [
         'uuid' => $Aspirante->xxh3Hash(), 
         'username' => $Aspirante->madre_id, 
         'roll' => 'padres', 
@@ -181,6 +184,7 @@ class Aspirante extends LiteRecord {
         'created_at' => date('Y-m-d H:i:s', time()), 
         'updated_at' => date('Y-m-d H:i:s', time()), 
       ];
+      */
 
       // $DQL = new OdaDql('Usuario');
       // $DQL->setFrom('dm_user');

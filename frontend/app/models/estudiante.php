@@ -487,31 +487,23 @@ class Estudiante extends LiteRecord
   }
 
   
-  public function setRetirar(string $motivo, int $user_id) 
+  public function setRetirar(string $motivo, int $user_id): bool 
   {
     try {
       $hoy = new DateTime();
-      $DQL = (new OdaDql(__CLASS__));
-      $DQL->setFrom('sweb_estudiantes');
       $arrValues = [
+        'id' => $this->id,
         'is_active' => 0,
         'retiro' => $motivo,
         'annio_promovido' => 0,
+        'grado_promovido' => $this->grado_mat,
         'numero_mat' => '',
         'fecha_ret' => $hoy->format('Y-m-d'),
-        'updated_at' => $hoy->format('Y-m-d'),
-        'updated_by'=> $user_id,
       ];
-      
-      $DQL->update($arrValues)
-      ->where('t.id=?')
-      ->setParams([$this->id]);
-      $DQL->execute();
-      
-      return true;
-    
+      return $this->update($arrValues);
     } catch (\Throwable $th) {
       OdaFlash::error($th);
+      return false;
     }
   }
 

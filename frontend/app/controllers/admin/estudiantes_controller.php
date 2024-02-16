@@ -27,6 +27,16 @@ class EstudiantesController extends ScaffoldController
   }
   
 
+  public function exportListPendientesMatriculaPdf(): void 
+  {
+    $this->file_title = "Listado de Estudiantes Pendientes x Matricular";
+    $this->file_name = OdaUtils::getSlug($this->file_title);
+    $this->data = (new Estudiante)->getListPendientesMatricula();
+    $this->file_download = false;
+    View::select(view: "export_pdf_pendientes_matricula", template: 'pdf/mpdf');
+  }
+  
+
   public function exportPdf(): void 
   {
     $this->file_name = OdaUtils::getSlug("listado-de-$this->controller_name");

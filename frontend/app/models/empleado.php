@@ -15,13 +15,21 @@ class Empleado extends Usuario {
 
   use EmpleadoTraitSetUp;
 
+  public function __construct() 
+  {
+    parent::__construct();
+    self::$table = Config::get('tablas.usuario');
+    self::$_order_by_defa = 't.is_active DESC, t.apellido1, t.apellido2, t.nombres';
+    $this->setUp();
+  }
+
   public function getList(
     int|bool $estado=null, 
     $select='*', 
     string|bool $order_by=null
   )
   { 
-    $DQL = new OdaDql('usuario');
+    $DQL = new OdaDql('Usuario');
 
     $DQL->select("t.*")
       ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'usuario_nombre')
@@ -37,7 +45,7 @@ class Empleado extends Usuario {
       $DQL->orderBy($order_by); 
     }
 
-    return $DQL->execute();
+    return $DQL->execute(true);
   }
   
 

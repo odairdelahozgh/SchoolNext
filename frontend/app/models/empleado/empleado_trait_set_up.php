@@ -2,7 +2,8 @@
 
 trait EmpleadoTraitSetUp {
   
-  use TraitUuid, TraitForms, TraitValidar, EmpleadoTraitProps, EmpleadoTraitCallBacks;
+  use TraitUuid, TraitForms, TraitValidar, 
+  EmpleadoTraitProps, EmpleadoTraitCallBacks;
 
 
   private function setUp() 

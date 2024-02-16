@@ -2,8 +2,8 @@
 
 trait UsuarioTraitSetUp {
   
-  use TraitUuid, TraitForms, TraitValidar;
-  use UsuarioTraitProps;  
+  use TraitUuid, TraitForms, TraitValidar,
+      UsuarioTraitProps, UsuarioTraitSetters;  
 
   private function setUp() 
   {

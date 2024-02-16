@@ -225,13 +225,13 @@ class NotasController extends ScaffoldController
       $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
       $this->arrData['Seccion'] = $this->arrData['Grado']->seccion_id;      
       $this->arrData['Docentes'] = [];
-      foreach ((new Empleado())->getList() as $empleado)
+      $Emp = new Usuario();
+      foreach ( $Emp->getDocentes() as $empleado)
       {
         $this->arrData['Docentes'][$empleado->id] = $empleado;
-      }  
+      }
       $this->data = (new Nota())->getByAnnioPeriodoEstudiante($annio, $periodo_id, $Estud->id);
       $Indicadores = (new Indicador())->getByAnnioPeriodoGrado($annio, $periodo_id, $this->arrData['Grado']->id);
-  
       foreach ($Indicadores as $key => $indic)
       {
         $val = strtoupper(substr($indic->valorativo,0,1));
@@ -243,7 +243,6 @@ class NotasController extends ScaffoldController
       
       View::select(view: "boletines_hist.pdf", template: null);
     }
-
     catch (\Throwable $th)
     {
       OdaFlash::error($th);

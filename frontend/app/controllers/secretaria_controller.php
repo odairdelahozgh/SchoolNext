@@ -156,7 +156,7 @@ class SecretariaController extends AppController
     try 
     {
       $this->page_action = 'Retirar Estudiante';
-      $Estud = (new Estudiante)->get($estudiante_id);
+      $Estud = (new Estudiante)::get($estudiante_id);
       if ($Estud->setRetirar($motivo, $this->user_id)) 
       {
         OdaFlash::valid("$this->page_action: $Estud");

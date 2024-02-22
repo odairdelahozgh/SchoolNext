@@ -39,7 +39,7 @@ class RegistrosGen extends LiteRecord {
     $DQL->orderBy('t.fecha DESC');
     return $DQL->execute();
   }
-
+  
   
   public function saveWithPhoto($data) 
   {

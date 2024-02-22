@@ -20,19 +20,17 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: iglesia_linaje
 --
-
 -- --------------------------------------------------------
-
 --
 -- Estructura de tabla para la tabla plantilla
 --
 
-DROP TABLE IF EXISTS snxt_plantilla;
-CREATE TABLE snxt_plantilla (
+DROP TABLE IF EXISTS snxt_plantilla_tablas;
+CREATE TABLE snxt_plantilla_tablas (
   id bigint(20) NOT NULL,
   nombre varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   uuid varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
-  is_active tinyint(1) NOT NULL DEFAULT '1',
+  is_active tinyint(1) DEFAULT NULL,
   orden bigint(20) DEFAULT NULL,
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
   created_by bigint(20) DEFAULT 1,
@@ -43,14 +41,14 @@ CREATE TABLE snxt_plantilla (
 --
 -- Indices de la tabla plantilla
 --
-ALTER TABLE snxt_plantilla
+ALTER TABLE snxt_plantilla_tablas
   ADD PRIMARY KEY (id),
   ADD UNIQUE KEY uuid_idx (uuid);
 
 --
 -- AUTO_INCREMENT de la tabla plantilla
 --
-ALTER TABLE snxt_plantilla
+ALTER TABLE snxt_plantilla_tablas
   MODIFY id bigint(20) NOT NULL AUTO_INCREMENT;
 COMMIT;
 

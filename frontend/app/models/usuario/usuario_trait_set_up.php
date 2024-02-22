@@ -23,8 +23,8 @@ trait UsuarioTraitSetUp {
       'theme' => 'dark', 
       'algorithm' => 'sha1',
       'fecha_ing' => '2024-02-01',
-      'roll' => 'docentes',
-      'cargo' => 'Docente de ',
+      'roll' => 'padres',
+      'cargo' => '',
     ];
   
     self::$_helps = [

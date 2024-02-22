@@ -21,7 +21,7 @@ try {
 
   $archivoPDF->SetSubject($file_tipo);
   $archivoPDF->SetTitle($file_title);
-  $Nota = new Nota();
+  //$Nota = new Nota();
   
   $stylesheet = file_get_contents(dirname(__DIR__).'/cargas/style.css');
   $archivoPDF->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
@@ -33,7 +33,8 @@ try {
     $tabla = new OdaTable('border=1 width=100%');
     $Caption = $user_nombre_completo .' - '.$item->salon_nombre .' - '.$item->asignatura_nombre.' - Periodo:' .$arrData['periodo'];
     $tabla->setCaption($Caption);
-    $archivoPDF->encabezado($tabla);    
+    $archivoPDF->encabezado($tabla);
+    /*
     $Notas = $Nota->getBySalonAsignaturaPeriodos(
       $item->salon_id, 
       $item->asignatura_id, 
@@ -42,7 +43,14 @@ try {
     foreach ($Notas as $key => $nota)
     {
       $archivoPDF->cuerpo($tabla, $key, $nota);
-    }    
+    }
+    */
+    $Estudiantes = (new Estudiante)->getListBySalon($item->salon_id);
+    foreach ($Estudiantes as $key => $Estud)
+    {
+      $archivoPDF->cuerpo($tabla, $key, $Estud);
+    }
+
     $archivoPDF->WriteHTML($tabla.$archivoPDF->pie());
   }  
   $archivoPDF->showWatermarkText = false;

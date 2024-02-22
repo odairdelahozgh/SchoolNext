@@ -139,15 +139,18 @@ class LiteRecord extends ORM
     $DQL = new OdaDql(self::$_class_name);
     $DQL->select($select)
          ->orderBy(self::$_order_by_defa);
-    if (!is_null(value: $order_by))
+
+    if (!is_null($order_by))
     {
       $DQL->orderBy( $order_by);
     }
-    if (!is_null(value: $estado))
+
+    if (!is_null($estado))
     { 
       $DQL->where( 't.is_active=?')
       ->setParams([$estado]);
     }
+
     return $DQL->execute();
   }
 

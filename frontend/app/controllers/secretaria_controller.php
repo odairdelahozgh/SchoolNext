@@ -83,8 +83,8 @@ class SecretariaController extends AppController
     try 
     {
       $this->page_action = 'Actualizar Mes Pagado Estudiante';
-      $Estud = (new Estudiante)->get($estudiante_id);
-      if ($Estud->setActualizarPago($estudiante_id)) 
+      $Estud = (new Estudiante)::get($estudiante_id);
+      if ($Estud->setActualizarPago()) 
       {
         OdaFlash::valid("$this->page_action: $Estud");
       } 
@@ -108,8 +108,8 @@ class SecretariaController extends AppController
     try 
     {
       $this->page_action = 'Actualizar Mes Pagado Estudiante';
-      $Estud = (new Estudiante)->get($estudiante_id);
-      if ( $Estud->setMesPago($estudiante_id, $mes) )
+      $Estud = (new Estudiante)::get($estudiante_id);
+      if ( $Estud->setMesPago($mes) )
       {
         OdaFlash::valid("$this->page_action: $Estud");
       } 
@@ -117,7 +117,7 @@ class SecretariaController extends AppController
       {
         OdaFlash::warning("$this->page_action: $Estud");
       }
-    } 
+    }
     catch (\Throwable $th) 
     {
       OdaFlash::error($th);

@@ -203,5 +203,10 @@ class EstudiantesController extends ScaffoldController
   }
 
 
+  public function vincularPadresHijos(int $estudiante_id) 
+  {
+    EstudiantePadres::vincularPadresHijos($estudiante_id);
+    return Redirect::to('admin/estudiantes');
+  }
 
 }

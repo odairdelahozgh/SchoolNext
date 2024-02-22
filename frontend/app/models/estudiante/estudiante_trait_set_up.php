@@ -3,7 +3,7 @@
 trait EstudianteTraitSetUp {
   
   use TraitUuid, TraitForms, TraitValidar,
-      EstudianteTraitProps, EstudianteTraitLinks, EstudianteTraitDatosPadres, 
+      EstudianteTraitProps, EstudianteTraitSetters, EstudianteTraitLinks, EstudianteTraitDatosPadres, 
       EstudianteTraitMatriculas, EstudianteTraitCorrecciones;
   
   

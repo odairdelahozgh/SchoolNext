@@ -11,6 +11,15 @@ trait EstudianteTraitProps {
   }
 
 
+  static public function getId(string $documento): int 
+  {
+    $source  =  Config::get('tablas.estudiante');
+    $sql = "SELECT id FROM $source WHERE documento = ?";
+    $regUser = static::query($sql, [$documento])->fetch();
+    return ( ($regUser) ? (int)$regUser->id: 0);
+  }
+
+
   public function getCodigo(): string 
   { 
     return '[Cod: '.$this->id.']'; 

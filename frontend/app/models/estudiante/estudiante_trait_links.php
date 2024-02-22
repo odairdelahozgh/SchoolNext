@@ -115,5 +115,13 @@ trait EstudianteTraitLinks {
   }
 
   
+  public function getLnkVincularPadresHijos()
+  {
+    return Html::linkAction(
+      "vincularPadresHijos/{$this->id}", 
+      "Padres Hijos", 
+      "class=\"w3-button w3-pale-blue w3-block\""
+    );
+  }
 
 }

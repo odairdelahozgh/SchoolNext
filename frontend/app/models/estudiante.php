@@ -12,6 +12,7 @@ include "estudiante/estudiante_trait_datos_padres.php";
 include "estudiante/estudiante_trait_links.php";
 include "estudiante/estudiante_trait_matriculas.php";
 include "estudiante/estudiante_trait_props.php";
+include "estudiante/estudiante_trait_setters.php";
 include "estudiante/estudiante_trait_set_up.php";
 
 class Estudiante extends LiteRecord 
@@ -258,7 +259,6 @@ class Estudiante extends LiteRecord
   {
     $lista = (new EstudiantePadres)->getHijos($user_id);
     $filtro = implode(',', $lista);
-    $annio_actual = 2023;
 
     $orden = str_replace(
       array('n', 'a1', 'a2'), 
@@ -412,100 +412,18 @@ class Estudiante extends LiteRecord
       
     return $lnk_cambio;
   }
-
-
-  public function setCambiarSalon(
-    int $estudiante_id, 
-    int $nuevo_salon_id, 
-    bool $cambiar_en_notas=true
-  ): bool 
-  {
-    try {
-      $RegSalonNew = (new Salon)::get($nuevo_salon_id);
-      if ($RegSalonNew) {
-          $RegEstud = (new Estudiante)::get($estudiante_id);
-          $RegEstud->salon_id  = $RegSalonNew->id;
-          $RegEstud->grado_mat = $RegSalonNew->grado_id;
-          $RegEstud->save();
-          if ($cambiar_en_notas) {
-            (new Nota)->cambiarSalonEstudiante($nuevo_salon_id, $RegSalonNew->grado_id, $estudiante_id);
-            (new RegistrosGen)->cambiarSalonEstudiante($nuevo_salon_id, $RegSalonNew->grado_id, $estudiante_id);
-            (new RegistroDesempAcad)->cambiarSalonEstudiante($nuevo_salon_id, $RegSalonNew->grado_id, $estudiante_id);
-          }
-          return true; // para acá
-      }
-      
-    } catch (\Throwable $th) {
-      OdaLog::error($th);
-    }
-    return false;
-  }
-  
-  
-  public function setActualizarPago(int $estudiante_id): bool 
-  {
-    $RegEstud = (new Estudiante)->get($estudiante_id);
-    if ($RegEstud) {
-      $RegEstud->mes_pagado = self::LIM_PAGO_PERIODOS[self::$_periodo_actual];
-      $RegEstud->annio_pagado = self::$_annio_actual;
-      $RegEstud->is_debe_preicfes = 0;
-      $RegEstud->is_debe_almuerzos = 0;
-      $RegEstud->save();
-      return true;
-    }
-    
-    return false;
-  }
-  
-
-  public function setMesPago(int $estudiante_id, int $mes): bool 
-  {
-    $RegEstud = (new Estudiante)->get($estudiante_id);
-    if ($RegEstud) {
-      $RegEstud->mes_pagado = $mes;
-      $RegEstud->annio_pagado = self::$_annio_actual;
-      $RegEstud->save();
-      return true;
-    }
-    
-    return false;
-  }
- 
-
   public function getNumEstudiantes_BySalon(int $salon_id): int 
   {
-    $DQL = (new OdaDql(__CLASS__));
+    $DQL = new OdaDql(__CLASS__);
     $DQL->setFrom('sweb_estudiantes');
     $DQL->select('count(*) as total')
         ->groupBy('t.salon_id')
         ->where('t.is_active=1 AND t.salon_id=?')
         ->setParams([$salon_id]);
-
     $tot = $DQL->execute();
-
     return ($tot[0]->total??0);
   }
 
-  
-  public function setRetirar(string $motivo, int $user_id): bool 
-  {
-    try {
-      $hoy = new DateTime();
-      $arrValues = [
-        'id' => $this->id,
-        'is_active' => 0,
-        'retiro' => $motivo,
-        'annio_promovido' => 0,
-        'grado_promovido' => $this->grado_mat,
-        'numero_mat' => '',
-        'fecha_ret' => $hoy->format('Y-m-d'),
-      ];
-      return $this->update($arrValues);
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-      return false;
-    }
-  }
 
 
 

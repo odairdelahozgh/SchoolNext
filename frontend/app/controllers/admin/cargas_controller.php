@@ -14,6 +14,7 @@ class CargasController extends ScaffoldController
     {
       $this->data = (new SalAsigProf())->getCarga($this->user_id);      
       $this->arrData['periodo']  = $periodo_id;
+      $this->arrData['user_id']  = $this->user_id;
       $this->file_tipo = 'Listas de clase';
       $this->file_name = OdaUtils::getSlug("lista-de-clase-periodo-$periodo_id");
       $this->file_title = "Lista de Clase PDF - Periodo $periodo_id";

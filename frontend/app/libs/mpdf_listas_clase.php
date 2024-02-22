@@ -66,11 +66,11 @@ class MpdfListasClase extends Mpdf
   }
   
 
-  public function cuerpo(&$tabla, $key, $nota): void
+  public function cuerpo(&$tabla, $key, $registro): void
   {  ///estudiante_nombre,asignatura_nombre
     $cols = [
       ($key+1),
-      $nota->estudiante_nombre,
+      $registro->estudiante_nombre,
       '',
       "",
       "",

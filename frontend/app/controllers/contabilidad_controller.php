@@ -44,8 +44,8 @@ class ContabilidadController extends AppController
     try 
     {
       $this->page_action = 'Actualizar Mes Pagado Estudiante';
-      $Estud = (new Estudiante)->get($estudiante_id);
-      if ($Estud->setActualizarPago(estudiante_id: $estudiante_id))
+      $Estud = (new Estudiante)::get($estudiante_id);
+      if ($Estud->setActualizarPago())
       {
         OdaFlash::valid("$this->page_action: $Estud");
       }

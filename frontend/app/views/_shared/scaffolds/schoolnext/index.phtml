@@ -7,18 +7,25 @@
     if ($tot_regs = count($data)) {
       $tabla = new OdaTable();
       $tabla->setHead(data_head: ['Acciones', ...$fieldsToShowLabels, '']);
-      foreach ($data as $key => $item_data) {
+      foreach ($data as $key => $item_data) 
+      {
+
         $lnkSetupCalificar = '';
-        if ('salones'==$controller_name and 1==$item_data->is_active) {
+        if ('salones'==$controller_name and 1==$item_data->is_active) 
+        {
           $item_data->setNumeroEstudiantes();
           $lnkSetupCalificar = $item_data->getLnkSetupCalificarSalon();
         }
-
         $lnkRetirar = '';
-        if ('usuarios'==$controller_name and 1==$item_data->is_active) {
+        if ('usuarios'==$controller_name and 1==$item_data->is_active) 
+        {
           //$lnkRetirar = $item_data->getLnkRetirar();
         }
-
+        $lnkVincularPadresHijos = '';
+        if ('estudiantes'==$controller_name and 1==$item_data->is_active) 
+        {
+          $lnkVincularPadresHijos = $item_data->getLnkVincularPadresHijos($item_data->id);
+        }
         
         $uuid_ok   = (property_exists(object_or_class: $item_data, property: 'uuid') && !is_null(value: $item_data->uuid));
         $edit_id   = ($uuid_ok) ? "editUuid/$item_data->uuid" : "edit/$item_data->id";
@@ -37,7 +44,8 @@
         );
         
         $lnkSetPass = '';
-        if ('usuarios'==$controller_name) {
+        if ('usuarios'==$controller_name) 
+        {
           $lnkSetPass = Html::linkAction(
             action: "setPassword/$item_data->id", 
             text: _Icons::solid(icon: 'key'), 
@@ -63,9 +71,14 @@
           $arrFields[] = $dato;
         }
 
+        $linksActions = $lnkSetPass.'&nbsp;&nbsp;'
+                      .$lnkEditar.'&nbsp;&nbsp;'
+                      .$lnkBorrar.'&nbsp;&nbsp;'
+                      .$lnkRetirar.'&nbsp;&nbsp;'
+                      .$lnkVincularPadresHijos.'&nbsp;&nbsp;';
         $arrBody = [
-          $lnkSetPass.'&nbsp;&nbsp;'.$lnkEditar.'&nbsp;&nbsp;'.$lnkBorrar.'&nbsp;&nbsp;'.$lnkRetirar.'&nbsp;&nbsp;', 
-          ...$arrFields, $lnkSetupCalificar
+          $linksActions, 
+          ...$arrFields, $lnkSetupCalificar 
         ];
         $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"', 'class="searchTdata"']);
       }

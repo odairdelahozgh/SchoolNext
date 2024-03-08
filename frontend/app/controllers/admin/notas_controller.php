@@ -8,6 +8,33 @@
 class NotasController extends ScaffoldController
 {
 
+  public function filtrar(
+    int $annio,
+    int $periodo,
+    int $salon,
+    int $asignatura,
+  )
+  {
+    try {
+      $this->page_action = "Listado $this->controller_name Filtradas" ;
+      $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow('filtrar');
+      $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow('filtrar', true);
+      $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
+      
+      $Nota = new Nota();
+      $this->data = $Nota::getNotas_ByAnnioPeriodoSalonAsignaturaEstudiante(
+        $annio,
+        $periodo,
+        $salon,
+        $asignatura,
+      );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }
+
+
   public function generarNotasEnBlanco_BySalonAsignatura(int $salon_id, int $asignatura_id) 
   {
     try

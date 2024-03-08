@@ -18,6 +18,7 @@ class IndexController extends AppController
         View::select(view: 'layout-pagenavs', template: 'looper/layout-pagenavs');
       }
     }
+
     catch (\Throwable $th)
     {
       OdaFlash::error($th);

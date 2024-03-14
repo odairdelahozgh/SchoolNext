@@ -30,12 +30,11 @@ class SalAsigProf extends LiteRecord {
       $DQL = (new OdaDql(__CLASS__));
       $DQL->setFrom(self::$table);
       $DQL->select('DISTINCT t.salon_id');
-
-      if ($user_id<>1) {
+      if ($user_id<>1) 
+      {
         $DQL->where('t.user_id=?')
             ->setParams([$user_id]);
-      }
-      
+      }      
       return $DQL->execute();
     
     } catch (\Throwable $th) {
@@ -58,16 +57,16 @@ class SalAsigProf extends LiteRecord {
         ->leftJoin('asignatura', 'a')
         ->leftJoin('usuario', 'u', 't.user_id=u.id')
         ->where('s.is_active=1')
-        ->orderBy('asignatura_nombre, salon_nombre');
-  
-      if ($user_id<>1) {
-          $DQL->andWhere('t.user_id=?');
-          $DQL->setParams([$user_id]);
+        ->orderBy('asignatura_nombre, salon_nombre');  
+      if ($user_id<>1)
+      {
+        $DQL->andWhere('t.user_id=?');
+        $DQL->setParams([$user_id]);
       }
-
       return $DQL->execute();
-    
-    } catch (\Throwable $th) {
+
+    } catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
   }
@@ -79,15 +78,20 @@ class SalAsigProf extends LiteRecord {
       ->addSelect('DISTINCT s.grado_id, t.salon_id, t.asignatura_id, ga.intensidad')
       ->leftJoin('salon', 's', 't.salon_id')
       ->where('s.is_active=1');
-
-    if ($user_id<>1) {
-        $DQL->andWhere('t.user_id=?');
-        $DQL->setParams([$user_id]);
+    if ($user_id<>1)
+    {
+      $DQL->andWhere('t.user_id=?');
+      $DQL->setParams([$user_id]);
     }
-
     return $DQL->execute();
   }
   
+  
+  public function getProfesor(int $salon_id, int $asignatura_id) 
+  {    
+    $DQL = (new OdaDql(__CLASS__));
+    $DQL->select('t.*');
+  }
 
  
 }

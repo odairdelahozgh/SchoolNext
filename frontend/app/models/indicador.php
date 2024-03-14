@@ -34,22 +34,20 @@ class Indicador extends LiteRecord {
   ) 
   {
     $DQL = new OdaDql(__CLASS__);
-
     $DQL->select("t.*, CONCAT('Periodo ', p.periodo) as periodo_nombre, g.nombre AS grado_nombre, a.nombre AS asignatura_nombre")
         ->leftJoin('periodo', 'p')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
         ->orderBy(self::$_order_by_defa);
-
-    if (!is_null($order_by)) {
+    if (!is_null($order_by))
+    {
       $DQL->orderBy($order_by);
     }
-
-    if (!is_null($estado)) { 
+    if (!is_null($estado))
+    { 
       $DQL->where('t.is_active=?')
           ->setParams([$estado]);
     }
-
     return $DQL->execute();
   }
 
@@ -60,14 +58,12 @@ class Indicador extends LiteRecord {
   ): array|string 
   {
     $DQL = new OdaDql(__CLASS__);
-
     $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
         ->where('t.periodo_id=? AND t.grado_id=?')
         ->orderBy(self::$_order_by_defa)
         ->setParams([$periodo_id, $grado_id]);
-
     return $DQL->execute();
   }
 
@@ -81,14 +77,12 @@ class Indicador extends LiteRecord {
     $tbl_indica = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $DQL = new OdaDql(__CLASS__);
     $DQL->setFrom($tbl_indica);
-
     $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
         ->where('t.periodo_id=? AND t.grado_id=?')
         ->orderBy(self::$_order_by_defa)
         ->setParams([$periodo_id, $grado_id]);
-
     return $DQL->execute();
   }
 
@@ -100,14 +94,12 @@ class Indicador extends LiteRecord {
   ): array|string 
   {
     $DQL = new OdaDql(__CLASS__);
-
     $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
         ->where('t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
         ->leftJoin('grado', 'g')
         ->leftJoin('asignatura', 'a')
         ->orderBy(self::$_order_by_defa)
         ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-
     return $DQL->execute();
   }
 
@@ -115,19 +107,20 @@ class Indicador extends LiteRecord {
     int $grado_id, 
     int $asignatura_id
   ) {
-    try {
+    try
+    {
       $DQL = new OdaDql(__CLASS__);
-
       $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
           ->where('t.grado_id=? AND t.asignatura_id=?')
           ->leftJoin('grado', 'g')
           ->leftJoin('asignatura', 'a')
           ->orderBy(self::$_order_by_defa)
-          ->setParams([$grado_id, $asignatura_id]);
-      
+          ->setParams([$grado_id, $asignatura_id]);      
       return $DQL->execute();
-
-    } catch (\Throwable $th) {
+    }
+    
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
   }
@@ -139,19 +132,20 @@ class Indicador extends LiteRecord {
     int $asignatura_id
   ) 
   {
-    try {
+    try
+    {
       $DQL = new OdaDql(__CLASS__);
-
       $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
           ->where('t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
           ->leftJoin('grado', 'g')
           ->leftJoin('asignatura', 'a')
           ->orderBy(self::$_order_by_defa)
-          ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-      
+          ->setParams([$periodo_id, $grado_id, $asignatura_id]);      
       return $DQL->execute();
+    }
 
-    } catch (\Throwable $th) {
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
   }
@@ -163,19 +157,20 @@ class Indicador extends LiteRecord {
     int $asignatura_id
   ) 
   {
-    try {
+    try
+    {
       $DQL = new OdaDql(__CLASS__);
-
       $DQL->select('t.*, g.nombre as grado_nombre, a.nombre as asignatura_nombre')
           ->where('t.is_active=1 AND t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
           ->leftJoin('grado', 'g')
           ->leftJoin('asignatura', 'a')
           ->orderBy(self::$_order_by_defa)
           ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-
       return $DQL->execute();
-
-    } catch (\Throwable $th) {
+    }
+    
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
   }
@@ -187,21 +182,21 @@ class Indicador extends LiteRecord {
     int $asignatura_id
   ) 
   {
-    try {
+    try
+    {
       $DQL = new OdaDql(__CLASS__);
-
       $DQL->select('t.codigo, t.valorativo, t.concepto')
           //->where('t.is_active=1 AND t.is_visible=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
           ->where('t.is_active=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
           ->orderBy(self::$_order_by_defa)
           ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-
-      return $DQL->execute();
-      
-    } catch (\Throwable $th) {
+      return $DQL->execute();      
+    }
+    
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
-
   }
 
 
@@ -211,17 +206,16 @@ class Indicador extends LiteRecord {
     int $asignatura_id
   ) 
   {
-    try {
+    try
+    {
       $DQL = new OdaDql(__CLASS__);
-
       $DQL->select('t.valorativo, MIN(t.codigo) AS min, MAX(t.codigo) AS max')
           ->where('t.is_active=1 AND t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
           ->groupBy('t.valorativo')
           ->orderBy(self::$_order_by_defa)
-          ->setParams([$periodo_id, $grado_id, $asignatura_id]);
-      
-      $MinMaxIndicad = $DQL->execute();
-      
+          ->setParams([$periodo_id, $grado_id, $asignatura_id]);  
+          
+      $MinMaxIndicad = $DQL->execute();      
       $arrResult = [
         'regs_min' => 0, 
         'regs_max' => 0,
@@ -233,21 +227,25 @@ class Indicador extends LiteRecord {
         'max_recomendacion' => 0,
         'ancho_lim' => 0,
       ];
-
-      if (isset($MinMaxIndicad)) { // verifico que hay registros
+      if (isset($MinMaxIndicad)) // verifico que hay registros
+      {
         $min_max_todos = [];
-        foreach ($MinMaxIndicad as $key => $Indic) {
+        foreach ($MinMaxIndicad as $key => $Indic)
+        {
           $min_max_todos[] = (int)$Indic->min;
           $min_max_todos[] = (int)$Indic->max;
-          if (str_starts_with(strtoupper($Indic->valorativo), 'F')) {
+          if (str_starts_with(strtoupper($Indic->valorativo), 'F'))
+          {
             $arrResult['min_fortaleza'] = (int)$Indic->min;  
             $arrResult['max_fortaleza'] = (int)$Indic->max;
           }
-          if (str_starts_with(strtoupper($Indic->valorativo), 'D')) {
+          if (str_starts_with(strtoupper($Indic->valorativo), 'D'))
+          {
             $arrResult['min_debilidad'] = (int)$Indic->min;  
             $arrResult['max_debilidad'] = (int)$Indic->max;
           }
-          if (str_starts_with(strtoupper($Indic->valorativo), 'R')) {
+          if (str_starts_with(strtoupper($Indic->valorativo), 'R'))
+          {
             $arrResult['min_recomendacion'] = (int)$Indic->min; 
             $arrResult['max_recomendacion'] = (int)$Indic->max;
           }
@@ -256,10 +254,11 @@ class Indicador extends LiteRecord {
         $arrResult['regs_max'] = max($min_max_todos);
         $arrResult['ancho_lim'] = strlen((string)$arrResult['regs_max']);
       }
-
       return $arrResult;
-
-    } catch (\Throwable $th) {
+    }
+    
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
   }

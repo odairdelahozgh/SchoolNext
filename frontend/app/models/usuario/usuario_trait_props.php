@@ -113,6 +113,21 @@ trait UsuarioTraitProps {
   }
 
 
+  static public function existe(string $documento): bool 
+  {
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->select("t.id, t.documento")
+        ->where('t.documento=?')
+        ->setParams([$documento]);
+    $Reg = $DQL->executeFirst(true);
+    return ($Reg ? true : false);
+  }
+
+
+  static public function crearUsuario() 
+  {
+    
+  }
 
 
 }

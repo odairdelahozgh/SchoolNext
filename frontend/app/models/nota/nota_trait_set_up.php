@@ -1,24 +1,10 @@
 <?php
-require_once VENDOR_PATH.'autoload.php';
-use Respect\Validation\Validator as validar;
-use Respect\Validation\Exceptions\NestedValidationException;
-// https://respect-validation.readthedocs.io/en/latest/
 
 trait NotaTraitSetUp {
   
-  use TraitUuid, TraitForms, NotaTraitProps, NotaTraitLinks, NotaTraitCorrecciones;
-  
-  public function validar($input_post): bool {
-    Session::set(index: 'error_validacion', value: '');
-    try{
-      return true;
-    } catch(NestedValidationException $exception) {
-      Session::set(index: 'error_validacion', value: $exception->getFullMessage());
-      return false;
-    }
-  } //END-validar
-
-  
+  use TraitUuid, TraitForms, TraitValidar, 
+  NotaTraitProps, NotaTraitLinks, NotaTraitCorrecciones;
+    
   /*
    * CONFIGURACIÓN DEL MODELO
    *   'id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 
@@ -49,6 +35,7 @@ trait NotaTraitSetUp {
             'is_asi_validar_ok', 'asi_calificacion', 'is_asi_ok_dirgrupo', 'is_asi_ok_coord',
             'ausencias', 'inthoraria', 'created_at', 'updated_at', 'created_by', 'updated_by'],
       'index'     => ['id', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
+      'filtrar'   => ['id', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id'],
       'create'    => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
       'edit'      => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
       'editUuid'  => ['periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 'i21', 'i22', 'i23', 'i24', 'i25' ],
@@ -202,11 +189,18 @@ trait NotaTraitSetUp {
       'updated_at'      => 'Actualizado el',
       'updated_by'      => 'Actualizado por',
 
+      'annio' => 'Año', 
+      'periodo_id'=> 'Periodo', 
+      'grado_id'=> 'Grado', 
+      'salon_id'=> 'Salón', 
+      'asignatura_id'=> 'Asignatura', 
+      'estudiante_id'=> 'Estudiante', 
+
       'definitiva'   => 'Definitiva',
       'plan_apoyo'   => 'P. Apoyo',
       'nota_final'   => 'N. Final',
 
-      'paf_fecha_entrega' => 'Fecha de entrega',
+      'paf_fecha_entrega' => 'F Entrega',
       'paf_temas' => 'Temas',
       'paf_acciones' => 'Acciones',
       'paf_activ_profe' => 'Actividades Realizadas por el Profesor',

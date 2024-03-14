@@ -19,9 +19,8 @@ class Area extends LiteRecord
     $this->setUp();
   }
 
-  public static function getLista(string $fields = '*') 
+  public function getLista(string $fields = '*') 
   {
-    //$sql = QueryGenerator::select(static::getSource(), 'mysql', []);
     $sql = "SELECT $fields FROM ".static::getSource();
     return static::query($sql);
   }

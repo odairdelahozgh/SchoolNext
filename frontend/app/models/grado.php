@@ -27,36 +27,32 @@ class Grado extends LiteRecord {
   {
     $DQL = "SELECT g.*, s.nombre AS seccion
             FROM ".self::$table." AS g
-            LEFT JOIN ".Config::get('tablas.secciones')." AS s ON g.seccion_id=s.id";
-    
-    if (!is_null($estado)) {
+            LEFT JOIN ".Config::get('tablas.secciones')." AS s ON g.seccion_id=s.id";    
+    if (!is_null($estado))
+    {
       $DQL .= " WHERE (g.is_active=?) ORDER BY g.orden";
       return $this::all($DQL, array((int)$estado));
     }
-
-    $DQL .= " ORDER BY g.orden";
-    
+    $DQL .= " ORDER BY g.orden";    
     return $this::all($DQL);
   }
 
 
   public function getList(int|bool $estado=null, string $select='*', string|bool $order_by=null) 
   {
-    $DQL = new OdaDql(__CLASS__);
-  
+    $DQL = new OdaDql(__CLASS__);  
     $DQL->select('t.*, t.nombre AS grado_nombre, s.nombre AS seccion_nombre, s.nombre AS seccion')
         ->leftJoin('seccion', 's')
         ->orderBy(self::$_order_by_defa);
-
-    if (!is_null($order_by)) {
+    if (!is_null($order_by))
+    {
       $DQL->orderBy($order_by);
     }
-
-    if (!is_null($estado)) { 
+    if (!is_null($estado))
+    { 
       $DQL->where('t.is_active=?')
           ->setParams([$estado]);
     }
-
     return $DQL->execute();
   }
 

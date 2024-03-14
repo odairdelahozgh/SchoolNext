@@ -37,8 +37,7 @@ class Seguimientos extends Nota {
     int $asignatura_id, 
     array $periodos=[], 
     $annio=null
-  ) {
-    try {
+  ): array {
       $str_p = implode(',', $periodos);
       
       $DQL = (new OdaDql(__CLASS__))
@@ -56,10 +55,6 @@ class Seguimientos extends Nota {
       ->orderBy('t.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres');
     
     return $DQL->execute();
-      
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
   }
 
   

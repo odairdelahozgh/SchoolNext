@@ -72,7 +72,7 @@ trait EstudianteTraitMatriculas {
       ->addSelect('de.tipo_acudi, de.madre, de.madre_tel_1, de.padre, de.padre_tel_1, de.acudiente, de.acudi_tel_1')
       ->concat(['t.apellido1', 't.apellido2', 't.nombres'], 'estudiante_nombre')
       ->leftJoin('grado', 'g', 't.grado_promovido=g.id')
-      ->leftJoin('datos_estud', 'de', 't.id=de.estudiante_id')
+      ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
       ->where("t.is_active=1 AND (t.numero_mat=0 OR ISNULL(t.numero_mat))")
       ->orderBy('g.orden,t.apellido1,t.apellido2,t.nombres');
     

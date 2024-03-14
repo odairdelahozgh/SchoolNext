@@ -27,13 +27,16 @@ class Nota extends LiteRecord {
   
   public function setUpdateCalificacion() 
   {
-    try {
+    try
+    {
       // $this::query(
       //   "UPDATE ".self::$table." SET salon_id=?, grado_id=? WHERE estudiante_id=? ", 
       //   [$RegSalonNuevo->id, $RegSalonNuevo->grado_id, $estudiante_id]
       // )->rowCount() > 0;
-
-    } catch (\Throwable $th) {
+    }
+    
+    catch (\Throwable $th)
+    {
       OdaLog::error($th);
     }
   }
@@ -69,15 +72,46 @@ class Nota extends LiteRecord {
         ->leftJoin('asignatura', 'a')
         ->where('t.salon_id=17')
         ->orderBy(self::$_order_by_defa);
-
-    if (!is_null($order_by)) { 
+    if (!is_null($order_by))
+    { 
       $DQL->orderBy($order_by); 
-    }
-    
+    }    
     return $DQL->execute();
   }
 
-   
+  public function getNotas_ByAnnioPeriodoSalonAsignaturaEstudiante(
+    int|bool $annio,
+    int|bool $periodo,
+    int|bool $salon,
+    int|bool $asignatura,
+    int|bool $estudiante=null,
+  ) : array
+  {
+    $tbl_notas = Config::get('tablas.nota');
+    $tbl_notas .= (!is_null($annio) && ($annio < self::$_annio_actual)) ? "_$annio" : '';
+
+    $DQL = new OdaDql(__CLASS__);
+    $DQL->setFrom($tbl_notas);
+    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id')
+      ->addSelect('t.definitiva, t.plan_apoyo, t.nota_final')
+      ->addSelect('g.nombre as grado_nombre')
+      ->addSelect('s.nombre as salon_nombre')
+      ->addSelect('a.nombre as asignatura_nombre')
+      ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
+      ->leftJoin('grado', 'g')
+      ->leftJoin('asignatura', 'a')
+      ->leftJoin('salon', 's')
+      ->leftJoin('estudiante', 'e')
+      ->where("t.periodo_id=$periodo AND t.salon_id=$salon AND t.asignatura_id=$asignatura");
+    if (!is_null($estudiante))
+    {
+      $DQL->andWhere("t.estudiante_id=?")->setParams($estudiante);
+    }
+    $DQL->orderBy('t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id');
+    return $DQL->execute();
+  }
+
+
   public function getByPeriodoEstudiante(
     int $periodo_id, 
     int $estudiante_id
@@ -211,7 +245,7 @@ class Nota extends LiteRecord {
     int $asignatura_id, 
     array $periodos=[], 
     $annio=null
-  ): array
+  ): array 
   {
     $tbl_notas = self::$table.( (!is_null($annio)) ? "_$annio" : '' );
     $str_p = implode(',', $periodos);

@@ -40,10 +40,10 @@ class EstudiantePadres extends LiteRecord
   }
   
 
-  static public function vincularPadresHijos(int $estudiante_id)
+  public function vincularPadresHijos(int $estudiante_id)
   {
     try {
-      $RegEstud = (new Estudiante)->get($estudiante_id);
+      $RegEstud = (new Estudiante)::get($estudiante_id);
       if ($RegEstud) 
       {
         // Existe Estudiante
@@ -89,7 +89,7 @@ class EstudiantePadres extends LiteRecord
             'apellido2'=>'', 
             'direccion'=>$RegEstudDetalle->madre_dir, 
             'documento'=>$RegEstudDetalle->madre_id, 
-            'email'=>$RegEstudDetalle->madre_email, 
+            'email'=> ($RegEstudDetalle->madre_email ?? $RegEstudDetalle->madre_tel_1.'@mimail.com'), 
             'telefono1'=>$RegEstudDetalle->madre_tel_1, 
             'telefono2'=>$RegEstudDetalle->madre_tel_2, 
             'cargo'=>$RegEstudDetalle->madre_ocupa, 
@@ -150,8 +150,8 @@ class EstudiantePadres extends LiteRecord
             'apellido1'=>'', 
             'apellido2'=>'', 
             'direccion'=>$RegEstudDetalle->padre_dir, 
-            'documento'=>$RegEstudDetalle->padre_id, 
-            'email'=>$RegEstudDetalle->padre_email, 
+            'documento'=>$RegEstudDetalle->padre_id,
+            'email'=> ($RegEstudDetalle->padre_email ?? $RegEstudDetalle->padre_tel_1.'@mimail.com'),
             'telefono1'=>$RegEstudDetalle->padre_tel_1, 
             'telefono2'=>$RegEstudDetalle->padre_tel_2, 
             'cargo'=>$RegEstudDetalle->padre_ocupa, 

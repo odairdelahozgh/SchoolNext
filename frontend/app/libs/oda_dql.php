@@ -34,22 +34,23 @@ class OdaDql {
   
   public function render(): string 
   {
-    return match($this->_tipo_dql) {
+    return match($this->_tipo_dql)
+    {
       TipoDql::Select => 'SELECT '
               . ((empty($this->_select) or ('*'==$this->_select)) ? 't.*' : $this->_select)
-              . " FROM $this->_from_source AS t"
-              . implode(" ", $this->_joins)
-              . (empty($this->_where)    ? '' : " WHERE $this->_where ")
-              . (empty($this->_group_by) ? '' : " GROUP BY $this->_group_by")
-              . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by")
-              . (empty($this->_limit)    ? '' : " LIMIT $this->_limit"),
+              . PHP_EOL." FROM $this->_from_source AS t"
+              . PHP_EOL.implode(" ", $this->_joins)
+              . (empty($this->_where)    ? '' : PHP_EOL." WHERE $this->_where ")
+              . (empty($this->_group_by) ? '' : PHP_EOL." GROUP BY $this->_group_by")
+              . (empty($this->_order_by) ? '' : PHP_EOL." ORDER BY $this->_order_by")
+              . (empty($this->_limit)    ? '' : PHP_EOL." LIMIT $this->_limit"),
 
       TipoDql::Update => "UPDATE $this->_from_source AS t"
-              . (empty($this->_sets) ? '-ERROR NO SET-' : " SET $this->_sets")
-              . (empty($this->_where) ? '' : " WHERE $this->_where"),
+              . (empty($this->_sets) ? PHP_EOL.'-ERROR NO SET-' : PHP_EOL." SET $this->_sets")
+              . (empty($this->_where) ? '' : PHP_EOL." WHERE $this->_where"),
       
       TipoDql::Insert => "INSERT INTO $this->_from_source "
-      . (empty($this->_inserts_cols) ? '-ERROR NO SET-' : " ($this->_inserts_cols) VALUES ($this->_inserts_vals) "),
+      . (empty($this->_inserts_cols) ? PHP_EOL.'-ERROR NO SET-' : PHP_EOL." ($this->_inserts_cols) VALUES ($this->_inserts_vals) "),
 
     };
   }  
@@ -78,7 +79,9 @@ class OdaDql {
   public function execute(bool $write_log = false) 
   {
     if ($write_log) { 
-      OdaLog::debug($this->renderlog().PHP_EOL.'Params: ' .$this->getParams());
+      OdaLog::debug(
+        $this->renderlog().PHP_EOL
+        .'Params: ' .$this->getParams() );
     }
     return (new $this->_from)->all($this->render(), $this->_params);
   }
@@ -111,8 +114,14 @@ class OdaDql {
 
   public function addSelect(string $select) 
   {
-    if (empty($this->_select)) { $this->_select = $select; } 
-    else { $this->_select .= ", $select"; }
+    if (empty($this->_select)) 
+    {
+      $this->_select = $select;
+    } 
+    else
+    {
+      $this->_select .= ', '.PHP_EOL.$select;
+    }
 
     $this->_tipo_dql  = TipoDql::Select;
     return $this;
@@ -186,10 +195,13 @@ class OdaDql {
       $str .= ', '.$concat[$cnt-1].") AS $alias";
     }
 
-    if (empty($this->_select)) {
+    if (empty($this->_select))
+    {
       $this->_select = $str;
-    } else {
-      $this->_select .= ", $str";
+    }
+    else
+    {
+      $this->_select .= ', '.PHP_EOL.$str;
     }
     $this->_tipo_dql  = TipoDql::Select;
     return $this;
@@ -198,7 +210,7 @@ class OdaDql {
   public function leftJoin(string $table_singular, string $alias, $condition = null) 
   {
     $table_singular = OdaUtils::singularize(strtolower(trim($table_singular)));
-    $join = " LEFT JOIN ". Config::get("tablas.$table_singular") ." AS $alias ";
+    $join = PHP_EOL." LEFT JOIN ". Config::get("tablas.$table_singular") ." AS $alias ";
     if (is_null($condition)) { $condition = "t.$table_singular"."_id=$alias.id"; }
     $join .= " ON $condition ";
     $this->_joins[]=$join;
@@ -213,13 +225,13 @@ class OdaDql {
 
   public function andWhere(string $where) 
   {
-    $this->_where = ($this->_where) ? "($this->_where) AND ($where)" : $where;
+    $this->_where = ($this->_where) ? PHP_EOL."($this->_where) AND ($where)" : $where;
     return $this;
   }
 
   public function orWhere(string $where) 
   {
-    $this->_where = ($this->_where) ? "($this->_where) OR ($where)" : $where;
+    $this->_where = ($this->_where) ? PHP_EOL."($this->_where) OR ($where)" : $where;
     return $this;
   }
 
@@ -231,14 +243,14 @@ class OdaDql {
 
   public function addOrderBy(string $sort) 
   {
-    $this->_order_by = ($this->_order_by) ? "$this->_order_by, $sort" : $sort;
+    $this->_order_by = ($this->_order_by) ? PHP_EOL."$this->_order_by, $sort" : $sort;
     // Default $order = 'ASC'
     return $this;
   }
 
   public function groupBy(string $group)
   {
-    $this->_group_by = $group;
+    $this->_group_by = PHP_EOL.$group;
     return $this;
   }
 
@@ -250,7 +262,7 @@ class OdaDql {
   
   public function getParams() 
   {
-    return '['.implode(',', $this->_params).']';
+    return count($this->_params).'['.implode(',', $this->_params).']';
   }
 
   public function setFrom(string $nombre_tabla): void 

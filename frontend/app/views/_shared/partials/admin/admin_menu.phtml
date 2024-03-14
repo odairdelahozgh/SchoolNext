@@ -1,19 +1,13 @@
 <details class="w3-padding">
-      <summary> <u>Docentes</u> </summary>
-      <?= OdaTags::linkBarItem('docentes/index', 'Index') ?>
-      <?php View::partial("docentes/docentes_menu") ?>
+  <summary> <u>Docentes</u> </summary>
+  <?= OdaTags::linkBarItem('docentes/index', 'Index') ?>
+  <?php View::partial("docentes/docentes_menu") ?>
 </details>
    
 <details class="w3-padding">
   <summary> <u>Coordinación</u> </summary>
   <?= OdaTags::linkBarItem('coordinador/index', 'Index') ?>
   <?php View::partial("coordinador/coordinador_menu") ?>
-</details>
-
-<details class="w3-padding">
-  <summary> <u>Contabilidad</u> </summary>
-  <?= OdaTags::linkBarItem('contabilidad/index', 'Index') ?>
-  <?php View::partial("contabilidad/contabilidad_menu") ?>
 </details>
 
 <details class="w3-padding">
@@ -29,9 +23,15 @@
 </details>
 
 <details class="w3-padding">
-      <summary> <u>Padres</u> </summary>
-      <?= OdaTags::linkBarItem('padres/index', 'Index') ?>
-      <?php View::partial("padres/padres_menu") ?>
+  <summary> <u>Contabilidad</u> </summary>
+  <?= OdaTags::linkBarItem('contabilidad/index', 'Index') ?>
+  <?php View::partial("contabilidad/contabilidad_menu") ?>
+</details>
+
+<details class="w3-padding">
+  <summary> <u>Padres</u> </summary>
+  <?= OdaTags::linkBarItem('padres/index', 'Index') ?>
+  <?php View::partial("padres/padres_menu") ?>
 </details>
 
 <details class="w3-padding">
@@ -39,17 +39,6 @@
   <?= OdaTags::linkBarItem('enfermeria/index', 'Index') ?>
   <?php View::partial("enfermeria/enfermeria_menu") ?>
 </details>
-
-
-
-
-
-<details class="w3-padding">
-  <summary><u>Admin Tablas</u></summary>
-  <?= OdaTags::linkBarItem('admin/correcciones', 'Correcciones', '') ?>
-  <?= OdaTags::linkBarItem('admin/tareas', 'Tareas', '') ?>
-</details>
-
 
 <details class="w3-padding">
   <summary><u>Config del Sistema</u></summary>

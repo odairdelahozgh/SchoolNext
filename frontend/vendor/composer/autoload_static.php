@@ -125,6 +125,7 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
+        'Shuchkin\\SimpleXLSX' => __DIR__ . '/..' . '/shuchkin/simplexlsx/src/SimpleXLSX.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

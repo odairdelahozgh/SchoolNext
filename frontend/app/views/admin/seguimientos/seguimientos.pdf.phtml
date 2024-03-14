@@ -38,20 +38,19 @@ try {
 
   // ENCADEZADO
   // --------------------------------
-  $tabla = new OdaTable(_attrs: 'width="100%"');
-  $tabla->setCaption("ACCIONES DE SEGUIMIENTO INTERMEDIO PERIODO {$arrData['Periodo']}");
-  
   $attrs_td  = ['width="15%"', 'width="30%"', 'width="45%"', 'width="10%"'];
+  $tabla = new OdaTable('style="width:100%"');
+  $tabla->setCaption("ACCIONES DE SEGUIMIENTO INTERMEDIO PERIODO {$arrData['Periodo']}");
   $fila = [
-    '<b>Salon: </b>'. $arrData['Salon'],
-    '<b>Asignatura: </b>'. $arrData['Asign'],
-    '<b>Desempeño: </b>'. $data->asi_desempeno,
+    '<b>Salon: </b>'. $arrData['Salon']->nombre,
+    '<b>Asignatura: </b>'. $arrData['Asign']->nombre,
+    '<b>Desempeno: </b>'. $data->asi_desempeno,
     '<b>Periodo: </b>'. $arrData['Periodo'],
   ];
   $tabla->addRow(data: $fila, attrs: ['bgcolor="#B2BABB";'], attrs_td: $attrs_td);
-  
   // --------------------------------
   // --------------------------------
+  //$attrs_td  = ['colspan="2"; width="50%";','width="15%"','width="15%"', 'width="20%"'];
   $attrs_td  = ['colspan="2";', 'width="15%"', 'width="20%"'];
   $fila = [
     '<b>'.$arrData['Estud'].'</b>',
@@ -69,10 +68,12 @@ try {
   $titulo = '<hr><h4>DIFICULTADES</h4>';
   $tabla->addRow(data: [$titulo], attrs_td: ['colspan="4"']);
   $dificultades = '';
-  for ($i=21; $i<=30; $i++) { 
-    $codigo = $data->{'i'."$i"};
+  for ($i=21; $i<=30; $i++) {
+    $indi = "i{$i}";
+    $codigo = $data->{$indi};
+    OdaLog::debug("$indi >> codigo: $codigo");
     if (strlen($codigo)>0) {
-      $concepto = $arrData ['Indicadores'] [$data->asignatura_id] [$codigo] ['concepto'] ?? '';      
+      $concepto = $arrData ['Indicadores'] [$data->asignatura_id] [$codigo] ['concepto'] ?? "$codigo -not found-";      
       if (strlen($concepto)>0) {
         $dificultades .= "* $concepto<br>";
       }
@@ -109,11 +110,12 @@ try {
     $tabla->addRow(data: [$data->asi_link_externo1], attrs_td: ['colspan="4"']);
     $tabla->addRow(data: [$data->asi_link_externo2], attrs_td: ['colspan="4"']);
   }
-
-  $tabla->addRow(data: ['<hr><b>Fecha de entrega:</b> '.$data->asi_fecha_entrega], attrs_td: ['colspan="4"']);
+  
+  $dt = DateTime::createFromFormat('Y-m-d', $data->asi_fecha_entrega, new DateTimeZone("America/Bogota"));
+  $tabla->addRow(data: ['<hr><b>Fecha de entrega:</b> '.$dt->format("l, j F [Y]")], attrs_td: ['colspan="4"']);
   
   $archivoPDF->WriteHTML($tabla);
-  $archivoPDF->Output("{$file_name}.pdf", 'D');
+  $archivoPDF->Output("{$file_name}.pdf", 'I');
 
 } catch (\Throwable $th) {
   OdaLog::error($th);

@@ -2,6 +2,7 @@
     "require": {
         "mpdf/mpdf": "^8.1",
         "codehaveli/bitly-php": "dev-master",
-        "tedivm/jshrink": "~1.0"
+        "tedivm/jshrink": "~1.0",
+        "shuchkin/simplexlsx": "^1.0"
     }
 }

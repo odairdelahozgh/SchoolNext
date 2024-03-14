@@ -2,7 +2,8 @@
 
 class UsuariosController extends ScaffoldController
 {
-    
+  
+  
   public function setPassword(int $id) 
   {
     try

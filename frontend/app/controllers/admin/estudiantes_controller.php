@@ -13,7 +13,7 @@ class EstudiantesController extends ScaffoldController
     $this->page_action = "Listado $this->controller_name" ;
     $this->fieldsToShow = (new Estudiante())->getFieldsShow(__FUNCTION__);
     $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
-    $this->data = (new Estudiante())->getListEstudiantes($orden='n,a1,a2');
+    $this->data = (new Estudiante())->getListEstudiantes();
   }
 
 
@@ -98,10 +98,11 @@ class EstudiantesController extends ScaffoldController
     {
       $redirect = str_replace('.','/', $redirect);
       $this->page_action = 'EDITAR Registro Estudiante';
-      echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
-      View::select(null, null);      
+      //echo include(APP_PATH.'views/_shared/partials/snippets/show_input_post.phtml');
+      View::select(null, null);
+
       // ============================================================================
-      // TABLA ESTUDIANTES
+      
       if (!Input::hasPost('estudiantes')) 
       {
         OdaFlash::warning("$this->page_action - No coincide post 'estudiantes'");
@@ -120,8 +121,9 @@ class EstudiantesController extends ScaffoldController
       {
         OdaFlash::warning("$this->page_action - No actualizó el Registro en ESTUDIANTES.");
       }
+
       // ============================================================================
-      // TABLA DATOSESTUDS
+      
       if (!Input::hasPost('datosestuds'))
       {
         OdaFlash::warning("$this->page_action - No coincide post DATOSESTUDS");
@@ -134,8 +136,9 @@ class EstudiantesController extends ScaffoldController
       {
         OdaFlash::warning("$this->page_action - No actualizó el Registro en DATOSESTUDS.");
       }
+
       // ============================================================================
-      // TABLA EstudianteAdjuntos
+      
       if (!Input::hasPost('estudianteadjuntos'))
       {
         OdaFlash::warning("$this->page_action - No coincide post estudianteadjuntos");
@@ -147,9 +150,11 @@ class EstudiantesController extends ScaffoldController
       if ( !(new EstudianteAdjuntos)->update(Input::post('estudianteadjuntos')) )
       {
         OdaFlash::warning("$this->page_action - No actualizó el Registro en estudianteadjuntos.");
-      }      
+      }
+      
       return Redirect::to($redirect);
     }
+
     catch (\Throwable $th)
     {
       OdaFlash::error($th);
@@ -172,6 +177,7 @@ class EstudiantesController extends ScaffoldController
       $this->file_title = OdaUtils::getSlug("DOC-MAT-ESTUD");
       View::select(view: "export_pdf_docs_matriculas", template: null);    
     }
+
     catch (\Throwable $th)
     {
       OdaFlash::error($th);
@@ -195,6 +201,7 @@ class EstudiantesController extends ScaffoldController
             ->execute();
       }
     }
+    
     catch (\Throwable $th)
     {
       OdaFlash::error($th);
@@ -205,7 +212,7 @@ class EstudiantesController extends ScaffoldController
 
   public function vincularPadresHijos(int $estudiante_id) 
   {
-    EstudiantePadres::vincularPadresHijos($estudiante_id);
+    (new EstudiantePadres)->vincularPadresHijos($estudiante_id);
     return Redirect::to('admin/estudiantes');
   }
 

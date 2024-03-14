@@ -109,9 +109,8 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Direcci&oacute;n de Grupo';
-      $periodo = Session::get('periodo');
-      $this->data = (new usuario)->misGrupos();
-      for ($i=1; $i <=$periodo ; $i++) 
+      $this->data = (new Usuario)->misGrupos();
+      for ($i=1; $i <=$this->_periodo_actual ; $i++) 
       { 
         $a_regs = (new Nota)::getNotasPromAnnioPeriodoSalon($i, $this->data[0]->id);
         foreach ($a_regs as $key => $value) 
@@ -142,8 +141,8 @@ class DocentesController extends AppController
       $es_coordinador =  [31, 33, 19];
       if ( in_array($this->user_id, $es_coordinador) ) 
       {
-        $estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
-      } 
+        $estudiantes = (new Estudiante)->getListPorCoordinador($this->user_id);
+      }
       else 
       {
         $estudiantes = (new Estudiante)->getListPorProfesor($this->user_id);
@@ -164,10 +163,9 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Registros de Desempeño Académico';
-      //$estudiantes = (new Estudiante)->getListEstudiantes(estado: 1);
       $estudiantes = (new Estudiante)->getListPorDirector($this->user_id);
       $this->arrData = ['estudiantes' => $estudiantes];
-      $this->data = (new RegistroDesempAcad)->getRegistrosProfesor(user_id: Session::get('id'));
+      $this->data = (new RegistroDesempAcad)->getRegistrosProfesor($this->user_id);
     }
     catch (\Throwable $th) 
     {
@@ -302,9 +300,12 @@ class DocentesController extends AppController
       $RegPeriodo =(new Periodo)->get($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
       $this->data = (new Seguimientos)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
+      OdaLog::debug('data'.count($this->data));
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
+      OdaLog::debug('dd'.count($RegsIndicad));
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
       
+
       $this->arrData = [
         'Periodo'           => $RegPeriodo,
         'Asignatura'        => $RegAsignatura,
@@ -321,7 +322,7 @@ class DocentesController extends AppController
         'min_indic'         => $MinMaxIndicad['regs_min'],
         'max_indic'         => $MinMaxIndicad['regs_max'],
         'ancho_lim'         => $MinMaxIndicad['ancho_lim'],
-        'cnt_indicador'     => count($RegsIndicad),
+        //'cnt_indicador'     => count($RegsIndicad),
       ];
       View::select(view: 'notas/seguimientos/index');
     }

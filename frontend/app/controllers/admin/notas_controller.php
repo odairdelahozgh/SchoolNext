@@ -20,16 +20,12 @@ class NotasController extends ScaffoldController
       $this->fieldsToShow = (new $this->nombre_modelo())->getFieldsShow('filtrar');
       $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow('filtrar', true);
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
-      
       $Nota = new Nota();
-      $this->data = $Nota::getNotas_ByAnnioPeriodoSalonAsignaturaEstudiante(
-        $annio,
-        $periodo,
-        $salon,
-        $asignatura,
-      );
+      $this->data = $Nota::getNotas_ByAnnioPeriodoSalonAsignaturaEstudiante($annio, $periodo, $salon, $asignatura);
+    } 
     
-    } catch (\Throwable $th) {
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
   }

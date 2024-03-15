@@ -27,18 +27,11 @@ class CoordinadorController extends AppController
   }
   
 
-  public function listadoEstudiantes() 
+  public function listadoEstudiantes(): void 
   {
-    try 
-    {
-      $this->page_action = 'Listado de Estudiantes Activos';
-      //$this->data = (new Estudiante)->getListSecretaria(estado:1);
-      $this->data = (new Estudiante)->getListPorCoordinador($this->user_id);
-    } 
-    catch (\Throwable $th) 
-    {
-      OdaFlash::error($th);
-    }
+    $this->page_action = 'Listado de Estudiantes Activos';
+    //$this->data = (new Estudiante)->getListSecretaria(estado:1);
+    $this->data = (new Estudiante)->getListPorCoordinador($this->user_id);
     View::select('estudiantes/index');
   }
 

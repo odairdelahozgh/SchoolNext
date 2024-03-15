@@ -32,7 +32,8 @@ class CoordinadorController extends AppController
     try 
     {
       $this->page_action = 'Listado de Estudiantes Activos';
-      $this->data = (new Estudiante)->getListSecretaria(estado:1);
+      //$this->data = (new Estudiante)->getListSecretaria(estado:1);
+      $this->data = (new Estudiante)->getListPorCoordinador($this->user_id);
     } 
     catch (\Throwable $th) 
     {

@@ -353,8 +353,10 @@ class Estudiante extends LiteRecord
       $DQL->select('t.*')
           ->concat(explode(',', $orden), 'estudiante_nombre')
           ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+          ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
           ->leftJoin('salon', 's')
           ->leftJoin('grado', 'g', 's.grado_id=g.id')
+          ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
           ->where('t.is_active=1')
           ->andWhere("t.salon_id IN($filtro_in)")
           ->orderBy($orden);
@@ -368,7 +370,7 @@ class Estudiante extends LiteRecord
   }
 
   
-  public function getListPorCoordinador(int $director_grupo_id, string $orden='a1,a2,n') 
+  public function getListPorCoordinador(int $coordinador_id, string $orden='a1,a2,n') 
   {
     try {
       $orden = str_replace(
@@ -376,7 +378,7 @@ class Estudiante extends LiteRecord
         ['t.nombres', 't.apellido1', 't.apellido2'], 
         $orden
       );
-      $Grupos = (new Salon)->getByCoordinador($director_grupo_id);
+      $Grupos = (new Salon)->getByCoordinador($coordinador_id);
       $salones = [];
       foreach ($Grupos as $salon)
       {
@@ -388,8 +390,10 @@ class Estudiante extends LiteRecord
       $DQL->select('t.*')
           ->concat(explode(',', $orden), 'estudiante_nombre')
           ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
+          ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
           ->leftJoin('salon', 's')
           ->leftJoin('grado', 'g', 's.grado_id=g.id')
+          ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
           ->where('t.is_active=1')
           ->andWhere("t.salon_id IN($filtro_in)")
           ->orderBy($orden);

@@ -14,6 +14,7 @@ trait IndicadorTraitSetUp {
       'create'    => ['codigo', 'concepto', 'valorativo'],
       'edit'      => ['concepto', 'is_visible', 'is_active'],
       'editUuid'  => ['concepto', 'is_visible', 'is_active'],
+      'filtrar'   => ['id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'asignatura_id', 'codigo', 'concepto', 'valorativo', 'is_active'],
     ];
   
     self::$_attribs = [

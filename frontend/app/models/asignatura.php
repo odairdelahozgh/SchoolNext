@@ -18,6 +18,7 @@ class Asignatura extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.asignatura');
+    self::$_order_by_defa = 't.is_active DESC, t.area_id, t.nombre';
     $this->setUp();
   }
 

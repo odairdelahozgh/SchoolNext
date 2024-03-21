@@ -116,13 +116,19 @@ class Salon extends LiteRecord {
       
   public static function setupCalificarSalon(int $salon_id) 
   {
-    try {
+    try
+    {
       $periodo_actual = Config::get('config.academic.periodo_actual');
       $annio_actual = Config::get('config.academic.annio_actual');
       $RegSalon = (new Salon())->get($salon_id);
       $cnt = 0;
-      if (isset($RegSalon)) {
+      if (isset($RegSalon))
+      {
+        $RegGrado = (new Grado())::get($RegSalon->grado_id);
+        $nota_default = (1==$RegGrado->seccion_id) ? 100: 0;
+
         // OBTENER TODAS LAS ASIGNATURAS DE ESE SALON (GRADO).
+        
           $Model = new GradoAsignatura();
           $DQL = new OdaDql(__CLASS__);
           $DQL->setFrom('sweb_grado_asignat');
@@ -156,6 +162,7 @@ class Salon extends LiteRecord {
                 'salon_id' => $salon_id,
                 'asignatura_id' => $asignat->asignatura_id,
                 'estudiante_id' => $estud->id,
+                'definitiva' => $nota_default,
                 'created_at' => $Now->format('Y-m-d H:i:s'),
                 'updated_at' => $Now->format('Y-m-d H:i:s'),
                 'created_by' => 1,
@@ -173,6 +180,7 @@ class Salon extends LiteRecord {
                 'salon_id' => $salon_id,
                 'asignatura_id' => $asignat->asignatura_id,
                 'estudiante_id' => $estud->id,
+                'definitiva' => $nota_default,
                 'created_at' => $Now->format('Y-m-d H:i:s'),
                 'updated_at' => $Now->format('Y-m-d H:i:s'),
                 'created_by' => 1,
@@ -206,12 +214,11 @@ class Salon extends LiteRecord {
 
       }
       return $cnt;
-      
-
-    } catch (\Throwable $th) {
+    } 
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
-
   }
 
   

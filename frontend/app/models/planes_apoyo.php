@@ -11,13 +11,6 @@ include "planes_apoyo/planes_apoyo_trait_set_up.php";
 class PlanesApoyo extends Nota {
 
   use PlanesApoyoTraitProps;
-
-  // public function __construct() {
-  //   parent::__construct();
-  //   self::$table = Config::get('tablas.nota');
-  //   self::$_order_by_defa = 't.periodo_id DESC, t.grado_id, t.salon_id, t.estudiante_id, t.asignatura_id';
-  //   $this->setUp();
-  // } //END-__construct
   
   public function getByEstudiantePeriodo(
     int $estudiante_id, 
@@ -28,9 +21,8 @@ class PlanesApoyo extends Nota {
         ->leftJoin('asignatura', 'a')
         ->where("t.is_paf_validar_ok>=3 AND t.estudiante_id=? AND t.periodo_id=?")
         ->setParams([$estudiante_id, $periodo_id]);
-    
     return $DQL->execute();
-  } 
+  }
 
 
   public static function getBySalonAsignaturaPeriodos(
@@ -38,10 +30,8 @@ class PlanesApoyo extends Nota {
     int $asignatura_id, 
     array $periodos=[], 
     $annio=null
-  ) {
-    
-    $str_p = implode(',', $periodos);
-      
+  ): array {
+    $str_p = implode(',', $periodos);      
     $DQL = (new OdaDql(__CLASS__))
         ->select('t.*')
         ->addSelect('a.nombre as asignatura_nombre')
@@ -55,7 +45,6 @@ class PlanesApoyo extends Nota {
         ->where("t.periodo_id IN($str_p) AND t.salon_id=? AND t.asignatura_id=?")
         ->setParams([$salon_id, $asignatura_id])
         ->orderBy('t.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres');
-      
     return $DQL->execute();
   }
 

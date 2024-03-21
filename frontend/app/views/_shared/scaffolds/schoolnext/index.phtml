@@ -19,7 +19,7 @@
         $lnkRetirar = '';
         if ('usuarios'==$controller_name and 1==$item_data->is_active) 
         {
-          //$lnkRetirar = $item_data->getLnkRetirar();
+          //$lnkRetirar = $item_data->getLnkRetirar();  [ P . E . N . D . I . E . N . T . E ]
         }
         $lnkVincularPadresHijos = '';
         if ('estudiantes'==$controller_name and 1==$item_data->is_active) 
@@ -55,31 +55,42 @@
 
         $arrFields = [];
         foreach ($fieldsToShow as $key => $field) {
-          //$arrFields[]= (('is_active'==$field)? $item_data->is_active_f(true): $item_data->$field);
           $dato = $item_data->$field;
-          if ('is_active'==$field) { $dato = $item_data->is_active_enum(show_ico: true); }
-          if ('nombre'==$field) { $dato = OdaUtils::nombrePersona(string: (string)$item_data->$field).' ['.$item_data->id.']'; }
 
-          if (str_ends_with(haystack: $field, needle: '_id')) {
+          if (str_contains($field, 'fecha'))
+          {
+            $dato = date('Y-m-d', strtotime($item_data->$field));
+          }
+
+          if ('is_active'==$field)
+          {
+            $dato = $item_data->is_active_enum(show_ico: true); 
+          }
+
+          if ('nombre'==$field)
+          {
+            $dato = OdaUtils::nombrePersona(string: (string)$item_data->$field).' ['.$item_data->id.']'; 
+          }
+
+          if (str_ends_with($field,'_id'))
+          {
+            $dato = $item_data->$field.' ['.$item_data->$field.']';
             $field_with_name = substr(string: $field, offset: 0, length: strlen(string: $field)-3).'_nombre';
-            if (isset($item_data->$field_with_name) and (!is_null(value: $item_data->$field_with_name))) {
+            if (isset($item_data->$field_with_name) and (!is_null(value: $item_data->$field_with_name)))
+            {
               $dato = OdaUtils::nombrePersona(string: $item_data->$field_with_name).' ['.$item_data->$field.']';
-            } else {
-              $dato = $item_data->$field.' ['.$item_data->$field.']';
             }
           }
+
           $arrFields[] = $dato;
         }
 
         $linksActions = $lnkSetPass.'&nbsp;&nbsp;'
-                      .$lnkEditar.'&nbsp;&nbsp;'
-                      .$lnkBorrar.'&nbsp;&nbsp;'
-                      .$lnkRetirar.'&nbsp;&nbsp;'
-                      .$lnkVincularPadresHijos.'&nbsp;&nbsp;';
-        $arrBody = [
-          $linksActions, 
-          ...$arrFields, $lnkSetupCalificar 
-        ];
+                       .$lnkEditar.'&nbsp;&nbsp;'
+                       .$lnkBorrar.'&nbsp;&nbsp;'
+                       .$lnkRetirar.'&nbsp;&nbsp;'
+                       .$lnkVincularPadresHijos.'&nbsp;&nbsp;';
+        $arrBody = [ $linksActions, ...$arrFields, $lnkSetupCalificar ];
         $tabla->addRow(data: $arrBody, attrs_td: [null, null, 'class="searchTdata"', 'class="searchTdata"', 'class="searchTdata"']);
       }
       echo $tabla;
@@ -93,10 +104,10 @@
 </div>
 
 <script>
-      document.getElementById("inputSearch").focus();
-      document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.key === 'b') {
-          document.getElementById('inputSearch').select();
-        }
-      });
+  document.getElementById("inputSearch").focus();
+  document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'b') {
+      document.getElementById('inputSearch').select();
+    }
+  });
 </script>

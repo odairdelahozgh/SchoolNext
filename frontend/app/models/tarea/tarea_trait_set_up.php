@@ -10,7 +10,7 @@ trait TareaTraitSetUp {
 
     self::$_fields_show = [
       'all'      => ['id', 'uuid', 'modulo', 'seccion', 'nombre', 'descripcion', 'prioridad', 'fecha_ini', 'fecha_fin', 'estado', 'avance', 'is_active', 'created_at', 'created_by', 'updated_at', 'updated_by'],
-      'index'    => ['modulo', 'nombre', 'seccion', 'prioridad', 'fecha_ini', 'fecha_fin', 'estado', 'avance'],
+      'index'    => ['modulo', 'nombre', 'seccion', 'prioridad', 'fecha_ini', 'fecha_fin', 'avance'],
       'create'   => ['modulo', 'seccion', 'nombre', 'descripcion', 'prioridad', 'fecha_ini', 'fecha_fin', 'estado', 'avance'],
       'edit'     => ['modulo', 'seccion', 'nombre', 'descripcion', 'prioridad', 'fecha_ini', 'fecha_fin', 'estado', 'avance', 'is_active'],
       'editUuid' => ['modulo', 'seccion', 'nombre', 'descripcion', 'prioridad', 'fecha_ini', 'fecha_fin', 'estado', 'avance', 'is_active'],

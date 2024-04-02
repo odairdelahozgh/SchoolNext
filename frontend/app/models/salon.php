@@ -126,29 +126,30 @@ class Salon extends LiteRecord {
       {
         $RegGrado = (new Grado())::get($RegSalon->grado_id);
         $nota_default = (1==$RegGrado->seccion_id) ? 100: 0;
-
         // OBTENER TODAS LAS ASIGNATURAS DE ESE SALON (GRADO).
-        
-          $Model = new GradoAsignatura();
-          $DQL = new OdaDql(__CLASS__);
-          $DQL->setFrom('sweb_grado_asignat');
-          $DQL->where('t.grado_id=?');
-          $DQL->setParams([$RegSalon->grado_id]);
-          if ($periodo_actual<5) { // Excluir comportamiento
-            $DQL->andWhere('t.asignatura_id<>30');
-          }
-          $Asignaturas = $DQL->execute();
+        $Model = new GradoAsignatura();
+        $DQL = new OdaDql(__CLASS__);
+        $DQL->setFrom('sweb_grado_asignat');
+        $DQL->where('t.grado_id=?');
+        $DQL->setParams([$RegSalon->grado_id]);
+        if ($periodo_actual<5) // Excluir comportamiento
+        {
+          $DQL->andWhere('t.asignatura_id<>30');
+        }
+        $Asignaturas = $DQL->execute();
           
-      //     // OBTENER TODAS LOS ESTUDIANTES DE ESE SALON
-          $Model = new Estudiante();
-          $DQL = new OdaDql(__CLASS__);
-          $DQL->setFrom('sweb_estudiantes');
-          $DQL->where('t.is_active=1 AND t.salon_id=?');
-          $DQL->setParams([$salon_id]);
-          $Estudiantes = $DQL->execute();
+        // OBTENER TODAS LOS ESTUDIANTES DE ESE SALON
+        $Model = new Estudiante();
+        $DQL = new OdaDql(__CLASS__);
+        $DQL->setFrom('sweb_estudiantes');
+        $DQL->where('t.is_active=1 AND t.salon_id=?');
+        $DQL->setParams([$salon_id]);
+        $Estudiantes = $DQL->execute();
           
-          foreach ($Estudiantes as $estud) {
-            foreach ($Asignaturas as $asignat) {
+        foreach ($Estudiantes as $estud)
+        {
+          foreach ($Asignaturas as $asignat)
+          {
               $Now = new DateTime('now', new DateTimeZone('America/Bogota'));
               $Model = new Nota();
               $DQL = new OdaDql(__CLASS__);

@@ -51,6 +51,7 @@ class SalAsigProf extends LiteRecord {
         ->addSelect('s.nombre as salon_nombre, s.grado_id, s.tot_estudiantes')
         ->addSelect('a.nombre as asignatura_nombre')
         ->addSelect('g.nombre as grado_nombre')
+        ->addSelect('u.nombres, u.apellido1, u.apellido2')
         ->concat(['u.nombres','u.apellido1', 'u.apellido2'], 'profesor_nombre')
         ->leftJoin('salon', 's')
         ->leftJoin('grado', 'g', 's.grado_id=g.id')

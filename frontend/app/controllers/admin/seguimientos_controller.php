@@ -130,7 +130,7 @@ class SeguimientosController extends ScaffoldController
       OdaFlash::error($th);
     }
 
-    return Redirect::to(route: $redirect);
+    return Redirect::to($redirect);
   }
 
     

@@ -21,7 +21,7 @@ class NotasController extends ScaffoldController
       $this->fieldsToShowLabels = (new $this->nombre_modelo())->getFieldsShow('filtrar', true);
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
       $Nota = new Nota();
-      $this->data = $Nota::getNotas_ByAnnioPeriodoSalonAsignaturaEstudiante($annio, $periodo, $salon, $asignatura);
+      $this->data = $Nota->getNotas_ByAnnioPeriodoSalonAsignaturaEstudiante($annio, $periodo, $salon, $asignatura);
     } 
     
     catch (\Throwable $th)
@@ -211,7 +211,7 @@ class NotasController extends ScaffoldController
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
 
     $this->arrData['Docentes'] = [];
-    foreach ((new Empleado())->getList() as $empleado)
+    foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
     }
@@ -224,7 +224,7 @@ class NotasController extends ScaffoldController
       $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
     }
     
-    // PARA LA GENERACIÓN DE ARCHIVOS
+    // // PARA LA GENERACIÓN DE ARCHIVOS
     $this->file_tipo = $tipo_boletin->label();
     $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Salon-periodo-$periodo_id");
     $this->file_title = $tipo_boletin->label() .' de ' .$Salon;
@@ -248,8 +248,7 @@ class NotasController extends ScaffoldController
       $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
       $this->arrData['Seccion'] = $this->arrData['Grado']->seccion_id;      
       $this->arrData['Docentes'] = [];
-      $Emp = new Usuario();
-      foreach ( $Emp->getDocentes() as $empleado)
+      foreach ( (new Usuario)->getDocentes() as $empleado)
       {
         $this->arrData['Docentes'][$empleado->id] = $empleado;
       }

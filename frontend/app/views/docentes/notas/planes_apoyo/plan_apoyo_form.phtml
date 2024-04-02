@@ -49,10 +49,11 @@ try {
   // fila #2
   $frm .= "<tr class=\"\">";
   $fields['f2'] = ['i31', 'i32', 'i33', 'i34', 'i35', 'i36', 'i37', 'i38', 'i39', 'i40'];
-  foreach ($fields['f2'] as $key => $campo) { 
-  $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
-  $frm .= $Tag::tag('td', $field);
-  } //foreach
+  foreach ($fields['f2'] as $key => $campo)
+  { 
+    $field = $Reg->fieldForm($campo, $min_max .$max_lenght .$patternInidisc.' class="color-input"');
+    $frm .= $Tag::tag('td', $field);
+  }
   $frm .= '</tr>';
   
   // fila #3

@@ -43,7 +43,7 @@ function traer_data(salon_id) {
         for (let periodo in datos[salon][estudiante]) { // fila de titulos de materia
 
           if (cont==1) {
-            body_table += '<tr class="w3-theme-d3"><td>Per&iacute;odo</td>'+ ( (!is_prescolar(salon_nombre)) ? '<td class="w3-center">Prom</td>' : '');            
+            body_table += '<tr class="w3-theme-d3"><td>Per&iacute;odo</td>' + ( (!is_prescolar(salon_nombre)) ? '<td class="w3-center">Prom</td>' : '');            
             for (let asignatura in datos[salon][estudiante][periodo]) {
               [asignatura_nombre, asignatura_abrev]= asignatura.split(";");
               body_table += '<td>' + asignatura_abrev + '</td>';
@@ -69,7 +69,7 @@ function traer_data(salon_id) {
           for (let asignatura in datos[salon][estudiante][periodo]) {
             [asignatura_nombre, asignatura_abrev]= asignatura.split(";");
             nota = datos[salon][estudiante][periodo][asignatura];
-            [reg_id, reg_uuid, definitiva, plan_apoyo, nota_final, desempeno, is_asi_validar_ok, is_paf_validar_ok] = datos[salon][estudiante][periodo][asignatura].split(";");
+            [reg_id, reg_uuid, definitiva, plan_apoyo, nota_final, desempeno, is_asi_validar_ok, is_paf_validar_ok, tiene_logros] = datos[salon][estudiante][periodo][asignatura].split(";");
             
             asi = (is_asi_validar_ok==1) ? '<a href="'+ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Seguimiento Intermedio">SI</a>' : '';
             paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-grey w3-tiny" target="_blank" title="Plan de Apoyo">PA</a>' : '';
@@ -89,7 +89,14 @@ function traer_data(salon_id) {
                 lleva_pa = '<br>';
             }
             const text_adic = `${asignatura_abrev} P${periodo}`;
-            fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
+
+            if (!is_prescolar(salon_nombre)) {
+              fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
+            } else {
+              const estado = tiene_logros > 0 ? "<i class=\"fa-solid fa-check w3-large\"></i>" : "";
+              fila += `<td class="w3-center w3-padding-tiny w3-small"> ${estado} </td>`;
+            }
+
             
             if ( (parseInt(nota_final)>0) && (periodo!=5) ) {
               elementos += 1;
@@ -97,14 +104,20 @@ function traer_data(salon_id) {
               arrSumCols[asignatura_abrev]['cnt'] += 1;
               arrSumCols[asignatura_abrev]['val'] += parseInt(nota_final);
             }
-          }          
+          }
           
           let avg = 0;
           if (elementos>0) {
             avg = suma / elementos;  
           }
-          fila_nueva = fila.replace(/PROMMAT/i, notaFormato(avg));
-          body_table += fila_nueva+  '</tr>';
+
+          if (!is_prescolar(salon_nombre)) {
+            fila_nueva = fila.replace(/PROMMAT/i, notaFormato(avg));
+          } else {
+            fila_nueva = fila;
+          }
+
+          body_table += fila_nueva +  '</tr>';
         }
         
 

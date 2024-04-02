@@ -4,7 +4,7 @@ trait EstudianteTraitSetUp {
   
   use TraitUuid, TraitForms, TraitValidar,
       EstudianteTraitProps, EstudianteTraitSetters, EstudianteTraitLinks, EstudianteTraitDatosPadres, 
-      EstudianteTraitMatriculas, EstudianteTraitCorrecciones;
+      EstudianteTraitMatriculas, EstudianteTraitCorrecciones, EstudianteTraitCallBacks;
   
   
   private function setUp() 

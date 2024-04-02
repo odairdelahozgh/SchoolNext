@@ -237,10 +237,8 @@ class Nota extends LiteRecord {
     );
   }
 
-  /**
-   * Devuelve: RegNota, estudiante_nombre,asignatura_nombre
-   */
-  public static function getBySalonAsignaturaPeriodos(
+
+  public function getBySalonAsignaturaPeriodos(
     int $salon_id, 
     int $asignatura_id, 
     array $periodos=[], 
@@ -301,13 +299,14 @@ class Nota extends LiteRecord {
   
       $sql = "SELECT N.id as id, N.uuid as uuid, N.annio AS annio, N.periodo_id AS periodo_id, N.grado_id AS grado_id,
       N.salon_id AS salon_id, N.asignatura_id AS asignatura_id, N.estudiante_id AS estudiante_id, E.uuid AS estudiante_uuid,
-      concat(E.nombres,' ',E.apellido1,' ',E.apellido2) AS estudiante, E.is_active AS is_active, 
+      concat(E.apellido1,' ',E.apellido2, ' ', E.nombres) AS estudiante, E.is_active AS is_active, 
       G.nombre AS grado, S.nombre AS salon, S.uuid AS salon_uuid, A.nombre AS asignatura, A.abrev AS asignatura_abrev,
       N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final,
       IF(N.nota_final<0, \"Error Nota Final <0\", IF(N.nota_final<60, \"Bajo\", IF(N.nota_final<70, \"Basico\", 
       IF(N.nota_final<80, \"Basico +\", IF(N.nota_final<90, \"Alto\", IF(N.nota_final<95, \"Alto +\", 
       IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno,
-      N.is_asi_validar_ok, N.is_paf_validar_ok
+      N.is_asi_validar_ok, N.is_paf_validar_ok,
+      LENGTH(concat(N.i01,N.i02,N.i03,N.i04,N.i05,N.i06,N.i07,N.i08,N.i09,N.i10)) AS tiene_logros
       
       FROM (((($tbl_notas N LEFT JOIN sweb_asignaturas A on(N.asignatura_id = A.id)) 
       LEFT JOIN sweb_estudiantes E on (N.estudiante_id = E.id)) 
@@ -316,7 +315,7 @@ class Nota extends LiteRecord {
       
       WHERE N.salon_id = $salon_id AND N.asignatura_id<>30 
   
-      ORDER BY S.position,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
+      ORDER BY S.position,E.apellido1,E.apellido2,E.nombres,N.periodo_id,A.orden,A.abrev";
   
       $registros = static::query($sql)->fetchAll();
       foreach ($registros as $reg) {
@@ -326,7 +325,7 @@ class Nota extends LiteRecord {
                 ["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid;$reg->is_active"]
                 ["$reg->periodo_id"]
                 ["$reg->asignatura;$reg->asignatura_abrev"] 
-        = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf";
+        = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf;$reg->tiene_logros";
       }
       return $aResult;
     

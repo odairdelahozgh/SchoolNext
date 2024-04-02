@@ -14,7 +14,8 @@ class SecretariaController extends AppController
     if ( !str_contains('secretarias', Session::get('roll')) && 
          !str_contains('admin', Session::get('roll')) ) 
     {
-      OdaFlash::warning('No tiene permiso de acceso al módulo SECRETARIAS, fué redirigido');
+      $username = Session::get('roll');
+      OdaFlash::warning($username.': No tiene permiso de acceso al módulo SECRETARIAS, fué redirigido');
       Redirect::to(Session::get('modulo'));
     }
   }

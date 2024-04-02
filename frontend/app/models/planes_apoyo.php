@@ -6,7 +6,7 @@
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
 
-include "planes_apoyo/planes_apoyo_trait_set_up.php";
+include "planes_apoyo/planes_apoyo_trait_props.php";
 
 class PlanesApoyo extends Nota {
 
@@ -24,8 +24,8 @@ class PlanesApoyo extends Nota {
     return $DQL->execute();
   }
 
-
-  public static function getBySalonAsignaturaPeriodos(
+  
+  public function getBySalonAsignaturaPeriodos(
     int $salon_id, 
     int $asignatura_id, 
     array $periodos=[], 

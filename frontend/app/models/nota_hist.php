@@ -66,7 +66,7 @@ class NotaHist extends LiteRecord {
   }
 
 
-  public static function getBySalonAsignaturaPeriodos(
+  public function getBySalonAsignaturaPeriodos(
     $salon_id, 
     $asignatura_id, 
     $periodos=array(), 

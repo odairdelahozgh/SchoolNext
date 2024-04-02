@@ -251,7 +251,7 @@ class DocentesController extends AppController
       $RegSalon = (new Salon)->get($salon_id);
       $RegPeriodo =(new Periodo)->get($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
-      $this->data = (new Nota)->getBySalonAsignaturaPeriodos(salon_id: $salon_id, asignatura_id: $asignatura_id, periodos: [$periodo_id]);
+      $this->data = (new Nota)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
       $RegsIndicadP = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);

@@ -71,7 +71,6 @@ try {
   for ($i=21; $i<=30; $i++) {
     $indi = "i{$i}";
     $codigo = $data->{$indi};
-    OdaLog::debug("$indi >> codigo: $codigo");
     if (strlen($codigo)>0) {
       $concepto = $arrData ['Indicadores'] [$data->asignatura_id] [$codigo] ['concepto'] ?? "$codigo -not found-";      
       if (strlen($concepto)>0) {

@@ -13,6 +13,7 @@ include "estudiante/estudiante_trait_links.php";
 include "estudiante/estudiante_trait_matriculas.php";
 include "estudiante/estudiante_trait_props.php";
 include "estudiante/estudiante_trait_setters.php";
+include "estudiante/estudiante_trait_call_backs.php";
 include "estudiante/estudiante_trait_set_up.php";
 
 class Estudiante extends LiteRecord 
@@ -107,11 +108,13 @@ class Estudiante extends LiteRecord
       ->leftJoin('salon', 's')
       ->leftJoin('grado', 'g', 's.grado_id=g.id')
       ->where('t.is_active=1')
-      ->orderBy(self::$_order_by_defa);    
+      ->orderBy(self::$_order_by_defa);
+
     if (!is_null($order_by))
     {
       $DQL->orderBy($order_by); 
     }
+
     if (!is_null($estado))
     {
       if($estado)
@@ -123,6 +126,7 @@ class Estudiante extends LiteRecord
         $DQL->where('t.is_active=0');
       }
     }
+
     return $DQL->execute();
   }
 
@@ -197,17 +201,21 @@ class Estudiante extends LiteRecord
       array('t.nombres', 't.apellido1', 't.apellido2'), 
       $orden
     );
+    
     $DQL->concat(explode(',', $orden), 'estudiante_nombre')
           ->concat(explode(',', $orden), 'nombre')
           ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email');
+    
     if (!is_null($order_by))
     {
       $DQL->orderBy($order_by); 
     }
-    if (!is_null($estado))
+
+    if (!is_null($estado) AND 0==$estado)
     {
-        $DQL->where('t.is_active=?')->setParams([$estado]); 
+      $DQL->where('(t.is_active=0) or (t.is_active IS NULL)');
     }
+
     return $DQL->execute();
   }
 

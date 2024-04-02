@@ -32,7 +32,7 @@ class Seguimientos extends Nota {
   }
   
 
-  public static function getBySalonAsignaturaPeriodos(
+  public function getBySalonAsignaturaPeriodos(
     int $salon_id, 
     int $asignatura_id, 
     array $periodos=[], 

@@ -307,7 +307,7 @@ class Nota extends LiteRecord {
       IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno,
       N.is_asi_validar_ok, N.is_paf_validar_ok,
       N.i01,N.i02,N.i03,N.i04,N.i05,N.i06,N.i07,N.i08,N.i09,N.i10,
-      DE.madre, DE.padre
+      DE.madre, DE.madre_tel_1, DE.padre, DE.padre_tel_1
       
       FROM ((((($tbl_notas N LEFT JOIN sweb_asignaturas A on(N.asignatura_id = A.id)) 
       LEFT JOIN sweb_estudiantes E on (N.estudiante_id = E.id)) 
@@ -326,7 +326,7 @@ class Nota extends LiteRecord {
         $tiene_logros = strlen($reg->i01)+strlen($reg->i02)+strlen($reg->i03)+strlen($reg->i04)+strlen($reg->i05)
         +strlen($reg->i06)+strlen($reg->i07)+strlen($reg->i08)+strlen($reg->i09)+strlen($reg->i10);
         $aResult["$reg->salon;$reg->salon_id;$reg->salon_uuid"]
-                ["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid;$reg->is_active;$reg->annio_pagado;$reg->mes_pagado;$reg->madre;$reg->padre"]
+                ["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid;$reg->is_active;$reg->madre;$reg->madre_tel_1;$reg->padre;$reg->padre_tel_1"]
                 ["$reg->periodo_id"]
                 ["$reg->asignatura;$reg->asignatura_abrev"] 
         = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf;$tiene_logros";

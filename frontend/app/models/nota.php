@@ -306,7 +306,7 @@ class Nota extends LiteRecord {
       IF(N.nota_final<80, \"Basico +\", IF(N.nota_final<90, \"Alto\", IF(N.nota_final<95, \"Alto +\", 
       IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno,
       N.is_asi_validar_ok, N.is_paf_validar_ok,
-      LENGTH(concat(N.i01,N.i02,N.i03,N.i04,N.i05,N.i06,N.i07,N.i08,N.i09,N.i10)) AS tiene_logros
+      N.i01,N.i02,N.i03,N.i04,N.i05,N.i06,N.i07,N.i08,N.i09,N.i10
       
       FROM (((($tbl_notas N LEFT JOIN sweb_asignaturas A on(N.asignatura_id = A.id)) 
       LEFT JOIN sweb_estudiantes E on (N.estudiante_id = E.id)) 
@@ -321,11 +321,14 @@ class Nota extends LiteRecord {
       foreach ($registros as $reg) {
         $asi  = ($reg->is_asi_validar_ok>=3) ? '1': '0' ;
         $paf  = ($reg->is_paf_validar_ok>=3) ? '1': '0' ;
+        $tiene_logros = strlen($reg->i01)+strlen($reg->i02)+strlen($reg->i03)+strlen($reg->i04)+strlen($reg->i05)
+        +strlen($reg->i06)+strlen($reg->i07)+strlen($reg->i08)+strlen($reg->i09)+strlen($reg->i10);
+        
         $aResult["$reg->salon;$reg->salon_id;$reg->salon_uuid"]
                 ["$reg->estudiante;$reg->estudiante_id;$reg->estudiante_uuid;$reg->is_active"]
                 ["$reg->periodo_id"]
                 ["$reg->asignatura;$reg->asignatura_abrev"] 
-        = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf;$reg->tiene_logros";
+        = "$reg->id;$reg->uuid;$reg->definitiva;$reg->plan_apoyo;$reg->nota_final;$reg->desempeno;$asi;$paf;$tiene_logros";
       }
       return $aResult;
     

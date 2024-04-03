@@ -11,10 +11,11 @@ function show_lista_estudiantes() {
 }
 
 
-function show_new_form(estudiante_nombre, estudiante_id, grado_id, salon_id, user_id) {
+function show_new_form(info_estudiante, estudiante_id, grado_id, salon_id, user_id) {
   var dt = new Date();
   const frm = document.getElementById("frm_new");
-  document.getElementById("nombre_estud_new").innerHTML = estudiante_nombre;
+  document.getElementById("nombre_estud_new").innerHTML = info_estudiante;
+  let ruta_new = document.getElementById('public_path').innerHTML.trim()+'admin/registros_gen/create_ajax';
 
   frm.registrosgens_estudiante_id.value = estudiante_id;
   frm.registrosgens_annio.value = dt.getFullYear();
@@ -22,6 +23,7 @@ function show_new_form(estudiante_nombre, estudiante_id, grado_id, salon_id, use
   frm.registrosgens_salon_id.value = salon_id;
   frm.registrosgens_created_by.value = user_id;
   frm.registrosgens_updated_by.value = user_id;
+  frm.action = ruta_new;
 
   w3.show('#form_new');
   w3.hide('#list_index');

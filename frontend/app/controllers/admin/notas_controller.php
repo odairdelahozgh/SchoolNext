@@ -182,7 +182,7 @@ class NotasController extends ScaffoldController
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
     
     $this->arrData['Docentes'] = [];
-    foreach ((new Empleado())->getList() as $empleado)
+    foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
     }
@@ -282,7 +282,7 @@ class NotasController extends ScaffoldController
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
     $this->arrData['Seccion'] = $this->arrData['Grado']->seccion_id;    
     $this->arrData['Docentes'] = [];
-    foreach ((new Empleado())->getList() as $empleado)
+    foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
     }

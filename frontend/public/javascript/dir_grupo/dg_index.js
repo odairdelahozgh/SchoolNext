@@ -32,12 +32,12 @@ function traer_data(salon_id) {
 
       caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_boletines_salon}<br><br>`;
       for (let estudiante in datos[salon]) {
-        [estudiante_nombre, estudiante_id, estudiante_uuid, is_active, annio_pagado, mes_pagado, madre, padre]= estudiante.split(";");
+        [estudiante_nombre, estudiante_id, estudiante_uuid, is_active, madre, madre_tel, padre, padre_tel]= estudiante.split(";");
         body_table += 
         '<tr class="w3-theme-'+theme.toString().substr(0,1)+`5">
             <td colspan=14>
                 <h3># ${cnt_estudiantes} ${estudiante_nombre} [${estudiante_id}] :: ${salon_nombre} NOTA-PROM-ESTU</h3>
-                <h5>Último Pago: ${nombreMes(mes_pagado)} de ${annio_pagado}, Padres: ${madre} / ${padre}</h5>
+                <h5>Padres: ${madre} [${madre_tel}] / ${padre} [${padre_tel}]</h5>
             </td>
         </tr>`;
         
@@ -107,7 +107,7 @@ function traer_data(salon_id) {
         // Agregar fila de promedios
         let info_estudiante = '';
         let avg_prom = 0;
-        if (!is_prescolar(salon_nombre)) {
+        if (!is_prescolar(salon_nombre) && (periodo_actual>1)) {
           let cnt_mat = 0;
           let suma_prom = 0;
           let promedio  = 0;

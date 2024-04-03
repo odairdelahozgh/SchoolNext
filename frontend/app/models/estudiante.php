@@ -332,7 +332,7 @@ class Estudiante extends LiteRecord
     $DQL->select('t.*')
         ->concat(explode(',', $orden), 'estudiante_nombre')
         ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
-        ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email')
+        ->addSelect('de.madre, de.madre_tel_1, de.padre, de.padre_tel_1')
         ->leftJoin('salon', 's')
         ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
         ->leftJoin('grado', 'g', 's.grado_id=g.id')

@@ -167,7 +167,7 @@ class PlanesApoyoController extends ScaffoldController
       $this->arrData['Salon'] = $Salon;
       $this->arrData['Grado'] = (new Grado)::get($PA->grado_id);
       $this->arrData['Docentes'] = [];
-      foreach ((new Empleado)->getList() as $empleado)
+      foreach ( (new Usuario)->getDocentes() as $empleado)
       {
         $this->arrData['Docentes'][$empleado->id] = $empleado;
       }      
@@ -205,7 +205,7 @@ class PlanesApoyoController extends ScaffoldController
       $this->arrData['Salon'] = $Salon;
       $this->arrData['Grado'] = (new Grado)::get($PA->grado_id);
       $this->arrData['Docentes'] = [];
-      foreach ((new Empleado)->getList() as $empleado)
+      foreach ( (new Usuario)->getDocentes() as $empleado)
       {
         $this->arrData['Docentes'][$empleado->id] = $empleado;
       }      

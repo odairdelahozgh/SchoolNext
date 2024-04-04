@@ -49,6 +49,7 @@ class DocentesController extends AppController
     {
       OdaFlash::error($th);
     }
+    
     View::select('direccionDeGrupo/dg_registros_consoli');
   }  
 

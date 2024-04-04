@@ -1,11 +1,10 @@
 <?php
   $links_docente  = OdaTags::linkBarItem('docen-carga-academica', 'Mi Carga', 'people-line');
   $links_docente .= OdaTags::linkBarItem('docen-reg-observaciones', 'Reg. Observaciones', 'address-card');
-
   $links_director = '';
   if ( Session::get('es_director') ) {
     $links_director .= OdaTags::linkBarItem('docen-reg-desemp-acad', 'Reg. Acad&eacute;micos', 'clipboard');
-    $links_director .= OdaTags::linkBarItem('docen-dir-grupo', 'Mi Grupo', 'clipboard');
+    $links_director .= OdaTags::linkBarItem('docentes/direccion_grupo', 'Mi Grupo', 'clipboard');
     //$links_director .= OdaTags::linkBarItem('docen-seguimientos-grupo', 'Seguimientos', 'clipboard');
   }
 

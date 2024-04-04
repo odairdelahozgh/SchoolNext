@@ -5,6 +5,7 @@
 <div class="w3-container">
   <?= OdaTags::buttonBars($buttons);?>
   <?= (new Seguimientos)::lnkPageSeguimientosGrupo()?>
+  <?= (new RegistrosGen)::lnkPageRegistrosGrupo()?>
   <div id="resultados"></div>
 </div>
 

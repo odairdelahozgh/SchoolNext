@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('btn-0').click();
 });
 
-function traer_salones(periodo, user_id) {
+
+function traer_salones(periodo, user_id) 
+{
   document.getElementById('salones').innerHTML = '';
 
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
@@ -25,58 +27,66 @@ function traer_salones(periodo, user_id) {
     .catch(
         error => document.querySelector('#resultados').innerHTML = error
     );
-} //END-traer_salones
+}
 
 
-function traer_data(salon_nombre, salon_uuid, periodo) {
+function traer_data(salon_nombre, salon_uuid, periodo) 
+{
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   let theme = document.getElementById('theme').innerHTML.trim();
   document.querySelector('#resultados').innerHTML = '';
   
-  //console.clear();
   fetch(ruta_base+`api/seguimientos/by_salon_periodo/${salon_uuid}/${periodo}`)
   .then((res) => res.json())
   .then(datos => {
     let caption = `<h2>Periodo ${periodo} :: Seguimientos de ${salon_nombre}</h2>`;
-    //console.log(datos);
     
     let result = '';
     let cnt = 0;
     let AsignaturasValidas = [];
 
     // SOLO PARA VERIFICAR CUALES TIENE DATOS DE SEGUIMIENTO
-    for (let cod_estudiante in datos) {
-      for (let nom_estudiante in datos[cod_estudiante]) {
-        for (let text_abrev in datos[cod_estudiante][nom_estudiante]) {
-          for (let abrev in datos[cod_estudiante][nom_estudiante][text_abrev]) {
+    for (let cod_estudiante in datos) 
+    {
+      for (let nom_estudiante in datos[cod_estudiante]) 
+      {
+        for (let text_abrev in datos[cod_estudiante][nom_estudiante]) 
+        {
+          for (let abrev in datos[cod_estudiante][nom_estudiante][text_abrev]) 
+          {
             const obj = Object.keys(datos[cod_estudiante][nom_estudiante][text_abrev][abrev]);
-            if (obj.length>0){
+            if (obj.length>0)
+            {
               AsignaturasValidas[abrev] = 1;
             }
           }
         }
       }
-    }//END-for
-    //console.log(AsignaturasValidas);
-    //console.log(AsignaturasValidas.keys());
-
+    }
+    
     // ARMA LA TABLA FINAL
-    for (let cod_estudiante in datos) {
+    for (let cod_estudiante in datos) 
+    {
       cnt +=1;
       result += `<tr>`;
-      for (let nom_estudiante in datos[cod_estudiante]) {
+      for (let nom_estudiante in datos[cod_estudiante]) 
+      {
         let columnas = '';
         let anadir = false;
-        for (let text_abrev in datos[cod_estudiante][nom_estudiante]) {
-          for (let abrev in datos[cod_estudiante][nom_estudiante][text_abrev]) {
+        for (let text_abrev in datos[cod_estudiante][nom_estudiante]) 
+        {
+          for (let abrev in datos[cod_estudiante][nom_estudiante][text_abrev]) 
+          {
             const obj = Object.keys(datos[cod_estudiante][nom_estudiante][text_abrev][abrev]);
-            
             let data = datos[cod_estudiante][nom_estudiante][text_abrev][abrev];
-
-            if (AsignaturasValidas.hasOwnProperty(abrev)) {
-              if (obj.length==0){
+            if (AsignaturasValidas.hasOwnProperty(abrev))
+            {
+              if (obj.length==0)
+              {
                 columnas += `<td></td>`;
-              } else {
+              } 
+              else 
+              {
                 fecha = new Date(data.asi_fecha_entrega.replaceAll('-','/') );
                 columnas += `
                   <td class="w3-center">
@@ -92,8 +102,7 @@ function traer_data(salon_nombre, salon_uuid, periodo) {
                 `;
                 anadir = true;
               }
-            }//END-if
-
+            }
           }
         }
 

@@ -37,7 +37,7 @@ function traer_data(salon_id) {
         '<tr class="w3-theme-'+theme.toString().substr(0,1)+`5">
             <td colspan=14>
                 <h3># ${cnt_estudiantes} ${estudiante_nombre} [${estudiante_id}] :: ${salon_nombre} NOTA-PROM-ESTU</h3>
-                <h5>Padres: ${madre} [${madre_tel}] / ${padre} [${padre_tel}]</h5>
+                <h6>Padres: ${madre} [${madre_tel}] / ${padre} [${padre_tel}]</h6>
             </td>
         </tr>`;
         
@@ -99,6 +99,7 @@ function traer_data(salon_id) {
           if (elementos>0) {
             avg = suma / elementos;  
           }
+
           fila_nueva = fila.replace(/PROMMAT/i, notaFormato(avg));
           body_table += fila_nueva+  '</tr>';
         }
@@ -131,12 +132,13 @@ function traer_data(salon_id) {
           fila_nueva_proms = fila_proms.replace(/PROMTOT/i, notaFormato(avg_prom));
           body_table += fila_nueva_proms;
 
-          info_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom)+'">'+nombreRango(avg_prom)+'</span>';
+          promedio_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom)+'">'+nombreRango(avg_prom)+'</span>';
         } else {
-          info_estudiante = '';
+          promedio_estudiante = '';
         }
-
-        body_table = body_table.replace(/NOTA-PROM-ESTU/i, info_estudiante);
+        
+        promedio_estudiante = (is_active == 1) ? promedio_estudiante : '<del>'+promedio_estudiante+'</del>';
+        body_table = body_table.replace(/NOTA-PROM-ESTU/i, promedio_estudiante);
         cnt_estudiantes += 1;
 
       }
@@ -194,20 +196,3 @@ function is_prescolar(nombre_salon) {
   var regex = /(PV-A|PK-A|KD-A|TN-A)/;
   return regex.test(nombre_salon);
 }
-
-
-function nombreMes(valor) {
-  if (valor<1 || valor>12) { return 'err-mes'; }
-  if (valor==1) { return 'Enero'; }
-  if (valor==2) { return 'Febrero'; }
-  if (valor==3) { return 'Marzo'; }
-  if (valor==4) { return 'Abril'; }
-  if (valor==5) { return 'Mayo'; }
-  if (valor==6) { return 'Junio'; }
-  if (valor==7) { return 'Julio'; }
-  if (valor==8) { return 'Agosto'; }
-  if (valor==9) { return 'Septiembre'; }
-  if (valor==10) { return 'Octubre'; }
-  if (valor==11) { return 'Noviembre'; }
-  if (valor==12) { return 'Diciembre'; }
-} //END-nombreRango

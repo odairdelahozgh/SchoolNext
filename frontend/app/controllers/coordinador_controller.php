@@ -58,7 +58,7 @@ class CoordinadorController extends AppController
     View::select('consolidado/index');
   }
   
-
+  
   public function notas_salon_json(int $salon_id) 
   {
     View::template(null);

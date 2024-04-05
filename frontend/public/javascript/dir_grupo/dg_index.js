@@ -76,8 +76,8 @@ function traer_data(salon_id) {
             
             //asi = (is_asi_validar_ok==1) ? '<span class="w3-badge w3-white w3-tiny">SI</span>' : '';
             //paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">PA</a>' : '';
-            asi = (is_asi_validar_ok==1) ? '<a href="'+ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Seguimiento Intermedio">S.I.</a>' : '';
-            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">P.A.</a>' : '';
+            asi = (is_asi_validar_ok==1) ? '<a href="'+ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Seguimiento Intermedio">S</a>' : '';
+            paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">P</a>' : '';
             br = ((asi.length+paf.length)>0) ? '<br>' : '';
             let lleva_pa = '';
             if (definitiva<60) {

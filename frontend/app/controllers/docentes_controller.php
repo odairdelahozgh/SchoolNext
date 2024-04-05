@@ -51,8 +51,7 @@ class DocentesController extends AppController
     }
     
     View::select('direccionDeGrupo/dg_registros_consoli');
-  }  
-
+  }
 
   public function index() 
   {

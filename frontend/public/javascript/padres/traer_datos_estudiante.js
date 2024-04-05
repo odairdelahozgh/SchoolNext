@@ -220,16 +220,17 @@ function template_seguimientos(data, ruta) {
 
 
 function template_boletines(estudiante, ruta_base, periodo_actual) {
+  let annio_actual = document.getElementById('annio_actual').innerHTML.trim();
   let links = '';
   let mes_req = [];
-  mes_req[1] = 4;
+  mes_req[1] = 3;
   mes_req[2] = 6;
   mes_req[3] = 8;
   mes_req[4] = 11;
   mes_req[5] = 11;
   let max_periodo = (4==periodo_actual) ? 5 : periodo_actual;
   for (var i= 1; i<=max_periodo; i++) {
-    if (estudiante.mes_pagado>=mes_req[i]) {
+    if ( (estudiante.mes_pagado >= mes_req[i]) && (estudiante.annio_pagado == annio_actual) ) {
       links +=  `
       <a href="${ruta_base}admin/notas/exportBoletinEstudiantePdf/${i}/${estudiante.uuid}" 
       class="w3-btn w3-blue" alt="Descarga PDF" target="_blank"><i class="fa-solid fa-file-pdf"></i> Boletin p${i}</a>

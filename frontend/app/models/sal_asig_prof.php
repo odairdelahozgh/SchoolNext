@@ -23,6 +23,24 @@ class SalAsigProf extends LiteRecord {
     $this->setUp();
   }
 
+  public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) 
+  { 
+    $DQL = (new OdaDql(__CLASS__))
+      ->select('t.*')
+      ->addSelect('s.nombre as salon_nombre, s.grado_id, s.tot_estudiantes')
+      ->addSelect('a.nombre as asignatura_nombre')
+      ->addSelect('g.nombre as grado_nombre')
+      ->addSelect('u.nombres, u.apellido1, u.apellido2')
+      ->concat(['u.nombres','u.apellido1', 'u.apellido2'], 'user_nombre')
+      ->leftJoin('salon', 's')
+      ->leftJoin('grado', 'g', 's.grado_id=g.id')
+      ->leftJoin('asignatura', 'a')
+      ->leftJoin('usuario', 'u', 't.user_id=u.id')
+      ->where('s.is_active=1')
+      ->orderBy('salon_nombre, asignatura_nombre');
+    return $DQL->execute();
+  }
+
 
   public function getSalones_ByProfesor(int $user_id) 
   {
@@ -58,7 +76,7 @@ class SalAsigProf extends LiteRecord {
         ->leftJoin('asignatura', 'a')
         ->leftJoin('usuario', 'u', 't.user_id=u.id')
         ->where('s.is_active=1')
-        ->orderBy('asignatura_nombre, salon_nombre');  
+        ->orderBy('asignatura_nombre, salon_nombre');
       if ($user_id<>1)
       {
         $DQL->andWhere('t.user_id=?');

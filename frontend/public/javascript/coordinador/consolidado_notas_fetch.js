@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('btn-0').click();
   document.querySelector('#spinner').style.display = "none";
+  document.getElementById('btn-0').click();
 });
 
 

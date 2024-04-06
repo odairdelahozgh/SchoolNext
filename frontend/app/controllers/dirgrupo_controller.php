@@ -7,7 +7,7 @@
 
 class DocentesController extends AppController
 {
-  
+  // pendiente rediseñar o eliminar este controller
 
   public function index(): void 
   {

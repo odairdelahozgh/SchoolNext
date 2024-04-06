@@ -382,13 +382,24 @@ class OdaUtils extends Util {
       return $cadena;
     } // END-pluralize
 
-  //https://faq.whatsapp.com/5913398998672934/?locale=es_LA
-  public static function linkWhatsApp(string $telefono, string $caption='(click) Escribirle al WhatsApp ahora', $show_tel=false, string $message='') {
-    $text = ($show_tel) ? $telefono : '' ;
+  
+  /*
+   * @url https://faq.whatsapp.com/5913398998672934/?locale=es_LA
+   */
+  public static function linkWhatsApp(
+    string $telefono, 
+    string $caption='(click) Escribir al WhatsApp ahora', 
+    bool $show_tel=false, 
+    string $message=''
+  ): string {
+    $insitit_name = Config::get('config.institution.nombre');
+    $text = ($show_tel) ? $telefono : $message ;
+    $message = "*$insitit_name*: $message";
     //$message = str_replace(' ', '%20', $message);
+    //href=\"whatsapp://send?phone=57$telefono&text=$message\">"
     return "$text <a 
         title=\"$caption\" 
-        href=\"whatsapp://send?phone=57$telefono&text=$message\">"
+        href=\"https://api.whatsapp.com/send?phone=$telefono&text=$message\">"
         ._Icons::brands(icon: 'whatsapp', size: 'w3-large')
       .'</a>';
   }

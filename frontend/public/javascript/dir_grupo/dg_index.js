@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('btn-0').click();
+  document.querySelector('#spinner').style.display = "none";
 });
 
 function traer_data(salon_id) {
@@ -7,6 +8,7 @@ function traer_data(salon_id) {
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   let theme = document.getElementById('theme').innerHTML.trim();
   document.querySelector('#resultados').innerHTML = ''  ;
+  document.querySelector('#spinner').style.display = "block";
 
   fetch(ruta_base+'api/notas/notas_salon/'+salon_id)
   .then((res) => res.json())
@@ -143,13 +145,16 @@ function traer_data(salon_id) {
 
       }
     }
-        
+    
     document.querySelector('#resultados').innerHTML = `
-      <table id="myTable"class="w3-table w3-responsive w3-bordered w3-small">
-        <caption id="tcaption" class="w3-left-align w3-bottombar w3-border-blue">${caption}</caption>
-        <tbody id="tbody">${body_table}</tbody>
-      </table>
-      `;
+    <table id="myTable"class="w3-table w3-responsive w3-bordered w3-small">
+      <caption id="tcaption" class="w3-left-align w3-bottombar w3-border-blue">${caption}</caption>
+      <tbody id="tbody">${body_table}</tbody>
+    </table>
+    `;
+
+    document.querySelector('#spinner').style.display = "none";
+
     })
     .catch(
         error => document.querySelector('#resultados').innerHTML = error

@@ -37,7 +37,7 @@ function traer_data_reg_gen(salon_id, salon_nombre, annio) {
               <br> ${datos[key].asunto}
             </td>
             <td style="width:35%">
-              <b>Perido ${datos[key].periodo_id}</b>  [${datos[key].fecha}]<br><br>
+              <b>Periodo ${datos[key].periodo_id}</b>  [${datos[key].fecha}]<br><br>
               <b>Docente:</b> <br> ${datos[key].director}<br><br>
               <b>Acudiente:</b> <br> ${datos[key].acudiente}
             </td>

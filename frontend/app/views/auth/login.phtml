@@ -15,28 +15,20 @@
           <h3>Estaremos disponibles nuevamente en unos minutos</h3> -->
           <form action="<?=PUBLIC_PATH?>auth/login" method="post" class="w3-center">
             <input name="mode" type="hidden" value="auth">
-            <input id="username" name="username" type="text" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese USUARIO">
-              <br>
+            <input id="username" name="username" type="text" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese USUARIO"><br>
             <input id="password" name="password" type="password" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese CLAVE">                
             <p><button type="submit">ENTRAR</button></p>
-            <?= OdaUtils::linkWhatsApp(Config::get('config.construxzion.whatsapp'), 'Escribenos por WhatssApp', false, 'Windsor School: requiero soporte, no puedo ingresar a SchoolNext') ?>
+            
+            <b>¿Necesita ayuda para ingresar?</b> <br/>
+            <?= OdaUtils::linkWhatsApp(Config::get('config.construxzion.whatsapp'), 'Escribenos por WhatssApp', true, 'Necesito ayuda para ingresar') ?>
           </form>
         </div>
         <div class="w3-padding w3-row">
-              <br/><b>¿Necesita ayuda para ingresar?</b><br/>
-              <a title="Escríbenos" href="whatsapp://send?phone=<?= Config::get('config.construxzion.telefono')?>&amp;text=Requiero+soporte+técnico">
-                <?= _Icons::brands('whatsapp', 'w3-xxlarge')?> </a>
-                <a title="Llámanos" href="tel:<?=Config::get('config.construxzion.whatsapp')?>">
-                  <?= _Icons::solid('square-phone', 'w3-xxlarge')?> </a>
-                  
-                  <a title="Envianos un email" href="mailto:<?=Config::get('config.construxzion.email')?>">
-                    <?= _Icons::solid('envelope', 'w3-xxlarge')?></a>
-                    <br/>
-                    <span>
-                      <?= Config::get('config.construxzion.copy') ?><br/>
-                      <?= Config::get('config.construxzion.copy_text') ?><br/>
-                      <a href="<?=Config::get('config.construxzion.twitter')?>" target="_blank"><?=Config::get('config.construxzion.name')?></a> 
-                    </span>
+          <span>
+            <?= Config::get('config.construxzion.copy') ?><br/>
+            <?= Config::get('config.construxzion.copy_text') ?><br/>
+            <a href="<?=Config::get('config.construxzion.twitter')?>" target="_blank"><?=Config::get('config.construxzion.name')?></a> 
+          </span>
         </div>
     </div>
   </div>

@@ -5,7 +5,7 @@ N.grado_id AS grado_id,
 N.salon_id AS salon_id,
 N.asignatura_id AS asignatura_id,
 N.estudiante_id AS estudiante_id,
-concat(E.nombres,' ',E.apellido1,' ',E.apellido2, ' [', S.abrev, ']') AS estudiante,
+concat(E.nombres,' ',E.apellido1,' ',E.apellido2, ' [', S.abreviatura, ']') AS estudiante,
 G.nombre AS grado,
 S.nombre AS salon,
 A.nombre AS asignatura,
@@ -40,4 +40,4 @@ from
 WHERE (N.periodo_id = 5) and (N.asignatura_id <> 30) and (N.grado_id<=11) 
 
 ORDER BY 
-S.position,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.abrev
+S.position,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.abreviatura

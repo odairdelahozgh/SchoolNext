@@ -57,11 +57,12 @@ class NotasController extends ScaffoldController
       {
         OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$this->nombre_post</b>, no llegó");
       }
+
       if (Input::hasPost($post_name))
       {
-        $Post = Input::post($post_name);        
-        // $notas = []; CONTIENE LA INFO ORGANIZADA REGISTRO POR REGISTRO
+        $Post = Input::post($post_name);
         $notas = [];
+        
         foreach ($Post as $field_name => $value)
         {
           $codigo_id = (int)substr($field_name, strripos($field_name, "_") + 1);
@@ -79,8 +80,9 @@ class NotasController extends ScaffoldController
           //else { OdaLog::debug("excluidos $field_name"); }
         }
 
+        
         // ----------------------------------------------------------------
-        $INDEX_INDCI_INI = 1; $INDEX_INDCI_FIN = 20;  // INDICADORES DE NOTAS 1=>20
+        $INDEX_INDCI_INI = 1; $INDEX_INDCI_FIN = 20;  // INDICADORES DE NOTAS: de 1 al 20
         foreach ($notas as $id => $registro)
         {
           // PREPARA EL REGISTRO INDIVIDUAL DE NOTAS
@@ -90,21 +92,24 @@ class NotasController extends ScaffoldController
             $long = strlen($field_name_id) - (strlen($id)+1);
             $field_name = substr($field_name_id,0, $long);
             $data_temp[$field_name] = "$value";
-          }          
+          }
+          
           // ORGANIZA LOS INDICADORES
           $cnt_num_ind = 0;
           $data_indicadores = [];
           $data = [];
           foreach ($data_temp as $key => $value)
           {
-            if (str_starts_with($key, 'i'))  // campos de indicadores
+            if (str_starts_with($key, 'i0') OR str_starts_with($key, 'i1'))  // campos de indicadores
             {
               if (strlen($value)>0)  // indicadores validos
               {
                 $indice = $INDEX_INDCI_INI + $cnt_num_ind;
                 $index = 'i'.(($indice<10)?'0':'').$indice;
-                $data_indicadores[$index] = $value;
-                $cnt_num_ind +=1;
+                if (!in_array($value, $data_indicadores)) { // Evita duplicar indicador
+                  $data_indicadores[$index] = $value;
+                  $cnt_num_ind +=1;
+                }
               }
             }
             else
@@ -112,9 +117,9 @@ class NotasController extends ScaffoldController
               $data[$key] = $value;  // campos que no son indicadores
             }
           }
-          $data_indicadores = array_unique($data_indicadores); // Elimina indicadores duplicados
+          
           sort($data_indicadores, SORT_NUMERIC); // ordena los indicadores
-          $cnt_data_indic = count($data_indicadores); // cuenta de los indicadores que se ingresaron realmente
+
           // GUARDA LOS INDICADORES REALES Y EN ORDEN
           $indic_i = $INDEX_INDCI_INI;
           foreach ($data_indicadores as $value)
@@ -123,13 +128,14 @@ class NotasController extends ScaffoldController
             $data[$index] = $value;
             $indic_i +=1;
           }
+
           // COMPLETA LOS INDICADORES EN BLANCO hasta $INDEX_INDCI_FIN
-          $indic_blank = $indic_i;
-          for ($i=$indic_blank; $i<=$INDEX_INDCI_FIN; $i++)
+          for ($i=$indic_i; $i<=$INDEX_INDCI_FIN; $i++)
           {
-            $index =  'i'.(($indic_blank<10)?'0':'').$indic_blank;
-            $data[$index] = ' ';
+            $index =  'i'.(($i<10)?'0':'').$i;
+            $data[$index] = '';
           }
+
           // SE ASEGURA DE QUE EL VALOR DEL CAMPO "nota_final" SEA CORRECTO          
           if ( (0==$data['nota_final']) or is_null($data['nota_final']) )
           {
@@ -146,7 +152,8 @@ class NotasController extends ScaffoldController
           {
             // cambia la nota final por definitiva ... si no tiene plan de apoyo.
             $data['nota_final'] = ( (0==$data['plan_apoyo']) or is_null($data['plan_apoyo']) ) ? $data['definitiva'] : $data['nota_final'];
-          }          
+          }
+
           // AGREGA CAMPOS ADICIONALES (DE CONTROL)
           $adicionales =[];
           $adicionales['updated_at']= date('Y-m-d H:i:s', time());

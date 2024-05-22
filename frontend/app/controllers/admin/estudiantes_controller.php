@@ -16,6 +16,17 @@ class EstudiantesController extends ScaffoldController
     $this->data = (new Estudiante())->getListEstudiantes();
   }
 
+  
+  public function exportCentralesDeRiesgoXls(): void 
+  {
+    $this->file_title = "export Centrales de Riesgo";
+    $this->file_name = OdaUtils::getSlug($this->file_title);
+    $this->data = [];
+    $this->arrData['Estudiantes'] = (new Estudiante)->getListEstudiantes();
+
+    $this->file_download = false;
+    View::select(view: "export_xls_centrales_de_riesgo", template: 'csv'); //'xls_easy');
+  }
 
   public function exportListMatriculadosPdf(): void 
   {

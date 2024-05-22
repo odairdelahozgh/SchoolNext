@@ -4,7 +4,7 @@
 
 return [
   'calificaciones' => [
-    'periodos'    => [0],
+    'periodos'    => [2],
     'salones'     => [],
     'asignaturas' => [],
     'usuarios'    => [],

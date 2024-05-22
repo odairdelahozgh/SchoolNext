@@ -30,8 +30,8 @@ class CoordinadorController extends AppController
   public function listadoEstudiantes(): void 
   {
     $this->page_action = 'Listado de Estudiantes Activos';
-    //$this->data = (new Estudiante)->getListSecretaria(estado:1);
-    $this->data = (new Estudiante)->getListPorCoordinador($this->user_id);
+    $this->data = (new Estudiante)->getListSecretaria(estado:1);
+    //$this->data = (new Estudiante)->getListPorCoordinador($this->user_id);
     View::select('estudiantes/index');
   }
 

@@ -31,7 +31,7 @@ return [
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2024,
-      'periodo_actual' => 1,
+      'periodo_actual' => 2,
       'asignar_carga' => ['*'],
     ],
 

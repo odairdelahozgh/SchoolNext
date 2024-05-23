@@ -10,6 +10,15 @@ trait EstudianteTraitLinks {
   }
 
 
+  public function getLnkShowPage(string $modulo, string $caption, string $attrs=''): string 
+  {
+    return OdaTags::link(
+      action: "$modulo/showEstudiante/$this->id", 
+      text: $caption, 
+      attrs: $attrs);
+  }
+
+
   public function getLnkBoletin(int $periodo): string 
   {
     return OdaTags::linkButton (

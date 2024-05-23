@@ -9,7 +9,7 @@
     $modelEstud = $arrData['Estudiante'];
     $frmEstud = new OdaForm( $modelEstud, '', 
       multipart: false,
-      url_back: 'listadoEstudiantes',
+      url_back: 'coordinador/listadoEstudiantes',
     );
     $frmEstud->setAtrib('id="frm_edit1" name="frm_edit1"');
     $frmEstud->setEdit();
@@ -30,7 +30,7 @@
     include 'salud.phtml';
     include 'instit.phtml';
     
-    echo  "<div class=\"w3-container\">$myTabs</div>";
+    echo  "<div class=\"w3-container\">$myTabs {$frmEstud->getBtnBack()}</div>";
   ?>
 
 </div>

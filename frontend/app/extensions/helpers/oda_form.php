@@ -277,7 +277,11 @@ class OdaForm extends Form {
     $label = (($this->_modelo->getLabel($field)) ? '<b>'.$this->_modelo->getLabel($field).$in_line.'</b>' : OdaUtils::nombrePersona($field)) ;
     $data = $this->_modelo->$field;
     return $label.$data;
-  } // END
+  }
+
+  public function getDataOnly(string $field): string {
+    return $this->_modelo->$field;
+  }
 
   private function getHelp(string $field): string { 
     return (($this->_modelo->getHelp($field)) ? '<i class="fa-solid fa-circle-info"></i> <small>'.$this->_modelo->getHelp($field).'</small>' : ''); 

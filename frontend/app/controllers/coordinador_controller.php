@@ -7,6 +7,46 @@
 class CoordinadorController extends AppController
 {
   
+  
+  public function showEstudiante(int $estudiante_id) 
+  {
+    $this->page_action = 'Mostrar Estudiante';
+    $this->arrData = [];
+    
+    try 
+    {
+      $Estudiante = (new Estudiante())::get($estudiante_id);
+
+      $tabla_datos_estud = Config::get('tablas.datosestud');
+      $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$estudiante_id]);
+      
+      $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
+      $Adjuntos = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante_id]);
+
+      if (!$Adjuntos) 
+      {
+        $Adjuntos = new EstudianteAdjuntos();
+        $Adjuntos->save([
+          'estudiante_id' => $estudiante_id,
+          'created_by' => $this->user_id,
+          'updated_by' => $this->user_id,
+          'created_at' => $this->_ahora,
+          'updated_at' => $this->_ahora,
+        ]);
+      }
+      $this->arrData['Estudiante'] = $Estudiante;
+      $this->arrData['DatosEstud'] = $DatosEstud;
+      $this->arrData['Adjuntos']   = $Adjuntos;
+    } 
+
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
+    }
+    View::select('estudiantes/show_estud/showForm');
+  }
+  
+
   public function seguimientosConsolidado() 
   {
     try

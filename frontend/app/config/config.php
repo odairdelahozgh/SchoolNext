@@ -97,4 +97,10 @@ return [
       'access_token' => '8814d2e204427b9b31d89603afda9a3f87a980e7',
       'servicio_web' => 'https://api-ssl.bitly.com/v4/bitlinks',
     ],
+
+    'curl' => [
+      'url_root' => 'https://crm.colegiomixtosantarosa.com/api/index.php/',
+      'api_key' => 'DOLAPIKEY: oG8kFOnEFLhBZ81LElpss38M5x0dt888',
+    ],
+
 ];

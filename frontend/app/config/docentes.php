@@ -1,6 +1,6 @@
 <?php
 // filtros 
-// [] = todos, [0] ninguno, [1,2] filtro
+// [] = todos, [-1] ninguno, [1,2] filtro
 
 return [
   'calificaciones' => [
@@ -10,13 +10,13 @@ return [
     'usuarios'    => [],
   ],
   'seguimientos' => [
-    'periodos'    => [0],
-    'salones'     => [0],
-    'asignaturas' => [0],
-    'usuarios'    => [0],
+    'periodos'    => [1],
+    'salones'     => [],
+    'asignaturas' => [],
+    'usuarios'    => [],
   ],
   'planes_apoyo' => [
-    'periodos'    => [5],
+    'periodos'    => [1],
     'salones'     => [],
     'asignaturas' => [],
     'usuarios'    => [],

@@ -23,7 +23,7 @@
     return "<select id=\"$id\" name=\"$name\" class=\"w3-input w3-border\">$opts</select>";
   } //END-forSelect
 
-  public static function radio(string $legend='', string $name, string $checked=''): String  {
+  public static function radio(string $legend='', string $name='', string $checked=''): String  {
     $opts = '';
     foreach (self::cases() as $case) {
       $is_checked = ($case->value==$checked) ? 'checked' : '';

@@ -64,8 +64,8 @@ return [
   'tareas'               => 'snxt_tareas_sw',
   'tarea'                => 'snxt_tareas_sw',
   
-  'usuario'              => 'dm_user',
-  'usuarios'             => 'dm_user',
+  'usuario'              => 'llxbi_user', //'dm_user',
+  'usuarios'             => 'llxbi_user', //'dm_user',
   'usuarios_estudiantes' => 'sweb_dmuser_estudiantes',
   'usuarios_asignaturas' => 'sweb_users_asignaturas',
   'usuarios_secciones'   => 'sweb_users_secciones',

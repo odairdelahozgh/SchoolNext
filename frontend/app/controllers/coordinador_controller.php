@@ -7,7 +7,6 @@
 class CoordinadorController extends AppController
 {
   
-  
   public function showEstudiante(int $estudiante_id) 
   {
     $this->page_action = 'Mostrar Estudiante';
@@ -46,7 +45,7 @@ class CoordinadorController extends AppController
     View::select('estudiantes/show_estud/showForm');
   }
   
-
+  
   public function seguimientosConsolidado() 
   {
     try
@@ -110,8 +109,8 @@ class CoordinadorController extends AppController
     $notas = (new Nota())->getNotasSalon($salon_id);
     return json_encode($notas);
   }
-
   
+
   public function historico_notas() 
   {
     try 
@@ -162,6 +161,5 @@ class CoordinadorController extends AppController
     View::select('admisiones/index');
   }
   
-
 
 }

@@ -17,6 +17,7 @@ class Periodo extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.periodo');
+    self::$pk    = 'rowid';
     $this->setUp();
   }
   

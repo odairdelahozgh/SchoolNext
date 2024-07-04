@@ -11,7 +11,7 @@
             <h3>Acceso Web</h3>
         </div>
         <div class="w3-padding w3-row w3-blue-gray w3-large">
-          <!-- <h3>En proceso de actualización</h3>
+          <!-- <h3>En proceso de actualizacion</h3>
           <h3>Estaremos disponibles nuevamente en unos minutos</h3> -->
           <form action="<?=PUBLIC_PATH?>auth/login" method="post" class="w3-center">
             <input name="mode" type="hidden" value="auth">
@@ -19,7 +19,7 @@
             <input id="password" name="password" type="password" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese CLAVE">                
             <p><button type="submit">ENTRAR</button></p>
             
-            <b>¿Necesita ayuda para ingresar?</b> <br/>
+            <span>Necesita ayuda para ingresar?</span> <br/>
             <?= OdaUtils::linkWhatsApp(Config::get('config.construxzion.whatsapp'), 'Escribenos por WhatssApp', true, 'Necesito ayuda para ingresar') ?>
           </form>
         </div>

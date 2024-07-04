@@ -85,8 +85,8 @@ abstract class AppController extends Controller
       $this->user_name = Session::get('username');
       $this->user_nombre_completo = trim(Session::get('nombres').' '.Session::get('apellido1').' '.Session::get('apellido2'));
 
-      $this->_periodo_actual = Config::get(var: 'config.academic.periodo_actual');
-      $this->_annio_actual = Config::get(var: 'config.academic.annio_actual');
+      $this->_periodo_actual = Config::get('config.academic.periodo_actual');
+      $this->_annio_actual = Config::get('config.academic.annio_actual');
 
       //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
       $this->id_instit = Config::get('config.institution.id_name');

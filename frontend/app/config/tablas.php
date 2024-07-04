@@ -3,6 +3,8 @@
  * KumbiaPHP Web Framework
  * Parámetros de configuracion de la aplicacion
  */
+ 
+$prefijo_dolibarr = 'llxbi_';  // llxbi_ (santa rosa), llxxw_ (windsor)
 
 return [
   'acciones_seguim'     => 'sweb_acciones_segto',
@@ -46,8 +48,8 @@ return [
   'notas'               => 'sweb_notas',
   'notas_hist'          => 'sweb_notas_historia',
 
-  'periodo'              => 'sweb_periodos',
-  'periodos'             => 'sweb_periodos',
+  'periodo'              => $prefijo_dolibarr.'academico_periodo', //'sweb_periodos',
+  'periodos'             => $prefijo_dolibarr.'academico_periodo', //'sweb_periodos',
   'plantillas'           => 'snxt_plantillas',
   'rango'                => 'sweb_rangos',
   'rangos'               => 'sweb_rangos',
@@ -64,8 +66,8 @@ return [
   'tareas'               => 'snxt_tareas_sw',
   'tarea'                => 'snxt_tareas_sw',
   
-  'usuario'              => 'llxbi_user', //'dm_user',
-  'usuarios'             => 'llxbi_user', //'dm_user',
+  'usuario'              => 'dm_user', //'dm_user',
+  'usuarios'             => 'dm_user', //'dm_user',
   'usuarios_estudiantes' => 'sweb_dmuser_estudiantes',
   'usuarios_asignaturas' => 'sweb_users_asignaturas',
   'usuarios_secciones'   => 'sweb_users_secciones',

@@ -7,8 +7,8 @@ trait PeriodoTraitSetUp {
   private function setUp(): void {
     
     self::$_fields_show = [
-      'all'     => ['id', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'created_by', 'updated_by', 'created_at', 'updated_at', 'mes_req_boletin'],
-      'index'   => ['id', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day'],
+      'all'     => ['rowid', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'created_by', 'updated_by', 'created_at', 'updated_at', 'mes_req_boletin'],
+      'index'   => ['rowid', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day'],
       'create'  => ['periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'mes_req_boletin'],
       'edit'    => ['periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'mes_req_boletin'],
     ];

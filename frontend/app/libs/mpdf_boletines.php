@@ -24,7 +24,7 @@ class MpdfBoletines extends Mpdf {
     $this->watermark_font = 'DejaVuSansCondensed';
 
     $logo = '<a href="'.Config::get('config.institution.website').'" target="_blank">
-      <img src="'.PUBLIC_PATH.'img/ws_logo.png" alt="Logo" height="40"> </a>';
+      <img src="'.PUBLIC_PATH.'img/logo.png" alt="Logo" height="40"> </a>';
     $this->SetHTMLHeader("
     <div style=\"text-align: center; font-weight: bold;\">
         $logo <br> <h2>$this->title</h2>

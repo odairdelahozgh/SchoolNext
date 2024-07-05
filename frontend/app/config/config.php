@@ -69,8 +69,8 @@ return [
 
       'slogan'  => 'Brilliant minds for a challenging world',
       'campania'  => 'No esperemos que el mundo cambie. Primero hagámoslo nosotros.',
-      'logo'  => 'ws_logo.png',
-      'logo_resolucion' => 'ws_logo.png',
+      'logo'  => 'logo.png',
+      'logo_resolucion' => 'logo.png',
       
       'ciudad' => 'Valledupar',
       'direccion' => 'Kilometro 2.5 via Rio Seco - Valledupar, Cesar',

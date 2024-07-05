@@ -105,7 +105,7 @@ $contrato1 = dmConfig::get('mat_contrato1');
 $dir_img   = '../../_windsorviejo_schoolnext_private/lib/vendor/tcpdf/images/'; // hosting
 
 $contrato1 = str_replace("\$CONTRATO\$", $num_matricula, $contrato1);
-$contrato1 = str_replace("\$IM_ENCAB_RES\$", $dir_img.'logo_colegio.jpg', $contrato1);
+$contrato1 = str_replace("\$IM_ENCAB_RES\$", $dir_img.'logo.png', $contrato1);
 $contrato1 = str_replace("\$NOMBRE_ESTUDIANTE\$", strtoupper($estudiante), $contrato1);
 $contrato1 = str_replace("\$PRES\$", DarFormatoV2($pres, '__'), $contrato1);
 $contrato1 = str_replace("\$BPRIM\$", DarFormatoV2($bas_prim, '__'), $contrato1);
@@ -211,7 +211,7 @@ $libro_matricula = str_replace("\$GRADO_PLANTEL\$", DarFormatoV2($estudiante->ge
 $libro_matricula = str_replace("\$DIR_PLANTEL\$", DarFormatoV2($estudiante->getDatosestud()->getAnteInstitDir(), str_repeat("_", 33)), $libro_matricula);
 $libro_matricula = str_replace("\$TEL_PLANTEL\$", DarFormatoV2($estudiante->getDatosestud()->getAnteInstitTel(), str_repeat("_", 14)), $libro_matricula);
 $libro_matricula = str_replace("\$FECHA_RET_PLANTEL\$", DarFormatoV2($estudiante->getDatosestud()->getAnteFechaRet(), str_repeat("_", 14)), $libro_matricula);
-$libro_matricula = str_replace("\$IM_PIE_RES\$", $dir_img.'logo_colegio.jpg', $libro_matricula);
+$libro_matricula = str_replace("\$IM_PIE_RES\$", $dir_img.'logo.png', $libro_matricula);
 
 $file_pdf->writeHTML($libro_matricula, true, false, true, false, '');
 

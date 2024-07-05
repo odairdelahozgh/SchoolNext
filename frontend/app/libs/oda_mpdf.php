@@ -26,7 +26,7 @@ class OdaMpdf extends Mpdf {
     $this->watermark_font = 'DejaVuSansCondensed';
 
     $this->logo = '<a href="'.Config::get('config.institution.website').'" target="_blank">
-      <img src="'.PUBLIC_PATH.'img/ws_logo.png" alt="Logo" height="40"> </a>';
+      <img src="'.PUBLIC_PATH.'img/logo.png" alt="Logo" height="40"> </a>';
 
     $this->SetHTMLHeader("
       <div style=\"text-align: center; font-weight: bold;\">

@@ -4,7 +4,7 @@
  * Parámetros de configuracion de la aplicacion
  */
  
-$prefijo_dolibarr = 'llxbi_';  // llxbi_ (santa rosa), llxxw_ (windsor)
+$prefijo_dolibarr = 'llx_';  // llx_ (santa rosa), llxxw_ (windsor)
 
 return [
   'acciones_seguim'     => 'sweb_acciones_segto',
@@ -48,8 +48,8 @@ return [
   'notas'               => 'sweb_notas',
   'notas_hist'          => 'sweb_notas_historia',
 
-  'periodo'              => $prefijo_dolibarr.'academico_periodo', //'sweb_periodos',
-  'periodos'             => $prefijo_dolibarr.'academico_periodo', //'sweb_periodos',
+  'periodo'              => 'sweb_periodos', //$prefijo_dolibarr.'academico_periodo', //
+  'periodos'             => 'sweb_periodos', //$prefijo_dolibarr.'academico_periodo', //'sweb_periodos',
   'plantillas'           => 'snxt_plantillas',
   'rango'                => 'sweb_rangos',
   'rangos'               => 'sweb_rangos',

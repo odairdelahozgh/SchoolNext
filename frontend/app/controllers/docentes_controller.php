@@ -12,7 +12,6 @@ class DocentesController extends AppController
   protected function before_filter() 
   {
     parent::before_filter();
-
     if (!str_contains('docentes', Session::get('roll')) 
       && !str_contains('admin', Session::get('roll')) 
       && !str_contains('coordinadores', Session::get('roll')) )
@@ -30,10 +29,8 @@ class DocentesController extends AppController
       $this->page_action = 'Seguimientos del Grupo';
       $this->data = (new usuario)->misGrupos();
     } 
-    catch (\Throwable $th) 
-    {
-      OdaFlash::error($th);
-    }
+    catch (\Throwable $th) { OdaFlash::error($th); }
+
     View::select('direccionDeGrupo/seguimientos_consolidado');
   }
 
@@ -45,10 +42,7 @@ class DocentesController extends AppController
       $this->page_action = 'Registros del Grupo';
       $this->data = (new usuario)->misGrupos();
     } 
-    catch (\Throwable $th) 
-    {
-      OdaFlash::error($th);
-    }
+    catch (\Throwable $th) { OdaFlash::error($th); }
     
     View::select('direccionDeGrupo/dg_registros_consoli');
   }
@@ -221,6 +215,18 @@ class DocentesController extends AppController
       $this->arrData['Salon'] = $RegSalon;
       $this->arrData['annio_actual'] = $this->_annio_actual;
       $this->arrData['periodo_actual'] = $this->_periodo_actual;
+
+      $RegCalificaciones = (new Nota)->getConsultaListasClase($salon_id, $asignatura_id);
+      $calificaciones = [];
+      foreach ($RegCalificaciones as $key => $cals) {
+        $calificaciones [$cals->estudiante_id][1] = $cals->nota_final_periodo_1;
+        $calificaciones [$cals->estudiante_id][2] = $cals->nota_final_periodo_2;
+        $calificaciones [$cals->estudiante_id][3] = $cals->nota_final_periodo_3;
+        $calificaciones [$cals->estudiante_id][4] = $cals->nota_final_periodo_4;
+      }
+      $this->arrData['Calificaciones'] = $calificaciones;
+      
+
       $Notas = (new Nota)->getBySalonAsignaturaPeriodos(
         $salon_id, 
         $asignatura_id, 
@@ -260,12 +266,23 @@ class DocentesController extends AppController
       {
         $IndicP[$object->codigo] = get_object_vars($object);
       }
+      
+      $RegCalificaciones = (new Nota)->getConsultaListasClase($salon_id, $asignatura_id);
+      $calificaciones = [];
+      foreach ($RegCalificaciones as $key => $cals) {
+        $calificaciones [$cals->estudiante_id][1] = $cals->nota_final_periodo_1;
+        $calificaciones [$cals->estudiante_id][2] = $cals->nota_final_periodo_2;
+        $calificaciones [$cals->estudiante_id][3] = $cals->nota_final_periodo_3;
+        $calificaciones [$cals->estudiante_id][4] = $cals->nota_final_periodo_4;
+      }
+      
       $this->arrData = [
         'Periodo'           => $RegPeriodo,
         'Asignatura'        => $RegAsignatura,
         'Salon'             => $RegSalon,
         'Indicadores'       => $RegsIndicad,
         'IndicRef'          => $IndicP,
+        'Calificaciones'    => $calificaciones,
         'annio_actual'      => $this->_annio_actual,
         'periodo_actual'    => $this->_periodo_actual,
         'min_fortaleza'     => $MinMaxIndicad['min_fortaleza'],
@@ -300,9 +317,9 @@ class DocentesController extends AppController
       $RegPeriodo =(new Periodo)->get($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
       $this->data = (new Seguimientos)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
-      OdaLog::debug('data'.count($this->data));
+      //OdaLog::debug('data'.count($this->data));
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
-      OdaLog::debug('dd'.count($RegsIndicad));
+      //OdaLog::debug('dd'.count($RegsIndicad));
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
       
 
@@ -342,7 +359,8 @@ class DocentesController extends AppController
     {
       $this->page_action = 'Calificar Planes de Apoyo del Sal&oacute;n';
       $RegSalon = (new Salon)->get($salon_id);
-      $RegPeriodo =(new Periodo)->get($periodo_id);
+      $RegPeriodo = Periodo::getFirstById($periodo_id);
+      //OdaLog::debug("id={$RegPeriodo->id} / rowid={$RegPeriodo->rowid}");
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
       $this->data = (new PlanesApoyo)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);

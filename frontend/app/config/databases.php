@@ -15,7 +15,8 @@ return [
          \PDO::ATTR_ERRMODE    => \PDO::ERRMODE_EXCEPTION
       ],
     ],
-    //Conexión a Mysql (LITE)
+
+    // Conexión a Mysql (LITERECORD)
     'development' => [
       'host'     => 'localhost', // ip o nombre del host de la base de datos
       'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
@@ -25,7 +26,8 @@ return [
       'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
       //'dsn' => '', // Cadena de conexión a la base de datos
       //'pdo' => 'On', // activar conexiones PDO (On/Off); descomentar para usar
-      ],
+    ],
+
     'windsor' => [
       'host'     => 'localhost', //  ip o nombre del host de la base de datos
       'username' => 'tecnoro1_schoolnext', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
@@ -35,7 +37,8 @@ return [
       'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
       //'dsn' => '', // cadena de conexión a la base de datos
       //'pdo' => 'On',  //  activar conexiones PDO (OnOff); descomentar para usar
-        ],
+    ],
+    
     'santarosa' => [  // hosting odair
       'host'     => 'localhost', //  ip o nombre del host de la base de datos
       'username' => 'u113041793_nextsantarosa', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
@@ -45,7 +48,7 @@ return [
       'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
       //'dsn' => '', // cadena de conexión a la base de datos
       //'pdo' => 'On',  //  activar conexiones PDO (OnOff); descomentar para usar
-      ],
+    ],
 ];
 
 /**

@@ -10,7 +10,7 @@ $year = date('Y');
 return [
     'application' => [
         'production' => false,
-        'database' => 'development',
+        'database' => strtolower(INSTITUTION_KEY),
         'dbdate' => 'YYYY-MM-DD',
         'debug' => 'On',
         'log_exceptions' => 'On', //log_exceptions: muestra las excepciones en pantalla (On/off)
@@ -24,14 +24,14 @@ return [
     ],
 
     'theme' => [
-      'admin'  => 'w3', //w3 looper
+      'admin'  => 'w3', //w3 bootstrap
       'users'  => 'w3',
     ],
 
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2024,
-      'periodo_actual' => 2,
+      'periodo_actual' => 4,
       'asignar_carga' => ['*'],
     ],
 
@@ -59,6 +59,7 @@ return [
       'app_description'  => 'SchoolNext>> Es una Aplicación Web Moderna para la Gestión de Instituciones Educativas de Colombia',
     ],
 
+    // esto se va a eliminar
     'institution' => [
       'nombre'  => 'Windsor School',
       'razon_social'  => 'Windsor Group SAS',
@@ -91,11 +92,6 @@ return [
       
       'contador'        => 'Mary Monachello',
       'contador_cc'     => '',
-    ],
-
-    'bitly' => [
-      'access_token' => '8814d2e204427b9b31d89603afda9a3f87a980e7',
-      'servicio_web' => 'https://api-ssl.bitly.com/v4/bitlinks',
     ],
 
 ];

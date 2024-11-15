@@ -25,6 +25,16 @@ class Nota extends LiteRecord {
   }
 
   
+  public function getConsultaListasClase(int $salon_id, int $asignatura_id) 
+  {
+    return (new Nota)->all(
+      "SELECT lc.* FROM vista_listas_de_clase_p5 as lc
+      WHERE lc.salon_id=? AND lc.asignatura_id=? 
+      ORDER BY lc.salon, lc.asignatura",  array($salon_id, $asignatura_id)
+    );
+  }
+
+
   public function setUpdateCalificacion() 
   {
     try

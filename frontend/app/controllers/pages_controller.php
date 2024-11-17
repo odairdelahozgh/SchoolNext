@@ -56,6 +56,18 @@ class PagesController extends AppController
     View::template('looper/layout-pagenavs');
   }
 
+  public function bootstrap_htmx_test() 
+  {
+    View::select('bootstrap5htmx-view', 'bootstrap5htmx-template');
+  }
 
+
+  public function test_htmx() 
+  {
+    View::select(null, null);
+    echo '<p>resultado [100-200] = '.rand(100, 200).'</p>';
+  }
+
+  
 
 }

@@ -26,21 +26,6 @@ class LiteRecord extends ORM
   protected static $_tam_uuid_defa = 24;
   protected static $_order_by_defa = 't.id';
   protected static $_class_name = __CLASS__;
-
-  /**
-   * @deprecated mejor usar  $_tam_uuid_max
-   */
-  protected static $lim_tam_campo_uuid = 36; /// esto se eliminará
-  
-  /**
-   * @deprecated mejor usar  $_tam_uuid_defa
-   */
-  protected static $tam_campo_uuid = 30;     /// esto se eliminará
-  
-  /**
-   * @deprecated mejor usar  $_order_by_defa
-   */
-  protected static $order_by_default = 't.id'; /// esto se eliminará
   
   /**
    * @deprecated mejor usar $_class_name
@@ -59,6 +44,7 @@ class LiteRecord extends ORM
     self::$_periodo_actual = Session::get('periodo') ?? 0;
     self::$_annio_actual = Session::get('annio') ?? 0;
   }
+  
   
   
   public function __toString(): string 

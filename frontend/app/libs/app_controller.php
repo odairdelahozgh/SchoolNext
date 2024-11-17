@@ -89,8 +89,8 @@ abstract class AppController extends Controller
       $this->_annio_actual = Config::get('config.academic.annio_actual');
 
       //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
-      $this->_instituto_id = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.id');
-      $this->_instituto_nombre = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.nombre');
+      $this->_instituto_id = Config::get('institutions.'.INSTITUTION_KEY.'.id');
+      $this->_instituto_nombre = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
       $this->themei = substr($this->theme,0,1);
       
@@ -110,7 +110,7 @@ abstract class AppController extends Controller
   final protected function finalize() {
     try {
       $this->page_action = (!$this->page_action) ? $this->action_name : $this->page_action;
-      $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .Config::get('config.institution.nombre');
+      $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .Config::get('institutions.'.$this->_instituto_id.'.nombre');
       
       if ($this->action_name!=='index') {
         $this->_data_count = count($this->data);

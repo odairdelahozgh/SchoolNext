@@ -9,9 +9,9 @@ $year = date('Y');
 
 return [
     'windsor' => [
+      'id' => 'windsor',
       'nombre'  => 'Windsor School',
       'razon_social'  => 'Windsor Group SAS',
-      'id_name' => 'windsor',
       'nit' => '900329420',
       'cod_dane'  => '320001068151',
       'resolucion'  => '293, Nov 4 de 2011',
@@ -43,9 +43,9 @@ return [
     ],
 
     'santarosa' => [
+      'id'      => 'santarosa',
       'nombre'       => 'Colegio Mixto Santa Rosa',
       'razon_social' => 'Colegio Mixto Santa Rosa',
-      'id_name'      => 'santarosa',
       'nit'          => '',
       'cod_dane'     => '',
       'resolucion'   => '',

@@ -65,8 +65,8 @@ abstract class AdminController extends Controller
       $this->user_name = Session::get('username');
       $this->user_nombre_completo = trim(Session::get('nombres').' '.Session::get('apellido1').' '.Session::get('apellido2'));
       
-      $this->_instituto_id = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.id');
-      $this->_instituto_nombre = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.nombre');
+      $this->_instituto_id = Config::get('institutions.'.INSTITUTION_KEY.'.id');
+      $this->_instituto_nombre = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
       $this->themei = substr($this->theme,0,1);
       

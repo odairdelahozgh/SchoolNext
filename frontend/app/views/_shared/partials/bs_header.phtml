@@ -1,0 +1,11 @@
+<?php
+
+$header = new Bootstrap5Helper();
+$header->addMenuItem('Inicio', PUBLIC_PATH.$modulo);
+$header->addMenuItem('Docentes', PUBLIC_PATH.'docentes', [
+  View::partial("docentes/docentes_menu_bs")
+]);
+$header->addMenuItem('Servicios', PUBLIC_PATH.'/servicios');
+$header->addMenuItem('Contacto', PUBLIC_PATH.'/contacto');
+
+echo $header->renderHeader();

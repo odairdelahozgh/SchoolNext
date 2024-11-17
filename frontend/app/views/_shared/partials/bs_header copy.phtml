@@ -1,0 +1,26 @@
+<?php
+  $theme   = Session::get('theme');
+  $modulo  = Session::get('modulo');
+  $Periodo = Session::get('periodo');
+  $annio   = Session::get('annio');
+  $f_ini_periodo = date('M-d',strtotime(Session::get('fecha_inicio')));
+  $f_fin_periodo = date('M-d',strtotime(Session::get('fecha_fin')));
+  $f_open_day    = date('M-d',strtotime(Session::get('f_open_day')));
+  $user_id  = Session::get('id');
+  $username = Session::get('username');
+
+  $dashboard = new Bootstrap5Helper();
+  $navbarItems = [
+    ['href' => '#home', 'label' => 'Home'],
+    ['href' => '#dashboard', 'label' => 'Dashboard'],
+    ['href' => '#orders', 'label' => 'Orders'],
+    ['href' => '#products', 'label' => 'Products'],
+    ['href' => '#customers', 'label' => 'Customers']
+ ];
+ $nv = $dashboard->renderNavbar($navbarItems);
+?>
+
+<header>
+  <?= View::partial("$modulo/$modulo"."_menu_bs") ?>
+  <?=$nv?>  
+</header>

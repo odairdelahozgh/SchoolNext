@@ -1,0 +1,18 @@
+<br>
+<footer >
+  
+  
+  
+  </footer>
+  
+  <footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+      <p class="mb-0 text-sm">
+        <?= OdaTags::link('pages/about_me', 'Acerca de SchoolNext>>') ?><br><br>
+        <?='Time Zone: '.date_default_timezone_get()?><br>
+        <?=Config::get("config.construxzion.copy")?>&nbsp;<?=Config::get("config.construxzion.name")?>&nbsp;<?=Config::get("config.construxzion.copy_text")?>
+    </p>
+    <p><?=round((microtime(1) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 0);?>ms / <?=number_format(memory_get_usage() / 1048576, 2);?> MB <br><br>
+    </p>
+        </div>
+</footer>

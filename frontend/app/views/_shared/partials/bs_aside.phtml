@@ -1,0 +1,20 @@
+<?php
+  $sidebarItems = [
+    ['href' => '#dashboard', 'label' => 'Dashboard'],
+    ['href' => '#orders', 'label' => 'Orders'],
+    ['href' => '#products', 'label' => 'Products'],
+    ['href' => '#customers', 'label' => 'Customers']
+  ];
+  $sidebarHtml = '';
+  foreach ($sidebarItems as $item) {
+    $sidebarHtml .= "<li class='nav-item'><a class='nav-link' href='{$item['href']}'>{$item['label']}</a></li>";
+  }
+?>
+
+<nav id="sidebarMenu" class="<?=$theme?> col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+  <div class="position-sticky pt-3">
+    <ul class="nav flex-column">
+      <?= $sidebarHtml ?>
+    </ul>
+  </div>
+</nav>

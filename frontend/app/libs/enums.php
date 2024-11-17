@@ -19,3 +19,4 @@
   require_once "enums/estado_adjuntos.php";
   require_once "enums/retiro_estudiante.php";
   require_once "enums/tipo_acudiente.php";
+  require_once "enums/si_no.php";

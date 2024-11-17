@@ -1,0 +1,63 @@
+<?php
+  try
+  {
+    require_once VENDOR_PATH . 'autoload.php';
+    $helper = new Bootstrap5Helper();
+    $lnks = ['usuarios', 'notas', 'indicadores', 'estudiantes', 'eventos', 'tareas' ];
+    $text = '';
+    foreach ($lnks as $key => $item) {
+      $lnk = OdaTags::link("admin/{$item}", 'Gestionar +');
+      $body = _Icons::getAleatorio().' - '.random_int(1,99);
+      $text .= '<div class="col">'.$helper->createCard($item, $body, $lnk).'</div>';
+    }
+  } 
+  catch (\Throwable $th) 
+  {
+    OdaFlash::error($th);
+  }
+?>
+
+<div class="container">
+  <?=View::Encab($controller_name, $page_action, $breadcrumb)?>
+  <?=View::flash()?>
+  <?=View::partial(partial: 'eventos_dashboard', params: ['data'=>$data])?>
+  <hr>
+  <div class="container text-center">
+    <div class="row align-items-start">
+      <?=$text?>
+    </div>
+  </div>
+</div>
+
+
+<?php
+    // echo $helper->createButton('Click me', 'button', 'btn btn-success', ['id' => 'myButton', 'data-toggle' => 'tooltip', 'title' => 'Click this button']);
+    // echo $helper->createAlert('This is an alert!', 'danger', '', ['role' => 'alert']);
+    // echo $helper->createCard('Card Title', 'This is the body of the card.', 'Card footer', '', ['id' => 'myCard']);
+
+    // $formFields = [
+    //   $helper->createFormField('Username', 'text', 'username'),
+    //   $helper->createFormField('Password', 'password', 'password')
+    // ];
+    // echo $helper->createForm('login.php', 'post', $formFields);
+
+    // echo $helper->createModal('myModal', 'Modal Title', 'This is the body of the modal.', $helper->createButton('Close', 'button', 'btn btn-secondary', ['data-bs-dismiss' => 'modal']));
+    // $navItems = [
+    //   $helper->createNavItem('Home', 'index.php'),
+    //   $helper->createNavItem('About', 'about.php')
+    // ];
+    // echo $helper->createNavbar($navItems);
+
+    // $listItems = [
+    //   $helper->createListGroupItem('First item'),
+    //   $helper->createListGroupItem('Second item')
+    // ];
+    // echo $helper->createListGroup($listItems);
+
+    // $headers = ['Name', 'Age', 'Email'];
+    // $rows = [
+    //   ['John Doe', '30', 'john@example.com'],
+    //   ['Jane Doe', '25', 'jane@example.com']
+    // ];
+    // echo $helper->createTable($headers, $rows);
+?>

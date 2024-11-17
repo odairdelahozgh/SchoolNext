@@ -49,20 +49,19 @@ trait EmpleadoTraitProps {
   }
 
 
-  public function getCuentaInstit(bool $show_ico=false)
+  public function getCuentaInstit($show_ico=false)
   { 
-    if (!$this->usuario_instit) {
+    if (!$this->usuario_instit)
+    {
       return 'No tiene usuario en plataforma';
     }
-    
-    
     return $this->usuario_instit;
     // return $ico =  ($show_ico) 
     //   ? OdaTags::img(src:'msteams_logo.svg', attrs:'width="16"', err_message:'').' ' 
     //   : '' ;
 
     // return ( ($this->usuario_instit) 
-    //   ? $this->usuario_instit.'@'.Config::get('config.institution.dominio')
+    //   ? $this->usuario_instit.'@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio')
     //     .'<br>Clave: '.$this->clave_instit
     //   : 'No tiene usuario en plataforma' );
 

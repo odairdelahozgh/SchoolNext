@@ -13,9 +13,9 @@ class IndexController extends AppController
     {
       $this->page_action = 'M&oacute;dulo Admin';
       $this->data = (new Evento)->getEventosDashboard();
-      if ('looper' == Config::get('config.theme.admin'))
+      if ('bootstrap' == Config::get('config.theme.admin'))
       {        
-        View::select(view: 'layout-pagenavs', template: 'looper/layout-pagenavs');
+        View::select(view: 'indexb', template: 'bootstrap5htmx-template');
       }
     }
 

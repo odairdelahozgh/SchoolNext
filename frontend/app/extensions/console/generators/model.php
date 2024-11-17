@@ -25,7 +25,7 @@ class <?=$class?> extends LiteRecord {
   public function __construct() {
     parent::__construct();
     self::$table = Config::get('tablas.<?=strtolower($class)?>');
-    self::$order_by_default = 't.is_active DESC,t.nombre'; // 't.orden'
+    self::$_order_by_defa = 't.is_active DESC,t.nombre'; // 't.orden'
     $this->setUp();
   } //END-__construct
 

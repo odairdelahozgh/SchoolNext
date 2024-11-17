@@ -2,7 +2,6 @@
 /**
  * KumbiaPHP Web Framework
  * Parámetros de configuracion de la aplicacion
- *  @example (int)Config::get(var: 'academic.periodo_actual');
  */
 
 $year = date('Y');

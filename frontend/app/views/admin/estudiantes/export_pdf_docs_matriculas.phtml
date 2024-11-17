@@ -22,16 +22,16 @@ try {
   
   // initialize
   $annio_mat = Config::get('matriculas.annio_mat');
-  $direccion = Config::get('config.institution.direccion');
+  $direccion = Config::get('institutions.'.INSTITUTION_KEY.'.direccion');
   
   $datetimezone = new DateTimeZone('America/Bogota');
   $ahora = new DateTimeImmutable('now', $datetimezone);
   $fecha = $ahora->format("D, d M Y");
 
-  $representante = strtoupper(Config::get('config.institution.rep_legal'));
-  $ciudad = Config::get('config.institution.ciudad');
-  $razon_social = strtoupper(Config::get('config.institution.razon_social'));
-  $nit = Config::get('config.institution.nit');
+  $representante = strtoupper(Config::get('institutions.'.INSTITUTION_KEY.'.rep_legal'));
+  $ciudad = Config::get('institutions.'.INSTITUTION_KEY.'.ciudad');
+  $razon_social = strtoupper(Config::get('institutions.'.INSTITUTION_KEY.'.razon_social'));
+  $nit = Config::get('institutions.'.INSTITUTION_KEY.'.nit');
 
   // CONTRATO MATRÍCULA
   $PContrato = $Plantillas::first("SELECT t.contenido FROM snxt_plantillas AS t WHERE t.nombre=?", ['mat_contrato1']);

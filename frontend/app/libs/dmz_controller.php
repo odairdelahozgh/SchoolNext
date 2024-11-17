@@ -35,7 +35,8 @@ abstract class DmzController extends Controller
   
   public ?int $user_id = 0;
   public ?string $user_name = '';
-  public string $id_instit = '';
+  public string $_instituto_id = '';
+  public string $_instituto_nombre = '';
   public int $_periodo_actual = 0;
   
   final protected function initialize() {
@@ -46,7 +47,8 @@ abstract class DmzController extends Controller
     $this->user_name = 'anonimo';
     $this->_periodo_actual = Config::get(var: 'config.academic.periodo_actual');
 
-    $this->id_instit = Config::get('config.institution.id_name');
+    $this->_instituto_id = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.id');
+    $this->_instituto_nombre = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.nombre');
     $this->theme = 'dark' ;
     $this->themei = substr($this->theme,0,1);
     

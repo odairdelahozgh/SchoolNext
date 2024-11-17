@@ -29,8 +29,8 @@ abstract class AdminController extends Controller
   public ?string $user_nombre_completo = '';
 
   public string $page_module = '';
-  public string $id_instit = '';
-  public string $_instit_name = '';
+  public string $_instituto_id = '';
+  public string $_instituto_nombre = '';
   
   public array  $arrData = [];
   public object $Modelo;
@@ -65,8 +65,8 @@ abstract class AdminController extends Controller
       $this->user_name = Session::get('username');
       $this->user_nombre_completo = trim(Session::get('nombres').' '.Session::get('apellido1').' '.Session::get('apellido2'));
       
-      $this->id_instit = Config::get('config.institution.id_name');
-      $this->_instit_name = Config::get('config.institution.nombre');
+      $this->_instituto_id = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.id');
+      $this->_instituto_nombre = Config::get('institutions.'.strtolower(INSTITUTION_KEY).'.nombre');
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
       $this->themei = substr($this->theme,0,1);
       

@@ -93,7 +93,7 @@ trait UsuarioTraitProps {
   
       return $ico.(
         ($this->usuario_instit) 
-        ? $this->usuario_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit 
+        ? $this->usuario_instit.'@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio').' '.$this->clave_instit 
         : 'No tiene usuario en MS TEAMS'
       );
     

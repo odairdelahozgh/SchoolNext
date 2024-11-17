@@ -118,7 +118,7 @@ trait EstudianteTraitProps {
 
     return $ico.(
       ($this->email_instit) 
-      ? $this->email_instit.'@'.Config::get('config.institution.dominio').' '.$this->clave_instit 
+      ? $this->email_instit.'@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio').' '.$this->clave_instit 
       : 'No tiene usuario en MS TEAMS'
     );
   }

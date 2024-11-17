@@ -15,7 +15,7 @@ class MpdfBoletines extends Mpdf {
     
     $this->SetSubject('INFORME ACADÉMICO');
     $this->SetCreator(APP_NAME.' '.Config::get('config.construxzion.name'));
-    $this->SetAuthor(Config::get('config.institution.nombre'));
+    $this->SetAuthor(Config::get('institutions.'.INSTITUTION_KEY.'.nombre'));
     $this->SetTitle('INFORME ACADÉMICO');
     $this->SetDefaultFont('helvetica');
     $this->SetDefaultFontSize(10);
@@ -23,8 +23,8 @@ class MpdfBoletines extends Mpdf {
     $this->SetDisplayMode('fullpage');
     $this->watermark_font = 'DejaVuSansCondensed';
 
-    $logo = '<a href="'.Config::get('config.institution.website').'" target="_blank">
-      <img src="'.PUBLIC_PATH.'img/logo.png" alt="Logo" height="40"> </a>';
+    $logo = '<a href="'.Config::get('institutions.'.INSTITUTION_KEY.'.website').'" target="_blank">
+      <img src="'.PUBLIC_PATH.'img/'.Config::get('institutions.'.INSTITUTION_KEY.'.logo'). '" alt="Logo" height="40"> </a>';
     $this->SetHTMLHeader("
     <div style=\"text-align: center; font-weight: bold;\">
         $logo <br> <h2>$this->title</h2>

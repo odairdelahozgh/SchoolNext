@@ -392,7 +392,7 @@ class OdaUtils extends Util {
     bool $show_tel=false, 
     string $message=''
   ): string {
-    $insitit_name = Config::get('config.institution.nombre');
+    $insitit_name = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
     $text = ($show_tel) ? $telefono : $message ;
     $message = "*$insitit_name*: $message";
     //$message = str_replace(' ', '%20', $message);

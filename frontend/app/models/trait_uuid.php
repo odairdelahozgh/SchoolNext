@@ -6,7 +6,7 @@ trait TraitUuid {
    */
   public function UUIDReal(int $lenght=36): string 
   {
-    if ($lenght <= parent::$lim_tam_campo_uuid) {
+    if ($lenght <= parent::$_tam_uuid_max) {
       if (function_exists("random_bytes")) {
         $bytes = random_bytes(ceil($lenght / 2));
       } elseif (function_exists("openssl_random_pseudo_bytes")) {
@@ -15,7 +15,7 @@ trait TraitUuid {
         throw new Exception("no cryptographically secure random function available");
       }
     } else {
-      throw new Exception('lenght must be <= '.parent::$lim_tam_campo_uuid);
+      throw new Exception('lenght must be <= '.parent::$_tam_uuid_max);
     }
     return substr(bin2hex($bytes), 0, $lenght);
   }
@@ -23,8 +23,9 @@ trait TraitUuid {
   /**
    * Devuelve un valor hash, método xxh3
    */
-  public function xxh3Hash(): string 
+  public function xxh3Hash($modulo=null): string 
   {
+    $data = date('ymdhis').rand(1, 1000).(string)$modulo;
     $data = date('ymdhis').rand(1, 1000);
     return hash("xxh3", $data, options: ["seed" => rand(1, 1000)]);
   }
@@ -80,7 +81,7 @@ trait TraitUuid {
       //     ->where('t.id=?', $reg->id)
       //     //->execute(true)
       //     ;
-      //     OdaLog::debug(self::$class_name .$DQL);
+      //     OdaLog::debug(self::$_class_name .$DQL);
       //   }
       // }
     

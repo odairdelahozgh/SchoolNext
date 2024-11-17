@@ -3,11 +3,50 @@
 </div>
 
 <?php
-require_once VENDOR_PATH . 'autoload.php';
+
+try
+{
+
+  require_once VENDOR_PATH . 'autoload.php';
+
+  $helper = new Bootstrap5Helper();
+
+  echo $helper->createButton('Click me', 'button', 'btn btn-success', ['id' => 'myButton', 'data-toggle' => 'tooltip', 'title' => 'Click this button']);
+
+  echo $helper->createAlert('This is an alert!', 'danger', '', ['role' => 'alert']);
+
+  echo $helper->createCard('Card Title', 'This is the body of the card.', 'Card footer', '', ['id' => 'myCard']);
+
+  $formFields = [
+      $helper->createFormField('Username', 'text', 'username'),
+      $helper->createFormField('Password', 'password', 'password')
+  ];
+  echo $helper->createForm('login.php', 'post', $formFields);
+
+  echo $helper->createModal('myModal', 'Modal Title', 'This is the body of the modal.', $helper->createButton('Close', 'button', 'btn btn-secondary', ['data-bs-dismiss' => 'modal']));
+
+  $navItems = [
+      $helper->createNavItem('Home', 'index.php'),
+      $helper->createNavItem('About', 'about.php')
+  ];
+  echo $helper->createNavbar($navItems);
+
+  $listItems = [
+      $helper->createListGroupItem('First item'),
+      $helper->createListGroupItem('Second item')
+  ];
+  echo $helper->createListGroup($listItems);
+
+  $headers = ['Name', 'Age', 'Email'];
+  $rows = [
+      ['John Doe', '30', 'john@example.com'],
+      ['Jane Doe', '25', 'jane@example.com']
+  ];
+  echo $helper->createTable($headers, $rows);
 
 
-
-try {
-} catch (\Throwable $th) {
+} 
+catch (\Throwable $th) 
+{
   OdaFlash::error($th);
 }

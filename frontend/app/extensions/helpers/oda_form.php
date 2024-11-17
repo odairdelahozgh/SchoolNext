@@ -70,7 +70,7 @@ class OdaForm extends Form {
   } // END
 
   /**
-   * @deprecated mejor usar $_class_name
+   * @deprecated
    */
   public function getFields(string $legend_fieldset): string { 
     return self::getHiddens().self::createFieldset($this->_ffields[1], $legend_fieldset); 

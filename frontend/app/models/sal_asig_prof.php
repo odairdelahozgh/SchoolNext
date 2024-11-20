@@ -22,6 +22,27 @@ class SalAsigProf extends LiteRecord {
     self::$_order_by_defa = 't.user_id, t.salon_id, t.asignatura_id';
     $this->setUp();
   }
+  
+  
+  public function getSalonesAsignaturas(int $user_id) 
+  {
+    try {
+      $DQL = (new OdaDql(__CLASS__))
+        ->select('t.salon_id, t.asignatura_id');
+
+      if ($user_id<>1)
+      {
+        $DQL->andWhere('t.user_id=?');
+        $DQL->setParams([$user_id]);
+      }
+      return $DQL->execute();
+
+    } catch (\Throwable $th)
+    {
+      OdaFlash::error($th);
+    }
+  }
+
 
   public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) 
   { 

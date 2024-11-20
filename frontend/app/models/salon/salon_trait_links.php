@@ -24,7 +24,11 @@ trait SalonTraitLinks {
   
   public function getLnkSetupCalificarSalon(): string {
     try {
-      return OdaTags::linkButton(action: "admin/salones/setupCalificarSalon/$this->id", text: 'Setup Cal', attrs: " class=\"w3-button w3-green\"");
+      $result = '';
+      if (Config::get('config.academic.periodo_actual') != $this->is_ready_print) {
+        $result = OdaTags::linkButton(action: "admin/salones/setupCalificarSalon/$this->id", text: 'Setup Cal', attrs: " class=\"w3-button w3-green\"");
+      }
+      return $result;
 
     } catch (\Throwable $th) {
       OdaFlash::error($th);

@@ -9,7 +9,7 @@ use Mpdf\Mpdf;
 
 class MpdfListasClase extends Mpdf 
 {
-  private array $arr_periodos = [1=>'P1', 2=>'P2', 3=>'P3', 4=>'P4'];
+  
   public function __construct(array $config = [], $container = null) 
   {
     parent::__construct($config, $container);
@@ -42,57 +42,49 @@ class MpdfListasClase extends Mpdf
   }
 
 
-  public function encabezado(&$tabla, int $periodo = 1): void
+  public function encabezado(&$tabla): void
   {
-    $col_periodos = [];
-    if ($periodo>1) {
-      $col_periodos = array_slice($this->arr_periodos, 1, $periodo-1);
-    }
-
-    $head = array_merge (
-      ['No.', 'Estudiante'], 
-      array_values($col_periodos), 
-      ["Prom", "Nota", "Partici", "Tareas", "Ev. Oral", "Ev. Escri", "Clase", "Actitud", "Final", "P.A.", "Asist"]
+    $tabla->setHead(
+      [
+        'No.',
+        'Estudiante',
+        "Nota",
+        "Prom",
+        "Partici",
+        "Tareas",
+        "Ev. Oral",
+        "Ev. Escri",
+        "clase",
+        "Actitud",
+        "Final",
+        "P.A.",
+        "Asist",
+      ],
+      '',
+      ['style="width: 0.5cm;"', 'style="width: 6cm;"', 'style="width: 0.8cm;"']
     );
-    
-    $tabla->setHead($head, '', ['style="width: 0.5cm;"', 'style="width: 6cm;"', 'style="width: 0.8cm;"']);
   }
   
-/* 
-  public function cuerpo(&$tabla, $key, $registro, int $periodo = 1): void
-  {
-    $cols = array_merge(
-      [ ($key+1), $registro->estudiante_nombre],
-      array_slice($this->arr_periodos, 0, $periodo-1),
-      array_fill(1, 11, ''),
-    );
 
+  public function cuerpo(&$tabla, $key, $registro): void
+  {  ///estudiante_nombre,asignatura_nombre
+    $cols = [
+      ($key+1),
+      $registro->estudiante_nombre,
+      '',
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ];
     $tabla->addRow($cols);
   }
- */
-
-  
- public function cuerpo(&$tabla, $key, $registro, int $periodo = 1): void
- {
-  $notas = [];
-  for ($p=1; $p<=($periodo-1); $p++) { 
-    $notas[] = "$registro->nota_final_periodo_{$p}";
-    /*
-    if (array_key_exists($p, $registro)) {
-    } else {
-      $notas[] = 0;
-    }
-      */
-   }
-
-   $cols = array_merge(
-     [ $key, $registro->nombre_estudiante],
-     $notas,
-     array_fill(1, 11, ''),
-   );
-
-   $tabla->addRow($cols);
- }
 
 
   public function pie(): string

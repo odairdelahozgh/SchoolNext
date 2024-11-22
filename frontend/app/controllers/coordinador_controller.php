@@ -6,7 +6,24 @@
   */
 class CoordinadorController extends AppController
 {
+
   
+  public function riesgo_academico() 
+  {
+    try 
+    {
+      $this->page_action = 'Matriz de Riesgo Académico';
+      $this->data = (new Salon())->getByCoordinador(Session::get('id'));
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
+    }
+    View::select('consolidado/riesgo_academico');
+  }
+  
+  
+
   public function showEstudiante(int $estudiante_id) 
   {
     $this->page_action = 'Mostrar Estudiante';

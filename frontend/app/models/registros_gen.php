@@ -20,9 +20,40 @@ class RegistrosGen extends LiteRecord {
     self::$table = Config::get('tablas.estud_reg_obs_gen');
     $this->setUp();
     self::$_order_by_defa = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
-  }
+  }  
 
   
+  public function getByAnnioEstudiante(
+    int $annio, 
+    int $estudiante_id
+  ) {
+    try 
+    {
+      $annio_actual = Config::get('config.academic.annio_actual');
+      $sufijo = ($annio != $annio_actual) ? '_'.$annio : '' ;
+  
+      $RegGen = new RegistrosGen();
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->setFrom(self::$table.$sufijo);
+      
+      $DQL->select('t.id, t.tipo_reg, t.periodo_id, t.grado_id, t.salon_id, t.fecha, 
+                  t.asunto, t.acudiente, t.foto_acudiente, t.director, t.foto_director')
+          ->concat(['u.apellido1', 'u.apellido2', 'u.nombres'], 'creador_nombre')
+          ->leftJoin('usuario', 'u', 't.created_by = u.id')
+          ->where('t.estudiante_id=?')
+          ->orderBy('t.periodo_id, t.fecha DESC');
+      $DQL->setParams([$estudiante_id]);
+      return $DQL->execute();
+    
+    } 
+    catch (\Throwable $th)
+    {
+      OdaFlash::error($th);
+    }
+  }
+
+
+
   public function getRegistrosProfesor(int $user_id) 
   {
     $DQL = new OdaDql(__CLASS__);

@@ -18,8 +18,8 @@
  * Utilidades para el manejo de ficheros y directorios
  * @category   Kumbia
  * @package    Core
+ * @deprecated MEjor usar MPDF, please
  */
-
 class OdaPdf extends Fpdf
 {
   public function __construct(

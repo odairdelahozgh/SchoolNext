@@ -189,7 +189,7 @@ function traer_data(salon_id) {
 
         let lnk_registro_escolar = `
         <a 
-          href="/edsa-schoolnext/admin/estudiantes/exportRegistroEscolarByAnnioEstudiante/${annio_actual}/${estudiante_id}" 
+          href="${ruta_base}admin/estudiantes/exportRegistroEscolarByAnnioEstudiante/${annio_actual}/${estudiante_id}" 
           target="_blank" 
           class="w3-button w3-ripple w3-round-large">
           &nbsp;<i class="fa-solid fa-file-pdf"></i> Registro Escolar

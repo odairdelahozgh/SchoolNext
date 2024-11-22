@@ -41,7 +41,7 @@ function traer_data(salon_id) {
         body_table += 
         '<tr class="w3-theme-'+theme.toString().substr(0,1)+`5">
           <td colspan=14>
-            <h3># ${cnt_estudiantes} ${estudiante_nombre} [${estudiante_id}] :: ${salon_nombre} NOTA-PROM-ESTU</h3>
+            <h3># ${cnt_estudiantes} ${estudiante_nombre} [${estudiante_id}] :: ${salon_nombre} NOTA-PROM-ESTU BTN-REGISTROS</h3>
             <h6>${ultimoPago(annio_pagado, mes_pagado, annio_actual)}</h6>
             <h6>Padres: ${madre} [${madre_tel}] / ${padre} [${padre_tel}]</h6>
           </td>
@@ -113,7 +113,7 @@ function traer_data(salon_id) {
             } 
             else 
             {
-              const estado = tiene_logros > 0 ? "<i class=\"fa-solid fa-check w3-large\"></i>" : "";
+              const estado = (tiene_logros > 0) ? "<i class=\"fa-solid fa-check w3-large\"></i>" : "<i class=\"fa-solid fa-xmark w3-large w3-red\"></i>";
               fila += `<td class="w3-center w3-padding-tiny w3-small"> ${estado} </td>`;
             }
 
@@ -186,6 +186,17 @@ function traer_data(salon_id) {
 
         promedio_estudiante = (is_active == 1) ? promedio_estudiante : '<del>'+promedio_estudiante+'</del>';
         body_table = body_table.replace(/NOTA-PROM-ESTU/i, promedio_estudiante);
+
+        let lnk_registro_escolar = `
+        <a 
+          href="/edsa-schoolnext/admin/estudiantes/exportRegistroEscolarByAnnioEstudiante/${annio_actual}/${estudiante_id}" 
+          target="_blank" 
+          class="w3-button w3-ripple w3-round-large">
+          &nbsp;<i class="fa-solid fa-file-pdf"></i> Registro Escolar
+        </a>`;
+
+        body_table = body_table.replace(/BTN-REGISTROS/i, lnk_registro_escolar);
+        
         cnt_estudiantes += 1;
 
       }

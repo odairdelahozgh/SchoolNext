@@ -13,6 +13,9 @@ const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public'; // LOCAL
 const APP_NAME= "SchoolNEXT>>";
 const INSTITUTION_KEY = "windsor"; // "santarosa" "windsor" En minúsculas 
 
+const LOGO = 'logo_'.INSTITUTION_KEY.'.png';
+const LOGO_BRAND = 'logo_brand_'.INSTITUTION_KEY.'.png';
+
 const FILE_UPLOAD_PATH   = PUBLIC_PATH.'files/upload/';
 const FILE_DOWNLOAD_PATH = PUBLIC_PATH.'files/download/';
 

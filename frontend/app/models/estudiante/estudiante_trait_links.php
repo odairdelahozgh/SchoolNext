@@ -1,6 +1,21 @@
 <?php
 trait EstudianteTraitLinks {
 
+
+  public static function getLnkRegistroEscolarByAnnioEstudiantePDF(int $annio, int $estudiante_id) 
+  {
+    try {
+      return OdaTags::linkButton (
+        action: "admin/estudiantes/exportRegistroEscolarByAnnioEstudiante/{$annio}/{$estudiante_id}", 
+        text: "<i class=\"fa-solid fa-file-pdf\"></i> Registro Escolar", 
+        attrs: " target=\"_blank\" class=\"w3-btn w3-ripple w3-round-large w3-small\"");
+
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }
+
+
   public function getLnkEditPage(string $caption, string $attrs=''): string 
   {
     return OdaTags::link(

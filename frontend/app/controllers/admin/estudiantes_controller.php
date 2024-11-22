@@ -15,8 +15,32 @@ class EstudiantesController extends ScaffoldController
     $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
     $this->data = (new Estudiante())->getListEstudiantes();
   }
-
   
+
+  public function exportRegistroEscolarByAnnioEstudiante(int $annio, int $estudiante_id) 
+  {
+    try
+    {
+      $this->data['Annio']  = $annio;
+      $this->data['Estudiante'] = (new Estudiante())->get($estudiante_id);
+      $this->data['Grado'] = (new Grado())->get($this->data['Estudiante']->grado_mat);
+      $this->data['Salon'] = (new Salon())->get($this->data['Estudiante']->salon_id);
+      $this->arrData['RegGenerales'] = (new RegistrosGen())->getByAnnioEstudiante($annio, $estudiante_id);
+      $this->arrData['RegAcademicos'] = (new RegistroDesempAcad())->getByAnnioEstudiante($annio, $estudiante_id);
+
+      $this->file_tipo = 'Informe Coordinadores';
+      $this->file_name = OdaUtils::getSlug("registro_academico_{$annio}_{$this->data['Estudiante']}");
+      $this->file_title = "Registro Academico {$annio} {$this->data['Estudiante']}";
+      View::select(view: "export_pdf_registro_escolar_annio_estudiante_id.pdf", template: null);    
+    }
+
+    catch (\Throwable $th)
+    {
+      OdaFlash::error($th);
+    }
+  }
+
+
   public function exportCentralesDeRiesgoXls(): void 
   {
     $this->file_title = "export Centrales de Riesgo";

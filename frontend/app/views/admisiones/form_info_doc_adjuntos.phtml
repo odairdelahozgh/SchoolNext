@@ -16,24 +16,35 @@ try {
   //   $FormAspirPsico->getTextarea(field: '')
   // ]);
 
+  $annio_actual = (int)Config::get('config.academic.annio_actual')+1;
 
   return  "
-  <h2>Documentos Adjuntos</h2>
+  <div class=\"w3-display-container\">
+    <div class=\"w3-display-topleft\"> 
+      <span class=\"w3-button\" onclick=\"openTab(event,'privacidad')\"><< Anterior</span>
+      <span class=\"w3-button\" onclick=\"openTab(event,'basicos')\">Siguiente >></span>
+    </div>
+    <br/><br/>
 
-  <p>Debe enviar al correo electrónico <b>windsorschoolvalledupar@gmail.com</b> los siguientes documentos:
-  <ul>
-    <li>los dos últimos Informes Académicos del estudiante</li>
-    <li>formato diligenciado de consulta y reporte a centrales de riesgo</li>
-  </ul>   
-  
-  <br>
-    Asunto del correo: ADMISIONES WINDSOR 2024 ''NOMBRE DEL ESTUDIANTE''
+    <div>
+      <h2>Documentos Adjuntos (Paso 2 de 11)</h2>
+      <p>Debe enviar al correo electrónico <b>windsorschoolvalledupar@gmail.com</b> los siguientes documentos:
+      <ul>
+        <li>los dos últimos Informes Académicos del estudiante</li>
+        <li>formato diligenciado de consulta y reporte a centrales de riesgo</li>
+      </ul>
+      <br>
+        Asunto del correo: ADMISIONES WINDSOR {$annio_actual}  - ''NOMBRE DEL ESTUDIANTE''
+      <br>
+      <p>Nota: Estos informes son obligatorios para asentar el registro del aspirante. Deberá enviarlos lo mas pronto posible.</p>
+    </div>
 
-  <br>
-
-  <p>Nota: Estos informes son obligatorios para asentar el registro del aspirante. Deberá enviarlos lo mas pronto posible 
-  
-  ";
+    <br/><br/>
+    <div class=\"w3-display-bottomleft\"> 
+      <span class=\"w3-button\" onclick=\"openTab(event,'privacidad')\"><< Anterior</span>
+      <span class=\"w3-button\" onclick=\"openTab(event,'basicos')\">Siguiente >></span>
+    </div>
+  </div>";
 
   // return "<p>Aquí debe adjuntar los archivo de los dos últimos Informes Académicos 
   // y el formato diligenciado de consulta y reporte a centrales de riesgo. 

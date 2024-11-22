@@ -1,14 +1,32 @@
 <?php 
 try {  
   $tabla = new OdaTable('id="myTable-ac" class="w3-table w3-responsive w3-striped w3-bordered"');
-  $tabla->setCaption('Información sobre Proceso Académico y otros');
+  $tabla->setCaption('Proceso Académico y otros (Paso 10 de 11)');
 
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'proceso_acad')]);
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'relpares')]);
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'reldocentes')]);
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'cumplnormas')]);
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'porquedesea')]);
-  return $tabla;
+
+  return "
+  <div class=\"w3-display-container\">
+    <div class=\"w3-display-container\">
+      <div class=\"w3-display-topleft\"> 
+        <span class=\"w3-button\" onclick=\"openTab(event,'hist_escolar')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'final')\">Siguiente >></span>
+      </div>
+      <br/><br/>
+      
+      {$tabla}
+
+      <br/><br/>
+      <div class=\"w3-display-bottomleft\"> 
+        <span class=\"w3-button\" onclick=\"openTab(event,'hist_escolar')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'final')\">Siguiente >></span>
+      </div>
+    </div>
+  </div>";
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

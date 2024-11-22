@@ -4,8 +4,14 @@ try {
   $lnk_ley_1581_2012  = OdaTags::linkExterno(Config::get('admisiones.lnk_ley_1581_2012'), 'ley 1581 de 2012');
   $lnk_decreto_1377_2013  = OdaTags::linkExterno(Config::get('admisiones.lnk_decreto_1377_2013'), 'Decreto 1377 de 2013');
 
-  $aviso = "<div class=\"w3-panel\">
-    <h1>Bienvenido</h1>
+  $btn_check = $FormAspir->getCheck(field: 'is_habeas_data');
+  $result = "
+  <div class=\"w3-display-container\">
+    <div class=\"w3-display-topleft\"> 
+      <span class=\"w3-button\" onclick=\"openTab(event,'documentos')\">Siguiente >></span>
+    </div>
+    <br/><br/>
+    <h1>Bienvenido (Paso 1 de 11)</h1>
     <h2>Informe de Privacidad</h2>
     <p> Doy mi consentimiento para permitir al <strong>Colegio Windsor</strong> almacenar y procesar mis datos personales de acuerdo 
       a la Política de Tratamiento de Datos.
@@ -13,12 +19,15 @@ try {
     <p>Conforme al derecho <strong>Habeas Data</strong> reconocido por el <strong>artículo 15 de la 
       Constitución Política</strong> y desarrollado en la <strong>$lnk_ley_1581_2012</strong> y en cumplimiento a lo establecido por 
       el <strong>artículo 10 del $lnk_decreto_1377_2013</strong>. 
-    </p></div>
-  ";
-  
-  $aviso .= $FormAspir->getCheck(field: 'is_habeas_data');
-  
-  return $aviso;
+    </p>
+    </p>{$btn_check}</p>
+    <br/><br/>
+    <div class=\"w3-display-bottomleft\"> 
+      <span class=\"w3-button\" onclick=\"openTab(event,'documentos')\">Siguiente >></span>
+    </div>
+  </div>";
+
+  return $result;
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

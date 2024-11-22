@@ -1,6 +1,6 @@
 <?php 
 try {  
-  $info = '<h2>Historia Escolar</h2><p>Información sobre los últimos Jardines y colegios en los que ha estudiado</p>';
+  $info = '<h2>Historia Escolar (Paso 9 de 11)</h2><p>Información sobre los últimos Jardines y colegios en los que ha estudiado</p>';
 
   $tabla = new OdaTable('id="myTable-he1" class="w3-table w3-responsive w3-striped w3-bordered"');
   $tabla->setCaption('Institución 1');
@@ -32,9 +32,25 @@ try {
   $tabla->addRow(data:[$FormAspir->getInput(field: '3_grados'),
       $FormAspir->getInput(field: '3_annios'),
       $FormAspir->getInput(field: '3_motivo_ret')]);
-  $info .= $tabla.'<hr>';
 
-  return $info;
+  return "
+  <div class=\"w3-display-container\">
+    <div class=\"w3-display-container\">
+      <div class=\"w3-display-topleft\"> 
+        <span class=\"w3-button\" onclick=\"openTab(event,'antec_fami')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'academico')\">Siguiente >></span>
+      </div>
+      <br/><br/>
+      
+      {$tabla}
+
+      <br/><br/>
+      <div class=\"w3-display-bottomleft\"> 
+        <span class=\"w3-button\" onclick=\"openTab(event,'antec_fami')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'academico')\">Siguiente >></span>
+      </div>
+    </div>
+  </div>";
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

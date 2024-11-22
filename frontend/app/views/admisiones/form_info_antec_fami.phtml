@@ -7,7 +7,25 @@ try {
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'relpadres')]);
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'rel_pad_mad_desc')]);
   $tabla->addRow(data:[$FormAspirPsico->getTextarea(field: 'relhermanos')]);
-  return $tabla;
+  
+  return "
+  <div class=\"w3-display-container\">
+    <div class=\"w3-display-container\">
+      <div class=\"w3-display-topleft\"> 
+        <span class=\"w3-button\" onclick=\"openTab(event,'desa_psico')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'hist_escolar')\">Siguiente >></span>
+      </div>
+      <br/><br/>
+      
+      {$tabla}
+
+      <br/><br/>
+      <div class=\"w3-display-bottomleft\"> 
+        <span class=\"w3-button\" onclick=\"openTab(event,'desa_psico')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'hist_escolar')\">Siguiente >></span>
+      </div>
+    </div>
+  </div>";
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

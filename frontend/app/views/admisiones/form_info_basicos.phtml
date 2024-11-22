@@ -1,7 +1,7 @@
 <?php 
 try {  
   $tabla = new OdaTable('id="myTable-db" class="w3-table w3-responsive w3-striped w3-bordered"');
-  $tabla->setCaption('Datos Básicos del Aspirante');
+  $tabla->setCaption('Datos Básicos del Aspirante (Paso 3 de 11)');
 
   $tabla->addRow(
     data: [
@@ -53,7 +53,25 @@ try {
 
   $extras = $FormAspir->getInput(tipo: 'hidden', field: 'fecha_insc');
 
-  return $tabla.$extras;
+  $result = "
+  <div class=\"w3-display-container\">
+    <div class=\"w3-display-topleft\"> 
+      <span class=\"w3-button\" onclick=\"openTab(event,'documentos')\"><< Anterior</span>
+      <span class=\"w3-button\" onclick=\"openTab(event,'madre')\">Siguiente >></span>
+    </div>
+    <br/><br/>
+
+    {$tabla}
+    {$extras}
+    
+    <br/><br/>
+    <div class=\"w3-display-bottomleft\"> 
+      <span class=\"w3-button\" onclick=\"openTab(event,'documentos')\"><< Anterior</span>
+      <span class=\"w3-button\" onclick=\"openTab(event,'madre')\">Siguiente >></span>
+    </div>
+  </div>";
+
+  return $result;
 
 } catch (\Throwable $th) {
   OdaFlash::error($th);

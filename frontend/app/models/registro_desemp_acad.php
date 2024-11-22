@@ -22,6 +22,34 @@ class RegistroDesempAcad extends LiteRecord {
   }
 
   
+  public function getByAnnioEstudiante(
+    int $annio, 
+    int $estudiante_id
+  ) {
+    try 
+    {
+      $annio_actual = Config::get('config.academic.annio_actual');
+      $sufijo = ($annio!=$annio_actual) ? '_'.$annio : '' ;
+
+      $DQL = new OdaDql(__CLASS__);
+      $DQL->setFrom(self::$table.$sufijo);
+
+      $DQL->select('t.periodo_id, t.fortalezas, t.dificultades, t.compromisos, t.fecha, t.acudiente, t.foto_acudiente, t.director, t.foto_director')
+          ->concat(['u.apellido1', 'u.apellido2', 'u.nombres'], 'creador_nombre')
+          ->leftJoin('usuario', 'u', 't.created_by = u.id')
+          ->where('t.estudiante_id=?')
+          ->orderBy('t.periodo_id, t.fecha DESC');
+      $DQL->setParams([$estudiante_id]);
+      return $DQL->execute();
+    
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
+    }
+  }
+
+  
   public function getByAnnioSalon(int $annio, int $salon_id) 
   {
     $annio_actual = Config::get('config.academic.annio_actual');
@@ -41,7 +69,7 @@ class RegistroDesempAcad extends LiteRecord {
         ->orderBy('t.annio, t.grado_id, e.apellido1, e.apellido2, e.nombres, t.fecha DESC');
     $DQL->setParams([$salon_id]);
     return $DQL->execute();
-  }    
+  }
 
 
   public function getRegistrosProfesor(int $user_id) 

@@ -60,7 +60,30 @@ class ContabilidadController extends AppController
     }
     Redirect::toAction(action: 'listadoEstudActivos');
   }
+  
 
-    
+  public function setMesPago(
+    int $estudiante_id, 
+    int $mes) 
+  {
+    try 
+    {
+      $this->page_action = 'Actualizar Mes Pagado Estudiante';
+      $Estud = (new Estudiante)::get($estudiante_id);
+      if ( $Estud->setMesPago($mes) )
+      {
+        OdaFlash::valid("$this->page_action: $Estud");
+      } 
+      else 
+      {
+        OdaFlash::warning("$this->page_action: $Estud");
+      }
+    }
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
+    }
+    Redirect::toAction(action: 'listadoEstudActivos');
+  }
 
 }

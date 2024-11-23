@@ -20,6 +20,7 @@ return [
   'calendario'          => 'snxt_calendario',
   
   'datosestud'          => 'sweb_datosestud',
+  'datos_estud'         => 'sweb_datosestud',
   
   'estudiante'          => 'sweb_estudiantes',
   'estudiantes'         => 'sweb_estudiantes',

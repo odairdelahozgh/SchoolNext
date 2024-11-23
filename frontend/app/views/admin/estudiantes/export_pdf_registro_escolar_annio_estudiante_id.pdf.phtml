@@ -33,10 +33,41 @@ try {
 
   $Plantillas = new Plantilla();
 
-  // REGISTROS GENERALES
+  // 1) INFORMACIÓN BÁSICA DEL ESTUDIANTE
   $archivoPDF->AddPage();
-  $template = $Plantillas::first("SELECT t.contenido FROM snxt_plantillas AS t WHERE t.nombre=?", ['reg_observaciones_windsor']);
-  if (Count($arrData['RegGenerales'])>0) {
+  $template = $Plantillas::first("SELECT t.contenido FROM snxt_plantillas AS t WHERE t.nombre=?", ['reg_info_estudiante_'.INSTITUTION_KEY]);
+  $info_estudiante = str_replace(
+  [ 
+    '$FOTO$', '$ESTUDIANTE$', '$DIRECCION$', '$TELEFONO$',
+    '$LUGAR$', '$FECHA_NAC$', '$HERMANOS$', '$POS_HERMANOS$', '$OTROS$', '$TIPO_SANGRE$',
+
+    '$PADRE$', '$PADRE_PROF$', '$PADRE_TEL$', '$PADRE_DIR$', '$PADRE_EMAIL$',
+    '$MADRE$', '$MADRE_PROF$', '$MADRE_TEL$', '$MADRE_DIR$', '$MADRE_EMAIL$',
+    '$ACUDIENTE$', '$ACUDI_PROF$', '$ACUDI_TEL$', '$ACUDI_DIR$', '$ACUDI_EMAIL$',
+
+    '$PLANTEL_PROC$', '$PLANTEL_FECHA_ING$', '$PLANTEL_GRADO_ING$', '$PLANTEL_FECHA_RET$', '$PLANTEL_GRADO_RET$',
+  ],
+  [ 
+    '', $data['Estudiante'], $data['Estudiante']->direcccion, $data['Estudiante']->telefono1,
+    $data['DatosEstud']->ciudad_nac.' ('.$data['DatosEstud']->pais_nac.')', $data['Estudiante']->fecha_nac, '', '', '', $data['DatosEstud']->grupo_sang,
+
+    $data['DatosEstud']->padre, $data['DatosEstud']->padre_ocupa, $data['DatosEstud']->padre_tel_1, $data['DatosEstud']->padre_dir, $data['DatosEstud']->padre_email, 
+    $data['DatosEstud']->madre, $data['DatosEstud']->madre_ocupa, $data['DatosEstud']->madre_tel_1, $data['DatosEstud']->madre_dir, $data['DatosEstud']->madre_email, 
+    $data['DatosEstud']->acudiente, $data['DatosEstud']->acudi_ocupa, $data['DatosEstud']->acudi_tel_1, $data['DatosEstud']->acudi_dir, $data['DatosEstud']->acudi_email, 
+
+    $data['DatosEstud']->ante_instit, '', '', $data['DatosEstud']->ante_fecha_ret, $data['DatosEstud']->ante_grado, 
+  ], 
+  $template->contenido
+  );
+  $archivoPDF->WriteHTML($info_estudiante);
+
+
+
+  // 2) REGISTROS DE OBSERVACIONES GENERALES
+  $archivoPDF->AddPage();
+  $template = $Plantillas::first("SELECT t.contenido FROM snxt_plantillas AS t WHERE t.nombre=?", ['reg_observ_generales_'.INSTITUTION_KEY]);
+  if (Count($arrData['RegGenerales'])>0)
+  {
     //$dir_image = sfConfig::get('sf_web_dir').'/uploads/estud_reg_observ_gen/';
     foreach ($arrData['RegGenerales'] as $key => $RegEstud) {
       //'tipo_reg', 'estudiante_id', 'fecha', 'acudiente', 'foto_acudiente', 'director', 'foto_director'
@@ -52,32 +83,41 @@ try {
     );
     $archivoPDF->WriteHTML($reg_generales);
     }
-  } else {  // no hay registros ... hacerla en blanco!!
-    $reg_generales = str_replace(
-      [ '$ANNIO$', '$PERIODO$', '$FECHA$', '$ESTUDIANTE$', '$GRADO$', '$ASUNTO$', '$DESCRIPCION$', '$ALUMNO$', '$PADRE$', '$DOCENTE$' ],
-      [ $data['Annio'], '', '', $data['Estudiante'], $data['Grado'], '', 
-                '', $data['Estudiante'], '', '' ], 
-      $template->contenido
-    );
-    $archivoPDF->WriteHTML('<h2>No hay registros para mostrar</h2>');
+  } else {
+    $archivoPDF->WriteHTML('<h2>No hay Registros de Observaciones Generales para mostrar</h2>');
   }
 
-//$archivoPDF->AddPage();
-//RegAcademicos
 
-  $archivoPDF->Output("{$file_name}.pdf", 'D');
+
+  //  3) REGISTROS DE DESEMPEÑO ACADÉMICO Y COMPORTAMENTAL
+  $archivoPDF->AddPage();
+  $template = $Plantillas::first("SELECT t.contenido FROM snxt_plantillas AS t WHERE t.nombre=?", ['reg_desemp_academ_comport_'.INSTITUTION_KEY]);
+  if (Count($arrData['RegAcademicos'])>0)
+  {
+  //$dir_image = sfConfig::get('sf_web_dir').'/uploads/estud_reg_observ_gen/';
+  foreach ($arrData['RegAcademicos'] as $key => $RegEstud) {
+    //'tipo_reg', 'estudiante_id', 'fecha', 'acudiente', 'foto_acudiente', 'director', 'foto_director'
+    //$foto_acudiente = (file_exists($dir_image.$Reg['foto_acudiente'])) ?  '<br>'._media($dir_image.$Reg['foto_acudiente'])->size(100, 100)->set('.image') : '' ;
+    //$foto_director  = (file_exists($dir_image.$Reg['foto_director'])) ? '<br>'._media($dir_image.$Reg['foto_director'])->size(100, 100)->set('.image') : '' ;
+    $plantilla_reg_academicos = $template;
+    $reg_academicos = str_replace(
+    [ '$ANNIO$', '$PERIODO$', '$FECHA$', '$ESTUDIANTE$',  
+               '$FORTALEZAS$', '$DIFICULTADES$', '$COMPROMISOS$', '$PADRE$', '$DOCENTE$' ],
+   [ $data['Annio'], $RegEstud->periodo_id, $RegEstud->fecha, $data['Estudiante'], 
+                $RegEstud->fortalezas, $RegEstud->dificultades, $RegEstud->compromisos, 
+                $RegEstud->acudiente, $RegEstud->director ], 
+      $plantilla_reg_academicos->contenido
+    );
+    $archivoPDF->WriteHTML($reg_academicos);
+  }
+  } else {
+    $archivoPDF->WriteHTML('<h2>No hay Registros de Desempeño Académico para mostrar</h2>');
+  }
+
+
+
+  $archivoPDF->Output("{$file_name}.pdf", 'I');
 
 } catch (\Throwable $th) {
   OdaLog::error($th);
 }
-
-
-
-/*
-(121, 'Plantilla para Registro de Observaciones Generales', '<table align=\"center\" border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width: 100%; color:#002060;\">\r\n    <thead>\r\n        <tr> <th colspan=\"6\" style=\"text-align: center; background-color:#002060; color:#FFFFFF;\">OBSERVACIONES GENERALES</th> </tr>\r\n    </thead>\r\n\r\n    <tbody>\r\n      <tr>\r\n          <td>$ANNIO$ - Periodo $PERIODO$</td>\r\n          <td>Fecha: $FECHA$</td>\r\n          <td colspan=\"2\">Nombre del Estudiante: $ESTUDIANTE$</td>\r\n          <td>Grado: $GRADO$</td>\r\n          <td>Asunto: $ASUNTO$</td>\r\n      </tr>\r\n      <tr style=\"text-align:left;\">\r\n          <td colspan=\"6\">$DESCRIPCION$</td>\r\n      </tr>\r\n      <tr>\r\n          <td colspan=\"2\">\r\n              Alumno:<br> $ALUMNO$\r\n          </td>\r\n          <td colspan=\"2\">\r\n              Padre de Familia / Acudiente:<br> $PADRE$\r\n          </td>\r\n          <td colspan=\"2\">\r\n              Director de Grupo / Docente<br> $DOCENTE$\r\n          </td>\r\n      </tr>\r\n    </tbody> \r\n    </table>\r\n    <p></p>', NULL, 'es'),
-(122, 'Plantilla HTML para Registro Académico INFORMACIÓN ESTUDIANTE', '<p> </p>\r\n  <table align=\"left\" border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width: 100%; border-color: #002060\">\r\n    <tbody>\r\n      <tr>\r\n        <td colspan=\"3\" style=\"text-align: center; background-color:#002060; color:#FFFFFF;\">\r\n          INFORMACIÓN DEL ESTUDIANTE</td>\r\n      </tr>\r\n      <tr>\r\n        <td colspan=\"3\" style=\"text-align:center;\">\r\n          $FOTO$</td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          Nombre del Alumno: $ESTUDIANTE$</td>\r\n        <td>\r\n          Dirección: $DIRECCION$</td>\r\n        <td>\r\n          Teléfono(s) de contacto: $TELEFONO$</td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          Lugar y fecha de nacimiento: $LUGAR$ $FECHA_NAC$</td>\r\n        <td>\r\n          Número de hermanos: $HERMANOS$</td>\r\n        <td>\r\n          Lugar entre los hermanos: $POS_HERMANOS$</td>\r\n      </tr>\r\n      <tr>\r\n        <td colspan=\"2\">\r\n          Aspecto(s) importantes a tener en cuenta ( Alergias, vista, oído, otros): $OTROS$</td>\r\n        <td>\r\n          Tipo de sangre: $TIPO_SANGRE$</td>\r\n      </tr>\r\n    </tbody>\r\n  </table>\r\n  <p></p>\r\n  <table align=\"left\" border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width: 100%; border-color: #002060\">\r\n    <tbody>\r\n      <tr>\r\n        <td colspan=\"3\" style=\"text-align: center; background-color:#002060; color:#FFFFFF;\">\r\n          INFORMACIÓN DE LOS PADRES DE FAMILIA Y/O ACUDIENTE</td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          Nombre del Padre: $PADRE$</td>\r\n        <td>\r\n          Profesión: $PADRE_PROF$</td>\r\n        <td>\r\n          Teléfono(s) de contacto: $PADRE_TEL$</td>\r\n      </tr>\r\n      <tr>\r\n        <td colspan=\"2\">\r\n          Dirección: $PADRE_DIR$</td>\r\n        <td>\r\n          Correo electrónico: $PADRE_EMAIL$</td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          Nombre de la Madre: $MADRE$</td>\r\n        <td>\r\n          Profesión: $MADRE_PROF$</td>\r\n        <td>\r\n          Teléfono(s) de contacto: $MADRE_TEL$</td>\r\n      </tr>\r\n      <tr>\r\n        <td colspan=\"2\">\r\n          Dirección: $MADRE_DIR$</td>\r\n        <td>\r\n          Correo electrónico: $MADRE_EMAIL$</td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          Nombre del Acudiente: $ACUDIENTE$</td>\r\n        <td>\r\n          Profesión: $ACUDI_PROF$</td>\r\n        <td>\r\n          Teléfono(s) de contacto: $ACUDI_TEL$</td>\r\n      </tr>\r\n      <tr>\r\n        <td colspan=\"2\">\r\n          Dirección: $ACUDI_DIR$</td>\r\n        <td>\r\n          Correo electrónico: $ACUDI_EMAIL$</td>\r\n      </tr>\r\n    </tbody>\r\n  </table>\r\n  <p></p>\r\n  <table align=\"left\" border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width: 100%; border-color: #002060\">\r\n    <tbody>\r\n      <tr>\r\n        <td colspan=\"3\" style=\"text-align: center; background-color:#002060; color:#FFFFFF;\">\r\n           </td>\r\n      </tr>\r\n      <tr>\r\n        <td rowspan=\"2\">\r\n          Nombre del plantel de procedencia: $PLANTEL_PROC$</td>\r\n        <td>\r\n          Fecha de ingreso: $PLANTEL_FECHA_ING$</td>\r\n        <td>\r\n          Grado: $PLANTEL_GRADO_ING$</td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          Fecha de retiro: $PLANTEL_FECHA_RET$</td>\r\n        <td>\r\n          Grado en que se retira: $PLANTEL_GRADO_RET$</td>\r\n      </tr>\r\n    </tbody>\r\n  </table>', NULL, 'es'),
-(123, 'Plantilla HTML para Registro Académico DESEMPEÑO ACADÉMICO Y COMPORTAMENTAL', '<p> </p>\r\n    <table align=\"center\" border=\"1\" cellpadding=\"1\" cellspacing=\"1\" style=\"width: 100%; color:#002060;\">\r\n    <thead>\r\n      <tr>\r\n        <th colspan=\"3\" style=\"text-align: center; background-color:#002060; color:#FFFFFF;\">\r\n          DESEMPEÑO ACADÉMICO Y COMPORTAMENTAL</th>\r\n      </tr>\r\n    </thead>\r\n    <tbody>\r\n      <tr style=\"text-align:left;\">\r\n        <td>Nombre del Alumno: $ESTUDIANTE$</td>\r\n        <td>$ANNIO$ - Periodo $PERIODO$</td>\r\n        <td>Fecha: $FECHA$</td>\r\n      </tr>\r\n      <tr style=\"text-align:left;\">\r\n        <td>Fortalezas:<br/> $FORTALEZAS$</td>\r\n        <td>Dificultades:<br/> $DIFICULTADES$</td>\r\n        <td>Compromisos:<br/> $COMPROMISOS$</td>\r\n      </tr>\r\n      <tr style=\"text-align:left;\">\r\n        <td>Padre de Familia / Acudiente:<br/> $PADRE$</td>\r\n        <td> </td>\r\n        <td>Director de Grupo / Docente<br/> $DOCENTE$</td>\r\n      </tr>\r\n    </tbody>\r\n  </table>\r\n  <p> </p>', NULL, 'es'),
-(124, 'Plantilla HTML para Registro Académico DESEMPEÑO POR PERIODOS', NULL, NULL, 'es'),
-(125, 'Plantilla HTML para Registro Académico DESEMPEÑO POR AÑOS', NULL, NULL, 'es');
-
-*/

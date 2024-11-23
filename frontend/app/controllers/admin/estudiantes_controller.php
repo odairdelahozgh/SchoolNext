@@ -23,6 +23,9 @@ class EstudiantesController extends ScaffoldController
     {
       $this->data['Annio']  = $annio;
       $this->data['Estudiante'] = (new Estudiante())->get($estudiante_id);
+      $tabla_datos_adju = Config::get('tablas.datosestud');
+      $this->data['DatosEstud'] = (new DatosEstud())->first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante_id]);
+
       $this->data['Grado'] = (new Grado())->get($this->data['Estudiante']->grado_mat);
       $this->data['Salon'] = (new Salon())->get($this->data['Estudiante']->salon_id);
       $this->arrData['RegGenerales'] = (new RegistrosGen())->getByAnnioEstudiante($annio, $estudiante_id);

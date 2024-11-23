@@ -118,6 +118,8 @@ class Salon extends LiteRecord {
   {
     try
     {
+        //is_ready_print
+      
       $periodo_actual = Config::get('config.academic.periodo_actual');
       $annio_actual = Config::get('config.academic.annio_actual');
       $RegSalon = (new Salon())->get($salon_id);
@@ -156,7 +158,7 @@ class Salon extends LiteRecord {
               $DQL->setFrom('sweb_notas');
 
               $DQL->insert([
-                'uuid' => $Model->xxh3Hash(),
+                'uuid' => $Model->xxh3Hash($periodo_actual),
                 'annio' => $annio_actual,
                 'periodo_id' => $periodo_actual,
                 'grado_id' => $RegSalon->grado_id,
@@ -174,7 +176,7 @@ class Salon extends LiteRecord {
 
             if (4==$periodo_actual) { // OJO EXCEPCIÓN añadir el 5to periodo automáticamente
               $DQL->insert([
-                'uuid' => $Model->xxh3Hash(),
+                'uuid' => $Model->xxh3Hash(5),
                 'annio' => $annio_actual,
                 'periodo_id' => 5,
                 'grado_id' => $RegSalon->grado_id,
@@ -195,7 +197,7 @@ class Salon extends LiteRecord {
 
             if (4==$periodo_actual) { // OJO EXCEPCIÓN añadir comportamiento el 5to periodo automáticamente
               $DQL->insert([
-                'uuid' => $Model->xxh3Hash(),
+                'uuid' => $Model->xxh3Hash(5),
                 'annio' => $annio_actual,
                 'periodo_id' => 5, // QUINTO PERIDO SOLAMENTE.
                 'grado_id' => $RegSalon->grado_id,
@@ -212,8 +214,18 @@ class Salon extends LiteRecord {
             }
 
           }// END-foreach-Estudiantes
-
       }
+      
+      if($cnt>0) {
+        $total_estudiantes = Count($Estudiantes);
+        $DQL = new OdaDql(__CLASS__);
+        $DQL->setFrom('sweb_salones');
+        $DQL->update(['is_ready_print' => $periodo_actual, 
+                      'tot_estudiantes' => $total_estudiantes])
+            ->where('id=?')->setParams([$salon_id]);
+        $DQL->execute();    
+      }
+      
       return $cnt;
     } 
     catch (\Throwable $th)

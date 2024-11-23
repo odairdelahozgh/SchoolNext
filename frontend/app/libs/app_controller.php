@@ -32,9 +32,9 @@ abstract class AppController extends Controller
 
   
   // PARA LA GENERACIÓN DE ARCHIVOS
-  public ?string $file_tipo = null;
-  public ?string $file_name = null;
-  public ?string $file_title = null;
+  public string|null $file_tipo = null;
+  public string|null $file_name = null;
+  public string|null $file_title = null;
   public bool $file_download = true;
   public string $file_orientation = 'L';
   
@@ -46,9 +46,9 @@ abstract class AppController extends Controller
   public string $theme = 'dark';
   public string $themei = 'd';
   
-  public ?int $user_id = 0;
-  public ?string $user_name = '';
-  public ?string $user_nombre_completo = '';
+  public int $user_id = 0;
+  public string|null $user_name = '';
+  public string|null $user_nombre_completo = '';
 
   public string $_instituto_id = '';
   public string $_instituto_nombre = '';

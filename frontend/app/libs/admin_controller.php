@@ -42,9 +42,9 @@ abstract class AdminController extends Controller
 
     
   // PARA LA GENERACIÓN DE ARCHIVOS
-  public ?string $file_tipo = null;
-  public ?string $file_name = null;
-  public ?string $file_title = null;
+  public string|null $file_tipo = null;
+  public string|null $file_name = null;
+  public string|null $file_title = null;
   public bool $file_download = true;
   public string $file_orientation = 'L';
   public $_now = null;

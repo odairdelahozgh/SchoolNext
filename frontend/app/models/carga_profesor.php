@@ -8,9 +8,9 @@ class CargaProfesor extends LiteRecord
 {
     protected static $table = 'sweb_salon_asignat_profesor';
     
-    public function __toString() 
+    public function __toString(): string 
     { 
-      return $this->id; 
+      return (string)$this->id;
     }
 
     

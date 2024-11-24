@@ -1,6 +1,8 @@
 <div class="w3-margin-top">
 
    <?php
+   //echo OdaUtils::ver_array($arrData['Calificaciones']) .'<hr>';
+
    try {
      //echo OdaUtils::ver_array($arrData) .'<hr>';
     $result = "";
@@ -9,53 +11,84 @@
        if (isset($regs_periodo[0])) {
           $tabbuttons .= "<button class=\"w3-bar-item w3-mobile w3-button tablink w3-theme-action\" 
                             onclick=\"openTab(event,'p$periodo')\">Periodo $periodo</button>";
-          
-          
-          $btn_planes_apoyo =  (new Nota)::lnkPagePlanesApoyo($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id);
 
           // ************************************************************          
           // FILTROS PARA EL BOTÓN CALIFICAR
           // ************************************************************
-          $arr_calificar_periodos    = (array) Config::get('docentes.calificaciones.periodos');
-          $arr_calificar_salones     = (array) Config::get('docentes.calificaciones.salones');
-          $arr_calificar_asignaturas = (array) Config::get('docentes.calificaciones.asignaturas');
-          $arr_calificar_usuarios    = (array) Config::get('docentes.calificaciones.usuarios');
-
+          $arr_calificar_periodos = (array)Config::get('docentes.calificaciones.periodos');
+          $arr_calificar_salones = (array)Config::get('docentes.calificaciones.salones');
+          $arr_calificar_asignaturas = (array)Config::get('docentes.calificaciones.asignaturas');
+          $arr_calificar_usuarios = (array)Config::get('docentes.calificaciones.usuarios');
           $btn_enabled = true;
-          if (Count($arr_calificar_periodos)>0 
-            and !in_array($periodo, $arr_calificar_periodos) 
-            and $user_id!=1 
-          ) {
+          if ((Count($arr_calificar_periodos)>0) && !in_array($periodo, $arr_calificar_periodos))
+          {
             $btn_enabled = false;
           }
-          if (Count($arr_calificar_salones)>0 and !in_array($arrData['Salon']->id, $arr_calificar_salones) and $user_id!=1 ) {
+          if ((Count($arr_calificar_salones)>0) and !in_array($arrData['Salon']->id, $arr_calificar_salones))
+          {
             $btn_enabled = false;
           }
-          if (Count($arr_calificar_asignaturas)>0 and !in_array($arrData['Asignatura']->id, $arr_calificar_asignaturas) and $user_id!=1 ) {
+          if ((Count($arr_calificar_asignaturas)>0) and !in_array($arrData['Asignatura']->id, $arr_calificar_asignaturas))
+          {
             $btn_enabled = false;
           }
-          if (Count($arr_calificar_usuarios)>0 and !in_array($user_id, $arr_calificar_usuarios) and $user_id!=1 ) {
+          if ((Count($arr_calificar_usuarios)>0) and !in_array($user_id, $arr_calificar_usuarios))
+          {
             $btn_enabled = false;
           }
           $btn_calificar = (new Nota)::lnkPageCalificar($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id, $btn_enabled);
-          // ************************************************************
-
-
+                    
           // ************************************************************          
           // FILTROS PARA EL BOTÓN SEGUIMIENTOS
           // ************************************************************
-          $btn_seguimientos = (new Nota)::lnkPageSeguimientos($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id);
-
-          // $arr_seg_periodos = Config::get('docentes.seguimientos.periodos');
-          // $arr_seg_salones = Config::get('docentes.seguimientos.salones');
-          // $arr_seg_asignaturas  = Config::get('docentes.seguimientos.asignaturas');
-          // $arr_seg_usuarios  = Config::get('docentes.seguimientos.usuarios');
-          
-          // $arr_pa_periodos = Config::get('docentes.planes_apoyo.periodos');
-          // $arr_pa_salones = Config::get('docentes.planes_apoyo.salones');
-          // $arr_pa_asignaturas  = Config::get('docentes.planes_apoyo.asignaturas');
-          // $arr_pa_usuarios  = Config::get('docentes.planes_apoyo.usuarios');
-          
+          $arr_seg_periodos = (array)Config::get('docentes.seguimientos.periodos');
+          $arr_seg_salones = (array)Config::get('docentes.seguimientos.salones');
+          $arr_seg_asignaturas = (array)Config::get('docentes.seguimientos.asignaturas');
+          $arr_seg_usuarios = (array)Config::get('docentes.seguimientos.usuarios');
+          $btn_enabled = true;
+          if ((Count($arr_seg_periodos)>0) && !in_array($periodo, $arr_seg_periodos))
+          {
+            $btn_enabled = false;
+          }
+          if ((Count($arr_seg_salones)>0) and !in_array($arrData['Salon']->id, $arr_seg_salones))
+          {
+            $btn_enabled = false;
+          }
+          if ((Count($arr_seg_asignaturas)>0) and !in_array($arrData['Asignatura']->id, $arr_seg_asignaturas))
+          {
+            $btn_enabled = false;
+          }
+          if ((Count($arr_seg_usuarios)>0) and !in_array($user_id, $arr_seg_usuarios))
+          {
+            $btn_enabled = false;
+          }
+          $btn_seguimientos = (new Nota)::lnkPageSeguimientos($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id, $btn_enabled);
+                    
+          // ************************************************************          
+          // FILTROS PARA EL BOTÓN PLANES DE APOYO
+          // ************************************************************
+          $arr_pa_periodos = (array)Config::get('docentes.planes_apoyo.periodos');
+          $arr_pa_salones = (array)Config::get('docentes.planes_apoyo.salones');
+          $arr_pa_asignaturas = (array)Config::get('docentes.planes_apoyo.asignaturas');
+          $arr_pa_usuarios = (array)Config::get('docentes.planes_apoyo.usuarios');
+          $btn_enabled = true;
+          if ((Count($arr_pa_periodos)>0) && !in_array($periodo, $arr_pa_periodos))
+          {
+            $btn_enabled = false;
+          }
+          if ((Count($arr_pa_salones)>0) and !in_array($arrData['Salon']->id, $arr_pa_salones))
+          {
+            $btn_enabled = false;
+          }
+          if ((Count($arr_pa_asignaturas)>0) and !in_array($arrData['Asignatura']->id, $arr_pa_asignaturas))
+          {
+            $btn_enabled = false;
+          }
+          if ((Count($arr_pa_usuarios)>0) and !in_array($user_id, $arr_pa_usuarios))
+          {
+            $btn_enabled = false;
+          }
+          $btn_planes_apoyo =  (new Nota)::lnkPagePlanesApoyo($periodo, $arrData['Salon']->id, $arrData['Asignatura']->id, $btn_enabled);          
 
           $tabla = new OdaTable();
 
@@ -64,17 +97,32 @@
 
           foreach ($regs_periodo as $key => $nota) {
             $t1=($themei=='d'?'d1':'l1');   $t2=($themei=='d'?'d2':'l3');
-            $nom_estud = strtoupper(OdaUtils::nombrePersona($nota->estudiante_nombre)." [{$arrData['Salon']->nombre}]")
+            $nom_estud = strtoupper(OdaUtils::nombrePersona((string)$nota->estudiante_nombre)." [{$arrData['Salon']->nombre}]")
                          ."</br>P$periodo:  {$arrData['Asignatura']->nombre} ".$nota->verNota();
 
-            $fila1 = array($nota->getFoto().'<br>Reg-'.$nota->id, $nom_estud);
+            $arr_notas_anteriores = [];
+            $notas_anteriores = '';
+
+            for ($i=1; $i<=$periodo; $i++) { 
+              if ($arrData['Calificaciones'][$nota->estudiante_id][$i]>0) {
+                $arr_notas_anteriores[] = $arrData['Calificaciones'][$nota->estudiante_id][$i];
+                $notas_anteriores .= 'P'.$i.': '.$arrData['Calificaciones'][$nota->estudiante_id][$i] .'&nbsp&nbsp';
+              }
+            }
+            if ($periodo>1 && count($arr_notas_anteriores)>0) {
+              $notas_anteriores .= '<br>Prom: ' .array_sum($arr_notas_anteriores)/count($arr_notas_anteriores);
+            } else {
+              $notas_anteriores = '';
+            }
+
+            $fila1 = array($nota->getFoto().'<br>Reg-'.$nota->id, $nom_estud.'<br>'.$notas_anteriores);
             $attr = "id=\"$nota->id-1\" class=\"w3-theme-".((($key%2)==0) ? $t1:$t2).'"';
             $attrs_td = array('class="w3-center" rowspan="3"' , 'colspan="10"');
             $tabla->addRow(
               data: $fila1, 
               attrs: $attr, 
               attrs_td: $attrs_td
-            );
+            );          
             
 
             $fila2 = [];

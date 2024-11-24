@@ -1,5 +1,17 @@
 <?php
   
+  $p = $Reg->periodo_id-1;
+  $arr_notas_anteriores = [];
+  $notas_anteriores = '';
+
+  for ($i=1; $i<=$p; $i++) { 
+    $arr_notas_anteriores[] = $arrData['Calificaciones'][$Reg->estudiante_id][$i];
+    $notas_anteriores .= 'P'.$i.': '.$arrData['Calificaciones'][$Reg->estudiante_id][$i] .'&nbsp&nbsp';  
+  }
+  if ($p>2 && count($arr_notas_anteriores)>0) {
+    $notas_anteriores .= '<br>Prom: ' .array_sum($arr_notas_anteriores)/count($arr_notas_anteriores);
+  }
+  
   // fila #1
   $chk = Form::check(
     field: 'chk_calif_'.$Reg->id, 
@@ -13,7 +25,7 @@
 
   $frm = "<tr class=\"\">";  
   $frm .= OdaTags::tag(tag: 'td', content: $info_reg, attrs: 'rowspan="3"');
-  $frm .= OdaTags::tag(tag: 'td', content: $Reg->estudiante_nombre."<br>$info_indic", attrs: 'colspan="4"');
+  $frm .= OdaTags::tag(tag: 'td', content: $Reg->estudiante_nombre."<br>$info_indic<br>".$notas_anteriores, attrs: 'colspan="4"');
   $frm .= OdaTags::tag(tag: 'td', content: '');
   
   $slider_definitiva = OdaTags::inputRango(id_name: $Reg->id, value: $Reg->definitiva, min: 0, max: 100, step: 1);

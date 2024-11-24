@@ -5,15 +5,6 @@
 <div class="w3-container">
   <h2>Test</h2>
   <?php
-  try {
-    $Regs = new Area();
-    $Lista = $Regs::getLista();
-    foreach ($Lista as $key => $value) {
-      echo "$key => $value<br>";
-    }
 
-  } catch (\Throwable $th) {
-    OdaFlash::error($th);
-  }
   ?>
 </div>

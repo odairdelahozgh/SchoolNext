@@ -176,6 +176,7 @@ function template_datos_estud(data, ruta, salon_nombre) {
   let estado = (data.is_active==1) ? 'ACTIVO' : 'INACTIVO';
   let debe_almuerzos = (data.is_debe_almuerzos>0) ? 'SI' : 'NO';
   let debe_preicfes = (data.is_debe_preicfes>0) ? 'SI' : 'NO';
+  let domain_name = document.getElementById('domain_name').innerHTML.trim();
   return `
   <div class="w3-card-1">
 
@@ -188,8 +189,8 @@ function template_datos_estud(data, ruta, salon_nombre) {
         <tr>
           <td>
             Estado: ${estado}<br><br>
-            Cuenta MS Teams:<br>
-            <span class="w3-text-blue">${data.email_instit}@windsorschool.edu.co</span><br>
+            Cuenta Externa:<br>
+            <span class="w3-text-blue">${data.email_instit}@${domain_name}</span><br>
             Clave de Acceso: <span class="w3-text-blue">${data.clave_instit}</span>
           </td>
 

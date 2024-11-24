@@ -21,7 +21,7 @@
         foreach($data as $key => $carga) {
           $tabla->addRow( 
             data: [
-              $carga->getAsignaturaF($user_id, $carga->asignatura_nombre, $carga->profesor_nombre),
+              $carga->getAsignaturaF($user_id, $carga->asignatura_nombre, (string)$carga->profesor_nombre),
               $carga->getSalonF($user_id, $carga->salon_nombre), 
               $carga->tot_estudiantes, 
               $carga->getLnkPageIndicadores($carga->grado_id),
@@ -35,27 +35,27 @@
         }
         echo $tabla;
         echo Tag::js("table_filter");
-      
-      } catch (\Throwable $th) {
-        OdaFlash::error($th);
       }
+      catch (\Throwable $th) { OdaFlash::error($th); }
     ?>
   </div>
 
   <div class="w3-container w3-rest">
     <?php 
-    try {
-      $periodo = Config::get('config.academic.periodo_actual');
+    try 
+    {
+      $periodo = (int)Config::get('config.academic.periodo_actual');
+      $periodo_max = (int)Config::get('institutions.'.INSTITUTION_KEY.'.periodo_max');
       $lnk_lista_de_clase = SalAsigProf::getLnkListaClase($periodo);
       $lnk5p = '';
-
-      if (4 == $periodo) { 
-        $lnk_lista_de_clase_5p = SalAsigProf::getLnkListaClase(5);
+      if ( (4==$periodo) && (5==$periodo_max) )
+      { 
+        $lnk5p = SalAsigProf::getLnkListaClase(5);
       }
-
-      echo $lnk_lista_de_clase . $lnk_lista_de_clase_5p;
-      
-    } catch (\Throwable $th) {
+      echo $lnk_lista_de_clase . $lnk5p;      
+    }
+    catch (\Throwable $th)
+    {
       OdaFlash::error($th);
     }
     ?>

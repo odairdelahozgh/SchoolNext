@@ -9,6 +9,7 @@ $year = date('Y');
 return [
     'windsor' => [
       'periodo_max' => 5,
+      'app_externa' => 'msteams',
       'id' => 'windsor',
       'nombre'  => 'Windsor School',
       'razon_social'  => 'Windsor Group SAS',
@@ -44,6 +45,7 @@ return [
 
     'santarosa' => [
       'periodo_max' => 4,
+      'app_externa' => 'moodle',
       'id'      => 'santarosa',
       'nombre'       => 'Colegio Mixto Santa Rosa',
       'razon_social' => 'Colegio Mixto Santa Rosa',

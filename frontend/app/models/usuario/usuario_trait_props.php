@@ -89,12 +89,15 @@ trait UsuarioTraitProps {
   public function getCuentaInstit($show_ico=false) 
   { 
     try {
-      $ico = ($show_ico) ? OdaTags::img(src:'msteams_logo.svg', attrs:'width="16"', err_message:'').' '  : '';
-  
+      $app_externa = Config::get('institutions.'.INSTITUTION_KEY.'.app_externa');
+      $sufijo = ('msteams'==$app_externa) ? '@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio') : '';
+      
+      $ico = ($show_ico) ? OdaTags::img(src:$app_externa.'_logo.svg', attrs:'width="16"', err_message:'').' '  : '';
+      
       return $ico.(
         ($this->usuario_instit) 
-        ? $this->usuario_instit.'@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio').' '.$this->clave_instit 
-        : 'No tiene usuario en MS TEAMS'
+        ? $this->usuario_instit .$sufijo .' ' .$this->clave_instit 
+        : 'No tiene usuario en App Externa'
       );
     
     } catch (\Throwable $th) {

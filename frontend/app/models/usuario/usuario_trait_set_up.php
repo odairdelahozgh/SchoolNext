@@ -54,8 +54,8 @@ trait UsuarioTraitSetUp {
       'profesion' => 'Profesión:',
       'is_carga_acad_ok'  => 'Carga Académicas:',
 
-      'usuario_instit' => 'Usuario MS Teams', 
-      'clave_instit' => 'Clave MS Teams', 
+      'usuario_instit' => 'Usuario App Externa', 
+      'clave_instit' => 'Clave App Externa', 
       'theme' => 'Tema Frontend',
       
       'is_active' => 'Está Activo? ',

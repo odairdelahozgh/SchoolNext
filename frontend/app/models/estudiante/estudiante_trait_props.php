@@ -109,18 +109,22 @@ trait EstudianteTraitProps {
   }
 
 
-  public function getCuentaInstit($show_ico=false): string 
+  public function getCuentaInstit($show_ico=false) 
   { 
-    $ico = 
-      ($show_ico) 
-      ? OdaTags::img(src:'msteams_logo.svg', attrs:'width="16"', err_message:'').' ' 
-      : 'MS Teams: ';
-
-    return $ico.(
-      ($this->email_instit) 
-      ? $this->email_instit.'@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio').' '.$this->clave_instit 
-      : 'No tiene usuario en MS TEAMS'
-    );
+    try {
+      $app_externa = Config::get('institutions.'.INSTITUTION_KEY.'.app_externa');
+      $sufijo = ('msteams'==$app_externa) ? '@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio') : '';
+      
+      $ico = ($show_ico) ? OdaTags::img(src:$app_externa.'_logo.svg', attrs:'width="16"', err_message:'').' '  : '';
+      
+      return $ico.(
+        ($this->email_instit) ? $this->email_instit .$sufijo .' ' .$this->clave_instit : 'No tiene usuario en App Externa'
+      );
+    
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+      return '';
+    }
   }
 
 

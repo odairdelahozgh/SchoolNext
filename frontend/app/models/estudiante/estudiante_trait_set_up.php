@@ -84,8 +84,8 @@ trait EstudianteTraitSetUp {
       'annio_pagado'      => 'Año de pagos pensión',
       'mes_pagado'        => 'Pagó pensión hasta',
       
-      'email_instit'      => 'Usuario MS Teams',
-      'clave_instit'      => 'Clave MS Teams',
+      'email_instit'      => 'Usuario App Externa',
+      'clave_instit'      => 'Clave App Externa',
       
       'contabilidad_id' => 'Código Contabilidad',
       

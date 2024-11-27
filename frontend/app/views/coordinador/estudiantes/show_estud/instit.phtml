@@ -1,4 +1,5 @@
 <?php
+try {
   $myTabla = new OdaTable();
 
   $myTabla->addRow([
@@ -17,3 +18,7 @@
   ]);
 
   $myTabs->addTab('instit', 'Instit Anterior', $myTabla);
+
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}

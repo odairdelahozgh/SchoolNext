@@ -1,4 +1,5 @@
 <?php
+try {
   $myTabla = new OdaTable();
   
   $myTabla->addRow([
@@ -22,3 +23,7 @@
   ]);
 
   $myTabs->addTab('ubica', 'Ubicación', $myTabla);
+
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}

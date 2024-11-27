@@ -1,4 +1,5 @@
 <?php
+try {
   $myTabla = new OdaTable();
   $myTabla->setCaption('Datos del Acudiente');
   
@@ -34,3 +35,7 @@
   ]);
 
   $myTabs->addTab('acudi', 'Acudiente', $myTabla);
+  
+} catch (\Throwable $th) {
+  OdaFlash::error($th);
+}

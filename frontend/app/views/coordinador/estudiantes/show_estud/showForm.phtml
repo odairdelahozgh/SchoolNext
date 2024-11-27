@@ -6,6 +6,7 @@
 <div class="w3-container">
   <h2><?=$arrData['Estudiante']?> </h2>
   <?php
+  try {
     $modelEstud = $arrData['Estudiante'];
     $frmEstud = new OdaForm( $modelEstud, '', 
       multipart: false,
@@ -22,7 +23,7 @@
 
     include 'basicos.phtml';
     include 'ubicacion.phtml';
-    include 'matricula.phtml';
+    //include 'matricula.phtml';
     include 'madre.phtml';
     include 'padre.phtml';
     //include 'acudiente.phtml';
@@ -31,6 +32,10 @@
     include 'instit.phtml';
     
     echo  "<div class=\"w3-container\">$myTabs {$frmEstud->getBtnBack()}</div>";
+  
+  } catch (\Throwable $th) {
+    OdaFlash::error($th);
+  }
   ?>
 
 </div>

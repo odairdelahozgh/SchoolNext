@@ -7,13 +7,14 @@
       echo OdaForm::inputSearch();
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(arr_attrs_th: ['style="width:10%;"','style="width:90%;"'] );
+
       foreach($data as $key => $Estud) {
-         $col1 = $Estud->is_active_f(true) .'<br/>'.$Estud->getFoto().'<br/>'
+         $col1 = $Estud->is_active_f(true) .'<br/>'
+                .$Estud->getFoto().'<br/>'
                 .Html::linkAction("activarEstudiante/$Estud->id/", 'Activar', 'class="w3-btn w3-green w3-block"').'<br/>';
          
-         $col2 = strtoupper($Estud).'<br/>'
-                .$Estud->getCodigo() .'<br/>' 
-                .'[Último Grado: '.$Estud->grado_nombre .'</br>'
+         $col2 = '<h3>'.$Estud->getLnkShowPage('secretaria', $Estud).'</h3>'
+                .'Último Grado: '.$Estud->grado_nombre .'</br>'
                 .'Doc: '.$Estud->documento.'</br>'
                 .'Retiro: '.$Estud->fecha_ret.' - Motivo: '.$Estud->retiro.'</br>';
          

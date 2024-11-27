@@ -280,7 +280,7 @@ class OdaForm extends Form {
   }
 
   public function getDataOnly(string $field): string {
-    return $this->_modelo->$field;
+    return (string) $this->_modelo->$field;
   }
 
   private function getHelp(string $field): string { 

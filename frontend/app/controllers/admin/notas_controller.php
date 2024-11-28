@@ -22,8 +22,7 @@ class NotasController extends ScaffoldController
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
       $Nota = new Nota();
       $this->data = $Nota->getNotas_ByAnnioPeriodoSalonAsignaturaEstudiante($annio, $periodo, $salon, $asignatura);
-    } 
-    
+    }    
     catch (\Throwable $th)
     {
       OdaFlash::error($th);
@@ -57,12 +56,10 @@ class NotasController extends ScaffoldController
       {
         OdaFlash::warning("No se guardaron los registros. <br>Se esperaba Post <b>$this->nombre_post</b>, no llegó");
       }
-
       if (Input::hasPost($post_name))
       {
         $Post = Input::post($post_name);
-        $notas = [];
-        
+        $notas = [];        
         foreach ($Post as $field_name => $value)
         {
           $codigo_id = (int)substr($field_name, strripos($field_name, "_") + 1);
@@ -116,8 +113,7 @@ class NotasController extends ScaffoldController
             {
               $data[$key] = $value;  // campos que no son indicadores
             }
-          }
-          
+          }          
           sort($data_indicadores, SORT_NUMERIC); // ordena los indicadores
 
           // GUARDA LOS INDICADORES REALES Y EN ORDEN
@@ -157,7 +153,8 @@ class NotasController extends ScaffoldController
           // AGREGA CAMPOS ADICIONALES (DE CONTROL)
           $adicionales =[];
           $adicionales['updated_at']= date('Y-m-d H:i:s', time());
-          $adicionales['updated_by']= $this->user_id;          
+          $adicionales['updated_by']= $this->user_id;
+
           // UPDATE
           $Modelo = (new Nota());
           $DQL = new OdaDql($Modelo::class);
@@ -173,7 +170,6 @@ class NotasController extends ScaffoldController
     {
       OdaFlash::error($th);
     }
-
     return Redirect::to(route: $redirect);
   }
 
@@ -187,13 +183,11 @@ class NotasController extends ScaffoldController
     $Salon = (new Salon())::get($Estud->salon_id);
     $this->arrData['Salon'] = $Salon;
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
-    
     $this->arrData['Docentes'] = [];
     foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
     }
-
     $this->data = (new Nota())->getByPeriodoEstudiante($periodo_id, $Estud->id);
     $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
     foreach ($Indicadores as $key => $indic)
@@ -204,7 +198,6 @@ class NotasController extends ScaffoldController
     $this->file_tipo = $tipo_boletin->label();
     $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Estud-periodo-$periodo_id");
     $this->file_title = $tipo_boletin->label()." de Notas $Estud";
-    
     View::select(view: "boletines.pdf", template: null);
   }
 
@@ -216,13 +209,11 @@ class NotasController extends ScaffoldController
     $Salon = (new Salon())->getByUUID($salon_uuid);
     $this->arrData['Salon'] = $Salon;
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
-
     $this->arrData['Docentes'] = [];
     foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
     }
-
     $this->data = (new Nota())->getByPeriodoSalon($periodo_id, $Salon->id);
     $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
     foreach ($Indicadores as $key => $indic)
@@ -230,15 +221,12 @@ class NotasController extends ScaffoldController
       $val = strtoupper(substr($indic->valorativo,0,1));
       $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
     }
-    
     // // PARA LA GENERACIÓN DE ARCHIVOS
     $this->file_tipo = $tipo_boletin->label();
     $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Salon-periodo-$periodo_id");
     $this->file_title = $tipo_boletin->label() .' de ' .$Salon;
-
     View::select(view: "boletines.pdf", template: null);
   }
-
 
 
   public function exportBoletinEstudianteHistPdf(int $annio, int $salon_id, int $periodo_id, string $estudiante_uuid): void 
@@ -250,10 +238,9 @@ class NotasController extends ScaffoldController
       $this->arrData['Annio'] = $annio;
       $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
       $this->arrData['Estud'] = $Estud;
-      $Salon = (new Salon())::get($Estud->salon_id);
-      $this->arrData['Salon'] = $Salon;
-      $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
-      $this->arrData['Seccion'] = $this->arrData['Grado']->seccion_id;      
+      $this->arrData['Salon'] = (new Salon())::get($salon_id);
+      $this->arrData['Grado'] = (new Grado())::get($this->arrData['Salon']->grado_id);
+      $this->arrData['Seccion'] = $this->arrData['Grado']->seccion_id;
       $this->arrData['Docentes'] = [];
       foreach ( (new Usuario)->getDocentes() as $empleado)
       {
@@ -283,7 +270,7 @@ class NotasController extends ScaffoldController
   {
     $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;    
     $this->arrData['Annio'] = $annio;
-    $this->arrData['Periodo'] = $periodo_id;
+    $this->arrData['Periodo'] = $periodo_id;    
     $Salon = (new Salon())->getByUUID($salon_uuid);
     $this->arrData['Salon'] = $Salon;
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
@@ -300,13 +287,11 @@ class NotasController extends ScaffoldController
       $val = strtoupper(substr($indic->valorativo,0,1));
       $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
     }
-    // PARA LA GENERACIÓN DE ARCHIVOS
     $this->file_tipo = $tipo_boletin->label();
     $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Salon-periodo-$periodo_id");
     $this->file_title = $tipo_boletin->label() .' de ' .$Salon;
     View::select(view: "boletines_hist.pdf", template: null);
   }
-
 
 
   public function exportCuadroHonorPrimariaPdf(int $periodo_id): void 
@@ -351,7 +336,6 @@ class NotasController extends ScaffoldController
     $this->file_download = true;
     View::select(view: "cuadros-de-honor-general.pdf", template: 'pdf/mpdf');
   }
-
 
   
 }

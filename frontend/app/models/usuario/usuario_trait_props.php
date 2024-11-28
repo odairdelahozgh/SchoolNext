@@ -96,7 +96,7 @@ trait UsuarioTraitProps {
       
       return $ico.(
         ($this->usuario_instit) 
-        ? $this->usuario_instit .$sufijo .' ' .$this->clave_instit 
+        ? "{$this->usuario_instit}{$sufijo} {$this->clave_instit}"
         : 'No tiene usuario en App Externa'
       );
     

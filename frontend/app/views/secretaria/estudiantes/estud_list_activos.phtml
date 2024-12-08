@@ -126,24 +126,20 @@
 
 <?= Tag::js(src: "table_filter"); ?>
 
-<script>
-      const inputSearch = document.getElementById("inputSearch").focus();
+<?php
+echo "<script>
+  const inputSearch = document.getElementById(\"inputSearch\").focus();
+  inputSearch.value = '{$_default_search}';
+  inputSearch.focus();
+  inputSearch.click();
 
-      document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.key === 'b') {
-          inputSearch.value = "Segundo";
-          inputSearch.focus();
-        }
-      });
-</script>
-
-<script>
   document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && (event.key === 'B' || event.key === 'b')) {
-      var inputSearch = document.getElementById('inputSearch');
-      inputSearch.value = 'Quinto';
+      const inputSearch = document.getElementById('inputSearch');
+      inputSearch.value = '{$_default_search}';
       inputSearch.focus();
       inputSearch.click();
     }
   });
-</script>
+</script>";
+?>

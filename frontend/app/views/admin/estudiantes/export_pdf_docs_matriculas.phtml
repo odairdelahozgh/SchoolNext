@@ -21,7 +21,7 @@ try {
   $Plantillas = new Plantilla();
   
   // initialize
-  $annio_mat = Config::get('matriculas.annio_mat');
+  $annio_mat = Config::get('matriculas.'.INSTITUTION_KEY.'.annio_mat');
   $direccion = Config::get('institutions.'.INSTITUTION_KEY.'.direccion');
   
   $datetimezone = new DateTimeZone('America/Bogota');

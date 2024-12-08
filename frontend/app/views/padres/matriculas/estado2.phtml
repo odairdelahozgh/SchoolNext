@@ -12,19 +12,12 @@
     'Subirlos de manera independiente',
   ], 'ol', attrs: 'class="w3-ol w3-card-4"');
   
-  $widgetLinkFikle1 = OdaTags::linkExterno(Config::get('matriculas.file_1'), 'Descargar '.Config::get('matriculas.file_1_titulo'), 'class="w3-button w3-ripple w3-block"');
-  $widgetLinkFikle2 = OdaTags::linkExterno(Config::get('matriculas.file_2'), 'Descargar '.Config::get('matriculas.file_2_titulo'), 'class="w3-button w3-block"');
-  $widgetLinkFikle3 = OdaTags::linkExterno(Config::get('matriculas.file_3'), 'Descargar '.Config::get('matriculas.file_3_titulo'), 'class="w3-button w3-ripple w3-block"');
-  $widgetLinkFikle4 = OdaTags::linkExterno(Config::get('matriculas.file_4'), 'Descargar '.Config::get('matriculas.file_4_titulo'), 'class="w3-button w3-ripple w3-block"');
-  $widgetLinkFikle5 = OdaTags::linkExterno(Config::get('matriculas.file_5'), 'Descargar '.Config::get('matriculas.file_5_titulo'), 'class="w3-button w3-ripple w3-block"');
-  $widgetLinkFikle6 = OdaTags::linkExterno(Config::get('matriculas.file_6'), 'Descargar '.Config::get('matriculas.file_6_titulo'), 'class="w3-button w3-ripple w3-block"');
 
-  $tabla->addRow([$widgetLinkFikle1]);
-  $tabla->addRow([$widgetLinkFikle2]);
-  $tabla->addRow([$widgetLinkFikle3]);
-  $tabla->addRow([$widgetLinkFikle4]);
-  $tabla->addRow([$widgetLinkFikle5]);
-  $tabla->addRow([$widgetLinkFikle6]);
+  $num_archivos = (int)Config::get('matriculas.'.INSTITUTION_KEY.'.num_archivos');
+  $widgetLinkFiles = [];
+  for ($i=1; $i<=$num_archivos; $i++) { 
+    $tabla->addRow( [OdaTags::linkExterno(Config::get('matriculas.'.INSTITUTION_KEY.'.file_'.$i), 'Descargar '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_'.$i.'_titulo'), 'class="w3-button w3-ripple w3-block"')] );
+  }
 
   $btn_subir_arch = OdaTags::linkButton("padres/subirArchivos/$estud->id", 'Subir Archivos');
 
@@ -40,4 +33,3 @@
     $btn_subir_arch
   </div>
   ";
-?>

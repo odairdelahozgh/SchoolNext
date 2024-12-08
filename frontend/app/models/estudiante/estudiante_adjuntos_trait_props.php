@@ -23,7 +23,7 @@ trait EstudianteAdjuntosTraitProps {
   public function getLinkArchivo(int $num_archivo): string 
   {
     $arch = "nombre_archivo$num_archivo";
-    $nombre_archivo = Config::get("matriculas.file_{$num_archivo}_titulo");
+    $nombre_archivo = Config::get('matriculas.'.INSTITUTION_KEY.'.file_'.$num_archivo.'_titulo');
 
     if ($this->$arch) {
       return OdaTags::linkExterno(

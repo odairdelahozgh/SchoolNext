@@ -64,21 +64,21 @@ trait EstudianteAdjuntosTraitSetUp {
     ];
   
     self::$_helps = [
-      'nombre_archivo1' => 'subir acá '.Config::get('matriculas.file_1_titulo'),
-      'nombre_archivo2' => 'subir acá '.Config::get('matriculas.file_2_titulo'),
-      'nombre_archivo3' => 'subir acá '.Config::get('matriculas.file_3_titulo'),
-      'nombre_archivo4' => 'subir acá '.Config::get('matriculas.file_4_titulo'),
-      'nombre_archivo5' => 'subir acá '.Config::get('matriculas.file_5_titulo'),
-      'nombre_archivo6' => 'subir acá '.Config::get('matriculas.file_6_titulo'). '<br>--> solo para los grados 9°, 10° y 11°',
+      'nombre_archivo1' => 'subir acá '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_1_titulo'),
+      'nombre_archivo2' => 'subir acá '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_2_titulo'),
+      'nombre_archivo3' => 'subir acá '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_3_titulo'),
+      'nombre_archivo4' => 'subir acá '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_4_titulo'),
+      'nombre_archivo5' => 'subir acá '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_5_titulo'),
+      'nombre_archivo6' => 'subir acá '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_6_titulo'),
     ];
   
     self::$_labels = [
-      'nombre_archivo1' => 'Archivo 1: '.Config::get('matriculas.file_1_titulo'),
-      'nombre_archivo2' => 'Archivo 2: '.Config::get('matriculas.file_2_titulo'),
-      'nombre_archivo3' => 'Archivo 3: '.Config::get('matriculas.file_3_titulo'),
-      'nombre_archivo4' => 'Archivo 4: '.Config::get('matriculas.file_4_titulo'),
-      'nombre_archivo5' => 'Archivo 5: '.Config::get('matriculas.file_5_titulo'),
-      'nombre_archivo6' => 'Archivo 6: '.Config::get('matriculas.file_6_titulo'),
+      'nombre_archivo1' => 'Archivo 1: '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_1_titulo'),
+      'nombre_archivo2' => 'Archivo 2: '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_2_titulo'),
+      'nombre_archivo3' => 'Archivo 3: '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_3_titulo'),
+      'nombre_archivo4' => 'Archivo 4: '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_4_titulo'),
+      'nombre_archivo5' => 'Archivo 5: '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_5_titulo'),
+      'nombre_archivo6' => 'Archivo 6: '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_6_titulo'),
 
       'coment_archivo1' => 'Comentarios del archivo 1',
       'coment_archivo2' => 'Comentarios del archivo 2',
@@ -87,12 +87,12 @@ trait EstudianteAdjuntosTraitSetUp {
       'coment_archivo5' => 'Comentarios del archivo 5',
       'coment_archivo6' => 'Comentarios del archivo 6',
 
-      'estado_archivo1' => 'Estado '.Config::get('matriculas.file_1_titulo'),
-      'estado_archivo2' => 'Estado '.Config::get('matriculas.file_2_titulo'),
-      'estado_archivo3' => 'Estado '.Config::get('matriculas.file_3_titulo'),
-      'estado_archivo4' => 'Estado '.Config::get('matriculas.file_4_titulo'),
-      'estado_archivo5' => 'Estado '.Config::get('matriculas.file_5_titulo'),
-      'estado_archivo6' => 'Estado '.Config::get('matriculas.file_6_titulo'),
+      'estado_archivo1' => 'Estado '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_1_titulo'),
+      'estado_archivo2' => 'Estado '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_2_titulo'),
+      'estado_archivo3' => 'Estado '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_3_titulo'),
+      'estado_archivo4' => 'Estado '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_4_titulo'),
+      'estado_archivo5' => 'Estado '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_5_titulo'),
+      'estado_archivo6' => 'Estado '.Config::get('matriculas.'.INSTITUTION_KEY.'.file_6_titulo'),
 
       'created_at' => 'Creado el',
       'created_by' => 'Creado por',

@@ -100,26 +100,22 @@ class EstudiantesController extends ScaffoldController
   {
     try
     {
-      $Grados = (new Grado())::all();
-      $arrGrados = [];
-      foreach ($Grados as $key => $grado) 
-      {
-        $arrGrados[$grado->id]['proximo_grado'] = $grado->proximo_grado;
-        $arrGrados[$grado->id]['salon_default'] = $grado->salon_default;
-      }      
-      $perdieron_annio = ['2313, 2276, 1769, 1443'];
+      $no_promover = '1368,2352,2284,2283,1848,2081,1368,2341,2367,2172,1968,1433';
+      $NewGrado = (new Grado())::get($grado_id);
       $DQLEstudiantes = new OdaDql('Estudiante');
-      $DQLEstudiantes->setFrom('sweb_estudiantes');      
-      $nuevo_grado = $arrGrados[$grado_id]['proximo_grado'];
+      $DQLEstudiantes->setFrom(Config::get('tablas.estudiantes'));
+
       $data = [
-        'is_habilitar_mat' => 1, 
-        'annio_promovido' => 2024, 
-        'grado_promovido' => $nuevo_grado, 
+        'is_habilitar_mat' => 1,
+        'annio_promovido' => (1 + (int)Config::get('config.academic.annio_actual')),
+        'grado_promovido' => $NewGrado->proximo_grado, 
         'numero_mat' => '', 
       ];
       $DQLEstudiantes->update($data)
-        ->where(' (t.is_active=1) and (t.id not in (2313, 2276, 1769, 1443)) and (t.grado_mat=?')
+        ->where(' (t.is_active=1) and (t.id NOT IN ('.$no_promover.')) and (t.grado_mat=?)')
         ->setParams([$grado_id]);
+
+      OdaLog::debug($DQLEstudiantes->renderlog());
       $DQLEstudiantes->execute();
       redirect::to('secre-estud-list-activos');
     }

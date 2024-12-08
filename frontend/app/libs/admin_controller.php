@@ -39,6 +39,8 @@ abstract class AdminController extends Controller
   public array  $fieldsToHidden = [];
   public string $nombre_post = '';
   public string $nombre_modelo = '';
+  
+  public string $_default_search = '';
 
     
   // PARA LA GENERACIÓN DE ARCHIVOS
@@ -47,6 +49,10 @@ abstract class AdminController extends Controller
   public string|null $file_title = null;
   public bool $file_download = true;
   public string $file_orientation = 'L';
+  
+  public int $_periodo_actual = 0;
+  public int $_annio_actual = 0;
+  public string $_ahora = '';
   public $_now = null;
   
   
@@ -72,6 +78,8 @@ abstract class AdminController extends Controller
       
       $this->nombre_modelo = OdaUtils::singularize($this->controller_name);
       $this->nombre_post   = strtolower(OdaUtils::pluralize( $this->nombre_modelo ));
+      
+      $this->_ahora = date('Y-m-d H:i:s', time());
       $this->_now = new DateTime("now", new DateTimeZone("America/Bogota"));
   }
 

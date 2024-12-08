@@ -10,7 +10,7 @@
   
   public static function indicadorF(
     int $indicador=101, 
-    array $ListaIndicadores, 
+    array $ListaIndicadores = [], 
     array $attr = [], 
     $react = false
   ): string

@@ -1,7 +1,3 @@
-TAREAS URGENTES
-================================================================
-Habilitar a Yuli botón de Retiro de Estudiantes.
-
 Retirar ESTUDIANTES: 
   - Retiro Voluntario, 
   - Retiro Graduación (11°)
@@ -9,7 +5,6 @@ Retirar ESTUDIANTES:
 
 
 **** CIERRE DE AÑO Y MATRÍCULAS ****
-BACKUP - BASE DE DATOS
 ================================================================
 ok sweb_grados_2023 -> actualizar precios NUEVO AÑO !!!
 
@@ -35,10 +30,8 @@ en orden inverso.. primero 11° hacia abajo.
 >> PRIMARIA
   Promover a todos los de primaria
 >> BACHILLERATO
-  primero desactivar los que se van
-  dejar en espera los que están validando notas
-
-
+primero desactivar los que se van
+dejar en espera los que están validando notas
 
 MATRÍCULAS
 ================================================================

@@ -1,7 +1,25 @@
 <?php
 
 trait IndicadorTraitSetUp {
-  
+/* 
+  public int $id; 
+  public string $uuid; 
+  public string $annio; 
+  public int $periodo_id; 
+  public int $grado_id; 
+  public string $grado_nombre; 
+  public int $asignatura_id; 
+  public string $asignatura_nombre; 
+  public string $codigo; 
+  public string $concepto; 
+  public string $valorativo; 
+  public int $is_visible; 
+  public int $is_active; 
+  public string $created_at; 
+  public string $updated_at; 
+  public string $created_by; 
+  public string $updated_by; */
+
   use TraitUuid, TraitForms, TraitValidar,
     IndicadorTraitProps;
 

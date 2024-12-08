@@ -24,8 +24,9 @@ abstract class AppController extends Controller
   public array  $fieldsToHidden = [];
   public string $nombre_post = '';
   public string $nombre_modelo = '';
-
   
+  public string $_default_search = '';
+
 	// ACL (Access Control List) permisos
 	public $_acl; //variable objeto ACL
 	public $_userRol = ""; //variable con el rol del usuario autenticado en la aplicación

@@ -8,13 +8,11 @@
 try {
     $tabla = new OdaTable();
     $tabla->setHead(['#', 'Estado', 'Ver o Descargar']);
-    $tabla->addRow(['1', $Adjuntos->estado_archivo1.'<br>'.$Adjuntos->getComentAPapa(1), $Adjuntos->getLinkArchivo(1)]);
-    $tabla->addRow(['2', $Adjuntos->estado_archivo2.'<br>'.$Adjuntos->getComentAPapa(2), $Adjuntos->getLinkArchivo(2)]);
-    $tabla->addRow(['3', $Adjuntos->estado_archivo3.'<br>'.$Adjuntos->getComentAPapa(3), $Adjuntos->getLinkArchivo(3)]);
-    $tabla->addRow(['4', $Adjuntos->estado_archivo4.'<br>'.$Adjuntos->getComentAPapa(4), $Adjuntos->getLinkArchivo(4)]);
-    $tabla->addRow(['5', $Adjuntos->estado_archivo5.'<br>'.$Adjuntos->getComentAPapa(5), $Adjuntos->getLinkArchivo(5)]);
-    $tabla->addRow(['6', $Adjuntos->estado_archivo6.'<br>'.$Adjuntos->getComentAPapa(6), $Adjuntos->getLinkArchivo(6)]);
- 
+    
+    $num_archivos = (int)Config::get('matriculas.'.INSTITUTION_KEY.'.num_archivos');
+    for ($i=1; $i<=$num_archivos; $i++) { 
+      $tabla->addRow([$i, $Adjuntos->estado_archivo.$i.'<br>'.$Adjuntos->getComentAPapa($i), $Adjuntos->getLinkArchivo($i)]);
+    }
     $btn_subir_arch = OdaTags::linkButton("padres/subirArchivos/$estud->id", 'Subir Archivos');
 
     $contenido_tab .= "

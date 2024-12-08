@@ -80,10 +80,11 @@ class SecretariaController extends AppController
   }
   
   
-  public function listadoEstudActivos(): void 
+  public function listadoEstudActivos(string $search = ''): void 
   {
     //$tabla_datos_adju = Config::get('tablas.estud_adjuntos');
     $this->page_action = 'Listado de Estudiantes Activos';
+    $this->_default_search = $search;
     $this->data = (new Estudiante)->getListSecretaria(estado: 1);
     $this->arrData['Salones'] = (array)(new Salon)->getList(estado: 1);
     View::select('estudiantes/estud_list_activos');

@@ -282,7 +282,7 @@ trait AspiranteTraitSetUp {
       'result_matem' =>  'Resultados Matemáticas',
       'result_plect' =>  'Resultados Prelectoescritura',
       'result_pmate' =>  'Resultados Prematemáticas',
-      'result_scien' =>  'Resultados Science',
+      'result_scien' =>  'Resultados Biología',
       'result_socia' =>  'Resultados Sociales',
 
       'sexo' =>  'Sexo',
@@ -294,7 +294,12 @@ trait AspiranteTraitSetUp {
       'updated_by'      => 'Actualizado por',
     ];
   
-    self::$_placeholders = [];
+    self::$_placeholders = 
+    [ 
+      'nombres'        => ' Obligatorio ', 
+      'apellido1'      => ' Obligatorio ',
+      'documento'      => ' Obligatorio ',
+    ];
 
      
     $rules = [

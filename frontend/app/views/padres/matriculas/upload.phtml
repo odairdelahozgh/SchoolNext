@@ -17,12 +17,12 @@
   $myForm->setEdit();
   $myForm->setColumnas(2);
   $myForm->setAtrib('id="frm_edit" name="frm_edit"');
-  $myForm->addFile2('nombre_archivo1');
-  $myForm->addFile2('nombre_archivo2');
-  $myForm->addFile2('nombre_archivo3');  
-  $myForm->addFile2('nombre_archivo4', 2);
-  $myForm->addFile2('nombre_archivo5', 2);
-  $myForm->addFile2('nombre_archivo6', 2);
+
+  
+  $num_archivos = (int)Config::get('matriculas.'.INSTITUTION_KEY.'.num_archivos');
+  for ($i=1; $i<=$num_archivos; $i++) { 
+    $myForm->addFile2('nombre_archivo'.$i);
+  }
   $myForm->addHiddens(implode(",", $fieldsToHidden));
   echo OdaTags::tag('div', $message, 'class="w3-panel"');
   echo "<div class=\"w3-container\">$myForm</div>";

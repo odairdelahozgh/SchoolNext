@@ -36,10 +36,8 @@ trait AspiranteTraitProps {
     bool $show_ico=true
   ): string 
   { 
-    return (($show_ico) ? 
-      AspirEstatus::tryFrom($estatus)->label_ico($with_color, $attr_class) : 
-      AspirEstatus::tryFrom($estatus)->label()
-    );
+    $estatus = AspirEstatus::tryFrom($estatus);
+    return $show_ico ? $estatus->label_ico($with_color, $attr_class) : $estatus->label();
   }
 
 
@@ -95,12 +93,26 @@ trait AspiranteTraitProps {
     return ( ($this->fecha_entrev=='0000-00-00 00:00:00') ? '' : $date->format('M-d H:iA'));
   }
   
+    
+  public function is_fecha_entrev_f(bool $ico = true) // Asistió ?? 
+  {
+    $asistio_entrevista = SiNo::tryFrom((int)$this->is_fecha_entrev) ?? SiNo::No;
+    return $ico ? $asistio_entrevista->label_ico() : $asistio_entrevista->label();
+  }
+
   
   public function fecha_eval_f(): string 
   {
     $timezone = new DateTimeZone("America/Bogota");
     $date = new DateTimeImmutable($this->fecha_eval, $timezone);
     return ( ($this->fecha_eval=='0000-00-00 00:00:00') ? '' : $date->format('M-d H:iA'));
+  }
+  
+
+  public function is_fecha_eval_f(bool $ico = true)  // Asistió ??
+  {
+    $asistio_evalualcion = SiNo::tryFrom((int)$this->is_fecha_eval) ?? SiNo::No;
+    return $ico ? $asistio_evalualcion->label_ico() : $asistio_evalualcion->label();
   }
   
 

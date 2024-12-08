@@ -1,7 +1,7 @@
 <?php
 trait EstudianteTraitCorrecciones {
 
-  public static function setPromoverANuevoAnnio($annio=2024) 
+  public static function setPromoverANuevoAnnio($annio=2025) 
   {
     try {
 

@@ -53,7 +53,7 @@ class PadresController extends AppController
   
   public function matriculas(): void 
   {
-    $this->page_action = 'Matr&iacute;culas Año '.Config::get('matriculas.annio_mat');
+    $this->page_action = 'Matr&iacute;culas Año '.Config::get('matriculas.'.INSTITUTION_KEY.'.annio_mat');
     $arr_padres_id = [22204, 21985, 22065];
     $rnd =$arr_padres_id[rand(0, count($arr_padres_id)-1)]; 
     $user_id = (1!=$this->user_id) ? $this->user_id : $rnd ;

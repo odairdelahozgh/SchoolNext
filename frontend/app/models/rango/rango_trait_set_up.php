@@ -7,40 +7,41 @@ trait RangoTraitSetUp {
   private function setUp() 
   {
     self::$_fields_show = [
-      'all'     => ['id', 'nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg', 'created_by', 'updated_by', 'created_at', 'updated_at'],
-      'index'   => ['id', 'nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg'],
-      'create'  => ['nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg'],
-      'edit'    => ['nombre', 'lim_inf', 'lim_sup', 'color_rango', 'color_texto', 'color_backg'],
+      'all'     => ['id', 'nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo', 'created_by', 'updated_by', 'created_at', 'updated_at'],
+      'index'   => ['id', 'nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo', 'orden'],
+      'create'  => ['nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo'],
+      'edit'    => ['nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo'],
     ];
   
     self::$_attribs = [
       'id'      => 'required',
       'nombre'  => 'required',
-      'lim_inf' => 'required',
-      'lim_sup' => 'required',
+      'limite_inferior' => 'required',
+      'limite_superior' => 'required',
     ];
   
     self::$_defaults = [
-      'lim_inf'  => 0,
-      'lim_sup'  => 0,
+      'limite_inferior'  => 0,
+      'limite_superior'  => 0,
       'color_rango' => '',
       'color_texto' => '',
-      'color_backg' => '',
+      'color_fondo' => '',
     ];
   
     self::$_helps = [
       'color_rango' => 'nombre del color',
       'color_texto' => 'nombre del color',
-      'color_backg' => 'nombre del color',
+      'color_fondo' => 'nombre del color',
     ];
-  
+    
     self::$_labels = [
-      'nombre'      => 'Nombre del Rango',
-      'lim_inf'     => 'Límite Inferior',
-      'lim_sup'     => 'Límite Superior',
+      'nombre' => 'Nombre del Rango',
+      'limite_inferior' => 'Límite Inferior',
+      'limite_superior' => 'Límite Superior',
       'color_rango' => 'Color del Rango',
       'color_texto' => 'Color de Texto',
-      'color_backg' => 'Color de Fondo',
+      'color_fondo' => 'Color de Fondo',
+      'orden' => 'Ordenamiento',
 
       'created_at'      => 'Creado el',
       'created_by'      => 'Creado por',

@@ -16,7 +16,8 @@ try {
   //   $FormAspirPsico->getTextarea(field: '')
   // ]);
 
-  $annio_actual = (int)Config::get('config.academic.annio_actual')+1;
+  $DoliK = new DoliConst();
+  $annio = (int)$DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL')+1;
 
   return  "
   <div class=\"w3-display-container\">
@@ -34,7 +35,7 @@ try {
         <li>formato diligenciado de consulta y reporte a centrales de riesgo</li>
       </ul>
       <br>
-        Asunto del correo: ADMISIONES WINDSOR {$annio_actual}  - ''NOMBRE DEL ESTUDIANTE''
+        Asunto del correo: ADMISIONES WINDSOR {$annio}  - ''NOMBRE DEL ESTUDIANTE''
       <br>
       <p>Nota: Estos informes son obligatorios para asentar el registro del aspirante. Deberá enviarlos lo mas pronto posible.</p>
     </div>

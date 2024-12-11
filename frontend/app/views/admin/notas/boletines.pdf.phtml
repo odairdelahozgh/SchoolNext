@@ -1,6 +1,6 @@
 <?php
 
-$annio = (int)Config::get(var: 'config.academic.annio_actual');
+$annio = $_annio_actual;
 $seccion = $arrData['Grado']->seccion_id;
 
 $archivoPDF = new MpdfBoletines([

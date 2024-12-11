@@ -29,8 +29,7 @@ class RegistrosGen extends LiteRecord {
   ) {
     try 
     {
-      $annio_actual = Config::get('config.academic.annio_actual');
-      $sufijo = ($annio != $annio_actual) ? '_'.$annio : '' ;
+      $sufijo = ($annio != self::$_annio_actual) ? '_'.$annio : '' ;
   
       $RegGen = new RegistrosGen();
       $DQL = new OdaDql(__CLASS__);
@@ -156,8 +155,7 @@ class RegistrosGen extends LiteRecord {
     int $salon_id
   ) {
     try {
-      $annio_actual = Config::get('config.academic.annio_actual');
-      $sufijo = ($annio != $annio_actual) ? '_'.$annio : '' ;
+      $sufijo = ($annio != self::$_annio_actual) ? '_'.$annio : '' ;
   
       $RegGen = new RegistrosGen();
       $DQL = new OdaDql(__CLASS__);

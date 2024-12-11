@@ -66,8 +66,8 @@ trait EstudianteTraitProps {
 
   public function isPazYSalvo(): bool 
   {
-    $periodo = (int)Config::get(var: 'config.academic.periodo_actual');
-    $annio = (int)Config::get(var: 'config.academic.annio_actual');
+    $periodo = self::$_periodo_actual;
+    $annio = self::$_annio_actual;
 
     // cambiar por match expres
     if ($periodo==1 and $this->mes_pagado>=parent::LIM_PAGO_PERIODOS[1] 

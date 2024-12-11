@@ -38,6 +38,7 @@ abstract class DmzController extends Controller
   public string $_instituto_id = '';
   public string $_instituto_nombre = '';
   public int $_periodo_actual = 0;
+  public int $_annio_actual = 0;
   
   final protected function initialize() {
     try {
@@ -45,7 +46,10 @@ abstract class DmzController extends Controller
     
     $this->user_id = 0;
     $this->user_name = 'anonimo';
-    $this->_periodo_actual = Config::get(var: 'config.academic.periodo_actual');
+    
+    $DoliK = new DoliConst();
+    $this->_periodo_actual = (int)$DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL');
+    $this->_annio_actual = (int)$DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL');
 
     $this->_instituto_id = Config::get('institutions.'.INSTITUTION_KEY.'.id');
     $this->_instituto_nombre = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');

@@ -100,7 +100,7 @@ class CoordinadorController extends AppController
   public function gestion_registros() 
   {
     $this->page_action = 'Gesti&oacute;n Registros';
-    $this->annios = range((int)Config::get('config.academic.annio_actual'), 2021, -1);
+    $this->annios = range($this->_annio_actual, 2021, -1);
     View::select('registros/index');
   }
 
@@ -133,8 +133,7 @@ class CoordinadorController extends AppController
     try 
     {
       $this->page_action = 'Hist&oacute;rico de Notas';
-      //$this->data = range(Config::get('config.academic.annio_actual')-1, Config::get('config.academic.annio_inicial'), -1);
-      $this->data = range(Config::get('config.academic.annio_actual'), 2010, -1);
+      $this->data = range($this->_annio_actual, 2010, -1);
     } 
     catch (\Throwable $th) 
     {

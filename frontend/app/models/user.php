@@ -106,16 +106,21 @@ class User extends ActiveRecord
         
         $auth = Auth2Odair::factory('model'); // Obtiene el adaptador
         $auth->setModel('User'); // Modelo que utilizará para consultar
-        $auth->setFields(array('id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'documento', 'usuario_instit', 'clave_instit', 'theme'));
+        $auth->setFields(['id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'documento', 'usuario_instit', 'clave_instit', 'theme']);
         $auth->setLogin('username');
         $auth->setPass('password');
         $auth->setAlgos('sha1');
         $auth->setKey('usuario_logged');
         
+        
+        $DoliK = new DoliConst();
+        $annio_actual = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL');
+        $periodo_actual = $DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL');
+        
         Session::set('ip', OdaUtils::getIp() );
-        $estePeriodo = (new Periodo)->getPeriodoActual();
-        Session::set('annio',        (int)Config::get('config.academic.annio_actual'));
-        Session::set('periodo',      (int)Config::get('config.academic.periodo_actual'));
+        $estePeriodo = (new Periodo)->getPeriodoActual($periodo_actual);
+        Session::set('annio', (int)$annio_actual);
+        Session::set('periodo',      (int)$periodo_actual);
         Session::set('fecha_inicio', $estePeriodo->fecha_inicio);
         Session::set('fecha_fin',    $estePeriodo->fecha_fin);
         Session::set('f_ini_notas',  $estePeriodo->f_ini_notas);

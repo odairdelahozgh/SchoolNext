@@ -4,7 +4,7 @@
  * Parámetros de configuracion de la aplicacion
  */
  
-$prefijo_dolibarr = 'llx_';  // llx_ (santa rosa), llxxw_ (windsor)
+$prefijo_dolibarr = 'llx_';
 
 return [
   'acciones_seguim'     => 'sweb_acciones_segto',
@@ -72,5 +72,8 @@ return [
   'usuarios_estudiantes' => 'sweb_dmuser_estudiantes',
   'usuarios_asignaturas' => 'sweb_users_asignaturas',
   'usuarios_secciones'   => 'sweb_users_secciones',
+  
+  
+  'doli_const'   => $prefijo_dolibarr.'const',
   
 ];

@@ -114,11 +114,13 @@ class User extends ActiveRecord
         
         
         $DoliK = new DoliConst();
+        $annio_inicial = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_INICIAL');
         $annio_actual = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL');
         $periodo_actual = $DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL');
         
         Session::set('ip', OdaUtils::getIp() );
         $estePeriodo = (new Periodo)->getPeriodoActual($periodo_actual);
+        Session::set('annio_inicial', (int)$annio_inicial);
         Session::set('annio', (int)$annio_actual);
         Session::set('periodo',      (int)$periodo_actual);
         Session::set('fecha_inicio', $estePeriodo->fecha_inicio);

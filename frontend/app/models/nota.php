@@ -300,7 +300,7 @@ class Nota extends LiteRecord {
   {
     try {
       if (!is_null($annio)) {
-        $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+        $tbl_notas = 'sweb_notas'.  ( ($annio != $this->Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
       } else {
         $tbl_notas = 'sweb_notas';
       }

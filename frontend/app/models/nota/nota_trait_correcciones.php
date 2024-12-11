@@ -12,8 +12,8 @@ trait NotaTraitCorrecciones {
       ->execute();
       
       if ($Estudiantes) {
-        $periodo_actual = Config::get('config.academic.periodo_actual');
-        $annio_actual = Config::get('config.academic.annio_actual');
+        $periodo_actual = self::$_periodo_actual;
+        $annio_actual = self::$_annio_actual;
         $ahora = new DateTime('now', new DateTimeZone('America/Bogota'));
 
         foreach ($Estudiantes as $key => $Estud) {

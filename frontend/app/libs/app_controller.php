@@ -56,6 +56,7 @@ abstract class AppController extends Controller
   
   public int $_periodo_actual = 0;
   public int $_annio_actual = 0;
+  public int $_annio_inicial = 0;
   public string $_ahora = '';
   public $_now = null;
 
@@ -88,6 +89,7 @@ abstract class AppController extends Controller
 
       $this->_periodo_actual = Session::get('periodo');
       $this->_annio_actual = Session::get('annio');
+      $this->_annio_inicial = Session::get('annio_inicial');
 
       //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
       $this->_instituto_id = Config::get('institutions.'.INSTITUTION_KEY.'.id');

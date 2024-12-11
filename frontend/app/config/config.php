@@ -28,12 +28,14 @@ return [
       'users'  => 'w3',
     ],
 
+/*
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2024,
       'periodo_actual' => 4,
       'asignar_carga' => ['*'],
     ],
+*/
 
     'boletines' => [
       'imprimir_plan_apoyo' => false,

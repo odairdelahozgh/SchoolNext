@@ -107,7 +107,7 @@ class EstudiantesController extends ScaffoldController
 
       $data = [
         'is_habilitar_mat' => 1,
-        'annio_promovido' => (1 + (int)Config::get('config.academic.annio_actual')),
+        'annio_promovido' => (1 + $this->_annio_actual),
         'grado_promovido' => $NewGrado->proximo_grado, 
         'numero_mat' => '', 
       ];

@@ -150,7 +150,7 @@
             );
           }//end-foreach
           
-          $display = ($periodo!=Config::get('config.academic.periodo_actual')) ? "style=\"display:none\"" : '' ;
+          $display = ($periodo!=$_periodo_actual) ? "style=\"display:none\"" : '' ;
           $result .= "<div id=\"p$periodo\" class=\"tab w3-card-4 w3-padding\" $display >";
           $result .= $tabla;
           $result .= '</div>';

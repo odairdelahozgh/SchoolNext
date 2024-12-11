@@ -5,7 +5,7 @@
 <div class="w3-container">
   <?php
     echo 'CUADROS DE HONOR:<br>';
-    $periodo_limite = Config::get('config.academic.periodo_actual');
+    $periodo_limite = $_periodo_actual;
     for ($p=1; $p<=$periodo_limite; $p++) { 
       if (31==$user_id or 1==$user_id) { // primaria
         echo (new Nota)::lnkCuadroHonorPrimariaPDF($p).'&nbsp;';

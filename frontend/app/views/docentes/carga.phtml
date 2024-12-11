@@ -44,11 +44,10 @@
     <?php 
     try 
     {
-      $periodo = (int)Config::get('config.academic.periodo_actual');
       $periodo_max = (int)Config::get('institutions.'.INSTITUTION_KEY.'.periodo_max');
-      $lnk_lista_de_clase = SalAsigProf::getLnkListaClase($periodo);
+      $lnk_lista_de_clase = SalAsigProf::getLnkListaClase($_periodo_actual);
       $lnk5p = '';
-      if ( (4==$periodo) && (5==$periodo_max) )
+      if ( (4==$_periodo_actual) && (5==$periodo_max) )
       { 
         $lnk5p = SalAsigProf::getLnkListaClase(5);
       }

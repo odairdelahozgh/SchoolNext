@@ -59,7 +59,5 @@ trait AreaTraitSetUp {
     self::$_rules_validators = array_merge(self::$_rules_validators, $rules);
 
   }
-
-
-  
+ 
 }

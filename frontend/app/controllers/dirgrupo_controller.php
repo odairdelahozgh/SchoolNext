@@ -7,8 +7,6 @@
 
 class DocentesController extends AppController
 {
-  // pendiente rediseñar o eliminar este controller
-
   public function index(): void 
   {
     try 
@@ -43,7 +41,7 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Registros del Grupo';
-      $this->data = range((int)Config::get('config.academic.annio_actual'), 2021, -1);
+      $this->data = range($this->_annio_actual, 2021, -1);
     } 
     catch (\Throwable $th) 
     {

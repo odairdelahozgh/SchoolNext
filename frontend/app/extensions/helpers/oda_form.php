@@ -339,7 +339,10 @@ class OdaForm extends Form {
    * Devuelve el HTML de la apertura del formulario.
    **/
   public function getOpenForm(): string {
-    if ($this->_isMultipart) { return self::openMultipart($this->_faction, $this->_fattrs); }
+    if ($this->_isMultipart)
+    { 
+      return self::openMultipart($this->_faction, $this->_fattrs); 
+    }
     return self::open($this->_faction, $this->_fmethod, $this->_fattrs);
   } //END
 

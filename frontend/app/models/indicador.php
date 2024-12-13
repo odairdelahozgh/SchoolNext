@@ -10,6 +10,7 @@
 include "indicador/indicador_trait_props.php";
 include "indicador/indicador_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Indicador extends LiteRecord {
 
   use IndicadorTraitSetUp;

@@ -8,7 +8,8 @@
 
 include "seguimientos/seguimientos_trait_links.php";
 include "seguimientos/seguimientos_trait_props.php";
-  
+
+#[AllowDynamicProperties]
 class Seguimientos extends Nota {
 
   use SeguimientosTraitProps, SeguimientosTraitLinks;

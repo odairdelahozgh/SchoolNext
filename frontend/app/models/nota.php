@@ -12,6 +12,7 @@ include "nota/nota_trait_links.php";
 include "nota/nota_trait_props.php";
 include "nota/nota_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Nota extends LiteRecord {
 
   use NotaTraitSetUp;

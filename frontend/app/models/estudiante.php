@@ -16,6 +16,7 @@ include "estudiante/estudiante_trait_setters.php";
 include "estudiante/estudiante_trait_call_backs.php";
 include "estudiante/estudiante_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Estudiante extends LiteRecord 
 {
 

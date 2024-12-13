@@ -7,11 +7,12 @@
  * 
  */
 
-include "salon/salon_trait_call_backs.php";
+ include "salon/salon_trait_call_backs.php";
 include "salon/salon_trait_links.php";
 include "salon/salon_trait_props.php";
 include "salon/salon_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Salon extends LiteRecord {
   use SalonTraitSetUp;
 

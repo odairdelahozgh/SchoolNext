@@ -10,6 +10,7 @@ include "registros/registros_gen_trait_links.php";
 include "registros/registros_gen_trait_props.php";
 include "registros/registros_gen_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class RegistrosGen extends LiteRecord {
 
   use RegistrosGenTraitSetUp;

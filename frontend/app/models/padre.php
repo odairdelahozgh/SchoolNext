@@ -10,6 +10,8 @@
 include "padre/padre_trait_estudiantes.php";
 include "padre/padre_trait_set_up.php";
 
+
+#[AllowDynamicProperties]
 class Padre extends LiteRecord {
 
   use PadreTraitSetUp;

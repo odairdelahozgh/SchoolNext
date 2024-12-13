@@ -10,6 +10,7 @@
 include "grado/grado_trait_props.php";
 include "grado/grado_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Grado extends LiteRecord {
 
   use GradoTraitSetUp, GradoTraitProps;

@@ -8,6 +8,8 @@
 
 include "evento/evento_trait_set_up.php";
 
+
+#[AllowDynamicProperties]
 class Evento extends LiteRecord {
 
   use EventoTraitSetUp;

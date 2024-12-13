@@ -9,6 +9,7 @@
 include "registros/registro_desemp_acad_trait_props.php";
 include "registros/registro_desemp_acad_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class RegistroDesempAcad extends LiteRecord {
 
   use RegistroDesempAcadTraitSetUp;

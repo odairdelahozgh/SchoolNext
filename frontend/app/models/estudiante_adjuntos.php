@@ -11,6 +11,8 @@ include "estudiante/estudiante_adjuntos_trait_correcciones.php";
 include "estudiante/estudiante_adjuntos_trait_props.php";
 include "estudiante/estudiante_adjuntos_trait_set_up.php";
 
+
+#[AllowDynamicProperties]
 class EstudianteAdjuntos extends LiteRecord 
 {
 

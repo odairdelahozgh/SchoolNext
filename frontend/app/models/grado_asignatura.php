@@ -9,7 +9,8 @@
  */
 
 include "grado/grado_asignatura_trait_set_up.php";
-  
+
+#[AllowDynamicProperties]
 class GradoAsignatura extends LiteRecord {
 
   use GradoAsignaturaTraitSetUp;

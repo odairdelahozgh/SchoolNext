@@ -9,6 +9,8 @@
 
 include "estudiante/estudiante_padres_trait_set_up.php";
 
+
+#[AllowDynamicProperties]
 class EstudiantePadres extends LiteRecord 
 {
   

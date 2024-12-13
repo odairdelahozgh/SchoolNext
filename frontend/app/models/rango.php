@@ -8,6 +8,7 @@
 
 include "rango/rango_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Rango extends LiteRecord {
 
   use RangoTraitSetUp;

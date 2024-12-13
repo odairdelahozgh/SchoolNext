@@ -10,6 +10,7 @@
 include "tarea/tarea_trait_props.php";
 include "tarea/tarea_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Tarea extends LiteRecord {
 
   use TareaTraitSetUp;

@@ -1,5 +1,7 @@
 <?php
 
+
+#[AllowDynamicProperties]
 class IndicadorAdmin extends ActiveRecord
 {
   protected $source = 'sweb_indicadores';

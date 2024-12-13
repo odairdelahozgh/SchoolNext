@@ -9,6 +9,7 @@
 include "seccion/seccion_trait_props.php";
 include "seccion/seccion_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Seccion extends LiteRecord {
 
   use SeccionTraitSetUp;

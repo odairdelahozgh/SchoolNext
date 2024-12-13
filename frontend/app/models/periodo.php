@@ -9,6 +9,7 @@
 
 include "periodo/periodo_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Periodo extends LiteRecord {
 
   use PeriodoTraitSetUp;

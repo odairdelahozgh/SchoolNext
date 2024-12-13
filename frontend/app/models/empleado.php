@@ -11,6 +11,8 @@ include "empleado/empleado_trait_call_backs.php";
 include "empleado/empleado_trait_props.php";
 include "empleado/empleado_trait_set_up.php";
 
+
+#[AllowDynamicProperties]
 class Empleado extends Usuario {
 
   use EmpleadoTraitSetUp;

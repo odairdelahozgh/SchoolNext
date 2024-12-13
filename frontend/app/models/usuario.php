@@ -11,7 +11,8 @@ include "usuario/usuario_trait_props.php";
 include "usuario/usuario_trait_setters.php";
 include "usuario/usuario_trait_callbacks.php";
 include "usuario/usuario_trait_set_up.php";
-  
+
+#[AllowDynamicProperties]
 class Usuario extends LiteRecord {
 
   use UsuarioTraitSetUp;

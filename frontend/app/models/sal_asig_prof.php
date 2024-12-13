@@ -10,6 +10,7 @@ include "carga/sal_asig_prof_trait_links.php";
 include "carga/sal_asig_prof_trait_props.php";
 include "carga/sal_asig_prof_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class SalAsigProf extends LiteRecord {
 
   use TraitUuid, TraitForms, TraitValidar;

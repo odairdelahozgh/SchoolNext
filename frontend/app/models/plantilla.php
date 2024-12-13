@@ -10,6 +10,7 @@
 include "plantilla/plantilla_trait_props.php";
 include "plantilla/plantilla_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Plantilla extends LiteRecord 
 {
   use PlantillaTraitSetUp;

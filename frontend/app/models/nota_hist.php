@@ -9,6 +9,8 @@
 
 include "nota/nota_hist_trait_set_up.php";
 
+
+#[AllowDynamicProperties]
 class NotaHist extends LiteRecord {
 
   use NotaHistTraitSetUp;

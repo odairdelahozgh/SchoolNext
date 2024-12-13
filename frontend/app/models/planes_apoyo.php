@@ -8,6 +8,7 @@
 
 include "planes_apoyo/planes_apoyo_trait_props.php";
 
+#[AllowDynamicProperties]
 class PlanesApoyo extends Nota {
 
   use PlanesApoyoTraitProps;

@@ -4,6 +4,9 @@
   * @category App
   * @package Models 
   */
+
+
+#[AllowDynamicProperties]
 class CargaProfesor extends LiteRecord
 {
     protected static $table = 'sweb_salon_asignat_profesor';

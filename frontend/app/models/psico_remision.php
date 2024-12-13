@@ -10,6 +10,7 @@
 include "psicologia/psico_remision_trait_props.php";
 include "psicologia/psico_remision_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class PsicoRemision extends LiteRecord 
 {
   use PsicoRemisionTraitSetUp;

@@ -5,6 +5,8 @@
  * @category App
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
+
+#[AllowDynamicProperties]
 class DoliConst extends LiteRecord
 {
   private int $rowid;
@@ -14,6 +16,7 @@ class DoliConst extends LiteRecord
   private string $type;
   private string $visible;
   private string $note;
+  private $tms;
 
   public function __construct() 
   {

@@ -8,6 +8,7 @@
  */
 include "aspirante/aspirante_adjunto_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class AspiranteAdjunto extends LiteRecord {
   use AspiranteAdjuntoTraitSetUp;
   

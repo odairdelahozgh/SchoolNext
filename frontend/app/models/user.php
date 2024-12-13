@@ -1,5 +1,6 @@
 <?php
 
+#[AllowDynamicProperties]
 class User extends ActiveRecord
 {
     protected $source = 'dm_user';

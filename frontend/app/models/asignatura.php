@@ -10,6 +10,7 @@
 include "asignatura/asignatura_trait_props.php";
 include "asignatura/asignatura_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Asignatura extends LiteRecord {
 
   use AsignaturaTraitSetUp;

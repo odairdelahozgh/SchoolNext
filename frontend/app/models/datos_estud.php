@@ -10,6 +10,8 @@
 include "estudiante/datos_estud_trait_props.php";
 include "estudiante/datos_estud_trait_set_up.php";
 
+
+#[AllowDynamicProperties]
 class DatosEstud extends LiteRecord {
     use DatosEstudTraitSetUp;
     

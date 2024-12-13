@@ -7,9 +7,10 @@
  * 
  */
 
- include "estudiante/estudiante_adjuntos_dos_trait_set_up.php";
- include "estudiante/estudiante_adjuntos_dos_trait_correcciones.php";
+include "estudiante/estudiante_adjuntos_dos_trait_set_up.php";
+include "estudiante/estudiante_adjuntos_dos_trait_correcciones.php";
 
+ #[AllowDynamicProperties]
 class EstudianteAdjuntosDos extends LiteRecord {
 
   use EstudianteAdjuntosDosTraitSetUp;

@@ -10,17 +10,18 @@
   $fieldsToHidden = $model::getFieldsHidden('edit');
   
   $myForm = new OdaForm(
-    $model, "admin/estudiante_adjuntos/edit_ajax/$model->id/padres.matriculas", 
+    modelo: $model, 
+    action: "admin/estudiante_adjuntos/edit_ajax/$model->id/padres.matriculas", 
     multipart: true,
     url_back: 'padres/matriculas',
   );
   $myForm->setEdit();
-  $myForm->setColumnas(2);
+  $myForm->setColumnas(1);
   $myForm->setAtrib('id="frm_edit" name="frm_edit"');
-
   
   $num_archivos = (int)Config::get('matriculas.'.INSTITUTION_KEY.'.num_archivos');
-  for ($i=1; $i<=$num_archivos; $i++) { 
+  for ($i=1; $i<=$num_archivos; $i++)
+  { 
     $myForm->addFile2('nombre_archivo'.$i);
   }
   $myForm->addHiddens(implode(",", $fieldsToHidden));
@@ -30,7 +31,8 @@
 
   <pre>
     <?php
-      if (1==$user_id && 1==Config::get('config.application.modo_depuracion_admin')) {
+      if (1==$user_id && 1==Config::get('config.application.modo_depuracion_admin'))
+      {
         echo "<p>Campos Incluidos</p>";
         print_r( $myForm->getFieldsInForm() );
         echo "<p>Campos que faltan</p>";

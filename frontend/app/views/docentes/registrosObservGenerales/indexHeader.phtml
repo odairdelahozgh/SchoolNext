@@ -1,5 +1,8 @@
-<div class="w3-container w3-row w3-bar">
-  <div class="w3-bar-item"> <?= OdaForm::inputSearch(placeholder:"Filtra por estudiante o asunto");?> </div>
-  <button id="id_btn_new" class="w3-btn w3-blue" onclick="show_lista_estudiantes()"> <?= _Icons::solid('plus') ?> Nuevo Registro</button>
-  
+<div class="w3-container">
+  <?php 
+    View::Encab($controller_name, $page_action, $breadcrumb);
+    View::flash();
+  ?>
 </div>
+
+<?php return ?>

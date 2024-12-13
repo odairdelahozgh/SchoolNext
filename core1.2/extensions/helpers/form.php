@@ -546,7 +546,7 @@ class Form
     {
         // aviso al programador
         if (!self::$multipart) {
-            Flash::error('Para poder subir ficheros, debe abrir el form con Form::openMultipart()');
+            //Flash::error('Para poder subir ficheros, debe abrir el form con Form::openMultipart()');
         }
 
         $attrs = Tag::getAttrs($attrs);

@@ -8,6 +8,7 @@
 
 include "area/area_trait_set_up.php";
 
+#[AllowDynamicProperties]
 class Area extends LiteRecord
 {
   use AreaTraitSetUp;

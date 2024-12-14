@@ -50,8 +50,11 @@ abstract class AdminController extends Controller
   public bool $file_download = true;
   public string $file_orientation = 'L';
   
-  public int $_periodo_actual = 0;
-  public int $_annio_actual = 0;
+  public int|null $_max_periodos = 0;
+  public int|null $_periodo_actual = 0;
+  public int|null $_annio_actual = 0;
+  public int|null $_annio_inicial = 0;
+  
   public string $_ahora = '';
   public $_now = null;
   
@@ -70,6 +73,11 @@ abstract class AdminController extends Controller
       $this->user_id = Session::get('id');
       $this->user_name = Session::get('username');
       $this->user_nombre_completo = trim(Session::get('nombres').' '.Session::get('apellido1').' '.Session::get('apellido2'));
+      
+      $this->_max_periodos = Session::get('max_periodos');
+      $this->_periodo_actual = Session::get('periodo');
+      $this->_annio_actual = Session::get('annio');
+      $this->_annio_inicial = Session::get('annio_inicial');
       
       $this->_instituto_id = Config::get('institutions.'.INSTITUTION_KEY.'.id');
       $this->_instituto_nombre = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');

@@ -20,9 +20,7 @@
         require 'indexFooter.phtml';
         return 1;
       }
-      
       OdaForm::inputSearch(placeholder:"Filtra por estudiante o asunto");
-      
       $tabla = new OdaTable(showTotalRegs: true);
       $tabla->setHead("Registro, *Estudiante, *Asunto, Docente");
       foreach($data as $key => $reg) {

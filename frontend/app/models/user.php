@@ -115,15 +115,18 @@ class User extends ActiveRecord
         
         
         $DoliK = new DoliConst();
-        $annio_inicial = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_INICIAL');
-        $annio_actual = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL');
-        $periodo_actual = $DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL');
+        $annio_inicial = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_INICIAL') ?? date('Y');
+        $annio_actual = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL') ?? date('Y');
+        $periodo_actual = $DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL') ?? 1;
+        $max_periodos = $DoliK->getValue('SCHOOLNEXTCORE_MAX_PERIODOS') ?? 4;
         
         Session::set('ip', OdaUtils::getIp() );
-        $estePeriodo = (new Periodo)->getPeriodoActual($periodo_actual);
         Session::set('annio_inicial', (int)$annio_inicial);
+        Session::set('max_periodos', $max_periodos);
         Session::set('annio', (int)$annio_actual);
-        Session::set('periodo',      (int)$periodo_actual);
+        Session::set('periodo', (int)$periodo_actual);
+
+        $estePeriodo = (new Periodo)->getPeriodoActual($periodo_actual);
         Session::set('fecha_inicio', $estePeriodo->fecha_inicio);
         Session::set('fecha_fin',    $estePeriodo->fecha_fin);
         Session::set('f_ini_notas',  $estePeriodo->f_ini_notas);
@@ -153,7 +156,7 @@ class User extends ActiveRecord
     }
 
     /**
-     * User | logged() : Verifica si el usuario esta autenticado
+     * @deprecated Mejor usar isLogged()
      */
     public function logged(): bool {
         return Auth2Odair::factory('model')->isValid();

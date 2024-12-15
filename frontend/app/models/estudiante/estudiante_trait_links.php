@@ -45,7 +45,7 @@ trait EstudianteTraitLinks {
 
   public function getLnkBoletinesTodos(): string 
   {
-    $max_periodo = (4==self::$_periodo_actual) ? 5 : self::$_periodo_actual;
+    $max_periodo = (4==self::$_periodo_actual) ? self::$_max_periodos : self::$_periodo_actual;
     $lnk = '';
     for ($i=1; $i<=$max_periodo; $i++) { 
       $lnk .= $this->getLnkBoletin($i).'&nbsp;';

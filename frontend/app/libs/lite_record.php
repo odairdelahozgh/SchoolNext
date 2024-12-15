@@ -17,11 +17,11 @@ require_once "enums.php";
 
 class LiteRecord extends ORM
 { 
+  protected static $_max_periodos = 0;
   protected static $_periodo_actual = 0;
   protected static $_annio_actual = 0;
   protected static $_user_id = 0;
   protected static $_username = '';
-
   protected static $_tam_uuid_max  = 36;
   protected static $_tam_uuid_defa = 24;
   protected static $_order_by_defa = 't.id';
@@ -41,8 +41,9 @@ class LiteRecord extends ORM
   {
     self::$_user_id = Session::get('id') ?? 0;
     self::$_username = Session::get('username') ?? 'Anonimo';
-    self::$_periodo_actual = Session::get('periodo') ?? 0;
-    self::$_annio_actual = Session::get('annio') ?? 0;
+    self::$_max_periodos = Session::get('max_periodos') ?? 4;
+    self::$_periodo_actual = Session::get('periodo') ?? 1;
+    self::$_annio_actual = Session::get('annio') ?? date('Y');
   }
   
   

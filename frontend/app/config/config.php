@@ -41,7 +41,8 @@ return [
     'boletines' => [
       'imprimir_plan_apoyo' => false,
       'imprimir_nota'       => false,
-    ], */
+    ], 
+*/
 
     'calificaciones' => [
       'periodos_excep' => '1',

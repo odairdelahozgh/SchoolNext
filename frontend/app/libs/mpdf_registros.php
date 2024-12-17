@@ -14,8 +14,12 @@ class MpdfRegistros extends Mpdf
   {
     parent::__construct($config, $container);
 
+    $DoliK = new DoliConst();
+    $link_web_page = $DoliK->getValue('MAIN_INFO_SOCIETE_WEB') ?? '';
+    $nombre_instituto = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '';
+    
     $this->SetTitle('REGISTRO DE OBSERVACIONES DE ESTUDIANTE');
-    $this->SetAuthor(Config::get('institutions.'.INSTITUTION_KEY.'.nombre'));
+    $this->SetAuthor($nombre_instituto);
     $this->SetCreator(APP_NAME.' '.Config::get('config.construxzion.name'));
     $this->SetSubject('REGISTRO DE OBSERVACIONES DE ESTUDIANTE');
     $this->SetKeywords('registros, estudiantes');
@@ -26,7 +30,7 @@ class MpdfRegistros extends Mpdf
     $this->SetDisplayMode('fullpage');
     $this->watermark_font = 'DejaVuSansCondensed';
 
-    $logo = '<a href="'.Config::get('institutions.'.INSTITUTION_KEY.'.website').'" target="_blank">
+    $logo = '<a href="'.$link_web_page.'" target="_blank">
              <img src="'.PUBLIC_PATH.'img/'.LOGO.'" alt="Logo" height="40"> </a>';
     
     $this->SetHTMLHeader("<div style=\"text-align: center; font-weight: bold;\"> $logo </div>");

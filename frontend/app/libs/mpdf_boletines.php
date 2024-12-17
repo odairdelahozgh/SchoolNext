@@ -9,13 +9,19 @@ require_once VENDOR_PATH . 'autoload.php';
 use Mpdf\Mpdf;
 
 class MpdfBoletines extends Mpdf {
-  
-  public function __construct(array $config = [], $container = null) {
+
+  public function __construct(array $config = [], $container = null) 
+  {
     parent::__construct($config, $container);
     
+    $DoliK = new DoliConst();
+    $link_web_page = $DoliK->getValue('MAIN_INFO_SOCIETE_WEB') ?? '';
+    $nombre_instituto = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '';
+
+
     $this->SetSubject('INFORME ACADÉMICO');
     $this->SetCreator(APP_NAME.' '.Config::get('config.construxzion.name'));
-    $this->SetAuthor(Config::get('institutions.'.INSTITUTION_KEY.'.nombre'));
+    $this->SetAuthor($nombre_instituto);
     $this->SetTitle('INFORME ACADÉMICO');
     $this->SetDefaultFont('helvetica');
     $this->SetDefaultFontSize(10);
@@ -23,7 +29,7 @@ class MpdfBoletines extends Mpdf {
     $this->SetDisplayMode('fullpage');
     $this->watermark_font = 'DejaVuSansCondensed';
 
-    $logo = '<a href="'.Config::get('institutions.'.INSTITUTION_KEY.'.website').'" target="_blank">
+    $logo = '<a href="'.$link_web_page.'" target="_blank">
       <img src="'.PUBLIC_PATH.'img/'.Config::get('institutions.'.INSTITUTION_KEY.'.logo'). '" alt="Logo" height="40"> </a>';
     $this->SetHTMLHeader("
     <div style=\"text-align: center; font-weight: bold;\">
@@ -40,10 +46,11 @@ class MpdfBoletines extends Mpdf {
         </tr>
     </table>');
     
-  } //END-__construct  
+  }
 
 
-  public function encabezadoBloqueBoletines(array $Params = []): string {
+  public function encabezadoBloqueBoletines(array $Params = []): string 
+  {
     [ $estudiante_nombre, $periodo, $annio, $salon ] = $Params;
     
     $col11 = '<b>ALUMNO:</b>';
@@ -58,9 +65,11 @@ class MpdfBoletines extends Mpdf {
     $head->addRow([ $col11, $col12, $col13 ], attrs_td: ['','colspan'=>3, 'colspan'=>2]);
     $head->addRow([ $col21, $col22, $col23 ], attrs_td: ['','colspan'=>3, 'colspan'=>2]);
     return $head;
-  } //END-encabezadoBloqueBoletines
+  }
+
   
-  public function pieBloqueBoletines(array $Params = []): string {
+  public function pieBloqueBoletines(array $Params = []): string 
+  {
     [ $img_tabla_rango, $firma_director, $nombre_director ] = $Params;
     
     $col1 = $img_tabla_rango;
@@ -69,7 +78,6 @@ class MpdfBoletines extends Mpdf {
     $foot->addRow( [$col1, '', $col3], attrs_td: ['style="width: 33%;"', 'style="width: 33%;"']);
     
     return str_repeat('<br>', 2) .$foot;
-  } //END-pieBloqueBoletines
+  }
   
 }
-// END-CLASS-OdaPdf

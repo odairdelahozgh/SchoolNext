@@ -83,7 +83,7 @@ return [
       'telefono_movil'  => '(+57) 317 370 4197',
       'email' => 'windsorschoolvalledupar@gmail.com',
       'dominio' => 'windsorschool.edu.co',
-      'website' => 'https://www.windsorschool.edu.co',
+      //'website' => 'https://www.windsorschool.edu.co',
       
       'rector'          => 'Miriam Casadiego Ríos',
       'rector_cc'       => '57401865',

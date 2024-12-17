@@ -7,8 +7,9 @@ $title = $file_title ?? "Reporte de $controller_name";
 $css = $css ?? 'css/pdf.css';
 $show_watermark = $pdf_show_watermark ?? false;
 $destination = (isset($pdf_download) && $pdf_download) ? 'D' : 'I';
-$link_web_page = Config::get(var: 'config.institution.website');
 
+$DoliK = new DoliConst();
+$link_web_page = $DoliK->getValue('MAIN_INFO_SOCIETE_WEB') ?? '';
 /* 
 //Activa el almacenamiento en búfer de la salida
 ob_start();

@@ -28,7 +28,7 @@ return [
       'users'  => 'w3',
     ],
 
-/*
+/*  ELIMINAR MAS ADELANTE
     'academic' => [
       'annio_inicial'  => 2006,
       'annio_actual'   => 2024,
@@ -37,10 +37,11 @@ return [
     ],
 */
 
+/*  ELIMINAR MAS ADELANTE   
     'boletines' => [
       'imprimir_plan_apoyo' => false,
       'imprimir_nota'       => false,
-    ],
+    ], */
 
     'calificaciones' => [
       'periodos_excep' => '1',

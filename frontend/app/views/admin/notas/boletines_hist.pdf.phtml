@@ -23,6 +23,9 @@ try {
   $pivote_materia = 0;
   $img_rango_notas =  (1==$arrData['Seccion']) ? '' : (new Nota())::imgTablaRango(); // en prescolar no muestra la tabla de rangos
   
+  $DoliK = new DoliConst();
+  $_show_nota_boletin = $DoliK->getValue('SCHOOLNEXTCORE_SHOW_NOTA_BOLETIN') ?? false;
+
   $t_materia = new OdaTable();
   foreach ($data as $key => $nota) {
     // CAMBIO DE ESTUDIANTE
@@ -57,7 +60,7 @@ try {
       }
   
       $rango = (new Rango())::getRango($nota->definitiva);
-      $nota_estud = (Config::get(var: 'config.boletines.imprimir_nota')) ? $nota->definitiva : '' ;
+      $nota_estud = $_show_nota_boletin ? $nota->definitiva : '' ;
       $titulo_calificacion = (1==$arrData['Seccion']) ? '' : "<b>[$rango] $nota_estud</b>" ;
       
       $t_materia = new OdaTable('style="width:100%;"');

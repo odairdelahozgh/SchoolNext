@@ -99,74 +99,96 @@ class User extends ActiveRecord
     }
 
 
-    /**
-     * Iniciar sesion
-     *
-     */
-    public function login() {
+    public function login()
+    {
+      if ('santarosa'==INSTITUTION_KEY) 
+      {
+        $auth = AuthDolibarr::factory('curl');
+      } 
+      else 
+      {
+        $auth = Auth2Odair::factory('model');
+      }
+      
+      
+      $auth->setModel('User'); // Modelo que utilizará para consultar
+      $auth->setFields(['id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'documento', 'usuario_instit', 'clave_instit', 'theme']);
+      $auth->setLogin('username');
+      $auth->setPass('password');
+      $auth->setAlgos('sha1');
+      $auth->setKey('usuario_logged');
+            
+      $DoliK = new DoliConst();
+      $annio_inicial = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_INICIAL') ?? date('Y');
+      $annio_actual = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL') ?? date('Y');
+      $periodo_actual = $DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL') ?? 1;
+      $max_periodos = $DoliK->getValue('SCHOOLNEXTCORE_MAX_PERIODOS') ?? 4;
         
-        $auth = Auth2Odair::factory('model'); // Obtiene el adaptador
-        $auth->setModel('User'); // Modelo que utilizará para consultar
-        $auth->setFields(['id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'documento', 'usuario_instit', 'clave_instit', 'theme']);
-        $auth->setLogin('username');
-        $auth->setPass('password');
-        $auth->setAlgos('sha1');
-        $auth->setKey('usuario_logged');
-        
-        
-        $DoliK = new DoliConst();
-        $annio_inicial = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_INICIAL') ?? date('Y');
-        $annio_actual = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL') ?? date('Y');
-        $periodo_actual = $DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL') ?? 1;
-        $max_periodos = $DoliK->getValue('SCHOOLNEXTCORE_MAX_PERIODOS') ?? 4;
-        
-        Session::set('ip', OdaUtils::getIp() );
-        Session::set('annio_inicial', (int)$annio_inicial);
-        Session::set('max_periodos', $max_periodos);
-        Session::set('annio', (int)$annio_actual);
-        Session::set('periodo', (int)$periodo_actual);
+      Session::set('ip', OdaUtils::getIp() );
+      Session::set('annio_inicial', (int)$annio_inicial);
+      Session::set('max_periodos', $max_periodos);
+      Session::set('annio', (int)$annio_actual);
+      Session::set('periodo', (int)$periodo_actual);
 
-        $estePeriodo = (new Periodo)->getPeriodoActual($periodo_actual);
-        Session::set('fecha_inicio', $estePeriodo->fecha_inicio);
-        Session::set('fecha_fin',    $estePeriodo->fecha_fin);
-        Session::set('f_ini_notas',  $estePeriodo->f_ini_notas);
-        Session::set('f_fin_notas',  $estePeriodo->f_fin_notas);
-        Session::set('f_open_day',   $estePeriodo->f_open_day);
-        Session::set('es_director',  false);
-        
-        if ($auth->identify()) { 
-          Session::set('es_director',  (new Salon)->isDirector( (int)Session::get('id') ) );
-          Session::set('foto', "uploads/users/".Session::get('documento').".png");
-          return true; 
-        }
+      $estePeriodo = (new Periodo)->getPeriodoActual($periodo_actual);
+      Session::set('fecha_inicio', $estePeriodo->fecha_inicio);
+      Session::set('fecha_fin',    $estePeriodo->fecha_fin);
+      Session::set('f_ini_notas',  $estePeriodo->f_ini_notas);
+      Session::set('f_fin_notas',  $estePeriodo->f_fin_notas);
+      Session::set('f_open_day',   $estePeriodo->f_open_day);
+      Session::set('es_director',  false);
+      
+      if ($auth->identify()) 
+      {
+        Session::set('es_director',  (new Salon)->isDirector( (int)Session::get('id') ) );
+        Session::set('foto', "uploads/users/".Session::get('documento').".png");
+        return true; 
+      }
+      
+      if ($auth->getError()) 
+      { 
+        OdaFlash::warning($auth->getError());
+      }
 
-        if ($auth->getError()) { 
-          OdaFlash::warning($auth->getError());
-        }
-        return false;
+      return false;
     }
 
     /**
      * User | logout() : Terminar sesion
      */
-    public function logout() {
-        $auth = Auth2Odair::factory('model'); // Obtiene el adaptador
-        $auth->setModel('User'); // Modelo que utilizará para consultar
-        $auth->logout();
+    public function logout() 
+    {
+      if ('santarosa'==INSTITUTION_KEY) 
+      {
+        $auth = AuthDolibarr::factory('curl');
+      } 
+      else 
+      {
+        $auth = Auth2Odair::factory('model');
+      }
+      
+      $auth->setModel('User'); // Modelo que utilizará para consultar
+      $auth->logout();
     }
-
+    
     /**
      * @deprecated Mejor usar isLogged()
      */
-    public function logged(): bool {
-        return Auth2Odair::factory('model')->isValid();
+    public function logged(): bool 
+    {
+        return $this->isLogged();
     }
 
-    /**
-     * User | isLogged() : Verifica si el usuario esta autenticado
-     */
-    public function isLogged(): bool {
-      return Auth2Odair::factory('model')->isValid();
+    public function isLogged(): bool 
+    {
+      if ('santarosa'==INSTITUTION_KEY) 
+      {
+        return AuthDolibarr::factory('model')->isValid();
+      } 
+      else 
+      {
+        return Auth2Odair::factory('model')->isValid();
+      }
     }
 
 }

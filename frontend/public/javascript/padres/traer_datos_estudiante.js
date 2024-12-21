@@ -60,7 +60,7 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
       let link_matriculas = ruta_base+'padres/matriculas';
       div_matriculas.innerHTML = `
       <div>
-        <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2024</h2>
+        <h2 class="w3-panel w3-theme w3-round-xlarge">Proceso de Matrículas 2025</h2>
         <a href="${link_matriculas}" class="w3-btn w3-blue"> Ir a Módulo de Matrículas</a>
       </div>`;
     }

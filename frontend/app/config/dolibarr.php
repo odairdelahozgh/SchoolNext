@@ -2,13 +2,13 @@
 
 return [
   'windsor' => [
-    'curl_url_root' => 'https://crm.tecnorobotica.com/api/index.php/',
-    'curl_api_key' => 'DOLAPIKEY: ',
+    'api_url' => 'https://crm.tecnorobotica.com/api/index.php',
+    'api_key' => '',
   ],
 
   'santarosa' => [
-    'curl_url_root' => 'https://crm.colegiomixtosantarosa.com/api/index.php/',
-    'curl_api_key' => 'DOLAPIKEY: oG8kFOnEFLhBZ81LElpss38M5x0dt888',
+    'api_url' => 'https://crm.colegiomixtosantarosa.com/api/index.php',
+    'api_key' => '1g3mbFb7Gga15MIIJ60jC95xkz6bCTXE',
   ],
 
 ];

@@ -47,6 +47,10 @@ class CurlAuth extends AuthDolibarr
       else
       {
         $dataLogin = json_decode($result_json, true);
+
+        //self::log('==== dataLogin ====');
+        //self::log($dataLogin);
+
         if (isset($dataLogin['error'])) {
           $err_message = "Error del API: " . $dataLogin['error']['message'];
           $this->setError($err_message);
@@ -55,44 +59,72 @@ class CurlAuth extends AuthDolibarr
         }
         else
         {
+          // USUARIO AUTENTICADO CORRECTAMENTE
+          $token = $dataLogin['success']['token'];
           curl_close($Curl);
           
+          // INFORMACIÓN DEL USUARIO
           $Curl = curl_init();
+
           $endPoint = $apiUrl."/users/login/{$username}?includepermissions=0";
-          
-          $HTTPHeader = ['DOLAPIKEY: '.$dataLogin['success']['token']];
+          $HTTPHeader = ['DOLAPIKEY: '.$token];
           curl_setopt($Curl, CURLOPT_URL, $endPoint);
           curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
           curl_setopt($Curl, CURLOPT_HTTPHEADER, $HTTPHeader);
           $result_json = curl_exec($Curl);
           $dataUserInfo = json_decode($result_json, true);
-          
-          $roll = '';
-          if ('admin'==$dataUserInfo['login'])
-          {
-            $roll = 'admin';
-          } 
-          else 
-          {
-            if (1==$dataUserInfo['employee']) 
-            {
-              if (1==$dataUserInfo['admin']) 
-              {
-                $roll = 'secretarias';
-              } 
-              else 
-              {
-                $roll = 'docentes';
-              }
-            } 
-            else 
-            {
-              $roll = 'padres'; // y estudiantes --- luego
-            }
-          }          
+
+          //self::log('==== dataUserInfo ====');
+          //self::log($dataUserInfo);
 
           curl_close($Curl);
-          Session::set('id', (int)$dataUserInfo->id, $this->_sessionNamespace);
+          
+
+          // INFORMACIÓN DE LOS << GRUPOS >> AL QUE PERTECENE EL USUARIO
+          $Curl = curl_init();
+          $endPoint = $apiUrl.'/users/'.$dataUserInfo['id'].'/groups';
+          $HTTPHeader = ['DOLAPIKEY: '.$token];
+          curl_setopt($Curl, CURLOPT_URL, $endPoint);
+          curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
+          curl_setopt($Curl, CURLOPT_HTTPHEADER, $HTTPHeader);
+          $result_json = curl_exec($Curl);
+          $dataUserGroups = json_decode($result_json, true);
+          
+          //self::log('==== dataUserGroups ====');
+          //self::log($endPoint);
+          //self::log($dataUserGroups);
+
+          curl_close($Curl);
+
+          $roll = '';
+          if ('admin'==strtolower($dataUserInfo['login']))
+          {
+            $roll = 'admin';
+          }
+          else 
+          {
+            $losGrupos = [];
+            foreach ($dataUserGroups as $key => $grupo) 
+            {
+              $losGrupos[]=strtolower(trim($grupo['name']));
+            }
+            
+            self::log($losGrupos);
+            // Definir los grupos en el orden de prioridad
+            $gruposPrioritarios = ["docentes", "padres", "secretarias", "contabilidad", "coordinadores"];
+            // Buscar el primer grupo que coincida en los grupos prioritarios
+            $roll = '';
+            foreach ($gruposPrioritarios as $grupo) {
+              if (in_array($grupo, $losGrupos)) {
+                $roll = $grupo;
+                break;
+              }
+            }
+            //self::log($roll);
+          }
+
+          Session::set('id', $dataUserInfo['id'], $this->_sessionNamespace);
+          Session::set('token', $token, $this->_sessionNamespace);
           Session::set('username', (string)$username, $this->_sessionNamespace);
           Session::set('password', (string)$password, $this->_sessionNamespace);
           Session::set('nombres', (string)$dataUserInfo['firstname'], $this->_sessionNamespace);

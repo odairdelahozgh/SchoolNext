@@ -8,6 +8,7 @@
   $f_open_day    = date('M-d',strtotime(Session::get('f_open_day')));
   $user_id  = Session::get('id');
   $username = Session::get('username');
+  $roll = Session::get('roll');
 ?>
 <nav class="w3-sidebar w3-collapse w3-theme-<?=$theme?> w3-animate-left" 
      style="z-index:3;width:250px;" id="mySidebar">
@@ -27,12 +28,10 @@
       <?= OdaTags::img_docente(Session::get('documento'), Session::get('sexo'), $user_id,'class="w3-circle w3-margin-right" style="width:46px"') ?>
     </div>
     <div class="w3-auto">
-      <?="$username<br>"?> <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
+      <?="$user_id $username<br>$roll<br>"?> <?=OdaTags::linkIcon('logout', 'arrow-right-from-bracket', 'alt="User Logut"'); ?>
       <?= OdaTags::link($action='logout', $text='Salir', $attrs = '') ?> 
       <br/>
-        <span class="w3-hover-text-<?=$theme?>"><?=_Icons::solid('envelope').'&nbsp;'; ?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon("pages/miperfil", 'user-gear').'&nbsp;';?></span>
-        <span class="w3-hover-text-<?=$theme?>"><?=_Icons::solid('gear').'&nbsp;';?></span>
+      <span class="w3-hover-text-<?=$theme?>"><?=OdaTags::linkIcon("pages/miperfil", 'user-gear').'&nbsp;';?></span>
     </div>
     <h5 class="w3-small">
       <br>Ejecutado en <?=round((microtime(1) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 0);?> ms

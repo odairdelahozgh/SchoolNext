@@ -133,7 +133,7 @@ class CoordinadorController extends AppController
     try 
     {
       $this->page_action = 'Hist&oacute;rico de Notas';
-      $this->data = range($this->_annio_actual, 2010, -1);
+      $this->data = range($this->_annio_actual, $this->_annio_inicial, -1);
     } 
     catch (\Throwable $th) 
     {

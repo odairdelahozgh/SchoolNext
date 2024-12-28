@@ -258,7 +258,7 @@ class SecretariaController extends AppController
   public function historico_notas() 
   {
     $this->page_action = 'Hist&oacute;rico de Notas';
-    $this->data = range($this->_annio_actual-1, 2009, -1);
+    $this->data = range($this->_annio_actual-1, $this->_annio_inicial, -1);
     View::select('historico_notas/index');
   }
 

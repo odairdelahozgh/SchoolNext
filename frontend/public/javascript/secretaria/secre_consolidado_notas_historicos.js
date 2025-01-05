@@ -130,8 +130,7 @@ function traer_data(grado_id, annio, max_periodo) {
 }
 
 function colorRango(valor) {
-  if (valor<0 || valor>100) { return 'DeepPink'; }
-  if (valor<1) { return 'black'; }  
+  if (valor<1 || valor>100) { return 'DeepPink'; }
   if (valor<60) { return 'red'; }
   if (valor<70) { return 'orange'; }
   if (valor<80) { return 'yellow'; }

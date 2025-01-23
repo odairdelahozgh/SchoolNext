@@ -24,55 +24,102 @@ class Rango extends LiteRecord {
    * @deprecated
    */
   protected static $aRangos = [
-    '1-59'   => 'Bajo',
-    '60-69'  => 'Básico',
-    '61-79'  => 'Básico +',
-    '80-89'  => 'Alto',
-    '90-94'  => 'Alto +',
-    '95-100' => 'Superior',
+    'windsor' => [
+      '1-59'   => 'Bajo',
+      '60-69'  => 'Básico',
+      '70-79'  => 'Básico +',
+      '80-89'  => 'Alto',
+      '90-94'  => 'Alto +',
+      '95-100' => 'Superior',
+    ],
+    'santarosa' => [
+      '1-29'   => 'Bajo',
+      '30-37'  => 'Básico',
+      '38-44'  => 'Alto',
+      '45-50' => 'Superior',
+    ],
+    'development' => [
+      '1-29'   => 'Bajo',
+      '30-37'  => 'Básico',
+      '38-44'  => 'Alto',
+      '45-50' => 'Superior',
+    ],
   ];
   
   /**
    * @deprecated
    */
   protected static $aRangosColores = [
-    'Bajo'     => 'w3-red',
-    'Básico'   => 'w3-orange',
-    'Básico +' => 'w3-yellow',
-    'Alto'     => 'w3-light-blue',
-    'Alto +'   => 'w3-blue',
-    'Superior' => 'w3-green',
+    'windsor' => [
+      'Bajo'     => 'w3-red',
+      'Básico'   => 'w3-orange',
+      'Básico +' => 'w3-yellow',
+      'Alto'     => 'w3-light-blue',
+      'Alto +'   => 'w3-blue',
+      'Superior' => 'w3-green',
+    ],
+    'santarosa' => [
+      'Bajo'     => 'w3-red',
+      'Básico'   => 'w3-orange',
+      'Alto'     => 'w3-light-blue',
+      'Superior' => 'w3-green',
+    ],
+    'development' => [
+      'Bajo'     => 'w3-red',
+      'Básico'   => 'w3-orange',
+      'Alto'     => 'w3-light-blue',
+      'Superior' => 'w3-green',
+    ],
+
   ];
   
   /**
    * @deprecated
    */
   protected static $aRangosLimiteInf = [
-    '1'  => 'Bajo',
-    '60' => 'Básico',
-    '70' => 'Básico +',
-    '80' => 'Alto',
-    '90' => 'Alto +',
-    '95' => 'Superior',
+    'windsor'=> [
+      '1'  => 'Bajo',
+      '60' => 'Básico',
+      '70' => 'Básico +',
+      '80' => 'Alto',
+      '90' => 'Alto +',
+      '95' => 'Superior',
+    ],
+    'santarosa'=> [
+      '1'  => 'Bajo',
+      '30' => 'Básico',
+      '38' => 'Alto',
+      '45' => 'Superior',
+    ],
+    'development'=> [
+      '1'  => 'Bajo',
+      '30' => 'Básico',
+      '38' => 'Alto',
+      '45' => 'Superior',
+    ],
+    
   ];
 
 
   public static function getRango($valor=0): string 
   {
-    if ($valor==0)  { 
+    if ($valor==0)
+    {
       return ''; 
     }
 
-    if ($valor<0)   { 
+    if ($valor<0)
+    {
       return _Icons::solid('face-frown', 'w3-large').'Rango no válido: Inferior a Cero';
     }
 
-    if ($valor>100) { 
-      return _Icons::solid('face-frown', 'w3-large').'Rango no válido: Superior a 100';
+    if ($valor>Session::get('rango_nota_superior')) 
+    {
+      return _Icons::solid('face-frown', 'w3-large').'Rango no válido: Superior a '.Session::get('rango_nota_superior');
     }
 
     $result = '';
-    foreach (self::$aRangos as $key => $rango) {
+    foreach (self::$aRangos[INSTITUTION_KEY] as $key => $rango) {
       $aPartes = explode(separator: '-', string: $key);
       if ( ($valor>=$aPartes[0]) && ($valor<=$aPartes[1]) ) {
         $result = $rango;
@@ -87,8 +134,8 @@ class Rango extends LiteRecord {
   {
     $rango = self::getRango($valor);
 
-    if (array_key_exists($rango, self::$aRangosColores)) {
-      return self::$aRangosColores[$rango];
+    if (array_key_exists($rango, self::$aRangosColores[INSTITUTION_KEY])) {
+      return self::$aRangosColores[INSTITUTION_KEY][$rango];
     }
 
     return 'w3-aqua w3-border-theme';

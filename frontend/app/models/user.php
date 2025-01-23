@@ -121,15 +121,20 @@ class User extends ActiveRecord
       $DoliK = new DoliConst();
       $annio_inicial = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_INICIAL') ?? 2000;
       $max_periodos = $DoliK->getValue('SCHOOLNEXTCORE_MAX_PERIODOS') ?? 1;
-
       $annio_actual = $DoliK->getValue('SCHOOLNEXTACADEMICO_ANNIO_ACTUAL') ?? 2000;
       $periodo_actual = $DoliK->getValue('SCHOOLNEXTACADEMICO_PERIODO_ACTUAL') ?? 1;
-        
       Session::set('ip', OdaUtils::getIp() );
       Session::set('annio_inicial', (int)$annio_inicial);
       Session::set('max_periodos', $max_periodos);
       Session::set('annio', (int)$annio_actual);
       Session::set('periodo', (int)$periodo_actual);
+      
+      $rango_nota_inferior = $DoliK->getValue('SCHOOLNEXTACADEMICO_LIMITE_NOTA_INFERIOR') ?? 1;
+      $rango_nota_perdida  = $DoliK->getValue('SCHOOLNEXTACADEMICO_LIMITE_NOTA_PERDIDA') ?? 1;
+      $rango_nota_superior = $DoliK->getValue('SCHOOLNEXTACADEMICO_LIMITE_NOTA_SUPERIOR') ?? 1;
+      Session::set('rango_nota_inferior', (int)$rango_nota_inferior);
+      Session::set('rango_nota_perdida', (int)$rango_nota_perdida);
+      Session::set('rango_nota_superior', (int)$rango_nota_superior);
 
       $estePeriodo = (new Periodo)->getPeriodoActual($periodo_actual);
       Session::set('fecha_inicio', $estePeriodo->fecha_inicio);

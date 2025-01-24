@@ -33,7 +33,7 @@ function traer_grados(annio) {
 
 
 function traer_data(grado_id, annio, max_periodo) {
-  console.clear();
+  //console.clear();
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   let url = ruta_base+'api/notas/notas_grado/'+grado_id+'/'+annio;
   let theme = document.getElementById('theme').innerHTML.trim();
@@ -129,33 +129,71 @@ function traer_data(grado_id, annio, max_periodo) {
 
 }
 
-function colorRango(valor) {
+function colorRango(valor, instit) {
   if (valor<1 || valor>100) { return 'DeepPink'; }
-  if (valor<60) { return 'red'; }
-  if (valor<70) { return 'orange'; }
-  if (valor<80) { return 'yellow'; }
-  if (valor<90) { return 'light-blue'; }
-  if (valor<95) { return 'blue'; }
-  if (valor<=100) { return 'green'; }
+
+  if (instit=='windsor')
+  {
+    if (valor<60) { return 'red'; }
+    if (valor<70) { return 'orange'; }
+    if (valor<80) { return 'yellow'; }
+    if (valor<90) { return 'light-blue'; }
+    if (valor<95) { return 'blue'; }
+    if (valor<=100) { return 'green'; }
+  }
+
+  if (instit=='santarosa')
+  {
+    if (valor<30) { return 'red'; }
+    if (valor<38) { return 'orange'; }
+    if (valor<45) { return 'light-blue'; }
+    if (valor<=50) { return 'green'; }
+  }
+  
+  if (valor<30) { return 'red'; }
+  if (valor<38) { return 'orange'; }
+  if (valor<45) { return 'light-blue'; }
+  if (valor<=50) { return 'green'; }
+
 } //END-colorRango
 
-function nombreRango(valor) {
-  if (valor<0 || valor>100) { return 'err'; } 
-  if (valor<1) { return ''; }  
-  if (valor<60) { return 'Bajo'; }
-  if (valor<70) { return 'Basi'; }
-  if (valor<80) { return 'Bas+'; }
-  if (valor<90) { return 'Alto'; }
-  if (valor<95) { return 'Alt+'; }
-  if (valor<=100) { return 'Supe'; }
-} //END-nombreRango
+function nombreRango(valor, instit) 
+{
+  if (valor<0 || valor>100) { return 'err'; }
+  if (valor==1) { return ''; }
+
+  if (instit=='windsor')
+  {
+    if (valor<60) { return 'Bajo'; }
+    if (valor<70) { return 'Basi'; }
+    if (valor<80) { return 'Bas+'; }
+    if (valor<90) { return 'Alto'; }
+    if (valor<95) { return 'Alt+'; }
+    if (valor<=100) { return 'Supe'; }    
+  }
+
+  if (instit=='santarosa') 
+  {
+    if (valor<30) { return 'Bajo'; }
+    if (valor<38) { return 'Basi'; }
+    if (valor<45) { return 'Alto'; }
+    if (valor<=50) { return 'Supe'; }
+  }
+
+  if (valor<30) { return 'Bajo'; }
+  if (valor<38) { return 'Basi'; }
+  if (valor<45) { return 'Alto'; }
+  if (valor<=50) { return 'Supe'; }
+
+}
 
 
 function notaFormato(valor, materia='', brake = true, fixed =2) {
+  let instit = document.getElementById('instit').innerHTML.trim();
   fixed =  (valor % 1 !== 0) ? fixed : 0;  
   let valor_fixed = valor.toFixed(fixed);
-  let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed)+'"';
-  let nombre_rango = nombreRango(valor_fixed);
+  let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed,instit)+'"';
+  let nombre_rango = nombreRango(valor_fixed,instit);
   let nombre_rango_title = `title="${materia} ${valor} [${nombre_rango}]"`;
   let br = (brake) ? '<br>' : '';
   return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}${nombre_rango}`;

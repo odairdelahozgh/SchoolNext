@@ -6,7 +6,7 @@
 return [
     //Conexión a Mysql (para el antiguo active_record)
     'default' => [
-      'dsn'      => 'mysql:host=127.0.0.1;dbname=windsor_tecnorobotica;charset=utf8',
+      'dsn'      => 'mysql:host=127.0.0.1;dbname=santarosa;charset=utf8',
       'username' => 'root',
       'password' => '',
       'params'   => [
@@ -21,7 +21,7 @@ return [
       'host'     => 'localhost', // ip o nombre del host de la base de datos
       'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
       'password' => '', // clave del usuario de la base de datos
-      'name'     => 'windsor_tecnorobotica', //  nombre de la base de datos
+      'name'     => 'santarosa', //  nombre de la base de datos
       'type'     => 'mysql',  // tipo de motor de base de datos (mysql, pgsql, oracle o sqlite)
       'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
       //'dsn' => '', // Cadena de conexión a la base de datos
@@ -41,9 +41,9 @@ return [
     
     'santarosa' => [  // hosting odair
       'host'     => 'localhost', //  ip o nombre del host de la base de datos
-      'username' => 'u113041793_nextsantarosa', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
-      'password' => 'n@MJH9+m', //  clave del usuario de la base de datos
-      'name'     => 'u113041793_nextsantarosa', // nombre de la base de datos
+      'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
+      'password' => '', //  clave del usuario de la base de datos
+      'name'     => 'santarosa', // nombre de la base de datos
       'type'     => 'mysql', // tipo de motor de base de datos (mysql, pgsql o sqlite)
       'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
       //'dsn' => '', // cadena de conexión a la base de datos

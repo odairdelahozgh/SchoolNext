@@ -52,8 +52,8 @@ return [
   'periodo'              => 'sweb_periodos', //$prefijo_dolibarr.'academico_periodo', //
   'periodos'             => 'sweb_periodos', //$prefijo_dolibarr.'academico_periodo', //'sweb_periodos',
   'plantillas'           => 'snxt_plantillas',
-  'rango'                => 'sweb_rangos',
-  'rangos'               => 'sweb_rangos',
+  'rango'                => $prefijo_dolibarr.'schoolnextcore_rango', //'sweb_rangos',
+  'rangos'               => $prefijo_dolibarr.'schoolnextcore_rango', //'sweb_rangos',
   
   'salon'                => 'sweb_salones',
   'salones'              => 'sweb_salones',

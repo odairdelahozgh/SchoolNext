@@ -20,6 +20,7 @@ function traer_data(salon_id) {
     let body_table = '';
     let caption = '';
     let cnt_estudiantes = 1;
+    let instit = document.getElementById('instit').innerHTML.trim();
 
     for (let salon in datos) { 
       [salon_nombre, salon_id, salon_uuid] = salon.split(";");
@@ -177,7 +178,7 @@ function traer_data(salon_id) {
           fila_nueva_proms = fila_proms.replace(/PROMTOT/i, notaFormato(avg_prom));
           body_table += fila_nueva_proms;
 
-          promedio_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom)+'">'+nombreRango(avg_prom)+'</span>';
+          promedio_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom, instit)+'">'+nombreRango(avg_prom, instit)+'</span>';
         } 
         else 
         {
@@ -222,37 +223,71 @@ function traer_data(salon_id) {
 }
 
 
+function colorRango(valor, instit) {
+  if (valor<1 || valor>100) { return 'DeepPink'; }
 
-function colorRango(valor) 
-{
-  if (valor<0 || valor>100) { return 'DeepPink'; }
-  if (valor<1) { return 'black'; }  
-  if (valor<60) { return 'red'; }
-  if (valor<70) { return 'orange'; }
-  if (valor<80) { return 'yellow'; }
-  if (valor<90) { return 'light-blue'; }
-  if (valor<95) { return 'blue'; }
-  if (valor<=100) { return 'green'; }
-}
+  if (instit=='windsor')
+  {
+    if (valor<60) { return 'red'; }
+    if (valor<70) { return 'orange'; }
+    if (valor<80) { return 'yellow'; }
+    if (valor<90) { return 'light-blue'; }
+    if (valor<95) { return 'blue'; }
+    if (valor<=100) { return 'green'; }
+  }
 
-function nombreRango(valor) 
+  if (instit=='santarosa')
+  {
+    if (valor<30) { return 'red'; }
+    if (valor<38) { return 'orange'; }
+    if (valor<45) { return 'light-blue'; }
+    if (valor<=50) { return 'green'; }
+  }
+  
+  if (valor<30) { return 'red'; }
+  if (valor<38) { return 'orange'; }
+  if (valor<45) { return 'light-blue'; }
+  if (valor<=50) { return 'green'; }
+
+} //END-colorRango
+
+function nombreRango(valor, instit) 
 {
-  if (valor<0 || valor>100) { return 'err'; } 
-  if (valor<1) { return ''; }  
-  if (valor<60) { return 'Bajo'; }
-  if (valor<70) { return 'Básico'; }
-  if (valor<80) { return 'Básico +'; }
-  if (valor<90) { return 'Alto'; }
-  if (valor<95) { return 'Alto +'; }
-  if (valor<=100) { return 'Superior'; }
+  if (valor<0 || valor>100) { return 'err'; }
+  if (valor==1) { return ''; }
+
+  if (instit=='windsor')
+  {
+    if (valor<60) { return 'Bajo'; }
+    if (valor<70) { return 'Basi'; }
+    if (valor<80) { return 'Bas+'; }
+    if (valor<90) { return 'Alto'; }
+    if (valor<95) { return 'Alt+'; }
+    if (valor<=100) { return 'Supe'; }    
+  }
+
+  if (instit=='santarosa') 
+  {
+    if (valor<30) { return 'Bajo'; }
+    if (valor<38) { return 'Basi'; }
+    if (valor<45) { return 'Alto'; }
+    if (valor<=50) { return 'Supe'; }
+  }
+
+  if (valor<30) { return 'Bajo'; }
+  if (valor<38) { return 'Basi'; }
+  if (valor<45) { return 'Alto'; }
+  if (valor<=50) { return 'Supe'; }
+
 }
 
 function notaFormato(valor, brake = true, fixed =2, text2='') 
 {
+  let instit = document.getElementById('instit').innerHTML.trim();
   fixed =  (valor % 1 !== 0) ? fixed : 0;  
   let valor_fixed = valor.toFixed(fixed);
-  let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed)+'"';
-  let nombre_rango = nombreRango(valor_fixed);
+  let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed, instit)+'"';
+  let nombre_rango = nombreRango(valor_fixed, instit);
   let nombre_rango_title = `title="${nombre_rango} ${text2}"`;
   let br = (brake) ? '<br>' : '';
   return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}`;

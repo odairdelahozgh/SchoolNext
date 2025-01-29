@@ -3,6 +3,20 @@
 trait DatosEstudTraitProps 
 {
 
+  public function getResponsableDIAN() 
+  {
+    if ('MADRE' == strtoupper(trim($this->resp_pago_ante_dian)) ) 
+    {
+      return $this->madre;
+    }
+    if ('PADRE' == strtoupper(trim($this->resp_pago_ante_dian)) ) 
+    {
+      return $this->padre;
+    }    
+    return $this->acudiente;
+  }
+
+  
   public function getAcudiente() 
   {
     if ('MADRE' == strtoupper(trim($this->tipo_acudi)) ) 

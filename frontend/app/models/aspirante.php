@@ -46,35 +46,36 @@ class Aspirante extends LiteRecord {
     $table_apsico = Config::get('tablas.aspirantes_psico');
     $AspirantePsico = (new AspirantePsico)::first("SELECT * FROM $table_apsico WHERE aspirante_id = ?", [$id]);
      
-    if ($Aspirante && $AspirantePsico) {
-      $Grado = (new Grado)::get($Aspirante->grado_aspira);
-       
+    if ($Aspirante && $AspirantePsico)
+    {
+      $Grado = (new Grado)::get($Aspirante->grado_aspira);       
       $tabla_estud = Config::get('tablas.estudiante');
       $Estud = (new Estudiante())::first("SELECT * FROM {$tabla_estud} WHERE documento=?", [$Aspirante->documento]);
        
       //================================================================
       // 1) Crear Estudiante
+      $tipo_doc = ('RC'==$Aspirante->tipo_dcto) ? 'Registro Civil': 'Tarjeta de Identidad';
+      $annio_actual = (int)Session::get('annio');
+      $annio_matriculas = $annio_actual + 1;
       $data = [ 
         'uuid' => $AspirantePsico->xxh3Hash(),
         'nombres' => $Aspirante->nombres, 
         'apellido1' => $Aspirante->apellido1, 
         'apellido2' => $Aspirante->apellido2,  
         'documento' => $Aspirante->documento, 
-        'tipo_dcto' => $Aspirante->tipo_dcto, 
+        'tipo_dcto' => $tipo_doc, 
         'fecha_nac' => $Aspirante->fecha_nac, 
         'direccion' => $Aspirante->direccion, 
-        'barrio' => $Aspirante->barrio, 
+        'barrio'    => $Aspirante->barrio, 
         'telefono1' => $Aspirante->telefono1, 
         'telefono2' => $Aspirante->telefono2, 
-
-        'email' => "{$Aspirante->documento}@mimail.com", 
         'is_debe_preicfes' => 0, 
         'is_debe_almuerzos' => 0, 
         'is_deudor' => 0, 
         'is_habilitar_mat' => 1, 
-        'annio_pagado' => 2023, 
+        'annio_pagado' => $annio_actual, 
         'mes_pagado' => 11, 
-        'annio_promovido' => 2024,
+        'annio_promovido' => $annio_matriculas,
 
         'grado_promovido' => $Aspirante->grado_aspira, 
         'grado_mat' => $Aspirante->grado_aspira, 
@@ -84,12 +85,7 @@ class Aspirante extends LiteRecord {
         'sexo' => $Aspirante->sexo, 
         'retiro' => '', 
         'email_instit' => '', 
-        'clave_instit' => '', 
-        'mat_bajo_p1' => 0, 
-        'mat_bajo_p2' => 0, 
-        'mat_bajo_p3' => 0, 
-        'mat_bajo_p4' => 0,
-        
+        'clave_instit' => '',         
         'is_active' => 1, 
         'created_at' => date('Y-m-d H:i:s', time()), 
         'updated_at' => date('Y-m-d H:i:s', time()), 
@@ -103,11 +99,15 @@ class Aspirante extends LiteRecord {
         $DQL->setFrom('sweb_estudiantes');
         $DQL->insert($data)
             ->execute();
-        
         $LastInsertId = $DQL->getLastInsertId();
         $estudiante_id = $LastInsertId->last_id;
       } else {
         $estudiante_id = $Estud->id;
+        $data['id'] = $estudiante_id;
+        $DQL = new OdaDql('Estudiante');
+        $DQL->setFrom('sweb_estudiantes');
+        $DQL->update($data)
+            ->execute();
       }
 
       // 2) Crear DatosEstud
@@ -154,14 +154,6 @@ class Aspirante extends LiteRecord {
       $DQL->insert($data)
           ->execute();
 
-      // 4) Crear sweb_estudiante_adjuntos_dos
-      /*
-      $DQL = new OdaDql('EstudianteAdjuntosDos');
-      $DQL->setFrom('sweb_estudiante_adjuntos_dos');
-      $DQL->insert($data)
-          ->execute();
-      */
-
       // 5) Crear Usuario Madre
       /*
        $data = [
@@ -199,10 +191,12 @@ class Aspirante extends LiteRecord {
       $DQL->setFrom(Config::get('tablas.aspirantes'));
       $DQL->update(['estatus' => AspirEstatus::Trasladado->name])
           ->where('id=?')->setParams([$Aspirante->id]);
-      $DQL->execute();      
-
-    } else {
-      //OdaFlash::warning('Algo falló');
+      $DQL->execute();
+      
+    }
+    else 
+    {
+      OdaFlash::warning('Algo falló');
     }
 
   }

@@ -64,6 +64,8 @@ trait DatosEstudTraitSetUp {
     self::$_attribs = [
       'id'       => 'required',
       'uuid'     => 'required',
+      'resp_pago_ante_dian' => 'required',
+
       'madre' => ' size="45"',
       'madre_email' => ' size="45"',
       'padre' => ' size="45"',

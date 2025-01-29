@@ -16,6 +16,7 @@ class Rango extends LiteRecord {
   public function __construct() 
   {
     parent::__construct();
+    self::$pk    = 'rowid';
     self::$table = Config::get('tablas.rango');
     $this->setUp();
   }
@@ -23,7 +24,8 @@ class Rango extends LiteRecord {
   /**
    * @deprecated
    */
-  protected static $aRangos = [
+  protected static $aRangos = 
+  [
     'windsor' => [
       '1-59'   => 'Bajo',
       '60-69'  => 'Básico',
@@ -32,24 +34,28 @@ class Rango extends LiteRecord {
       '90-94'  => 'Alto +',
       '95-100' => 'Superior',
     ],
+
     'santarosa' => [
       '1-29'   => 'Bajo',
       '30-37'  => 'Básico',
       '38-44'  => 'Alto',
       '45-50' => 'Superior',
     ],
+
     'development' => [
       '1-29'   => 'Bajo',
       '30-37'  => 'Básico',
       '38-44'  => 'Alto',
       '45-50' => 'Superior',
     ],
+
   ];
   
   /**
    * @deprecated
    */
-  protected static $aRangosColores = [
+  protected static $aRangosColores = 
+  [
     'windsor' => [
       'Bajo'     => 'w3-red',
       'Básico'   => 'w3-orange',
@@ -58,12 +64,14 @@ class Rango extends LiteRecord {
       'Alto +'   => 'w3-blue',
       'Superior' => 'w3-green',
     ],
+
     'santarosa' => [
       'Bajo'     => 'w3-red',
       'Básico'   => 'w3-orange',
       'Alto'     => 'w3-light-blue',
       'Superior' => 'w3-green',
     ],
+
     'development' => [
       'Bajo'     => 'w3-red',
       'Básico'   => 'w3-orange',
@@ -85,25 +93,26 @@ class Rango extends LiteRecord {
       '90' => 'Alto +',
       '95' => 'Superior',
     ],
+
     'santarosa'=> [
       '1'  => 'Bajo',
       '30' => 'Básico',
       '38' => 'Alto',
       '45' => 'Superior',
     ],
+
     'development'=> [
       '1'  => 'Bajo',
       '30' => 'Básico',
       '38' => 'Alto',
       '45' => 'Superior',
     ],
-    
   ];
 
 
   public static function getRango($valor=0): string 
   {
-    if ($valor==0)
+    if ($valor==0) 
     {
       return ''; 
     }
@@ -119,9 +128,11 @@ class Rango extends LiteRecord {
     }
 
     $result = '';
-    foreach (self::$aRangos[INSTITUTION_KEY] as $key => $rango) {
+    foreach (self::$aRangos[INSTITUTION_KEY] as $key => $rango)
+    {
       $aPartes = explode(separator: '-', string: $key);
-      if ( ($valor>=$aPartes[0]) && ($valor<=$aPartes[1]) ) {
+      if ( ($valor>=$aPartes[0]) && ($valor<=$aPartes[1]) )
+      {
         $result = $rango;
         break;
       }
@@ -133,11 +144,10 @@ class Rango extends LiteRecord {
   public static function getColorRango($valor=0): string 
   {
     $rango = self::getRango($valor);
-
-    if (array_key_exists($rango, self::$aRangosColores[INSTITUTION_KEY])) {
+    if (array_key_exists($rango, self::$aRangosColores[INSTITUTION_KEY]))
+    {
       return self::$aRangosColores[INSTITUTION_KEY][$rango];
     }
-
     return 'w3-aqua w3-border-theme';
   }
   

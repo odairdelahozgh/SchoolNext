@@ -228,7 +228,7 @@ class EstudiantesController extends ScaffoldController
       {
         $DQL = new OdaDql('Estudiante');
         $DQL->setFrom('sweb_estudiantes');
-        $next_numero_mat = $DQL->getMax('numero_mat') + 1;
+        $next_numero_mat = (int)$DQL->getMax('numero_mat') + 1;
         $DQL->update(['numero_mat' => $next_numero_mat])
             ->where('t.id=?')
             ->setParams([$estudiante_id])

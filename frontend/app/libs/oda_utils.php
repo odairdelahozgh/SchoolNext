@@ -393,15 +393,17 @@ class OdaUtils extends Util {
     string $message=''
   ): string {
     $insitit_name = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
-    $text = ($show_tel) ? $telefono : $message ;
+    $text = ($show_tel) ? $telefono : '' ;
     $message = "*$insitit_name*: $message";
     //$message = str_replace(' ', '%20', $message);
     //href=\"whatsapp://send?phone=57$telefono&text=$message\">"
     return "$text <a 
         title=\"$caption\" 
-        href=\"https://api.whatsapp.com/send?phone=$telefono&text=$message\">"
+        href=\"https://wa.me/{$telefono}?text=$message\">"
         ._Icons::brands(icon: 'whatsapp', size: 'w3-large')
       .'</a>';
+
+      // https://wa.me/1XXXXXXXXXX?text=I'm%20interested%20in%20your%20car%20for%20sale
   }
 
   public static function linkTelefono(string $telefono, string $caption='(click) Llamarle ahora', $show_tel=false): string {

@@ -21,7 +21,7 @@ return [
       'host'     => 'localhost', // ip o nombre del host de la base de datos
       'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
       'password' => '', // clave del usuario de la base de datos
-      'name'     => 'santarosa', //  nombre de la base de datos
+      'name'     => 'windsor_tecnorobotica', //  nombre de la base de datos
       'type'     => 'mysql',  // tipo de motor de base de datos (mysql, pgsql, oracle o sqlite)
       'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
       //'dsn' => '', // Cadena de conexión a la base de datos

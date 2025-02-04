@@ -35,7 +35,7 @@ enum EstadoMatricula: int {
       static::NoPromovido     => 'EL estudiante está pendiente de validar planes de apoyo del año anterior',
       static::SinDocumentos   => 'Debe subir la totalidad de los documentos exigidos',
       static::DocIncompletos  => 'Debe subir los documentos faltantes',
-      static::DocEnRevision   => 'Una vez que el funcionario encargado apruebe los documentos, pasará al siguiente paso (firma de documentos)',
+      static::DocEnRevision   => 'solo falta que el funcionario encargado apruebe los documentos, debe acercarse lo mas pronto posible a la institución para finalizar el proceso',
       static::DocRechazados   => 'Debe subir los documentos rechazados nuevamente',
       static::DocAprobados    => 'Falta ASIGNAR NÚMERO DE MATRÍCULA',
       static::FaltaFirmas     => 'Debe firmar los documentos de matrícula, dirigirse a la institución para realizarlo',
@@ -43,6 +43,8 @@ enum EstadoMatricula: int {
       default => throw new InvalidArgumentException(message: "{$this->caption()} Erroneo"),
     };
   }
+
+  //Una vez que hayas cargado los documentos, .
 
   public function ico(): string 
   {

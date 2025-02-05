@@ -3,27 +3,46 @@ trait EstudianteTraitMatriculas {
   
   public function getEstadoMat(): EstadoMatricula 
   {
-    if ($this->esDeudor()) 
-    { 
-      return EstadoMatricula::Bloqueado; 
+    try
+    {
+        
+      if ($this->esDeudor()) 
+      { 
+        return EstadoMatricula::Bloqueado; 
+      }
+
+      if (!$this->puedeMatricular()) 
+      { 
+        return EstadoMatricula::NoPromovido; 
+      }
+
+      //  POR MEJORAR !!
+      $Adjuntos = (new EstudianteAdjuntos())::first(
+        "SELECT * FROM ".static::getSource()." WHERE estudiante_id=?", 
+        [$this->id]
+      );
+      // if (!$Adjuntos) ==>>  puede fallar, cuando no tenga registro de adjunto
+      $estado_docs = $Adjuntos->getEstadoDocsMatricula($this->grado_promovido);
+
+      if (EstadoMatricula::DocAprobados != $estado_docs) 
+      { 
+        return $estado_docs; // Atascado en revisión de documentos
+      }
+
+      if ( empty($this->numero_mat) ) 
+      { 
+        return EstadoMatricula::DocAprobados; // Aprobados pero sin firmas de documentos
+      }
+
+      return EstadoMatricula::Terminado;
+    
     }
-    if (!$this->puedeMatricular()) 
-    { 
-      return EstadoMatricula::NoPromovido; 
+    
+    catch
+    (\Throwable $th)
+    {
+      OdaFlash::error($th, true);
     }
-    $Adjuntos = (new EstudianteAdjuntos())::first(
-      "SELECT * FROM ".static::getSource()." WHERE estudiante_id=?", [$this->id]
-    );
-    $estado_docs = $Adjuntos->getEstadoDocsMatricula($this->grado_promovido);
-    if (EstadoMatricula::DocAprobados != $estado_docs) 
-    { 
-      return $estado_docs; // Atascado en revisión de documentos
-    }
-    if ( empty($this->numero_mat) ) 
-    { 
-      return EstadoMatricula::DocAprobados; // Aprobados pero sin firmas de documentos
-    }
-    return EstadoMatricula::Terminado;
   }
 
 

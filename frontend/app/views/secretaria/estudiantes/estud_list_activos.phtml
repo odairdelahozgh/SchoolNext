@@ -9,13 +9,15 @@
    <?php 
    try {
 
+      $ico_man = '<i class="fa-solid fa-person w3-large"></i>';
+      $ico_woman = '<i class="fa-solid fa-person-dress w3-large"></i>';
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(
          data_head:    ['Actions', 'Estudiante', 'Cambiar Salon'], 
          attrs:         'class="w3-theme"', 
          arr_attrs_th: ['style="width:10%;"','style="width:60%;"','style="width:30%;"']
       );
-      
+
       $arrMatriculas = [];
       $tot_estudiantes = 0;
       $tot_matriculados = 0;
@@ -42,24 +44,28 @@
 
         $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>"
                  ."<h3>{$Estud->getLnkEditPage($Estud)} {$Estud->isNuevoIco()}</h3>"
-                 .$Estud->getCuentaInstit(true).'<br><br>'
                  ."{$Estud->getPagoPension()} {$Estud->getlnkSetPonerAldia()} <br> 
                    {$Estud->getDebePreicfes()} - {$Estud->getDebeAlmuerzos()} <br>"
                  .$Estud->getlnkSetMesPagosTodos().'<br>'
-                 .'Boletines '.$Estud->getLnkBoletinesTodos().'<br>'
-                 //.$Estud->getLnkPlanesApoyoTodos()
-                 ;
+                 .'Boletines '.$Estud->getLnkBoletinesTodos().'<hr>'
+                 .'Cambiar de Salón  '.$Estud->getSalonesCambiar('secretaria').'<br>';
+        
+        $col3  = 
+                '<div clasas="w3-panel w3-teal">'.$lnk_gen_num_mat.'<br>'
+                .$Estud->getEstadoMat()->label_ico().'<hr>'
 
-        //$estado = $Estud->getEstadoMat();
-        $col3  = $lnk_gen_num_mat.'<br><br>'
-                //.$estado->value  .'<br><br>'
-                ."$Estud->madre <br> $Estud->madre_email <br>C.C. $Estud->madre_id <br>"
-                  .OdaUtils::linkWhatsApp(telefono: (string)$Estud->madre_tel_1)
-                  .OdaUtils::linkTelefono(telefono: (string)$Estud->madre_tel_1, show_tel:true).'<br><br>'
-                  ."$Estud->padre <br> $Estud->padre_email <br> C.C. $Estud->padre_id <br>"
-                  .OdaUtils::linkWhatsApp(telefono: (string)$Estud->padre_tel_1)
-                  .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true).'<br><br>'
-                  .'Cambiar de Salón  '.$Estud->getSalonesCambiar('secretaria').'<br>';
+                .$ico_woman. (($Estud->madre) ? "$Estud->madre<br>" : '')
+                .(($Estud->madre_email) ? "$Estud->madre_email<br>" : '')
+                .(($Estud->madre_id) ? "$Estud->madre_id<br>" : '<br>')
+                .OdaUtils::linkWhatsApp(telefono: (string)$Estud->madre_tel_1)
+                .OdaUtils::linkTelefono(telefono: (string)$Estud->madre_tel_1, show_tel:true).'<hr>'
+
+                .$ico_man .(($Estud->padre) ? "$Estud->padre<br>" : '')
+                .(($Estud->padre_email) ? "$Estud->padre_email<br>" : '')
+                .(($Estud->padre_id) ? "$Estud->padre_id<br>" : '<br>')
+                .OdaUtils::linkWhatsApp(telefono: (string)$Estud->padre_tel_1)
+                .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true);
+
          $data=[$col1, $col2, $col3];
          $tabla->addRow(
             data: $data, 
@@ -125,21 +131,3 @@
 </div>
 
 <?= Tag::js(src: "table_filter"); ?>
-
-<?php
-echo "<script>
-  const inputSearch = document.getElementById(\"inputSearch\").focus();
-  inputSearch.value = '{$_default_search}';
-  inputSearch.focus();
-  inputSearch.click();
-
-  document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && (event.key === 'B' || event.key === 'b')) {
-      const inputSearch = document.getElementById('inputSearch');
-      inputSearch.value = '{$_default_search}';
-      inputSearch.focus();
-      inputSearch.click();
-    }
-  });
-</script>";
-?>

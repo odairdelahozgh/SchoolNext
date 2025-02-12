@@ -22,4 +22,6 @@ define('PUBLIC_PATH', substr($_SERVER['SCRIPT_NAME'], 0, -9)); // - index.php st
 //$url = $_SERVER['ORIG_PATH_INFO'] ?? '/'; // WINDSOR
 $url = $_SERVER['PATH_INFO'] ?? '/';  // LOCAL y SANTAROSA
 
+const INSTITUTION_KEY = "development"; // "santarosa" "windsor" "development" En minúsculas
+
 require APP_PATH . 'libs/bootstrap.php'; //bootstrap de app

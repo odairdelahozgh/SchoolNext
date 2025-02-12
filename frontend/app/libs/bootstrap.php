@@ -11,7 +11,6 @@ const HELPERS_PATH = APP_PATH.'extensions/helpers/' ;
 const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public'; // LOCAL
 
 const APP_NAME= "SchoolNEXT>>";
-const INSTITUTION_KEY = "development"; // "santarosa" "windsor" "development" En minúsculas 
 
 const LOGO = 'logo_'.INSTITUTION_KEY.'.png';
 const LOGO_BRAND = 'logo_brand_'.INSTITUTION_KEY.'.png';

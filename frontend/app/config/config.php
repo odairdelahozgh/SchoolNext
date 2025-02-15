@@ -28,28 +28,14 @@ return [
       'users'  => 'w3',
     ],
 
-/*  ELIMINAR MAS ADELANTE
-    'academic' => [
-      'annio_inicial'  => 2006,
-      'annio_actual'   => 2024,
-      'periodo_actual' => 4,
-      'asignar_carga' => ['*'],
-    ],
-*/
-
-/*  ELIMINAR MAS ADELANTE   
-    'boletines' => [
-      'imprimir_plan_apoyo' => false,
-      'imprimir_nota'       => false,
-    ], 
-*/
-
     'calificaciones' => [
       'periodos_excep' => '1',
       'salones_excep'  => '11-A',
       'usuarios_excep' => '',
     ],
 
+    // Esto se eliminará
+    // La información saldrá de la API de ConstruxZionSoft
     'construxzion' => [
       'name'      => 'ConstruxZion Soft CO',
       'ceo'       => 'Odair De La Hoz Rojas',
@@ -59,7 +45,7 @@ return [
       'telefono'  => '+573017153066',
       'whatsapp'  => '+573017153066',
       'email'     => 'contacto@construxzionsoft.com.co',
-      'app_name'  => APP_NAME,
+      //'app_name'  => APP_NAME,
       'app_description'  => 'SchoolNext>> Es una Aplicación Web Moderna para la Gestión de Instituciones Educativas de Colombia',
     ],
 

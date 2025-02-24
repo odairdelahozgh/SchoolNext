@@ -88,6 +88,55 @@ class Estudiante extends LiteRecord
   }
 
   
+  public function getListExportMoodle(): array|string 
+  {
+    $DQL = (new OdaDql(__CLASS__))
+      ->select("t.id, t.documento, t.nombres, t.apellido1, t.apellido2")
+      ->where('t.is_active=1')
+      ->orderBy('t.grado_mat, t.salon_id, t.nombres, t.apellido1, t.apellido2');
+    $estudiantes = $DQL->execute();
+
+    $result = [];
+    foreach ($estudiantes as $estud) 
+    {
+      $nomb = explode(' ',strtolower(trim($estud->nombres)));
+      $ape1 = preg_replace('/[^-\.@_a-z0-9]/', '', strtolower(trim($estud->apellido1)));
+      $ape2 = substr(strtolower(trim($estud->apellido2)), 0, 1);
+      
+      $data = date('ymdhis').rand(1, 1000);
+      $usermail =  hash("xxh3", $data, options: ["seed" => rand(1, 1000)]);
+
+      $result[] = [
+       'username' => $nomb[0].trim(substr($nomb[1],0,1)).'.'.$ape1.$ape2, 
+       'password' => trim($estud->documento), 
+       'firstname' => ucwords(implode(' ', $nomb)), 
+       'lastname' => ucwords(strtolower(trim(trim($estud->apellido1).' '.trim($estud->apellido2)))), 
+       'email' => trim($usermail).'@noemail.com',
+       'idnumber' => $estud->id,
+      ];
+      
+      // Actualiza Estudiantes
+      $estudObj = Estudiante::get($estud->id);
+      $estudObj->update([
+        'email_instit' => $result['username'],
+      ]);
+    }
+    return $result;
+  }
+
+
+  
+  public function getListMatricularExportMoodle(): array|string 
+  {     
+    $DQL = (new OdaDql(__CLASS__))
+      ->select("add AS operation, student as role, t.id AS idnumber_user, ga.cod_moodle AS idnumber_course")
+      ->leftJoin('grado_asignatura', 'ga', 'g.id=ga.grado_id')
+      ->where('t.is_active=1')
+      ->orderBy('t.grado_mat, t.salon_id, t.nombres, t.apellido1, t.apellido2');
+    $result = $DQL->execute();
+    return $result;
+  }
+  
   public function getListEstudiantes(
     string $select='t.*',
     string $orden='a1,a2,n', 
@@ -188,7 +237,7 @@ class Estudiante extends LiteRecord
     }
     return $DQL->execute();
   }
-  
+
 
   public function getListSecretaria(
     string $orden='a1,a2,n', 
@@ -312,7 +361,7 @@ class Estudiante extends LiteRecord
     $DQL->setFrom('sweb_estudiantes');
     return $DQL->execute();
   }
-  
+
 
   public function getListPorProfesor(int $user_id, string $orden='a1,a2,n'): array|string 
   {
@@ -342,8 +391,8 @@ class Estudiante extends LiteRecord
         ->orderBy($orden);
     return $DQL->execute();
   }
-
   
+
   public function getListPorDirector(int $director_grupo_id, string $orden='a1,a2,n') 
   {
     // OJO :: NO SE USA AQUÍ :::: $director_grupo_id
@@ -417,7 +466,7 @@ class Estudiante extends LiteRecord
     }
   }
 
-    
+
   public function getSalonesCambiar(string $modulo): string 
   {
     $lnk_cambio = '';
@@ -464,7 +513,6 @@ class Estudiante extends LiteRecord
     $tot = $DQL->execute();
     return ($tot[0]->total ?? 0);
   }
-
 
 
 }

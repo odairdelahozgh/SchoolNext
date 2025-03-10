@@ -119,9 +119,10 @@ class Salon extends LiteRecord {
   {
     try
     {
+      
       $DoliK = new DoliConst();
-      $annio_actual = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL');
-      $periodo_actual = $DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL');
+      $annio_actual = $DoliK->getValue('SCHOOLNEXTACADEMICO_ANNIO_ACTUAL');
+      $periodo_actual = $DoliK->getValue('SCHOOLNEXTACADEMICO_PERIODO_ACTUAL');
 
       $RegSalon = (new Salon())->get($salon_id);
       $cnt = 0;

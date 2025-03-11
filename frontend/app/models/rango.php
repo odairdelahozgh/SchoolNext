@@ -28,10 +28,8 @@ class Rango extends LiteRecord {
   [
     'windsor' => [
       '1-59'   => 'Bajo',
-      '60-69'  => 'Básico',
-      '70-79'  => 'Básico +',
-      '80-89'  => 'Alto',
-      '90-94'  => 'Alto +',
+      '60-79'  => 'Básico',
+      '80-94'  => 'Alto',
       '95-100' => 'Superior',
     ],
 
@@ -59,9 +57,7 @@ class Rango extends LiteRecord {
     'windsor' => [
       'Bajo'     => 'w3-red',
       'Básico'   => 'w3-orange',
-      'Básico +' => 'w3-yellow',
       'Alto'     => 'w3-light-blue',
-      'Alto +'   => 'w3-blue',
       'Superior' => 'w3-green',
     ],
 
@@ -88,9 +84,7 @@ class Rango extends LiteRecord {
     'windsor'=> [
       '1'  => 'Bajo',
       '60' => 'Básico',
-      '70' => 'Básico +',
       '80' => 'Alto',
-      '90' => 'Alto +',
       '95' => 'Superior',
     ],
 

@@ -26,7 +26,7 @@ trait SeguimientosTraitProps {
     if ('asi_desempeno'==$field_name) {
       return $label.Form::select(
           field: 'seguimientos.'.$field_name.'_'.$this->id, 
-          data: ['Bajo'=>'Bajo', 'Básico'=>'Básico', 'Básico +'=>'Básico +'],
+          data: ['Bajo'=>'Bajo', 'Básico'=>'Básico'],
           value: $this->$field_name,
         );
     }

@@ -10,8 +10,6 @@ const HELPERS_PATH = APP_PATH.'extensions/helpers/' ;
 //const ABS_PUBLIC_PATH = '/home/tecnoro1/schoolnext.tecnorobotica.com';  // WINDSOR
 const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public'; // LOCAL
 
-const APP_NAME= "SchoolNEXT>>";
-
 const LOGO = 'logo_'.INSTITUTION_KEY.'.png';
 const LOGO_BRAND = 'logo_brand_'.INSTITUTION_KEY.'.png';
 

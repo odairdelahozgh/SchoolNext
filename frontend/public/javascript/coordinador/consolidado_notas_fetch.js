@@ -223,15 +223,14 @@ function traer_data(salon_id) {
 }
 
 
-function colorRango(valor, instit) {
+function colorRango(valor, instit) 
+{
   if (valor<1 || valor>100) { return 'DeepPink'; }
 
   if (instit=='windsor')
   {
     if (valor<60) { return 'red'; }
-    if (valor<70) { return 'orange'; }
     if (valor<80) { return 'yellow'; }
-    if (valor<90) { return 'light-blue'; }
     if (valor<95) { return 'blue'; }
     if (valor<=100) { return 'green'; }
   }
@@ -248,8 +247,8 @@ function colorRango(valor, instit) {
   if (valor<38) { return 'orange'; }
   if (valor<45) { return 'light-blue'; }
   if (valor<=50) { return 'green'; }
+}
 
-} //END-colorRango
 
 function nombreRango(valor, instit) 
 {
@@ -259,10 +258,8 @@ function nombreRango(valor, instit)
   if (instit=='windsor')
   {
     if (valor<60) { return 'Bajo'; }
-    if (valor<70) { return 'Basi'; }
-    if (valor<80) { return 'Bas+'; }
-    if (valor<90) { return 'Alto'; }
-    if (valor<95) { return 'Alt+'; }
+    if (valor<80) { return 'Bas'; }
+    if (valor<95) { return 'Alt'; }
     if (valor<=100) { return 'Supe'; }    
   }
 
@@ -278,8 +275,8 @@ function nombreRango(valor, instit)
   if (valor<38) { return 'Basi'; }
   if (valor<45) { return 'Alto'; }
   if (valor<=50) { return 'Supe'; }
-
 }
+
 
 function notaFormato(valor, brake = true, fixed =2, text2='') 
 {
@@ -293,35 +290,29 @@ function notaFormato(valor, brake = true, fixed =2, text2='')
   return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}`;
 }
 
+
 function is_prescolar(nombre_salon) 
 {
   var regex = /(PV-A|PK-A|KD-A|TN-A)/;
   return regex.test(nombre_salon);
 }
 
+
 function ultimoPago(annio_pagado, mes_pagado, annio_actual)
-{
-  let nombre_mes = '';
-
-  if (mes_pagado<1 || mes_pagado>12) { nombre_mes = 'err-mes'; }
-  if (mes_pagado==1) { nombre_mes = 'Enero'; }
-  if (mes_pagado==2) { nombre_mes = 'Febrero'; }
-  if (mes_pagado==3) { nombre_mes = 'Marzo'; }
-  if (mes_pagado==4) { nombre_mes = 'Abril'; }
-  if (mes_pagado==5) { nombre_mes = 'Mayo'; }
-  if (mes_pagado==6) { nombre_mes = 'Junio'; }
-  if (mes_pagado==7) { nombre_mes = 'Julio'; }
-  if (mes_pagado==8) { nombre_mes = 'Agosto'; }
-  if (mes_pagado==9) { nombre_mes = 'Septiembre'; }
-  if (mes_pagado==10) { nombre_mes = 'Octubre'; }
-  if (mes_pagado==11) { nombre_mes = 'Noviembre'; }
-  if (mes_pagado==12) { nombre_mes = 'Diciembre'; }
-
+{  
+  if (mes_pagado<1 || mes_pagado>12) 
+  {
+    return 'err-mes';
+  }    
+    
+  const Meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  let nombre_mes = Meses[mes_pagado-1];
   result = `Último Pago: ${nombre_mes} de ${annio_pagado}`;
 
-  if (annio_actual > annio_pagado) // atrasado
+  if (annio_actual > annio_pagado)
   {
-    result = `<del>${result}<del>`;
+    result = `<del>${result}</del>`;
   }
+
   return result;
 }

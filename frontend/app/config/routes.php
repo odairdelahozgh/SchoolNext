@@ -25,7 +25,7 @@ return [
         '/ayuda'    => 'pages/ayuda',
         '/colores'  => 'pages/colores',
         '/iconos'   => 'pages/iconos',
-        '/test'     => 'pages/test',
+        //'/test'     => 'pages/test',
         '/bs'       => 'pages/bootstrap',
 
         '/docen-asignar-carga'      => 'docentes/asignar_carga',

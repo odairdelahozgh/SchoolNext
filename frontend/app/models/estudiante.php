@@ -28,7 +28,9 @@ class Estudiante extends LiteRecord
   {
     parent::__construct();
     self::$table = Config::get('tablas.estudiante');
+    self::$pk = 'id';
     self::$_order_by_defa = 'g.orden,s.nombre,t.apellido1,t.apellido2,t.nombres';
+    
     $this->DQL = (new OdaDql(__CLASS__))
       ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
       ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
@@ -91,8 +93,9 @@ class Estudiante extends LiteRecord
   public function getListExportMoodle(): array|string 
   {
     $DQL = (new OdaDql(__CLASS__))
-      ->select("t.id, t.documento, t.nombres, t.apellido1, t.apellido2")
+      ->select("t.id, t.documento, t.nombres, t.apellido1, t.apellido2, g.abrev")
       ->where('t.is_active=1')
+      ->leftJoin('Grado', 'g', 't.grado_mat=g.id')
       ->orderBy('t.grado_mat, t.salon_id, t.nombres, t.apellido1, t.apellido2');
     $estudiantes = $DQL->execute();
 
@@ -106,36 +109,28 @@ class Estudiante extends LiteRecord
       $data = date('ymdhis').rand(1, 1000);
       $usermail =  hash("xxh3", $data, options: ["seed" => rand(1, 1000)]);
 
+      $username = $nomb[0].trim(substr($nomb[1],0,1)).'.'.$ape1.$ape2;
       $result[] = [
-       'username' => $nomb[0].trim(substr($nomb[1],0,1)).'.'.$ape1.$ape2, 
+       'username' => $username, 
        'password' => trim($estud->documento), 
        'firstname' => ucwords(implode(' ', $nomb)), 
        'lastname' => ucwords(strtolower(trim(trim($estud->apellido1).' '.trim($estud->apellido2)))), 
        'email' => trim($usermail).'@noemail.com',
        'idnumber' => $estud->id,
+       'cohort1' => 'cohort_'.strtolower($estud->abrev),
       ];
       
       // Actualiza Estudiantes
-      $estudObj = Estudiante::get($estud->id);
-      $estudObj->update([
-        'email_instit' => $result['username'],
-      ]);
+      $DQLUpdate = new OdaDql(__CLASS__);
+      $DQLUpdate->update(['email_instit' => $username, 'clave_instit' => $estud->documento ])
+                ->where('t.id=?')
+                ->setParams([$estud->id]);
+      $DQLUpdate->execute(true);
     }
     return $result;
   }
 
 
-  
-  public function getListMatricularExportMoodle(): array|string 
-  {     
-    $DQL = (new OdaDql(__CLASS__))
-      ->select("add AS operation, student as role, t.id AS idnumber_user, ga.cod_moodle AS idnumber_course")
-      ->leftJoin('grado_asignatura', 'ga', 'g.id=ga.grado_id')
-      ->where('t.is_active=1')
-      ->orderBy('t.grado_mat, t.salon_id, t.nombres, t.apellido1, t.apellido2');
-    $result = $DQL->execute();
-    return $result;
-  }
   
   public function getListEstudiantes(
     string $select='t.*',

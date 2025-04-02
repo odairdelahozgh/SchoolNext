@@ -21,20 +21,24 @@ class NotaHist extends LiteRecord {
   
   public function __construct() 
   {
+    parent::__construct();
     self::$tbl_estud = Config::get('tablas.estudiantes');
     self::$tbl_asign = Config::get('tablas.asignaturas');
-    parent::__construct();
     self::$table = Config::get('tablas.notas_hist');
+    self::$pk = 'id';
     $this->setUp();
   }
 
 
   public function verNota(): string 
   {
-    $color = (new Rango)::getColorRango($this->nota_final);
-    $rango = (new Rango)::getRango($this->nota_final);    
+    $Rango = new Rango();
+    $color = $Rango->getColorNota($this->nota_final);
+    $rango = $Rango->getRangoNota($this->nota_final);
+    
+    $rango_bajo = 1 + $Rango::get(2)->limite_inferior;
     $plan_apoyo = (
-      ($this->definitiva<60) 
+      ($this->definitiva < $rango_bajo) 
       ? 'Definitiva: '.$this->definitiva.' => Plan de Apoyo: '.$this->plan_apoyo 
       : ''
     );    

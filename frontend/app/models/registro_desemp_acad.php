@@ -18,6 +18,7 @@ class RegistroDesempAcad extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.estud_reg_academ');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.estudiante_id, t.fecha DESC';
     $this->setUp();
   }

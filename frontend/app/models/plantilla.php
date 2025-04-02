@@ -19,6 +19,7 @@ class Plantilla extends LiteRecord
   {
     parent::__construct();
     self::$table = Config::get('tablas.plantillas');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.nombre';      
     $this->setUp();
   }

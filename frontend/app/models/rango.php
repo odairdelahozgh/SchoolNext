@@ -13,138 +13,101 @@ class Rango extends LiteRecord {
 
   use RangoTraitSetUp;
 
+  private $invalidMessages = [
+    0 => '',
+    1 => 'Rango no válido: Inferior a Cero',
+    2 => 'Rango no válido: Superior a ',
+  ];
+
+
   public function __construct() 
   {
     parent::__construct();
-    self::$pk    = 'rowid';
-    self::$table = Config::get('tablas.rango');
+    self::$pk = 'id';
+    self::$table = Config::get('tablas.rangos');
     $this->setUp();
   }
 
   /**
-   * @deprecated
-   */
-  protected static $aRangos = 
-  [
-    'windsor' => [
-      '1-59'   => 'Bajo',
-      '60-79'  => 'Básico',
-      '80-94'  => 'Alto',
-      '95-100' => 'Superior',
-    ],
-
-    'santarosa' => [
-      '1-29'   => 'Bajo',
-      '30-37'  => 'Básico',
-      '38-44'  => 'Alto',
-      '45-50' => 'Superior',
-    ],
-
-    'development' => [
-      '1-29'   => 'Bajo',
-      '30-37'  => 'Básico',
-      '38-44'  => 'Alto',
-      '45-50' => 'Superior',
-    ],
-
-  ];
-  
-  /**
-   * @deprecated
-   */
-  protected static $aRangosColores = 
-  [
-    'windsor' => [
-      'Bajo'     => 'w3-red',
-      'Básico'   => 'w3-orange',
-      'Alto'     => 'w3-light-blue',
-      'Superior' => 'w3-green',
-    ],
-
-    'santarosa' => [
-      'Bajo'     => 'w3-red',
-      'Básico'   => 'w3-orange',
-      'Alto'     => 'w3-light-blue',
-      'Superior' => 'w3-green',
-    ],
-
-    'development' => [
-      'Bajo'     => 'w3-red',
-      'Básico'   => 'w3-orange',
-      'Alto'     => 'w3-light-blue',
-      'Superior' => 'w3-green',
-    ],
-
-  ];
-  
-  /**
-   * @deprecated
-   */
-  protected static $aRangosLimiteInf = [
-    'windsor'=> [
-      '1'  => 'Bajo',
-      '60' => 'Básico',
-      '80' => 'Alto',
-      '95' => 'Superior',
-    ],
-
-    'santarosa'=> [
-      '1'  => 'Bajo',
-      '30' => 'Básico',
-      '38' => 'Alto',
-      '45' => 'Superior',
-    ],
-
-    'development'=> [
-      '1'  => 'Bajo',
-      '30' => 'Básico',
-      '38' => 'Alto',
-      '45' => 'Superior',
-    ],
-  ];
-
-
-  public static function getRango($valor=0): string 
+  * @deprecated
+  */
+  public static function getRango(int $valor=0): string 
   {
-    if ($valor==0) 
-    {
-      return ''; 
-    }
-
-    if ($valor<0)
-    {
-      return _Icons::solid('face-frown', 'w3-large').'Rango no válido: Inferior a Cero';
-    }
-
-    if ($valor>Session::get('rango_nota_superior')) 
-    {
-      return _Icons::solid('face-frown', 'w3-large').'Rango no válido: Superior a '.Session::get('rango_nota_superior');
-    }
-
-    $result = '';
-    foreach (self::$aRangos[INSTITUTION_KEY] as $key => $rango)
-    {
-      $aPartes = explode(separator: '-', string: $key);
-      if ( ($valor>=$aPartes[0]) && ($valor<=$aPartes[1]) )
-      {
-        $result = $rango;
-        break;
-      }
-    }
-    return $result;
-  }
-  
-  
-  public static function getColorRango($valor=0): string 
-  {
-    $rango = self::getRango($valor);
-    if (array_key_exists($rango, self::$aRangosColores[INSTITUTION_KEY]))
-    {
-      return self::$aRangosColores[INSTITUTION_KEY][$rango];
-    }
-    return 'w3-aqua w3-border-theme';
+    return (new Rango())->getRangoNota($valor);
   }
   
 
+  /**
+  * @deprecated
+  */
+  public static function getColorRango(int $valor=0): string 
+  {
+    return (new Rango())->getColorNota($valor);
+  }
+  
+
+  public function getLimiteInferior(Rangos $rango = Rangos::Bajo)
+  {
+    $este_rango = self::first("SELECT limite_inferior FROM " .self::$table ." WHERE nombre = :label", [":label" => $rango->label()]);
+    return $este_rango->limite_inferior;
+  }
+
+  public function getLimiteSuperior(Rangos $rango = Rangos::Bajo)
+  {
+    $este_rango = self::first("SELECT limite_superior FROM " .self::$table ." WHERE nombre = :label", [":label" => $rango->label()]);
+    return $este_rango->limite_superior;
+  }
+
+  public function getColor(Rangos $rango = Rangos::Bajo)
+  {
+    $este_rango = self::first("SELECT color_rango FROM " .self::$table ." WHERE nombre = :label", [":label" => $rango->label()]);
+    return $este_rango->color_rango;
+  }
+
+
+  public function validar(int $valor = 0)
+  {
+    if ($valor==0)
+    {
+      return 0;
+    }
+
+    if ($valor < 0) 
+    {
+      return 1;
+    }
+
+    $valor_maximo = $this->getLimiteSuperior(Rangos::Superior);
+    if($valor > $valor_maximo)
+    {
+      return 2;
+    }
+
+    return 3;
+  }
+
+  public function getColorNota(int $valor = 0)
+  {
+    $validacion = $this->validar($valor);
+    if ($validacion < 3)
+    {
+      return $this->invalidMessages[$validacion];
+    }
+
+    $este_rango = self::first("SELECT color_rango FROM " .self::$table ." WHERE limite_inferior <= :lim_inf AND limite_superior > :lim_sup", [":lim_inf" => $valor, ":lim_sup" => $valor]);
+    return $este_rango->color_rango;
+  }
+
+  public function getRangoNota(int $valor = 0)
+  {
+    $validacion = $this->validar($valor);
+    if ($validacion < 3)
+    {
+      return $this->invalidMessages[$validacion];
+    }
+
+    $este_rango = self::first("SELECT nombre FROM " .self::$table ." WHERE :lim_inf >= limite_inferior AND :lim_sup < (limite_superior+0.999)", [":lim_inf" => $valor, ":lim_sup" => $valor]);
+    return $este_rango->nombre;
+  }
 
 }

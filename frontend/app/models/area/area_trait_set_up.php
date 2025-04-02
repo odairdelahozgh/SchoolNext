@@ -4,7 +4,7 @@ trait AreaTraitSetUp {
   
   use TraitUuid, TraitForms, TraitValidar;
 
-  public function __toString() 
+  public function __toString(): string 
   { 
     return $this->nombre; 
   }

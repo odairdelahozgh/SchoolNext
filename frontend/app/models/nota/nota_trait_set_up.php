@@ -6,6 +6,9 @@ trait NotaTraitSetUp {
   NotaTraitProps, NotaTraitLinks, NotaTraitCorrecciones;
 
   private function setUp() {
+    //$rango_nota = new Rango();
+    //$nota_maxima = $rango_nota->getLimiteSuperior(Rangos::Superior);
+    $nota_maxima = (INSTITUTION_KEY=='santarosa') ? 50 : 100;
 
     self::$_fields_show = [
       'all'     => ['id', 'uuid', 'annio', 'periodo_id', 'grado_id', 'salon_id', 'asignatura_id', 'estudiante_id', 
@@ -91,9 +94,9 @@ trait NotaTraitSetUp {
       'id'       => 'required',
       'uuid'     => 'required', 
 
-      'definitiva'   => ' min="0" max="100" maxlength="3" size="3" ',
-      'plan_apoyo'   => ' min="0" max="100" maxlength="3" size="3" ',
-      'nota_final'   => ' min="0" max="100" maxlength="3" size="3" ',
+      'definitiva'   => ' min="0" max="'.$nota_maxima.'" maxlength="3" size="3" ',
+      'plan_apoyo'   => ' min="0" max="'.$nota_maxima.'" maxlength="3" size="3" ',
+      'nota_final'   => ' min="0" max="'.$nota_maxima.'" maxlength="3" size="3" ',
 
       'paf_temas' => ' cols=35 rows=4 maxlength="1000" ',
       'paf_acciones' => ' cols=35 rows=4 maxlength="1000" ',
@@ -101,7 +104,7 @@ trait NotaTraitSetUp {
       'paf_activ_estud' => 'cols=35 rows=4 maxlength="1000" ',
 
       //'asi_desempeno'    => 'text',
-      'asi_calificacion' => ' min="0" max="100" maxlength="3" size="3" ',
+      'asi_calificacion' => ' min="0" max="'.$nota_maxima.'" maxlength="3" size="3" ',
       //'asi_fecha_entrega' => '',
       'asi_activ_profe' => ' cols=35 rows=4 maxlength="1000" ',
       'asi_activ_estud' => ' cols=35 rows=4 maxlength="1000" ',
@@ -164,7 +167,7 @@ trait NotaTraitSetUp {
       'asi_activ_profe' => 'máx. 1000 caracteres.',
       'asi_activ_estud' => 'máx. 1000 caracteres.',
     ];
-  
+    
     self::$_labels = [
       'is_active'       => 'Está Activo? ',
       'created_at'      => 'Creado el',
@@ -192,14 +195,13 @@ trait NotaTraitSetUp {
       'asi_desempeno'     => 'Desempeño',
       'asi_calificacion'  => 'Nota',
       'asi_fecha_entrega' => 'Fecha de entrega',
-      'asi_activ_profe'   => 'Actividades Realizadas por el Profesor',
+      'asi_activ_profe'   => (INSTITUTION_KEY=='santarosa') ? 'Observaciones' : 'Actividades Realizadas por el Profesor',
       'asi_activ_estud'   => 'Actividades para el Estudiante',
-
-
     ];
-  
+     
+
     self::$_placeholders = [
-      'paf_activ_profe' => 'Describa las actividades realizadas por el docente para apoyar al estudiante.',
+      'paf_activ_profe' => (INSTITUTION_KEY=='santarosa') ? 'Observaciones' : 'Describa las actividades realizadas por el docente para apoyar al estudiante.',
       'paf_activ_estud' => 'Describa la estrategia para la superacion de la dificultad.',
     ];
   

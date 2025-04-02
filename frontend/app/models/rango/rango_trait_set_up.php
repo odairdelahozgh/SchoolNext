@@ -7,14 +7,14 @@ trait RangoTraitSetUp {
   private function setUp() 
   {
     self::$_fields_show = [
-      'all'     => ['id', 'nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo', 'created_by', 'updated_by', 'created_at', 'updated_at'],
-      'index'   => ['id', 'nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo', 'orden'],
+      'all'     => ['rowid', 'nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo', 'created_by', 'updated_by', 'created_at', 'updated_at'],
+      'index'   => ['rowid', 'nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo', 'orden'],
       'create'  => ['nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo'],
       'edit'    => ['nombre', 'limite_inferior', 'limite_superior', 'color_rango', 'color_texto', 'color_fondo'],
     ];
   
     self::$_attribs = [
-      'id'      => 'required',
+      //'rowid'  => 'required',
       'nombre'  => 'required',
       'limite_inferior' => 'required',
       'limite_superior' => 'required',

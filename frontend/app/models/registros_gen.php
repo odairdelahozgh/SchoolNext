@@ -19,6 +19,7 @@ class RegistrosGen extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.estud_reg_obs_gen');
+    self::$pk = 'id';
     $this->setUp();
     self::$_order_by_defa = 't.annio, t.grado_id, t.estudiante_id, t.fecha DESC, ';
   }  

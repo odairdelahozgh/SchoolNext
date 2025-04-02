@@ -17,8 +17,8 @@ class Periodo extends LiteRecord {
   public function __construct() 
   {
     parent::__construct();
-    self::$table = Config::get('tablas.periodo');
-    //self::$pk    = 'rowid';
+    self::$table = Config::get('tablas.periodos');
+    self::$pk = 'id';
     $this->setUp();
   }
   
@@ -26,15 +26,7 @@ class Periodo extends LiteRecord {
   {
     $pk = (!is_null($periodo)) ? $periodo : self::$_periodo_actual;
     return $this->get($pk);
-  }  
-  
-  
-  public static function getFirstById(int $id)
-  {
-    //return self::first('SELECT * FROM ' . static::getSource() . ' WHERE '.static::getPK().' = ?', [$id]);
-    return self::first('SELECT * FROM ' . static::getSource() . ' WHERE id = ?', [$id]);
   }
-
 
 
 }

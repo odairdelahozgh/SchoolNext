@@ -19,6 +19,7 @@ class Indicador extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.indicadores');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.annio, t.periodo_id, t.grado_id, t.asignatura_id, t.codigo';
     $this->setUp();
   }

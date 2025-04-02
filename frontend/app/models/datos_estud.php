@@ -19,6 +19,7 @@ class DatosEstud extends LiteRecord {
     {
       parent::__construct();
       self::$table = Config::get('tablas.datosestud');
+      self::$pk = 'id';
       $this->setUp();  
     }
     

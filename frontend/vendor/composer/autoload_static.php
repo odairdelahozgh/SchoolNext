@@ -40,6 +40,7 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         'H' => 
         array (
             'Http\\Message\\' => 13,
+            'HtmxComponents\\' => 15,
         ),
         'G' => 
         array (
@@ -89,6 +90,10 @@ class ComposerStaticInitd99a9ede628e38a9a0cf47e13e4171f1
         'Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-http/message-factory/src',
+        ),
+        'HtmxComponents\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/odairdelahoz/htmx-components/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

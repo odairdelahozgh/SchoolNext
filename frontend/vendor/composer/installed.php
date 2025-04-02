@@ -75,6 +75,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'odairdelahoz/htmx-components' => array(
+            'pretty_version' => 'v1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => '08bb8a72ab11d074dbc0a3fc165b954961a4ff62',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../odairdelahoz/htmx-components',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'paragonie/random_compat' => array(
             'pretty_version' => 'v9.99.100',
             'version' => '9.99.100.0',

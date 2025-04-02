@@ -518,6 +518,40 @@
             "install-path": "../myclabs/deep-copy"
         },
         {
+            "name": "odairdelahoz/htmx-components",
+            "version": "v1.0.0",
+            "version_normalized": "1.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/odairdelahozgh/htmx-components.git",
+                "reference": "08bb8a72ab11d074dbc0a3fc165b954961a4ff62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/odairdelahozgh/htmx-components/zipball/08bb8a72ab11d074dbc0a3fc165b954961a4ff62",
+                "reference": "08bb8a72ab11d074dbc0a3fc165b954961a4ff62",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "time": "2025-02-21T02:40:22+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "HtmxComponents\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "A library of HTMX components in PHP 8",
+            "support": {
+                "issues": "https://github.com/odairdelahozgh/htmx-components/issues",
+                "source": "https://github.com/odairdelahozgh/htmx-components/tree/v1.0.0"
+            },
+            "install-path": "../odairdelahoz/htmx-components"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v9.99.100",
             "version_normalized": "9.99.100.0",

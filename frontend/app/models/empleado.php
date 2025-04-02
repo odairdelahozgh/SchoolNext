@@ -21,6 +21,7 @@ class Empleado extends Usuario {
   {
     parent::__construct();
     self::$table = Config::get('tablas.usuario');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.is_active DESC, t.apellido1, t.apellido2, t.nombres';
     $this->setUp();
   }

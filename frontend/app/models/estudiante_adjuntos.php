@@ -23,6 +23,7 @@ class EstudianteAdjuntos extends LiteRecord
     parent::__construct();
 
     self::$table = Config::get('tablas.estud_adjuntos');
+    self::$pk = 'id';
     
     $this->setUp();
   }

@@ -20,6 +20,7 @@ class Padre extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.usuario');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.username';
     $this->setUp();
   }

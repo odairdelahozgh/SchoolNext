@@ -19,6 +19,7 @@ class PsicoRemision extends LiteRecord
   {
     parent::__construct();
     self::$table = Config::get('tablas.psico_remision');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.fecha, t.estado, t.estudiante_id, t.remite_id';
     $this->setUp();
   }

@@ -18,6 +18,7 @@ class Seccion extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.seccion');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.nombre';
     $this->setUp();
   }

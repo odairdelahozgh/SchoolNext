@@ -1,9 +1,7 @@
 <?php
-
 trait SeguimientosTraitProps {
 
   private static $asi_valido = 2;
-
   
   public function fieldForm(
     string $field_name, 
@@ -39,8 +37,6 @@ trait SeguimientosTraitProps {
     );
 
   }
-
-
 
 
 }

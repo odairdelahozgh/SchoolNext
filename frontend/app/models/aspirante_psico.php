@@ -14,14 +14,11 @@ class AspirantePsico extends LiteRecord {
   
   public function __construct() 
   {
-    try {
-      parent::__construct();
-      self::$table = Config::get('tablas.aspirantes_psico');
-      self::$_order_by_defa = 'id, aspirante_id';
-      $this->setUp();
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
-    }
+    parent::__construct();
+    self::$table = Config::get('tablas.aspirantes_psico');
+    self::$pk = 'id';
+    self::$_order_by_defa = 'id, aspirante_id';
+    $this->setUp();
   }
   
 

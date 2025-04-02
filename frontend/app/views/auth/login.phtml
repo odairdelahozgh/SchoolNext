@@ -15,12 +15,15 @@
           <h3>Estaremos disponibles nuevamente en unos minutos</h3> -->
           <form action="<?=PUBLIC_PATH?>auth/login" method="post" class="w3-center">
             <input name="mode" type="hidden" value="auth">
-            <input id="username" name="username" type="text" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese USUARIO"><br>
-            <input id="password" name="password" type="password" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese CLAVE">                
+            <input autocomplete="username" id="username" name="username" type="text" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese USUARIO"><br>
+            <input autocomplete="current-password webauthn"  id="password" name="password" type="password" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese CLAVE">
             <p><button type="submit">ENTRAR</button></p>
-            
-            <span>Necesita ayuda para ingresar?</span> <br/>
-            <?= OdaUtils::linkWhatsApp(Config::get('config.construxzion.whatsapp'), 'Escribenos por WhatssApp', true, 'Necesito ayuda para ingresar') ?>
+            <?= 'No puede ingresar ? Necesita ayuda? Soporte técnico: '
+                .OdaUtils::linkWhatsApp(
+                  Config::get('config.construxzion.whatsapp'), 
+                  'Escribenos por WhatssApp', 
+                  true, 
+                  APP_NAME. ' ' .Session::get('username') .' Necesito Soporte T&eacute;cnico')  ?>
           </form>
         </div>
         <div class="w3-padding w3-row">

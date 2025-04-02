@@ -19,6 +19,7 @@ class Grado extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.grados');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.orden';
     $this->setUp();
   }

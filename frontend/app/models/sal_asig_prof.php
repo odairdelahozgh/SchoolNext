@@ -20,6 +20,7 @@ class SalAsigProf extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.salon_asignat_profe');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.user_id, t.salon_id, t.asignatura_id';
     $this->setUp();
   }
@@ -99,11 +100,21 @@ class SalAsigProf extends LiteRecord {
         ->leftJoin('usuario', 'u', 't.user_id=u.id')
         ->where('s.is_active=1')
         ->orderBy('asignatura_nombre, salon_nombre');
+
+      
+      $ArrGestionCarga = ['admin', 'secretaria', 'coordinadores'];
+      if (!in_array((string)Session::get('roll'), $ArrGestionCarga) ) 
+      {
+        $DQL->andWhere('t.user_id=?');
+        $DQL->setParams([$user_id]);
+      }
+      /*
       if ($user_id<>1)
       {
         $DQL->andWhere('t.user_id=?');
         $DQL->setParams([$user_id]);
       }
+      */
       return $DQL->execute();
 
     } catch (\Throwable $th)

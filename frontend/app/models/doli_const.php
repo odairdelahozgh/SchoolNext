@@ -22,6 +22,7 @@ class DoliConst extends LiteRecord
   {
     parent::__construct();
     self::$table = Config::get('tablas.doli_const');
+    self::$pk = 'rowid';
   }
 
   public function getValue(string $const_name) 

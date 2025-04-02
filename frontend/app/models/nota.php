@@ -17,11 +17,15 @@ class Nota extends LiteRecord {
 
   use NotaTraitSetUp;
 
-  public function __construct() 
+  private string $tbl_asignaturas = '';
+  public function __construct()
   {
     parent::__construct();
     self::$table = Config::get('tablas.nota');
+    self::$pk    = 'id';
     self::$_order_by_defa = 't.annio, t.periodo_id DESC, s.nombre, e.apellido1, e.apellido2, e.nombres';
+
+    $this->tbl_asignaturas = Config::get('tablas.asignaturas');
     $this->setUp();
   }
 
@@ -192,6 +196,28 @@ class Nota extends LiteRecord {
   }
 
 
+
+  public function getPreinformesByPeriodoSalon(
+    int $periodo_id, 
+    int $salon_id
+  ): array|string 
+  {
+    $DQL = new OdaDql(__CLASS__);
+
+    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
+          t.asi_calificacion, t.asi_activ_profe')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
+        ->leftJoin('asignatura', 'a')
+        ->leftJoin('estudiante', 'e')
+        ->where('t.periodo_id=? AND t.salon_id=?')
+        ->orderBy('estudiante_nombre, a.nombre')
+        ->setParams([$periodo_id, $salon_id]);
+
+    return $DQL->execute();
+  }
+
+
   public function getByAnnioPeriodoSalon(
     int $annio, 
     int $periodo_id, 
@@ -221,10 +247,11 @@ class Nota extends LiteRecord {
 
   public function getNotasSalon(int $salon_id) 
   {
+    $tbl_estud = Config::get('tablas.estudiantes');
     return (new Nota)->all(
       "SELECT n.*, CONCAT(e.apellido1, \" \", e.apellido2, \" \", e.nombres) AS estudiante
       FROM sweb_notas as n
-      LEFT JOIN ".self::$tbl_estud." AS e ON n.estudiante_id = e.id
+      LEFT JOIN ".$tbl_estud." AS e ON n.estudiante_id = e.id
       WHERE n.salon_id=? 
       ORDER BY n.periodo_id, e.apellido1, e.apellido2, e.nombres",  array($salon_id)
     );
@@ -300,22 +327,32 @@ class Nota extends LiteRecord {
   ) 
   {
     try {
-      if (!is_null($annio)) {
-        $tbl_notas = 'sweb_notas'.  ( ($annio != $this->Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
-      } else {
+      $Rango = new Rango();
+      $lim_sup_rango_bajo     = $Rango->getLimiteSuperior(Rangos::Bajo);
+      $lim_sup_rango_basico   = $Rango->getLimiteSuperior(Rangos::Basico);
+      $lim_sup_rango_alto     = $Rango->getLimiteSuperior(Rangos::Alto);
+      $lim_sup_rango_superior = $Rango->getLimiteSuperior(Rangos::Superior);
+
+      if (!is_null($annio)) 
+      {
+        $tbl_notas = 'sweb_notas'.  ( ($annio != self::$_annio_actual) ? "_$annio" : '' );
+      } 
+      else 
+      {
         $tbl_notas = 'sweb_notas';
-      }
-  
+      }      
+
       $aResult = [];
-  
       $sql = "SELECT N.id as id, N.uuid as uuid, N.annio AS annio, N.periodo_id AS periodo_id, N.grado_id AS grado_id,
       N.salon_id AS salon_id, N.asignatura_id AS asignatura_id, N.estudiante_id AS estudiante_id, E.uuid AS estudiante_uuid,
       concat(E.apellido1,' ',E.apellido2, ' ', E.nombres) AS estudiante, E.is_active AS is_active, E.annio_pagado, E.mes_pagado, 
       G.nombre AS grado, S.nombre AS salon, S.uuid AS salon_uuid, A.nombre AS asignatura, A.abrev AS asignatura_abrev,
       N.definitiva AS definitiva, N.plan_apoyo AS plan_apoyo, N.nota_final AS nota_final,
-      IF(N.nota_final<0, \"Error Nota Final <0\", IF(N.nota_final<60, \"Bajo\", IF(N.nota_final<70, \"Basico\", 
-      IF(N.nota_final<80, \"Basico +\", IF(N.nota_final<90, \"Alto\", IF(N.nota_final<95, \"Alto +\", 
-      IF(N.nota_final<=100, \"Superior\", \"Error Nota Final >100\"))))))) AS desempeno,
+      IF(N.nota_final<0, \"Error Nota Final <0\", 
+      IF(N.nota_final<{$lim_sup_rango_bajo}, \"Bajo\", 
+      IF(N.nota_final<$lim_sup_rango_basico, \"Basico\", 
+      IF(N.nota_final<{$lim_sup_rango_alto}, \"Alto\", 
+      IF(N.nota_final<={$lim_sup_rango_superior}, \"Superior\", \"Error Nota Final >{$lim_sup_rango_superior}\"))))) AS desempeno,
       N.is_asi_validar_ok, N.is_paf_validar_ok,
       N.i01,N.i02,N.i03,N.i04,N.i05,N.i06,N.i07,N.i08,N.i09,N.i10,
       DE.madre, DE.madre_tel_1, DE.padre, DE.padre_tel_1
@@ -359,7 +396,8 @@ class Nota extends LiteRecord {
       ->select('t.periodo_id, a.nombre as asignatura_nombre')
       ->addSelect('round(AVG(if(t.nota_final>0, t.nota_final, t.definitiva)), 2) as avg')
       ->leftJoin('asignatura', 'a')
-      ->where('t.asignatura_id NOT IN (30,35,36,37,38,39,40) AND t.periodo_id = ? AND t.salon_id = ?')
+      //->where('t.asignatura_id NOT IN (30,35,36,37,38,39,40) AND t.periodo_id = ? AND t.salon_id = ?')
+      ->where('a.calc_prom = 1 AND t.periodo_id = ? AND t.salon_id = ?')
       ->groupBy('t.periodo_id, a.nombre')
       ->setParams([$periodo_id, $salon_id]);
 
@@ -371,7 +409,7 @@ class Nota extends LiteRecord {
     int $coordinador_id, 
     int $annio) 
   {
-    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+    $tbl_notas = 'sweb_notas'.  ( ($annio != self::$_annio_actual) ? "_$annio" : '' );
 
     $DQL = new OdaDql(__CLASS__);
 
@@ -393,7 +431,7 @@ class Nota extends LiteRecord {
 
   public static function getSalonesByAnnio(int $annio) 
   {
-    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+    $tbl_notas = 'sweb_notas'.  ( ($annio != self::$_annio_actual) ? "_$annio" : '' );
 
     $DQL = new OdaDql(__CLASS__);
 
@@ -409,7 +447,7 @@ class Nota extends LiteRecord {
 
   public static function getGradosByAnnio(int $annio) 
   {
-    $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
+    $tbl_notas = 'sweb_notas'.  ( ($annio != self::$_annio_actual) ? "_$annio" : '' );
 
     $DQL = new OdaDql(__CLASS__);
 
@@ -429,8 +467,9 @@ class Nota extends LiteRecord {
   ) 
   {
     try {
-      $tbl_notas = 'sweb_notas'.  ( ($annio != Config::get('config.academic.annio_actual')) ? "_$annio" : '' );
-  
+      $tbl_notas = 'sweb_notas'.  ( ($annio != self::$_annio_actual) ? "_$annio" : '' );
+      //WHERE (N.grado_id = $grado_id) AND N.asignatura_id NOT IN (30, 35,36,37,38,39,40)
+
       $aResult = [];
       $sql = "SELECT N.id, N.annio AS annio, N.periodo_id AS periodo_id, 
       N.salon_id AS salon_id, S.nombre AS salon_nombre, 
@@ -444,7 +483,7 @@ class Nota extends LiteRecord {
       LEFT JOIN sweb_salones S on N.salon_id = S.id
       LEFT JOIN sweb_grados G on N.grado_id = G.id
       
-      WHERE N.grado_id = $grado_id and N.asignatura_id NOT IN (30, 35,36,37,38,39,40)
+      WHERE (N.grado_id = $grado_id) AND (A.calc_prom = 1)
       ORDER BY G.orden,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
   
       $registros = static::query($sql)->fetchAll();
@@ -470,11 +509,10 @@ class Nota extends LiteRecord {
   ): array|string 
   {
     try {
-      $annio = $annio ?? config::get('config.academic.annio_actual');
+      $annio = $annio ?? self::$_annio_actual;
       $secciones = implode(',', (new Seccion)::segSecPrimaria());
       
       $DQL = new OdaDql(__CLASS__);
-
       $DQL->setFrom('sweb_notas');
 
       $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
@@ -498,12 +536,10 @@ class Nota extends LiteRecord {
   
   public static function getCuadroHonorGeneralBachilleratoPDF(int $periodo_id, null|int $annio = null): array|string {
     try {
-      $annio = $annio ?? config::get('config.academic.annio_actual');
-
+      $annio = $annio ?? self::$_annio_actual;
       $secciones = implode(',', (new Seccion)::segSecBachillerato());
       
       $DQL = new OdaDql(__CLASS__);
-
       $DQL->setFrom('sweb_notas');
 
       $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
@@ -527,11 +563,13 @@ class Nota extends LiteRecord {
 
   public static function getCuadroHonorPrimariaPDF(int $periodo_id, null|int $annio = null): array|string {
     try {
-      $annio = $annio ?? config::get('config.academic.annio_actual');
+      $annio = $annio ?? self::$_annio_actual;
       $secciones = implode(',', (new Seccion)::segSecPrimaria());
   
-      $DQL = new OdaDql(__CLASS__);
+      $Rango = new Rango();
+      $lim_basico   = $Rango->getLimiteInferior(Rangos::Basico);
 
+      $DQL = new OdaDql(__CLASS__);
       $DQL->setFrom('sweb_notas');
 
       $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
@@ -542,7 +580,7 @@ class Nota extends LiteRecord {
           ->where('t.asignatura_id NOT IN (30, 35)')
           ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
           ->andWhere("t.salon_id IN (SELECT S.id FROM sweb_salones S WHERE S.grado_id IN (SELECT G.id FROM sweb_grados G WHERE G.seccion_id IN ($secciones)))")
-          ->andWhere("t.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM sweb_notas AS P WHERE P.definitiva<60 AND P.periodo_id=$periodo_id )")
+          ->andWhere("t.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM sweb_notas AS P WHERE P.definitiva<{$lim_basico} AND P.periodo_id=$periodo_id )")
           ->orderBy('prom DESC')
           ->setLimit(10);
       
@@ -561,12 +599,13 @@ class Nota extends LiteRecord {
   ): array|string 
   {
     try {
-      $annio = $annio ?? config::get('config.academic.annio_actual');
-
+      $annio = $annio ?? self::$_annio_actual;
       $secciones = implode(',', (new Seccion)::segSecBachillerato());
-  
-      $DQL = new OdaDql(__CLASS__);
+      
+      $Rango = new Rango();
+      $lim_basico   = $Rango->getLimiteInferior(Rangos::Basico);
 
+      $DQL = new OdaDql(__CLASS__);
       $DQL->setFrom('sweb_notas');
 
       $DQL->select('t.salon_id, t.estudiante_id, s.nombre as salon_nombre, AVG(t.definitiva) as prom')
@@ -577,7 +616,7 @@ class Nota extends LiteRecord {
           ->where('t.asignatura_id NOT IN (30, 35)')
           ->andWhere("t.annio=$annio AND t.periodo_id=$periodo_id")
           ->andWhere("t.salon_id IN (SELECT S.id FROM sweb_salones S WHERE S.grado_id IN (SELECT G.id FROM sweb_grados G WHERE G.seccion_id IN ($secciones)))")
-          ->andWhere("t.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM sweb_notas AS P WHERE P.definitiva<60 AND P.periodo_id=$periodo_id )")
+          ->andWhere("t.estudiante_id NOT IN ( SELECT DISTINCT P.estudiante_id FROM sweb_notas AS P WHERE P.definitiva<{$lim_basico} AND P.periodo_id=$periodo_id )")
           ->orderBy('prom DESC')
           ->setLimit(10);
       

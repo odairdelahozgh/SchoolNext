@@ -17,6 +17,7 @@ class Aspirante extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.aspirante');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.is_active DESC,t.fecha_insc DESC, t.estatus,t.grado_aspira,t.apellido1,t.apellido2,t.nombres';
     $this->setUp();
   }

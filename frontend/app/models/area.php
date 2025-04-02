@@ -16,6 +16,7 @@ class Area extends LiteRecord
   public function __construct() 
   {
     parent::__construct();
+    self::$pk = 'id';
     self::$table = Config::get('tablas.areas');
     $this->setUp();
   }

@@ -18,6 +18,7 @@ class Evento extends LiteRecord {
   {
     parent::__construct(); 
     self::$table = Config::get('tablas.evento');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.fecha_desde';
     $this->setUp();
   }

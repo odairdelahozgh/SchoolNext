@@ -20,6 +20,7 @@ class Salon extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.salon');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.is_active DESC, t.position';
     $this->setUp();
   }
@@ -79,8 +80,8 @@ class Salon extends LiteRecord {
           ->where("t.is_active=1");
       
       if ($user_id<>1) {
-        $DQL->andWhere("s.coordinador_id=?")
-          ->setParams([$user_id]);
+        $DQL->andWhere("s.coordinador_id=? or s.secretaria_id=? ")
+          ->setParams([$user_id, $user_id]);
       }
       return $DQL->execute();
     
@@ -129,7 +130,9 @@ class Salon extends LiteRecord {
       if (isset($RegSalon))
       {
         $RegGrado = (new Grado())::get($RegSalon->grado_id);
-        $nota_default = (1==$RegGrado->seccion_id) ? 100: 0;
+        //$nota_default = (1==$RegGrado->seccion_id) ? 100: 0;
+        $nota_default = 0;
+        
         // OBTENER TODAS LAS ASIGNATURAS DE ESE SALON (GRADO).
         $Model = new GradoAsignatura();
         $DQL = new OdaDql(__CLASS__);

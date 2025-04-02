@@ -20,6 +20,7 @@ class EstudiantePadres extends LiteRecord
   {
     parent::__construct();
     self::$table = Config::get(var: 'tablas.usuarios_estudiantes');
+    self::$pk = 'id';
     $this->setUp();
   }
 

@@ -82,11 +82,14 @@ class SecretariaController extends AppController
   
   public function listadoEstudActivos(string $search = ''): void 
   {
-    //$tabla_datos_adju = Config::get('tablas.estud_adjuntos');
     $this->page_action = 'Listado de Estudiantes Activos';
     $this->_default_search = $search;
     $this->data = (new Estudiante)->getListSecretaria(estado: 1);
     $this->arrData['Salones'] = (array)(new Salon)->getList(estado: 1);
+    
+    $DoliK = new DoliConst();
+    $this->show_matricula = $DoliK->getValue('SCHOOLNEXTACADEMICO_PROCESO_MATRICULA_ACTIVO');
+
     View::select('estudiantes/estud_list_activos');
   }
 
@@ -108,8 +111,10 @@ class SecretariaController extends AppController
       $Estudiante = (new Estudiante())::get($estudiante_id);
       $tabla_datos_estud = Config::get('tablas.datosestud');
       $DatosEstud = (new DatosEstud())::first("SELECT * FROM {$tabla_datos_estud} WHERE estudiante_id=?", [$estudiante_id]);
+      
       $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
       $Adjuntos = (new EstudianteAdjuntos())::first("SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante_id]);
+      
       if (!$Adjuntos) 
       {
         $Adjuntos = new EstudianteAdjuntos();

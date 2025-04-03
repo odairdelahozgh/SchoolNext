@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e02932e0c128b27a3b8247cc9ac0c046",
+    "content-hash": "5769ebae3bd2d47f8dc0b32a49757916",
     "packages": [
         {
             "name": "codehaveli/bitly-php",
@@ -504,6 +504,37 @@
                 }
             ],
             "time": "2022-03-03T13:19:32+00:00"
+        },
+        {
+            "name": "odairdelahoz/htmx-components",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/odairdelahozgh/htmx-components.git",
+                "reference": "08bb8a72ab11d074dbc0a3fc165b954961a4ff62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/odairdelahozgh/htmx-components/zipball/08bb8a72ab11d074dbc0a3fc165b954961a4ff62",
+                "reference": "08bb8a72ab11d074dbc0a3fc165b954961a4ff62",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "HtmxComponents\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "A library of HTMX components in PHP 8",
+            "support": {
+                "issues": "https://github.com/odairdelahozgh/htmx-components/issues",
+                "source": "https://github.com/odairdelahozgh/htmx-components/tree/v1.0.0"
+            },
+            "time": "2025-02-21T02:40:22+00:00"
         },
         {
             "name": "paragonie/random_compat",

@@ -36,7 +36,7 @@ class CurlAuth extends AuthDolibarr
       curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
       curl_setopt($Curl, CURLOPT_HTTPHEADER, $HTTPHeader);
       $result_json = curl_exec($Curl);
-      
+
       if (curl_errno($Curl))
       {
         $err_message = "Error en la solicitud cURL: " . curl_error($Curl);
@@ -47,10 +47,7 @@ class CurlAuth extends AuthDolibarr
       else
       {
         $dataLogin = json_decode($result_json, true);
-
-        //self::log('==== dataLogin ====');
-        //self::log($dataLogin);
-
+        
         if (isset($dataLogin['error'])) {
           $err_message = "Error del API: " . $dataLogin['error']['message'];
           $this->setError($err_message);
@@ -66,34 +63,13 @@ class CurlAuth extends AuthDolibarr
           // INFORMACIÓN DEL USUARIO
           $Curl = curl_init();
 
-          $endPoint = $apiUrl."/users/login/{$username}?includepermissions=0";
+          $endPoint = $apiUrl."/users/login/{$username}?includepermissions=1";
           $HTTPHeader = ['DOLAPIKEY: '.$token];
           curl_setopt($Curl, CURLOPT_URL, $endPoint);
           curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
           curl_setopt($Curl, CURLOPT_HTTPHEADER, $HTTPHeader);
           $result_json = curl_exec($Curl);
           $dataUserInfo = json_decode($result_json, true);
-
-          //self::log('==== dataUserInfo ====');
-          //self::log($dataUserInfo);
-
-          curl_close($Curl);
-          
-
-          // INFORMACIÓN DE LOS << GRUPOS >> AL QUE PERTECENE EL USUARIO
-          $Curl = curl_init();
-          $endPoint = $apiUrl.'/users/'.$dataUserInfo['id'].'/groups';
-          $HTTPHeader = ['DOLAPIKEY: '.$token];
-          curl_setopt($Curl, CURLOPT_URL, $endPoint);
-          curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
-          curl_setopt($Curl, CURLOPT_HTTPHEADER, $HTTPHeader);
-          $result_json = curl_exec($Curl);
-          $dataUserGroups = json_decode($result_json, true);
-          
-          //self::log('==== dataUserGroups ====');
-          //self::log($endPoint);
-          //self::log($dataUserGroups);
-
           curl_close($Curl);
 
           $roll = '';
@@ -103,24 +79,42 @@ class CurlAuth extends AuthDolibarr
           }
           else 
           {
+            // INFORMACIÓN DE LOS << GRUPOS >> AL QUE PERTECENE EL USUARIO
+            $Curl = curl_init();
+            $endPoint = $apiUrl.'/users/'.$dataUserInfo['id'].'/groups';
+            $HTTPHeader = ['DOLAPIKEY: '.$token];
+            curl_setopt($Curl, CURLOPT_URL, $endPoint);
+            curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($Curl, CURLOPT_HTTPHEADER, $HTTPHeader);
+            $result_json = curl_exec($Curl);
+            $dataUserGroups = json_decode($result_json, true);
+            curl_close($Curl);
+
             $losGrupos = [];
             foreach ($dataUserGroups as $key => $grupo) 
             {
-              $losGrupos[]=strtolower(trim($grupo['name']));
+              $losGrupos[]=strtolower(trim($grupo['nom']));
             }
-            
+            self::log('grupos a los que pertenece el susuario:');
             self::log($losGrupos);
+  
             // Definir los grupos en el orden de prioridad
-            $gruposPrioritarios = ["docentes", "padres", "secretarias", "contabilidad", "coordinadores"];
-            // Buscar el primer grupo que coincida en los grupos prioritarios
+            $gruposPrioritarios = ["docentes", "padres", "secretarias", "contabilidad", "coordinadores", "psicologos"];
             $roll = '';
-            foreach ($gruposPrioritarios as $grupo) {
-              if (in_array($grupo, $losGrupos)) {
+            foreach ($gruposPrioritarios as $grupo) 
+            {
+              if (in_array($grupo, $losGrupos)) 
+              {
                 $roll = $grupo;
                 break;
               }
             }
-            //self::log($roll);
+            
+            if ('sicologa'==strtolower($dataUserInfo['login']))
+            {
+              $roll = 'sicologos';
+            }
+            self::log('roll definido: '.$roll);
           }
 
           Session::set('id', $dataUserInfo['id'], $this->_sessionNamespace);

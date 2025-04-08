@@ -10,7 +10,7 @@ $year = date('Y');
 return [
     'application' => [
         'production' => false,
-        'database' => 'development',
+        'database' => 'windsor',
         'dbdate' => 'YYYY-MM-DD',
         'debug' => 'On',
         'log_exceptions' => 'On', //log_exceptions: muestra las excepciones en pantalla (On/off)

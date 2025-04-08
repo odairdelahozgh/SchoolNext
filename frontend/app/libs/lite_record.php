@@ -223,7 +223,4 @@ class LiteRecord extends ORM
     return strtolower(OdaUtils::getNumeroALetras($val_num));
   }
   
-
-
-
 }

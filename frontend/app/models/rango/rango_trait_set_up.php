@@ -14,7 +14,7 @@ trait RangoTraitSetUp {
     ];
   
     self::$_attribs = [
-      //'rowid'  => 'required',
+      'id'  => 'required',
       'nombre'  => 'required',
       'limite_inferior' => 'required',
       'limite_superior' => 'required',

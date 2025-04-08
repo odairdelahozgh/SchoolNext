@@ -30,9 +30,9 @@ return [
 
     'windsor' => [
       'host'     => 'localhost', //  ip o nombre del host de la base de datos
-      'username' => 'tecnoro1_schoolnext', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
-      'password' => '-FL[k#+?PCh!', //  clave del usuario de la base de datos
-      'name'     => 'tecnoro1_schoolnext', // nombre de la base de datos
+      'username' => 'root', // usuario con permisos en la base de datos [no es recomendable usar el usuario root]
+      'password' => '', //  clave del usuario de la base de datos
+      'name'     => 'windsor_tecnorobotica', // nombre de la base de datos
       'type'     => 'mysql', // tipo de motor de base de datos (mysql, pgsql o sqlite)
       'charset'  => 'utf8', // Conjunto de caracteres de conexión, por ejemplo 'utf8'
       //'dsn' => '', // cadena de conexión a la base de datos

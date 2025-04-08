@@ -110,4 +110,15 @@ class Rango extends LiteRecord {
     return $este_rango->nombre;
   }
 
+  public function showTablaRangos(): string
+  {
+    $Rangos = (new Rango())->all();
+    $tabla = new OdaTable();
+    $tabla->setCaption('<b>TABLA DE RANGOS</b>');
+    foreach ($Rangos as $key => $itemRango) {
+      $tabla->addRow(["{$itemRango->limite_inferior}-{$itemRango->limite_superior}", strtoupper($itemRango->nombre)]);
+    }
+    return $tabla;
+  }
+
 }

@@ -29,7 +29,7 @@ class DoliConst extends LiteRecord
   {
     $sql = "SELECT * FROM ".static::getSource()." WHERE name=?";
     $Const = (new DoliConst())::first($sql, [$const_name]);
-    return $Const->value;
+    return $Const->value??'';
   }
 
   

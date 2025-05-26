@@ -13,19 +13,19 @@ require_once CORE_PATH . 'kumbia/kumbia_view.php';
 class View extends KumbiaView
 {
     
-    /**
-     * Método que muestra el contenido de una vista
-     */
-    public static function content() {                
-      OdaFlash::output();        
-      parent::content();
+  /**
+   * Método que muestra el contenido de una vista
+   */
+  public static function content() {                
+    OdaFlash::output();        
+    parent::content();
   }
   
   /**
    * Método para mostrar los mensajes e impresiones del request
    */
   public static function flash() {        
-      return self::partial('snippets/flash');        
+    return self::partial('snippets/flash');        
   }
   
   /**

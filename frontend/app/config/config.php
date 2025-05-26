@@ -39,6 +39,7 @@ return [
     'construxzion' => [
       'name'      => 'ConstruxZion Soft CO',
       'ceo'       => 'Odair De La Hoz Rojas',
+      'website'   => 'https://construxzionsoft.com.co',
       'twitter'   => 'https://twitter.com/construxzion',
       'copy'      => "Copyright © $year",
       'copy_text' => "Todos los Derechos Reservados",

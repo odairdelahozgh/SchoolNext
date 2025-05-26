@@ -110,9 +110,9 @@ class RangoD extends LiteRecord
   {
     $Rangos = $this->all();
     $tabla = new OdaTable();
-    $tabla->setCaption('<b>TABLA DE RANGOS</b>');
+    $tabla->setCaption("<font size=\"3\"><b>TABLA DE RANGOS</b></font>");
     foreach ($Rangos as $key => $itemRango) {
-      $tabla->addRow(["{$itemRango->limite_inferior}-{$itemRango->limite_superior}", strtoupper($itemRango->label)]);
+      $tabla->addRow(["<font size=\"3\">{$itemRango->limite_inferior}-{$itemRango->limite_superior}</font>", strtoupper("<font size=\"3\">{$itemRango->label}</font>")]);
     }
     return $tabla;
   }

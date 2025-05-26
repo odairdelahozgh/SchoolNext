@@ -8,6 +8,28 @@
 class NotasController extends ScaffoldController
 {
 
+  public function exportPreinformeSalonPdf(int $periodo_id, string $salon_uuid): void 
+  {
+    $this->arrData['Periodo'] = $periodo_id;
+    $Salon = (new Salon())->getByUUID($salon_uuid);
+    $this->arrData['Salon'] = $Salon;
+    $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
+    $this->arrData['Docentes'] = [];
+    
+    foreach ( (new Usuario)->getDocentes() as $empleado)
+    {
+      $this->arrData['Docentes'][$empleado->id] = $empleado;
+    }
+
+    $this->data = (new Nota())->getPreinformesByPeriodoSalon($periodo_id, $Salon->id);
+
+    $this->file_tipo  = 'Preinforme';
+    $this->file_name  = "preinforme-de-{$Salon}-periodo-{$periodo_id}";
+    $this->file_title = "Preinformes de {$Salon}";
+    View::select(view: "preinformes.pdf", template: null);
+  }
+
+
   public function filtrar(
     int $annio,
     int $periodo,
@@ -45,7 +67,7 @@ class NotasController extends ScaffoldController
   }
 
 
-  function guardarCalificaciones(int $periodo, int $salon_id, int $asignatura_id) 
+  public function guardarCalificaciones(int $periodo, int $salon_id, int $asignatura_id) 
   {
     try {
       $this->page_action = "Guardar Notas";
@@ -170,62 +192,91 @@ class NotasController extends ScaffoldController
     {
       OdaFlash::error($th);
     }
-    return Redirect::to(route: $redirect);
+    return Redirect::to(route: $redirect);    
   }
 
 
   public function exportBoletinEstudiantePdf(int $periodo_id, string $estudiante_uuid, int $tipo = 1): void 
   {
     $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
+
     $this->arrData['Periodo'] = $periodo_id;
+
     $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
     $this->arrData['Estud'] = $Estud;
+
     $Salon = (new Salon())::get($Estud->salon_id);
     $this->arrData['Salon'] = $Salon;
+
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
+    
     $this->arrData['Docentes'] = [];
     foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
     }
-    $this->data = (new Nota())->getByPeriodoEstudiante($periodo_id, $Estud->id);
+    
+    $this->data = (new Nota())->getBoletinesByPeriodoEstudiante($periodo_id, $Estud->id);
+      
+    $this->arrData['Puestos'] = (new Nota())->getPuestos_BySalonByPeriodo($Salon->id,$periodo_id);
+    
     $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
     foreach ($Indicadores as $key => $indic)
     {
       $val = strtoupper(substr($indic->valorativo,0,1));
       $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.trim($indic->concepto);
     }
+
     $this->file_tipo = $tipo_boletin->label();
     $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Estud-periodo-$periodo_id");
     $this->file_title = $tipo_boletin->label()." de Notas $Estud";
-    View::select(view: "boletines.pdf", template: null);
+
+    View::select(view: 'boletines_'.INSTITUTION_KEY.'.pdf', template: null);
   }
 
 
   public function exportBoletinSalonPdf(int $periodo_id, string $salon_uuid, int $tipo = 1): void 
   {
-    $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
-    $this->arrData['Periodo'] = $periodo_id;
-    $Salon = (new Salon())->getByUUID($salon_uuid);
-    $this->arrData['Salon'] = $Salon;
-    $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
-    $this->arrData['Docentes'] = [];
-    foreach ( (new Usuario)->getDocentes() as $empleado)
+    try
     {
-      $this->arrData['Docentes'][$empleado->id] = $empleado;
+      $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
+      $this->arrData['Periodo'] = $periodo_id;
+      
+      $Salon = (new Salon())->getByUUID($salon_uuid);
+      $this->arrData['Salon'] = $Salon;
+      
+      $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
+      
+      $this->arrData['Docentes'] = [];
+      foreach ( (new Usuario)->getDocentes() as $empleado)
+      {
+        $this->arrData['Docentes'][$empleado->id] = $empleado;
+      }
+  
+      $this->data = (new Nota())->getBoletinesByPeriodoSalon($periodo_id, $Salon->id);
+      
+      $this->arrData['Puestos'] = (new Nota())->getPuestos_BySalonByPeriodo($Salon->id,$periodo_id);
+
+      $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
+      foreach ($Indicadores as $key => $indic)
+      {
+        $val = strtoupper(substr($indic->valorativo,0,1));
+        $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
+      }
+  
+      // // PARA LA GENERACIÓN DE ARCHIVOS
+      $this->file_tipo = OdaUtils::sanearString($tipo_boletin->label());
+      $this->file_name = OdaUtils::getSlug($this->file_tipo."-$Salon-periodo-$periodo_id");
+      $this->file_title = $this->file_tipo .' ' .$Salon;
+      
+      View::select(view: 'boletines_'.INSTITUTION_KEY.'.pdf', template: null);
     }
-    $this->data = (new Nota())->getByPeriodoSalon($periodo_id, $Salon->id);
-    $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
-    foreach ($Indicadores as $key => $indic)
+
+    catch (\Throwable $th)
     {
-      $val = strtoupper(substr($indic->valorativo,0,1));
-      $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
+      OdaLog::error($th);
+      View::select(view: null, template: null);
     }
-    // // PARA LA GENERACIÓN DE ARCHIVOS
-    $this->file_tipo = $tipo_boletin->label();
-    $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Salon-periodo-$periodo_id");
-    $this->file_title = $tipo_boletin->label() .' de ' .$Salon;
-    View::select(view: "boletines.pdf", template: null);
   }
 
 

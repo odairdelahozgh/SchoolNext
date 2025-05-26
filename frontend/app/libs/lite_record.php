@@ -27,9 +27,7 @@ class LiteRecord extends ORM
   protected static $_order_by_defa = 't.id';
   protected static $_class_name = __CLASS__;
   
-  /**
-   * @deprecated mejor usar $_class_name
-   */
+  #[\Deprecated(message: "use _class_name")]
   protected static $class_name = __CLASS__; /// esto se eliminará
   
   const LIM_PAGO_PERIODOS = [ 1=>3, 2=>6, 3=>9, 4=>11, 5=>11 ]; /// esto se eliminará

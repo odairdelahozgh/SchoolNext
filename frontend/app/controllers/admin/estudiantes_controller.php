@@ -15,7 +15,6 @@ class EstudiantesController extends ScaffoldController
     $this->fieldsToShowLabels = (new Estudiante())->getFieldsShow(__FUNCTION__, true);
     $this->data = (new Estudiante())->getListEstudiantes();
   }
-  
 
   public function exportRegistroEscolarByAnnioEstudiante(int $annio, int $estudiante_id) 
   {
@@ -44,12 +43,23 @@ class EstudiantesController extends ScaffoldController
   }
 
 
+  public function exportMoodleCsv(): void 
+  {
+    $this->file_title = "export Estudiantes Moodle";
+    $this->file_name = OdaUtils::getSlug($this->file_title);
+    $this->data = [];
+    $this->registros = (new Estudiante)->getListExportMoodle();
+    $this->file_download = false;
+    View::select(view: "export_csv_estudiantes_moodle", template: 'csv'); //'xls_easy');
+  }
+
+
   public function exportCentralesDeRiesgoXls(): void 
   {
     $this->file_title = "export Centrales de Riesgo";
     $this->file_name = OdaUtils::getSlug($this->file_title);
     $this->data = [];
-    $this->arrData['Estudiantes'] = (new Estudiante)->getListEstudiantes();
+    $this->registros = (new Estudiante)->getListEstudiantes();
 
     $this->file_download = false;
     View::select(view: "export_xls_centrales_de_riesgo", template: 'csv'); //'xls_easy');
@@ -62,8 +72,7 @@ class EstudiantesController extends ScaffoldController
     $this->data = (new Estudiante)->getListMatriculados();
     $this->file_download = false;
     View::select(view: "export_pdf_matriculados", template: 'pdf/mpdf');
-  }
-  
+  }  
 
   public function exportListPendientesMatriculaPdf(): void 
   {
@@ -72,8 +81,7 @@ class EstudiantesController extends ScaffoldController
     $this->data = (new Estudiante)->getListPendientesMatricula();
     $this->file_download = false;
     View::select(view: "export_pdf_pendientes_matricula", template: 'pdf/mpdf');
-  }
-  
+  }  
 
   public function exportPdf(): void 
   {
@@ -84,7 +92,6 @@ class EstudiantesController extends ScaffoldController
     View::select(view: "export_pdf_$this->controller_name", template: 'pdf/mpdf');
   }
 
-
   public function exportEstudiantesBySalonPdf(string $salon_uuid) 
   {
     $RegSalon = (new Salon)::getByUUID($salon_uuid);
@@ -94,7 +101,6 @@ class EstudiantesController extends ScaffoldController
     $this->data = (new Estudiante)->getListActivosByModulo(modulo: Modulo::Secre, where: ['salon_id'=>$RegSalon->id]);    
     View::select(view: "secre_pdf_estudiantes_by_salon", template: 'pdf/mpdf');
   }
-
 
   public function promoverMatriculas(int $grado_id) 
   {
@@ -124,7 +130,6 @@ class EstudiantesController extends ScaffoldController
       OdaFlash::error($th);
     }
   }
-
 
   public function editEstudiante(int $id, string $redirect='') 
   {
@@ -196,7 +201,6 @@ class EstudiantesController extends ScaffoldController
     }
   }
 
-
   public function exportDocsMatricula(int $estudiante_id) 
   {
     try
@@ -217,7 +221,6 @@ class EstudiantesController extends ScaffoldController
       OdaFlash::error($th);
     }
   }
-
 
   public function generarNumeroMatricula(int $estudiante_id) 
   {
@@ -242,7 +245,6 @@ class EstudiantesController extends ScaffoldController
     }
     return redirect::to('secre-estud-list-activos');
   }
-
 
   public function vincularPadresHijos(int $estudiante_id) 
   {

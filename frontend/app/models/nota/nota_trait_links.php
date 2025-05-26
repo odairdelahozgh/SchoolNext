@@ -2,14 +2,14 @@
 trait NotaTraitLinks 
 {
 
-  public static function lnkCuadroHonorPrimariaPDF(int $periodo): string 
+  public static function lnkCuadroHonorPrescolarPDF(int $periodo): string 
   {
     try
     {
       return OdaTags::linkButton
       (
-        action: "admin/notas/exportCuadroHonorPrimariaPdf/$periodo", 
-        text: "Top 10 - P$periodo",      
+        action: "admin/notas/exportCuadroHonorPrescolarPdf/$periodo", 
+        text: "Prescolar Top 10 - P$periodo",      
         attrs: 'class="w3-button w3-green" target="_blank"',
       );
     } 
@@ -19,7 +19,24 @@ trait NotaTraitLinks
       return '';
     }
   }
-  
+
+  public static function lnkCuadroHonorPrimariaPDF(int $periodo): string 
+  {
+    try
+    {
+      return OdaTags::linkButton
+      (
+        action: "admin/notas/exportCuadroHonorPrimariaPdf/$periodo", 
+        text: "Primaria Top 10 - P$periodo",      
+        attrs: 'class="w3-button w3-green" target="_blank"',
+      );
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th);
+      return '';
+    }
+  }  
   
   public static function lnkCuadroHonorBachilleratoPDF(int $periodo): string 
   {
@@ -28,7 +45,7 @@ trait NotaTraitLinks
       return OdaTags::linkButton
       (
         action: "admin/notas/exportCuadroHonorBachilleratoPdf/$periodo", 
-        text: "Top 10 - P$periodo",
+        text: "Bachillerato Top 10 - P$periodo",
         attrs: 'class="w3-button w3-green" target="_blank"',
       );
     } 
@@ -37,17 +54,16 @@ trait NotaTraitLinks
       OdaFlash::error($th);
       return '';
     }
-  }    
-
-  
-  public static function lnkCuadroHonorGeneralPrimariaPDF(int $periodo): string 
+  }
+    
+  public static function lnkCuadroHonorGeneralPrescolarPDF(int $periodo): string 
   {
     try
     {
       return OdaTags::linkButton
       (
-        action: "admin/notas/exportCuadroHonorGeneralPrimariaPdf/$periodo", 
-        text: "Puestos P$periodo",      
+        action: "admin/notas/exportCuadroHonorGeneralPrescolarPdf/$periodo", 
+        text: "Prescolar Puestos P$periodo",      
         attrs: 'class="w3-button w3-blue" target="_blank"',
       );
     }
@@ -57,7 +73,24 @@ trait NotaTraitLinks
       return '';
     }
   }
-  
+
+  public static function lnkCuadroHonorGeneralPrimariaPDF(int $periodo): string 
+  {
+    try
+    {
+      return OdaTags::linkButton
+      (
+        action: "admin/notas/exportCuadroHonorGeneralPrimariaPdf/$periodo", 
+        text: "Primaria Puestos P$periodo",      
+        attrs: 'class="w3-button w3-blue" target="_blank"',
+      );
+    }
+    catch (\Throwable $th)
+    {
+      OdaFlash::error($th);
+      return '';
+    }
+  }  
   
   public static function lnkCuadroHonorGeneralBachilleratoPDF(int $periodo): string 
   {
@@ -66,7 +99,7 @@ trait NotaTraitLinks
       return OdaTags::linkButton
       (
         action: "admin/notas/exportCuadroHonorGeneralBachilleratoPdf/$periodo", 
-        text: "Puestos P$periodo",
+        text: "Bachillerato Puestos P$periodo",
         attrs: 'class="w3-button w3-blue" target="_blank"',
       );
     }
@@ -76,8 +109,6 @@ trait NotaTraitLinks
       return '';
     }
   }
-
-
   
   public static function lnkPageCalificar(int $periodo_id, int $salon_id, int $asignatura_id, $enabled=true): string 
   {

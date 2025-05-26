@@ -23,6 +23,7 @@
  * Muestra un enlace que al hacer click irá a dominio.com/pages/aviso
  *
  */
+
 class PagesController extends AppController
 {
   
@@ -35,18 +36,11 @@ class PagesController extends AppController
 
   public function miperfil()
   {
-    try
+    $this->page_action = 'Mi Perfil';
+    $this->MiUsuario = (new Usuario())->get($this->user_id);
+    if ( in_array($this->MiUsuario->roll, ['coordinadores', 'admin']) )
     {
-      $this->page_action = 'Mi Perfil';
-      $this->MiUsuario = (new Usuario())->get($this->user_id);
-      if ( in_array($this->MiUsuario->roll, ['coordinadores', 'admin']) )
-      {
-        $this->arrData['listaUsuarios'] = (new Empleado())->getList(1);
-      }
-    }
-    catch (\Throwable $th) 
-    {
-      OdaFlash::error($th);
+      $this->arrData['listaUsuarios'] = (new Empleado())->getList(1);
     }
   }
 

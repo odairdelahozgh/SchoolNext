@@ -19,6 +19,7 @@ class GradoAsignatura extends LiteRecord {
   {
     parent::__construct();
     self::$table = Config::get('tablas.grados_asignat');
+    self::$pk = 'id';
     self::$_order_by_defa = 't.orden';
     $this->setUp();
   }

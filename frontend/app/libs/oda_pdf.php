@@ -14,12 +14,7 @@
  * @license    https://github.com/KumbiaPHP/KumbiaPHP/blob/master/LICENSE   New BSD License
  */
 
-/**
- * Utilidades para el manejo de ficheros y directorios
- * @category   Kumbia
- * @package    Core
- * @deprecated MEjor usar MPDF, please
- */
+#[\Deprecated(message: "use mpdf")]
 class OdaPdf extends Fpdf
 {
   public function __construct(

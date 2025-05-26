@@ -33,18 +33,23 @@ class PagesController extends AppController
   }
 
 
-  public function miperfil() 
+  public function miperfil()
   {
-    try 
+    try
     {
-      $this->MiUsuario = (new Empleado())->get($this->user_id);
       $this->page_action = 'Mi Perfil';
-    } 
+      $this->MiUsuario = (new Usuario())->get($this->user_id);
+      if ( in_array($this->MiUsuario->roll, ['coordinadores', 'admin']) )
+      {
+        $this->arrData['listaUsuarios'] = (new Empleado())->getList(1);
+      }
+    }
     catch (\Throwable $th) 
     {
       OdaFlash::error($th);
     }
   }
+
 
   public function index() 
   {
@@ -55,6 +60,7 @@ class PagesController extends AppController
   {
     View::template('looper/layout-pagenavs');
   }
+
 
   public function bootstrap_htmx_test() 
   {
@@ -67,7 +73,6 @@ class PagesController extends AppController
     View::select(null, null);
     echo '<p>resultado [100-200] = '.rand(100, 200).'</p>';
   }
-
   
 
 }

@@ -28,18 +28,13 @@ class Rango extends LiteRecord {
     $this->setUp();
   }
 
-  /**
-  * @deprecated
-  */
+  #[\Deprecated(message: "use getRangoNota")]
   public static function getRango(int $valor=0): string 
   {
     return (new Rango())->getRangoNota($valor);
   }
   
-
-  /**
-  * @deprecated
-  */
+  #[\Deprecated(message: "use getColorNota")]
   public static function getColorRango(int $valor=0): string 
   {
     return (new Rango())->getColorNota($valor);

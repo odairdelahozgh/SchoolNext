@@ -58,14 +58,14 @@ class OdaDql {
   public function renderlog(): string 
   {
     return match($this->_tipo_dql) {
-      TipoDql::Select => 'SELECT '.PHP_EOL
+      TipoDql::Select => 'SELECT '
               . ((empty($this->_select) or ('*'==$this->_select)) ? 't.*' : $this->_select).PHP_EOL
-              . " FROM $this->_from_source AS t".PHP_EOL
+              . "FROM $this->_from_source AS t".PHP_EOL
               . implode(" ", $this->_joins).PHP_EOL
-              . (empty($this->_where) ? '' : " WHERE $this->_where ").PHP_EOL
-              . (empty($this->_group_by) ? '' : " GROUP BY $this->_group_by").PHP_EOL
-              . (empty($this->_order_by) ? '' : " ORDER BY $this->_order_by")
-              . (empty($this->_limit)    ? '' : " LIMIT $this->_limit"),
+              . (empty($this->_where) ? '' : "WHERE $this->_where ").PHP_EOL
+              . (empty($this->_group_by) ? '' : "GROUP BY $this->_group_by").PHP_EOL
+              . (empty($this->_order_by) ? '' : "ORDER BY $this->_order_by")
+              . (empty($this->_limit)    ? '' : "LIMIT $this->_limit"),
 
       TipoDql::Update => "UPDATE $this->_from_source AS t".PHP_EOL
               . (empty($this->_sets) ? '-ERROR NO SET-' : " SET $this->_sets").PHP_EOL
@@ -78,12 +78,12 @@ class OdaDql {
 
   public function execute(bool $write_log = false) 
   {
-    if ($write_log) { 
-      OdaLog::debug(
-        $this->renderlog().PHP_EOL
-        .'Params: ' .$this->getParams() );
+    $result = (new $this->_from)->all($this->render(), $this->_params);
+    if ($write_log) 
+    { 
+      OdaLog::debug( $this->renderlog().PHP_EOL.PHP_EOL .'Params: ' .$this->getParams(), 'Num Registros: '.Count($result));
     }
-    return (new $this->_from)->all($this->render(), $this->_params);
+    return $result;
   }
   
   public function executeFirst(bool $write_log = false) 
@@ -130,7 +130,8 @@ class OdaDql {
   public function update(array $arr_values) 
   {
     $sets = '';
-    foreach ($arr_values as $key => $value) {
+    foreach ($arr_values as $key => $value) 
+    {
       $sets .= " t.$key='$value',";
     }
     $this->_sets = substr($sets, 0, strlen($sets)-1);
@@ -141,12 +142,19 @@ class OdaDql {
   public function addUpdate(array $arr_values) 
   {
     $sets = '';
-    foreach ($arr_values as $key => $value) { 
+    foreach ($arr_values as $key => $value) 
+    { 
       $sets .= " t.$key='$value',";
     }
     
-    if (empty($this->_sets)) { $this->_sets = substr($sets, 0, strlen($sets)-1); } 
-    else { $this->_sets .= ', '.substr($sets, 0, strlen($sets)-1); }
+    if (empty($this->_sets)) 
+    { 
+      $this->_sets = substr($sets, 0, strlen($sets)-1); 
+    } 
+    else 
+    { 
+      $this->_sets .= ', '.substr($sets, 0, strlen($sets)-1); 
+    }
 
     $this->_tipo_dql  = TipoDql::Update;
     return $this;
@@ -155,13 +163,17 @@ class OdaDql {
   public function insert(array $arr_values) 
   {
     $cols = '';  $vals = '';
-    foreach ($arr_values as $key => $value) { 
+
+    foreach ($arr_values as $key => $value) 
+    { 
       $cols .= " $key,";
       $vals .= " '$value',";
     }
+
     $this->_inserts_cols = substr($cols, 0, strlen($cols)-1);
     $this->_inserts_vals = substr($vals, 0, strlen($vals)-1);
     $this->_tipo_dql  = TipoDql::Insert;
+
     return $this;
   }
 
@@ -169,14 +181,20 @@ class OdaDql {
   {
     $cols = '';
     $vals = '';
-    foreach ($arr_values as $key => $value) { 
+
+    foreach ($arr_values as $key => $value) 
+    { 
       $cols .= " $key,";
       $vals .= " '$value',";
     }
-    if (empty($this->_inserts_cols)) {
+
+    if (empty($this->_inserts_cols)) 
+    {
       $this->_inserts_cols = substr($cols, 0, strlen($cols)-1);
       $this->_inserts_vals = substr($vals, 0, strlen($vals)-1);
-    } else { 
+    } 
+    else 
+    { 
       $this->_inserts_cols .= ', '.substr($cols, 0, strlen($cols)-1);
       $this->_inserts_vals .= ', '.substr($vals, 0, strlen($vals)-1);
     }
@@ -189,9 +207,13 @@ class OdaDql {
   {
     $str = '';
     $cnt = count($concat);
-    if ($cnt>0) {
+    if ($cnt>0) 
+    {
       $str = "CONCAT($concat[0], ' '";
-      for ($i=1; $i<$cnt-1; $i++) { $str .= ", $concat[$i], ' '"; }
+      for ($i=1; $i<$cnt-1; $i++) 
+      { 
+        $str .= ", $concat[$i], ' '"; 
+      }
       $str .= ', '.$concat[$cnt-1].") AS $alias";
     }
 
@@ -211,7 +233,10 @@ class OdaDql {
   {
     $table_singular = OdaUtils::singularize(strtolower(trim($table_singular)));
     $join = PHP_EOL." LEFT JOIN ". Config::get("tablas.$table_singular") ." AS $alias ";
-    if (is_null($condition)) { $condition = "t.$table_singular"."_id=$alias.id"; }
+    if (is_null($condition))
+    { 
+      $condition = "t.$table_singular"."_id=$alias.id"; 
+    }
     $join .= " ON $condition ";
     $this->_joins[]=$join;
     return $this;
@@ -225,13 +250,13 @@ class OdaDql {
 
   public function andWhere(string $where) 
   {
-    $this->_where = ($this->_where) ? PHP_EOL."($this->_where) AND ($where)" : $where;
+    $this->_where = $this->_where ? PHP_EOL."($this->_where) AND ($where)" : $where;
     return $this;
   }
 
   public function orWhere(string $where) 
   {
-    $this->_where = ($this->_where) ? PHP_EOL."($this->_where) OR ($where)" : $where;
+    $this->_where = $this->_where ? PHP_EOL."($this->_where) OR ($where)" : $where;
     return $this;
   }
 
@@ -243,7 +268,7 @@ class OdaDql {
 
   public function addOrderBy(string $sort) 
   {
-    $this->_order_by = ($this->_order_by) ? PHP_EOL."$this->_order_by, $sort" : $sort;
+    $this->_order_by = $this->_order_by ? PHP_EOL."$this->_order_by, $sort" : $sort;
     // Default $order = 'ASC'
     return $this;
   }

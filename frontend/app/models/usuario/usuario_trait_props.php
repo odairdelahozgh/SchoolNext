@@ -1,4 +1,6 @@
 <?php
+
+use Mpdf\Tag\Img;
 trait UsuarioTraitProps {
 
   protected static $default_foto_usuario = 'upload/users/user.png';
@@ -8,7 +10,6 @@ trait UsuarioTraitProps {
     return $this->getNombreCompleto('a1 a2 n');
   }
   
-
   public static function getFotoUser(
     int $id, 
     int $max_width=80, 
@@ -86,19 +87,15 @@ trait UsuarioTraitProps {
   }
 
 
-  public function getCuentaInstit($show_ico=false) 
+  public function getCuentaInstit($show_ico=false): string 
   { 
     try {
       $app_externa = Config::get('institutions.'.INSTITUTION_KEY.'.app_externa');
-      $sufijo = ('msteams'==$app_externa) ? '@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio') : '';
+      $sufijo = 'msteams'==$app_externa ? '@'.Config::get('institutions.'.INSTITUTION_KEY.'.dominio') : '';
       
-      $ico = ($show_ico) ? OdaTags::img(src:$app_externa.'_logo.svg', attrs:'width="16"', err_message:'').' '  : '';
-      
-      return $ico.(
-        ($this->usuario_instit) 
-        ? "{$this->usuario_instit}{$sufijo} {$this->clave_instit}"
-        : 'No tiene usuario en App Externa'
-      );
+      $ico = $show_ico ? OdaTags::img(src:$app_externa.'_logo.svg', attrs:'width="16"', err_message:'').' '  : '';
+      $usuario = $this->usuario_instit ? "{$this->usuario_instit}{$sufijo} {$this->clave_instit}" : 'No tiene usuario en App Externa';
+      return $ico . $usuario;
     
     } catch (\Throwable $th) {
       OdaFlash::error($th);
@@ -107,29 +104,23 @@ trait UsuarioTraitProps {
   }
 
 
-  static public function getId(string $documento): int 
+  public static function getId(string $documento): int 
   {
     $source  =  Config::get('tablas.usuario');
     $sql = "SELECT id FROM $source WHERE documento = ?";
     $regUser = static::query($sql, [$documento])->fetch();
-    return ( ($regUser) ? (int)$regUser->id: 0);
+    return $regUser ? (int)$regUser->id: 0;
   }
 
 
-  static public function existe(string $documento): bool 
+  public static function existe(string $documento): bool 
   {
     $DQL = new OdaDql(__CLASS__);
     $DQL->select("t.id, t.documento")
         ->where('t.documento=?')
         ->setParams([$documento]);
     $Reg = $DQL->executeFirst(true);
-    return ($Reg ? true : false);
-  }
-
-
-  static public function crearUsuario() 
-  {
-    
+    return $Reg ? true : false;
   }
 
 

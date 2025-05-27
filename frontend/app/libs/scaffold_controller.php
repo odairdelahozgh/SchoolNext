@@ -14,7 +14,7 @@ abstract class ScaffoldController extends AdminController
 {
   public string $scaffold = 'schoolnext'; // en views/_shared/scaffolds/
   public string $model = ''; //Nombre del modelo en CamelCase
-
+ 
   public function info($view) 
   {
     View::response($view);

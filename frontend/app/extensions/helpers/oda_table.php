@@ -67,13 +67,6 @@ class OdaTable {
       $this->tableHead = "<tHead $attrs><tr>".$col_head.'</tr></tHead>';
       return $this;
    }
-   
-   /**
-    * @deprecated Obsoleta usar addRow()
-    */
-   public function setBody( string|array $data, string|array $attrs  = '', string|array $attrs_td = []) {
-      $this->addRow($data, $attrs, $attrs_td); /// borarla pronto
-   }
 
    
    /**

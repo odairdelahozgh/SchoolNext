@@ -4,6 +4,9 @@ return [
 
   'mostrar_matriculas' => 0,
   
+  'mostrar_preinformes' => 1,
+  'periodo_preinformes' => 2,
+
   'mostrar_seguimientos' => 1,
   'periodo_seguimientos' => 1,
   

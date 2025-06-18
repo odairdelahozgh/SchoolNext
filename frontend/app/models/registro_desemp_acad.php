@@ -32,7 +32,7 @@ class RegistroDesempAcad extends LiteRecord {
     {
       $sufijo = ($annio!=self::$_annio_actual) ? '_'.$annio : '' ;
 
-      $DQL = new OdaDql(__CLASS__);
+      $DQL = new OdaDql('RegistroDesempAcad');
       $DQL->setFrom(self::$table.$sufijo);
 
       $DQL->select('t.periodo_id, t.fortalezas, t.dificultades, t.compromisos, t.fecha, t.acudiente, t.foto_acudiente, t.director, t.foto_director')
@@ -53,9 +53,9 @@ class RegistroDesempAcad extends LiteRecord {
   
   public function getByAnnioSalon(int $annio, int $salon_id) 
   {
-    $sufijo = ($annio!=self::$_annio_actual) ? '_'.$annio : '' ;
+    $sufijo = ($annio!=self::$_annio_actual) ? "_{$annio}" : '' ;
 
-    $DQL = new OdaDql(__CLASS__);
+    $DQL = new OdaDql('RegistroDesempAcad');
     $DQL->setFrom(self::$table.$sufijo);
     
     $DQL->select('t.*')
@@ -65,7 +65,7 @@ class RegistroDesempAcad extends LiteRecord {
         ->leftJoin('salon', 's')
         ->leftJoin('estudiante', 'e')
         ->leftJoin('usuario', 'u', 't.created_by = u.id')
-        ->where('t.salon_id=?')
+        ->where('t.salon_id = ?')
         ->orderBy('t.annio, t.grado_id, e.apellido1, e.apellido2, e.nombres, t.fecha DESC');
     $DQL->setParams([$salon_id]);
     return $DQL->execute();
@@ -74,7 +74,7 @@ class RegistroDesempAcad extends LiteRecord {
 
   public function getRegistrosProfesor(int $user_id) 
   {
-    $DQL = new OdaDql(__CLASS__);
+    $DQL = new OdaDql('RegistroDesempAcad');
     $DQL->select('t.*, s.nombre as salon_nombre')
         ->concat(['e.nombres','e.apellido1','e.apellido2'],  'estudiante_nombre')
         ->concat(['u.nombres','u.apellido1','u.apellido2'],  'usuario_nombre')
@@ -82,10 +82,36 @@ class RegistroDesempAcad extends LiteRecord {
         ->leftJoin('salon', 's')
         ->leftJoin('usuario', 'u', 't.created_by=u.id');
     if ($user_id<>1) {
-      $DQL->where("t.created_by=?");
+      $DQL->where("t.created_by = ?");
       $DQL->setParams([$user_id]);
     }
     $DQL->orderBy('t.fecha DESC');
+    return $DQL->execute();
+  }
+  
+
+  public function getRegistrosDirector(int $user_id) 
+  {
+    $Grupos = (new Usuario)->misGrupos();
+    $RegSalones = [];
+    foreach ($Grupos as $salon) {
+      $RegSalones[] = "'$salon->id'";
+    }
+    $salones = implode(",", $RegSalones);
+
+    $DQL = new OdaDql('RegistroDesempAcad');
+    //$DQL->setFrom(Config::get('tablas.estud_reg_academ'));
+    $DQL->select('t.*, s.nombre as salon_nombre')
+        ->concat(['e.nombres','e.apellido1','e.apellido2'],  'estudiante_nombre')
+        ->concat(['u.nombres','u.apellido1','u.apellido2'],  'usuario_nombre')
+        ->leftJoin('estudiante', 'e')
+        ->leftJoin('salon', 's')
+        ->leftJoin('usuario', 'u', 't.created_by=u.id');
+    if ($user_id<>1) {
+      $DQL->where("t.created_by in(".$salones.")");
+    }
+    $DQL->orderBy('t.fecha DESC');
+    
     return $DQL->execute();
   }
   

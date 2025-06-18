@@ -12,7 +12,7 @@ class CargasController extends ScaffoldController
   {
     try
     {
-      $this->data = (new SalAsigProf())->getCarga($this->user_id);      
+      $this->data = (new SalAsigProf())->getCarga($this->user_id);
       $this->arrData['periodo']  = $periodo_id;
       $this->arrData['user_id']  = $this->user_id;
       $this->file_tipo = 'Listas de clase';

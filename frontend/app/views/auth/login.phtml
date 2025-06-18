@@ -18,7 +18,7 @@
             <input autocomplete="username" id="username" name="username" type="text" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese USUARIO"><br>
             <input autocomplete="current-password webauthn"  id="password" name="password" type="password" value="" class="w3-center w3-input w3-border w3-hover-pale-yellow" placeholder="Ingrese CLAVE">
             <p><button type="submit">ENTRAR</button></p>
-            <?= 'No puede ingresar ? Necesita ayuda? Soporte técnico: '
+            <?= 'No puede ingresar ? Necesita ayuda? <br/> Soporte técnico: '
                 .OdaUtils::linkWhatsApp(
                   Config::get('config.construxzion.whatsapp'), 
                   'Escribenos por WhatssApp', 

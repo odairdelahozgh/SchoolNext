@@ -15,18 +15,42 @@ class NotasController extends ScaffoldController
     $this->arrData['Salon'] = $Salon;
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
     $this->arrData['Docentes'] = [];
-    
     foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
     }
-
     $this->data = (new Nota())->getPreinformesByPeriodoSalon($periodo_id, $Salon->id);
-
     $this->file_tipo  = 'Preinforme';
     $this->file_name  = "preinforme-de-{$Salon}-periodo-{$periodo_id}";
     $this->file_title = "Preinformes de {$Salon}";
     View::select(view: "preinformes.pdf", template: null);
+  }
+
+
+  public function exportPreinformeEstudiantePdf(int $periodo_id, string $estudiante_uuid): void 
+  {
+    $this->arrData['Periodo'] = $periodo_id;
+    $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
+    $this->arrData['Estud'] = $Estud;
+    $Salon = (new Salon())::get($Estud->salon_id);
+    $this->arrData['Salon'] = $Salon;
+    $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);    
+    $this->arrData['Docentes'] = [];
+    foreach ( (new Usuario)->getDocentes() as $empleado)
+    {
+      $this->arrData['Docentes'][$empleado->id] = $empleado;
+    }    
+    $this->data = (new Nota())->getPreinformesByPeriodoEstudiante($periodo_id, $Estud->id);
+    // $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
+    // foreach ($Indicadores as $key => $indic)
+    // {
+    //   $val = strtoupper(substr($indic->valorativo,0,1));
+    //   $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.trim($indic->concepto);
+    // }
+    $this->file_tipo = 'Preinforme';
+    $this->file_name = "preinforme-de-{$Estud}-periodo-{$periodo_id}";
+    $this->file_title = "Preinformes de {$Estud}";
+    View::select(view: 'preinformes.pdf', template: null);
   }
 
 

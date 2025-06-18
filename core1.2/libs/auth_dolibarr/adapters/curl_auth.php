@@ -82,6 +82,7 @@ class CurlAuth extends AuthDolibarr
             // INFORMACIÓN DE LOS << GRUPOS >> AL QUE PERTECENE EL USUARIO
             $Curl = curl_init();
             $endPoint = $apiUrl.'/users/'.$dataUserInfo['id'].'/groups';
+            self::log('endPoint: '.$endPoint);
             $HTTPHeader = ['DOLAPIKEY: '.$token];
             curl_setopt($Curl, CURLOPT_URL, $endPoint);
             curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
@@ -93,9 +94,9 @@ class CurlAuth extends AuthDolibarr
             $losGrupos = [];
             foreach ($dataUserGroups as $key => $grupo) 
             {
-              $losGrupos[]=strtolower(trim($grupo['nom']));
+              $losGrupos[$grupo['id']]=strtolower(trim($grupo['nom']));
             }
-            self::log('grupos a los que pertenece el susuario:');
+            self::log('grupos a los que pertenece el usuario:');
             self::log($losGrupos);
   
             // Definir los grupos en el orden de prioridad
@@ -114,6 +115,7 @@ class CurlAuth extends AuthDolibarr
             {
               $roll = 'sicologos';
             }
+
             self::log('roll definido: '.$roll);
           }
 

@@ -14,8 +14,8 @@ class CoordinadorController extends AppController
     {
       $this->page_action = 'Matriz de Riesgo Académico';
       $this->data = (new Salon())->getByCoordinador(Session::get('id'));
-    } 
-    catch (\Throwable $th) 
+    }
+    catch (\Throwable $th)
     {
       OdaFlash::error($th);
     }
@@ -28,7 +28,6 @@ class CoordinadorController extends AppController
   {
     $this->page_action = 'Mostrar Estudiante';
     $this->arrData = [];
-    
     try 
     {
       $Estudiante = (new Estudiante())::get($estudiante_id);
@@ -86,13 +85,15 @@ class CoordinadorController extends AppController
   public function listadoEstudiantes(): void
   {
     $this->page_action = 'Listado de Estudiantes Activos';
-    if (19==$this->user_id) { // solo LIZBETH
+    $this->arrData['Salones'] = (array)(new Salon)->getList(estado: 1);
+    if (19==$this->user_id) 
+    { // solo LIZBETH (mejorar)
       $this->data = (new Estudiante)->getListPorCoordinador($this->user_id);
     }
     else
     {
       $this->data = (new Estudiante)->getListSecretaria(estado:1);
-    }
+    }    
     View::select('estudiantes/index');
   }
 
@@ -100,6 +101,7 @@ class CoordinadorController extends AppController
   public function gestion_registros() 
   {
     $this->page_action = 'Gesti&oacute;n Registros';
+    // Mejora: Parametrizar año inicial 
     $this->annios = range($this->_annio_actual, 2021, -1);
     View::select('registros/index');
   }

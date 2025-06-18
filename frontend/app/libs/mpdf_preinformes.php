@@ -37,7 +37,7 @@ class MpdfPreinformes extends Mpdf {
     
       $this->SetHTMLHeader("<table width=\"100%\">
         <tr>
-            <td width=\"33%\" style=\"text-align: left;\">{$this->title}</td>
+            <td width=\"33%\" style=\"text-align: left;\"><h4>{$this->title}</h4></td>
             <td width=\"33%\" align=\"center\">{$logo}</td>
             <td width=\"33%\" style=\"text-align: right;\">{$logo2}</td>
         </tr>
@@ -52,11 +52,12 @@ class MpdfPreinformes extends Mpdf {
 
 
     //<td width="33%">{DATE j-m-Y}</td>
+    //<td width="33%" align="center">{PAGENO}/{nbpg}</td>
     $this->SetHTMLFooter('
     <table width="100%">
         <tr>
             <td width="33%"></td>
-            <td width="33%" align="center">{PAGENO}/{nbpg}</td>
+            <td width="33%" align="center"></td>
             <td width="33%" style="text-align: right;"></td>
         </tr>
     </table>');
@@ -79,7 +80,7 @@ class MpdfPreinformes extends Mpdf {
     $head = new OdaTable(_attrs: 'class="w3-rounded" bgcolor="#87CEEB" cellspacing="5" cellpadding="5" border="0" width="100%"');
     $head->addRow([ $col11, $col12, $col13 ], attrs_td: ['','colspan'=>3, 'colspan'=>2]);
     $head->addRow([ $col21, $col22, $col23 ], attrs_td: ['','colspan'=>3, 'colspan'=>2]);
-    return $head;
+    return $head.'<br/>';
   }
 
   

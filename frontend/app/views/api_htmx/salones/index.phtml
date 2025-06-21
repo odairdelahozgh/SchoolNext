@@ -1,0 +1,19 @@
+<?php
+
+require_once VENDOR_PATH . 'autoload.php';
+use HtmxComponents\Enums\BootstrapStyle;
+use HtmxComponents\Helpers\HtmxHelper;
+
+
+$rows = [];
+foreach ($data as $key => $salon) {
+  $rows[] = [$salon->id, $salon->nombre];
+}
+
+$table = HtmxHelper::table(
+  headers: ['ID', 'Nombre Salón'],
+  rows: $rows,
+  attributes: [],
+);
+
+echo $table->render();

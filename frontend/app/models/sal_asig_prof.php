@@ -29,7 +29,7 @@ class SalAsigProf extends LiteRecord {
   public function getSalonesAsignaturas(int $user_id) 
   {
     try {
-      $DQL = (new OdaDql(__CLASS__))
+      $DQL = (new OdaDql('SalAsigProf'))
         ->select('t.salon_id, t.asignatura_id');
 
       if ($user_id<>1)
@@ -48,7 +48,7 @@ class SalAsigProf extends LiteRecord {
 
   public function getList(int|bool $estado=null, $select='*', string|bool $order_by=null) 
   { 
-    $DQL = (new OdaDql(__CLASS__))
+    $DQL = (new OdaDql('SalAsigProf'))
       ->select('t.*')
       ->addSelect('s.nombre as salon_nombre, s.grado_id, s.tot_estudiantes')
       ->addSelect('a.nombre as asignatura_nombre')
@@ -68,7 +68,7 @@ class SalAsigProf extends LiteRecord {
   public function getSalones_ByProfesor(int $user_id) 
   {
     try {
-      $DQL = (new OdaDql(__CLASS__));
+      $DQL = (new OdaDql('SalAsigProf'));
       $DQL->setFrom(self::$table);
       $DQL->select('DISTINCT t.salon_id');
       if ($user_id<>1) 
@@ -87,7 +87,7 @@ class SalAsigProf extends LiteRecord {
   public function getCarga(int $user_id) 
   {
     try {
-      $DQL = (new OdaDql(__CLASS__))
+      $DQL = (new OdaDql('SalAsigProf'))
         ->select('t.*')
         ->addSelect('s.nombre as salon_nombre, s.grado_id, s.tot_estudiantes')
         ->addSelect('a.nombre as asignatura_nombre')
@@ -101,23 +101,18 @@ class SalAsigProf extends LiteRecord {
         ->where('s.is_active=1')
         ->orderBy('asignatura_nombre, salon_nombre');
 
-      
-      $ArrGestionCarga = ['admin', 'secretaria', 'coordinadores'];
+      $ArrGestionCarga = INSTITUTION_KEY === 'windsor'
+          ? ['admin']
+          : ['admin', 'secretaria', 'coordinadores'];
+
       if (!in_array((string)Session::get('roll'), $ArrGestionCarga) ) 
       {
         $DQL->andWhere('t.user_id=?');
         $DQL->setParams([$user_id]);
       }
-      /*
-      if ($user_id<>1)
-      {
-        $DQL->andWhere('t.user_id=?');
-        $DQL->setParams([$user_id]);
-      }
-      */
       return $DQL->execute();
-
-    } catch (\Throwable $th)
+    }
+    catch (\Throwable $th)
     {
       OdaFlash::error($th);
     }
@@ -126,7 +121,7 @@ class SalAsigProf extends LiteRecord {
 
   public function getStats(int $user_id) 
   {
-    $DQL = (new OdaDql(__CLASS__))
+    $DQL = (new OdaDql('SalAsigProf'))
       ->addSelect('DISTINCT s.grado_id, t.salon_id, t.asignatura_id, ga.intensidad')
       ->leftJoin('salon', 's', 't.salon_id')
       ->where('s.is_active=1');
@@ -141,7 +136,7 @@ class SalAsigProf extends LiteRecord {
   
   public function getProfesor(int $salon_id, int $asignatura_id) 
   {    
-    $DQL = (new OdaDql(__CLASS__));
+    $DQL = (new OdaDql('SalAsigProf'));
     $DQL->select('t.*');
   }
 

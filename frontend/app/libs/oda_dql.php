@@ -78,12 +78,20 @@ class OdaDql {
 
   public function execute(bool $write_log = false) 
   {
-    $result = (new $this->_from)->all($this->render(), $this->_params);
-    if ($write_log) 
-    { 
-      OdaLog::debug( $this->renderlog().PHP_EOL.PHP_EOL .'Params: ' .$this->getParams(), 'Num Registros: '.Count($result));
+    try
+    {
+      $result = (new $this->_from)->all($this->render(), $this->_params);
+      if ($write_log) 
+      { 
+        OdaLog::debug( $this->renderlog().PHP_EOL.PHP_EOL .'Params: ' .$this->getParams(), 'Num Registros: '.Count($result));
+      }
+      return $result;
     }
-    return $result;
+    
+    catch (\Throwable $th)
+    {
+      OdaLog::debug( $this->renderlog().PHP_EOL.PHP_EOL .'Params: ' .$this->getParams());
+    }
   }
   
   public function executeFirst(bool $write_log = false) 

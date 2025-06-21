@@ -187,51 +187,54 @@ class OdaUtils extends Util {
       return self::nombrePersona(string: $new_string);
     } // END-nombrePersona
 
-    static function eliminarTildes(string $texto): string { return strtr($texto, "áéíóúÁÉÍÓÚüÜ", "aeiouAEIOUuU"); }
+    static function eliminarTildes(string $texto): string 
+    { 
+      return strtr($texto, "áéíóúÁÉÍÓÚüÜ", "aeiouAEIOUuU");
+    }
 
   /***
    * Retorna una cadena limpia de caracteres no deseados
    */
   static function sanearString($string) {
-    $string = trim($string);
-    $string = str_replace(
+    $resultado = trim($string);
+    $resultado = str_replace(
         search: array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
         replace: array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
-        subject: $string
+        subject: $resultado
     );
  
-    $string = str_replace(
+    $resultado = str_replace(
         search: array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
         replace: array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
-        subject: $string
+        subject: $resultado
     );
  
-    $string = str_replace(
+    $resultado = str_replace(
         search: array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
         replace: array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
-        subject: $string
+        subject: $resultado
     );
  
-    $string = str_replace(
+    $resultado = str_replace(
         search: array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
         replace: array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
-        subject: $string
+        subject: $resultado
     );
  
-    $string = str_replace(
+    $resultado = str_replace(
         search: array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
         replace: array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
-        subject: $string
+        subject: $resultado
     );
 
-    $string = str_replace(
+    $resultado = str_replace(
         search: array('ç', 'Ç'),
         replace: array('c', 'C'),
-        subject: $string
+        subject: $resultado
     );
  
     //Esta parte se encarga de eliminar cualquier caracter extraño
-    $string = str_replace(
+    $resultado = str_replace(
         search: array("¨", "º", "-", "~",
              "#", "@", "|", "!", '"',
              "·", "$", "%", "&", "/",
@@ -241,10 +244,10 @@ class OdaUtils extends Util {
              ">", "< ", ";", ",", ":",
              "."),
         replace: '',
-        subject: $string
+        subject: $resultado
     );
 
-    return $string;
+    return $resultado;
   }
 
 
@@ -391,20 +394,18 @@ class OdaUtils extends Util {
     string $caption='(click) Escribir al WhatsApp ahora', 
     bool $show_tel=false, 
     string $message=''
-  ): string {
+  ): string 
+  {
     $insitit_name = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
-    $text = ($show_tel) ? $telefono : '' ;
-    $message = "*$insitit_name*: $message";
-    //$message = str_replace(' ', '%20', $message);
-    //href=\"whatsapp://send?phone=57$telefono&text=$message\">"
-    return "$text <a 
+    $text = $show_tel ? $telefono : $caption;
+    $message_comp = "$insitit_name: $message";
+    return "<a 
         title=\"$caption\" 
-        href=\"https://wa.me/{$telefono}?text=$message\">"
-        ._Icons::brands(icon: 'whatsapp', size: 'w3-large')
+        href=\"https://wa.me/{$telefono}?text=$message_comp\" target=\"_blank\">"
+        ._Icons::brands(icon: 'whatsapp', size: 'w3-large').' '.$text
       .'</a>';
-
-      // https://wa.me/1XXXXXXXXXX?text=I'm%20interested%20in%20your%20car%20for%20sale
   }
+
 
   public static function linkTelefono(string $telefono, string $caption='(click) Llamarle ahora', $show_tel=false): string {
     $text = ($show_tel) ? $telefono : '' ;

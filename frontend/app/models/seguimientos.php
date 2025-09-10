@@ -89,11 +89,11 @@ class Seguimientos extends Nota {
       $ArrResult = [];
       $pivote = 0;
       foreach ($AccSeguimientos as $keyRecs => $AccSeg) {
-        if ($pivote != $AccSeg->estudiante_id) { // primer registro del ese estudiante
-          $ArrResult[$AccSeg->estudiante_id][$AccSeg->estudiante_nombre]['abrev'] = $ConstGrados;
+        if ($pivote != $AccSeg->estudiante_nombre) { // primer registro del ese estudiante
+          $ArrResult[$AccSeg->estudiante_nombre][$AccSeg->estudiante_id]['abrev'] = $ConstGrados;
         }
-        $ArrResult[$AccSeg->estudiante_id][$AccSeg->estudiante_nombre]['abrev'][$AccSeg->asignatura_abrev] = $AccSeg;
-        $pivote = $AccSeg->estudiante_id;
+        $ArrResult[$AccSeg->estudiante_nombre][$AccSeg->estudiante_id]['abrev'][$AccSeg->asignatura_abrev] = $AccSeg;
+        $pivote = $AccSeg->estudiante_nombre;
       }
 
       return $ArrResult;

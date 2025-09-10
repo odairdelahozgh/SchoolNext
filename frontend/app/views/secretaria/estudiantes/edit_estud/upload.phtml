@@ -43,6 +43,10 @@
   $myForm->addSelect('estado_archivo6', 2, EstadoAdjuntos::toArray(false) );
   $myForm->addInput('coment_archivo6', 2);
   
+  $myForm->addFile2('nombre_archivo7', 2);
+  $myForm->addSelect('estado_archivo7', 2, EstadoAdjuntos::toArray(false) );
+  $myForm->addInput('coment_archivo7', 2);
+  
   $myForm->addHiddens(implode(",", $fieldsToHidden));
   
   echo OdaTags::tag('div', $message, 'class="w3-panel"');

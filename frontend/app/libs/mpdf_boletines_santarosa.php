@@ -22,8 +22,8 @@ class MpdfBoletinesSantarosa extends Mpdf
     $nombre_instituto = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '';
     $resolucion = $DoliK->getValue('MAIN_INFO_SIREN') ?? '';
     
-    $annio = $DoliK->getValue('SCHOOLNEXTACADEMICO_ANNIO_ACTUAL') ?? '';
-    $periodo = $DoliK->getValue('SCHOOLNEXTACADEMICO_PERIODO_ACTUAL') ?? '';
+    //$annio = $DoliK->getValue('SCHOOLNEXTACADEMICO_ANNIO_ACTUAL') ?? '';
+    //$periodo = $DoliK->getValue('SCHOOLNEXTACADEMICO_PERIODO_ACTUAL') ?? '';
 
     $this->SetSubject('INFORME ACADEMICO');
     $this->SetCreator(APP_NAME.' '.Config::get('config.construxzion.name'));
@@ -44,11 +44,12 @@ class MpdfBoletinesSantarosa extends Mpdf
     $this->bgcolor = '#C03F2B';
     $this->color = '#FEF3CA';
     
+    //Año Lectivo: {$annio} Periodo: {$periodo}";
+
     $texto_central = "
     {$nombre_instituto}<br/>
     <small>{$resolucion}</small><br/>
-    INFORME DE DESEMPEÑO ACADEMICO<br/>
-    Año Lectivo: {$annio} Periodo: {$periodo}";
+    INFORME DE DESEMPEÑO ACADEMICO<br/>";
     
     $this->SetHTMLHeader("
       <table width=\"100%\">
@@ -71,13 +72,28 @@ class MpdfBoletinesSantarosa extends Mpdf
 
   public function encabezadoBloqueBoletines(array $Params = []): string 
   {
-    [ $estudiante_nombre, $salon, $puesto, $promedio ] = $Params;    
+    [ $estudiante_nombre, $salon, $puesto, $promedio, $annio, $periodo ] = $Params;
+    $tit_alumno = '<b>'.strtoupper($estudiante_nombre).' ['.strtoupper($salon).']</b>';
+    $tit_periodo = "<b>{$annio} Periodo {$periodo}</b>";
+    $tit_puesto = ($puesto) ? "<b>PUESTO: {$puesto}</b>" : '';
+    $tit_promedio= ($promedio) ? "<b>PROMEDIO: {$promedio}</b>" : '';
+    $head = new OdaTable(_attrs: 'class="w3-rounded" color="'.$this->color.'" bgcolor="'.$this->bgcolor.'" cellspacing="5" cellpadding="5" border="0" width="100%"');
+    $head->addRow([$tit_alumno, $tit_periodo, $tit_puesto, $tit_promedio]);
+    return $head;
+  }
+
+  public function encabezadoBloqueBoletinesAntes(array $Params = []): string 
+  {
+    [ $estudiante_nombre, $salon, $puesto, $promedio, $annio, $periodo ] = $Params;
     $tit_alumno = '<b>ALUMNO: '.strtoupper($estudiante_nombre).'</b>';
     $tit_grado = '<b>GRADO: '.strtoupper($salon).'</b>';
     $tit_puesto = ($puesto) ? "<b>PUESTO: {$puesto}</b>" : '';
     $tit_promedio= ($promedio) ? "<b>PROMEDIO: {$promedio}</b>" : '';
+    $tit_annio = "<b>Año: {$annio}</b>";
+    $tit_periodo = "<b>Periodo: {$periodo}</b>";
     $head = new OdaTable(_attrs: 'class="w3-rounded" color="'.$this->color.'" bgcolor="'.$this->bgcolor.'" cellspacing="5" cellpadding="5" border="0" width="100%"');
-    $head->addRow([ $tit_alumno, $tit_grado, $tit_puesto, $tit_promedio ], attrs_td: ['colspan'=>'3']);
+    $head->addRow([ $tit_alumno, $tit_annio, $tit_periodo], attrs_td: ['colspan'=>'3', 'colspan'=>'1', 'colspan'=>'1']);
+    $head->addRow([ $tit_grado, ' ', $tit_puesto, ' ', $tit_promedio ], attrs_td: ['colspan'=>'1', 'colspan'=>'1', 'colspan'=>'1', 'colspan'=>'1', 'colspan'=>'1' ]);
     return $head;
   }
   
@@ -88,7 +104,7 @@ class MpdfBoletinesSantarosa extends Mpdf
     $col3 = $firma_director.'<br><b>DIRECTOR DE GRUPO</b><br>'.strtoupper($nombre_director);
     $foot = new OdaTable('style="width: 100%;"');
     $foot->addRow( [$col1, '', $col3], attrs_td: ['style="width: 33%;"', 'style="width: 33%;"']);
-    return str_repeat('<br>', 2) .$foot;
+    return str_repeat('<br>', 1) .$foot;
   }
   
 }

@@ -162,13 +162,13 @@ trait EstudianteTraitProps {
 
   public function getFoto(int $max_width=80, bool $show_cod=false) 
   { 
-    return self::getFotoEstud($this->id, $max_width, 'w3-round', $show_cod, $this->sexo);
+    return self::getFotoEstud((int)$this->id, $max_width, 'w3-round', $show_cod, $this->sexo);
   }
 
 
   public function getFotoCircle(int $max_width=80, bool $show_cod=true) 
   { 
-    return self::getFotoEstud($this->id, $max_width, 'w3-circle', $show_cod, $this->sexo);
+    return self::getFotoEstud((int)$this->id, $max_width, 'w3-circle', $show_cod, $this->sexo);
   }
 
 

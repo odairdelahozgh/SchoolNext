@@ -3,13 +3,11 @@ try {
   $archivoPDF = new MpdfListasClase([
     'tempDir' => APP_PATH . 'temp/mpdf',
     'format' => 'Legal',
-    'orientation' => 'L', // P(portrait), L(landscape) 
-
+    'orientation' => 'L', // P(portrait), L(landscape)
     'progressBar' => true,
     'title2annots' => true,  // convert headers in annotations
     'mirrorMargins' => 0,    // mirror the left and right margin values on odd and even pages 
-    'exposeVersion' => false, // security 
-    
+    'exposeVersion' => false, // security
     //'margin_left' => 20,
     //'margin_right' => 15,
     //'margin_top' => 48,
@@ -18,32 +16,25 @@ try {
     'margin_footer' => 15, // no tocar
     // more variables in https://mpdf.github.io/reference/mpdf-variables/overview.html
   ]);
+
   $archivoPDF->SetSubject($file_tipo);
   $archivoPDF->SetTitle($file_title);
   $stylesheet = file_get_contents(dirname(__DIR__).'/cargas/style.css');
   $archivoPDF->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
-  foreach ($data as $key => $item)
+  foreach ($data as $item)
   {
-    $archivoPDF->AddPage();        
-    $tabla = new OdaTable('border=1 width=100%');
+    $archivoPDF->AddPage();
+    $tabla = new OdaTable('border=1 width=90%');
     $Caption = $user_nombre_completo .' - '.$item->salon_nombre .' - '.$item->asignatura_nombre.' - Periodo:' .$arrData['periodo'];
     $tabla->setCaption($Caption);
-    $archivoPDF->encabezado($tabla);
-    /*
-    $Notas = $Nota->getBySalonAsignaturaPeriodos(
-      $item->salon_id, 
-      $item->asignatura_id, 
-      [$arrData['periodo']]
+    $archivoPDF->encabezado($tabla, (int)$arrData['periodo']);
+    $Notas = (new Nota)->getConsultaListasClase(
+      $item->salon_id,
+      $item->asignatura_id
     );
-    foreach ($Notas as $key => $nota)
+    foreach ($Notas as $key => $registro)
     {
-      $archivoPDF->cuerpo($tabla, $key, $nota);
-    }
-    */
-    $Estudiantes = (new Estudiante)->getListBySalon($item->salon_id);
-    foreach ($Estudiantes as $key => $Estud)
-    {
-      $archivoPDF->cuerpo($tabla, $key, $Estud);
+      $archivoPDF->cuerpo($tabla, $key, $registro, (int)$arrData['periodo']);
     }
     $archivoPDF->WriteHTML($tabla.$archivoPDF->pie());
   }  

@@ -7,34 +7,62 @@
  * 
  */
 
-//include "usuario/usuario_trait_set_up.php";
+ /*
+  rowid Primaria	int(11)
+  login varchar(50)
+	employee	tinyint(4)
+	login Índice	varchar(50)
+	gender	varchar(10)
+	civility	varchar(6)
+	lastname	varchar(50)
+	firstname	varchar(50)
+	address	varchar(255)
+	town	varchar(50)
+	fk_state	int(11)
+	fk_country	int(11)
+	statut	tinyint(4)
+	photo	varchar(255)
+ */
+
+include "usuario/usuario_doli_trait_props.php";
 
 #[AllowDynamicProperties]
 class UsuarioDolibarr extends LiteRecord {
 
-  //use UsuarioDolibarrTraitSetUp;
+  use UsuarioDoliTraitProps;
 
   public function __construct() 
   {
     parent::__construct();
-    self::$table = 'llx_users';
+    self::$table = PREFIJO_TABLAS_DOLIBARR.'users';
     self::$pk = 'rowid';
-    //self::$_order_by_defa = '';
-    //$this->setUp();
   }
 
-  public function getUserGroups($user_id)
-  {     
-    $sql = "
-    SELECT g.nom as group_name
-    FROM llx_usergroup AS g
-    WHERE g.rowid IN
-      (SELECT gu.fk_usergroup
-      FROM llx_usergroup_user AS gu
-      WHERE gu.fk_user = ?)
-    ";
-    return static::query($sql, [$user_id])->fetch();
+
+  public function getUserGroups(int $user_id)
+  { 
+    $DQL = new OdaDql('UsuarioDolibarr');
+    $DQL->setFrom(PREFIJO_TABLAS_DOLIBARR.'usergroup');
+    $DQL->select('t.nom')
+        ->where('t.rowid IN 
+        (SELECT gu.fk_usergroup 
+         FROM '.PREFIJO_TABLAS_DOLIBARR.'usergroup_user AS gu 
+         WHERE gu.fk_user = ?)')
+      ->setParams([$user_id]);
+    return $DQL->execute();
   }
 
+
+  public function getDocentes()
+  { // en desarrollo
+    $DQL = new OdaDql('UsuarioDolibarr');
+    $DQL->setFrom(PREFIJO_TABLAS_DOLIBARR.'usergroup');
+    $DQL->select("t.*")
+      ->concat(['t.firstname', 't.lastname'], 'usuario_nombre')
+      ->concat(['t.firstname', 't.lastname'], 'nombre')
+      ->where('t.login<>t.documento')
+      ->orderBy('t.??????');
+    return $DQL->execute();
+  }
 
 }

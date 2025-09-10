@@ -41,3 +41,4 @@ core20/*
 sonar-project.properties
 desktop.ini
 help/*
+frontend/node_modules/

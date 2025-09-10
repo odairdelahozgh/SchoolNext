@@ -11,7 +11,16 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
   fetch(ruta_base+'api/estudiantes/singleid/'+estudiante_id)
   .then((res) => res.json())
   .then(data_estudiante => {
+
     div_info_estudiante.innerHTML = template_datos_estud(data_estudiante, ruta_base, salon_nombre);
+    
+    // LINKS PARA DESCARGAR PREINFORMES
+    const periodo_preinformes = document.getElementById('periodo_preinformes').value;
+    div_preinformes = document.getElementById('preinformes');
+    if (1==document.getElementById('ver_preinformes').value) {
+      div_preinformes.innerHTML = template_preinformes(data_estudiante, ruta_base, periodo_preinformes);
+    }
+
     // LINKS PARA DESCARGAR BOLETINES
     const periodo_boletines = document.getElementById('periodo_boletines').value;
     div_boletines = document.getElementById('boletines');
@@ -102,7 +111,7 @@ function traer_data(estudiante_id, salon_nombre, periodo) {
 
   function template_seguimientos(ruta_base, data) {
     let ruta_descarga_seguimientos  = ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+data.uuid;
-    console.log('periodo: '+data.periodo_id);
+    //console.log('periodo: '+data.periodo_id);
     return `
       <a href="${ruta_descarga_seguimientos}" 
         class="w3-btn w3-black" 
@@ -154,14 +163,17 @@ function template_proceso_matriculas(data, ruta) {
 
 
 
-function getDataPlanesApoyo(ruta_base, estudiante_id, periodo_id) {
+function getDataPlanesApoyo(ruta_base, estudiante_id, periodo_id) 
+{
   ruta = ruta_base+'api/planes_apoyo/by_estudiante_periodo/'+estudiante_id+'/'+periodo_id;
   return fetch(ruta).then(res => res.json() );
-}//END-getDataPlanesApoyo
+}
 
-function template_planes_apoyo(ruta_base, data) {
+
+function template_planes_apoyo(ruta_base, data) 
+{
   let ruta_descarga_plan_apoyo  = ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+data.uuid;
-  console.log('periodo: '+data.periodo_id);
+  //console.log('periodo: '+data.periodo_id);
   return `
     <a href="${ruta_descarga_plan_apoyo}" 
        class="w3-btn w3-black" 
@@ -169,45 +181,54 @@ function template_planes_apoyo(ruta_base, data) {
        <i class="fa-solid fa-file-pdf"></i> ${data.asignatura_nombre} P${data.periodo_id}
     </a>
   `;
-} //END-template_planes_apoyo
+}
 
 
-function template_datos_estud(data, ruta, salon_nombre) {
+function template_datos_estud(data, ruta, salon_nombre) 
+{
   let estado = (data.is_active==1) ? 'ACTIVO' : 'INACTIVO';
   let debe_almuerzos = (data.is_debe_almuerzos>0) ? 'SI' : 'NO';
   let debe_preicfes = (data.is_debe_preicfes>0) ? 'SI' : 'NO';
   let domain_name = document.getElementById('domain_name').innerHTML.trim();
+  let instit = document.getElementById('instit').innerHTML.trim();
+  
+  const cuenta = instit=='windsor' ? data.email_instit+'@'+domain_name : data.email_instit;
+
   return `
   <div class="w3-card-1">
 
     <header class="w3-container w3-light-blue  w3-round-xlarge">
-      <h2 class="w3-panel w3-round-xlarge">[${data.id}] ${data.nombres} ${data.apellido1} ${data.apellido2} [${salon_nombre}]</h2>
+      <h2 class="w3-round-xlarge">[${data.id}] ${data.nombres} ${data.apellido1} ${data.apellido2} [${salon_nombre}]</h2>
     </header>
 
     <div class="w3-container">
-      <table class="w3-table">
-        <tr>
-          <td>
-            Estado: ${estado}<br><br>
-            Cuenta Externa:<br>
-            <span class="w3-text-blue">${data.email_instit}@${domain_name}</span><br>
-            Clave de Acceso: <span class="w3-text-blue">${data.clave_instit}</span>
-          </td>
+      <div class="w3-row">
+        <div class="w3-col l6 m7 s12">
+          <br>
+          Estado: ${estado}
+          <br><br>
+          Cuenta Externa:
+          <br>
+          <span class="w3-text-blue">${cuenta}</span>
+          <br>
+          Clave de Acceso: <span class="w3-text-blue">${data.clave_instit}</span>
+        </div>
 
-          <td> </td>
-
-          <td>
-            Última Referencia de Pago:<br> Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado}  <br>
-            <br>Debe Almuerzos: ${debe_almuerzos} 
-            <br>Debe Preicfes: ${debe_preicfes} 
-          </td>
-
-        </tr>
-      </table>
+        <div class="w3-col l6 m7 s12">
+          <br>
+          Último Pago: Mes ${nombreMes(data.mes_pagado)} de ${data.annio_pagado}
+          <br>
+          <br>
+          Debe Almuerzos: ${debe_almuerzos} 
+          <br>
+          Debe Preicfes: ${debe_preicfes} 
+        </div>
+      </div>
     </div>
 
     <footer class="w3-container">
     </footer>
+
   </div>
   `;
 } //END-template_datos_estud
@@ -218,6 +239,15 @@ function template_seguimientos(data, ruta) {
     <h2 class="w3-panel w3-theme w3-round-xlarge">Seguimientos Intermedios</h2>
   `;
 } //END-template_seguimientos
+
+
+function template_preinformes(estudiante, ruta_base, periodo_actual) {
+  return `
+    <h2 class="w3-panel w3-theme w3-round-xlarge">Preinformes</h2>
+    <a href="${ruta_base}admin/notas/exportPreinformeEstudiantePdf/${periodo_actual}/${estudiante.uuid}" 
+      class="w3-btn w3-blue" alt="Descarga PDF" target="_blank"><i class="fa-solid fa-file-pdf"></i> Preinforme p${periodo_actual}</a>
+  `;
+} //END-template_preinformes
 
 
 function template_boletines(estudiante, ruta_base, periodo_actual) {

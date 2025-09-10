@@ -6,7 +6,7 @@
     $FormAspir = new OdaForm(modelo: $ModeloAspirante, action: 'admin/aspirantes/actualizarSecretaria', method: 'post');
     $FormAspir->setEdit();
     
-    $ModeloAspirPsico  = $arrData['AspirantePsico'];
+    $ModeloAspirPsico  = $arrData['AspirantePsico'];    
     $FormAspirPsico = new OdaForm(modelo: $ModeloAspirPsico, action: '');
     
     $datos_basicos   = require('form_info_basicos.phtml');

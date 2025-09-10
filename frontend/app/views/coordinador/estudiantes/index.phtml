@@ -3,12 +3,18 @@
    <?= View::flash(); ?>
 
    <div class="w3-row w3-section">
-      <?=OdaForm::inputSearch();?>
+      <?php $btns_listas_clase = '';
+        foreach ($arrData['Salones'] as $key => $value) {
+          $btns_listas_clase .= (new Estudiante)::getLnkListaGenerica($value->id) ;
+        }
+        echo OdaForm::inputSearch();
+      ?>
    </div>
    
    <?php 
    try {
-
+      echo $btns_listas_clase;
+      
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(
          data_head:    ['Actions', 'Estudiante', 'Información Padres'], 
@@ -28,7 +34,7 @@
                  .$Estud->getCuentaInstit(true).'<br><br>'
                  .$Estud->getPagoPension().'<hr>'
                  //.$Estud->getlnkSetPonerAldia().'<br>'
-                 .$Estud->getlnkSetMesPagosTodos().'<br>'
+                 //.$Estud->getlnkSetMesPagosTodos().'<br>'
                  .'Boletines '.$Estud->getLnkBoletinesTodos().'<br>'
                  //.'Planes de Apoyo '.$Estud->getLnkPlanesApoyoTodos()
                  ;

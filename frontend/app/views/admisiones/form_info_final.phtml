@@ -3,7 +3,7 @@ try {
   $tabla = new OdaTable('id="myTable-fin" class="w3-table w3-responsive w3-striped w3-bordered"');
   
   $result = "
-  <h2>Fin del formulario</h2>
+  <h2>Paso {$num_paso}: Fin del formulario</h2>
     Ahora la información se guardará en nuestra base de datos
     <br/>
     Nota: para que le permita guardar, debe haber completado al menos los campos obligatorios
@@ -11,13 +11,11 @@ try {
     {$FormAspir->submit('Guardar y Terminar')}
   ";
 
-  
-  
   return "
   <div class=\"w3-display-container\">
     <div class=\"w3-display-container\">
       <div class=\"w3-display-topleft\"> 
-        <span class=\"w3-button\" onclick=\"openTab(event,'academico')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'{$prev}')\"><< Anterior</span>
       </div>
       <br/><br/>
       
@@ -25,7 +23,7 @@ try {
 
       <br/><br/><br/><br/>
       <div class=\"w3-display-bottomleft\"> 
-        <span class=\"w3-button\" onclick=\"openTab(event,'academico')\"><< Anterior</span>
+        <span class=\"w3-button\" onclick=\"openTab(event,'{$prev}')\"><< Anterior</span>
       </div>
     </div>
   </div>";

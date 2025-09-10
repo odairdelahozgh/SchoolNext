@@ -200,7 +200,6 @@ class NotasController extends ScaffoldController
           $adicionales =[];
           $adicionales['updated_at']= date('Y-m-d H:i:s', time());
           $adicionales['updated_by']= $this->user_id;
-
           // UPDATE
           $Modelo = (new Nota());
           $DQL = new OdaDql($Modelo::class);
@@ -223,38 +222,28 @@ class NotasController extends ScaffoldController
   public function exportBoletinEstudiantePdf(int $periodo_id, string $estudiante_uuid, int $tipo = 1): void 
   {
     $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
-
     $this->arrData['Periodo'] = $periodo_id;
-
     $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
     $this->arrData['Estud'] = $Estud;
-
     $Salon = (new Salon())::get($Estud->salon_id);
     $this->arrData['Salon'] = $Salon;
-
     $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
-    
     $this->arrData['Docentes'] = [];
     foreach ( (new Usuario)->getDocentes() as $empleado)
     {
       $this->arrData['Docentes'][$empleado->id] = $empleado;
-    }
-    
+    }    
     $this->data = (new Nota())->getBoletinesByPeriodoEstudiante($periodo_id, $Estud->id);
-      
-    $this->arrData['Puestos'] = (new Nota())->getPuestos_BySalonByPeriodo($Salon->id,$periodo_id);
-    
+    $this->arrData['Puestos'] = (new Nota())->getPuestos_BySalonByPeriodo($Salon->id,$periodo_id);    
     $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
     foreach ($Indicadores as $key => $indic)
     {
       $val = strtoupper(substr($indic->valorativo,0,1));
       $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.trim($indic->concepto);
     }
-
     $this->file_tipo = $tipo_boletin->label();
     $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Estud-periodo-$periodo_id");
     $this->file_title = $tipo_boletin->label()." de Notas $Estud";
-
     View::select(view: 'boletines_'.INSTITUTION_KEY.'.pdf', template: null);
   }
 
@@ -265,37 +254,28 @@ class NotasController extends ScaffoldController
     {
       $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
       $this->arrData['Periodo'] = $periodo_id;
-      
       $Salon = (new Salon())->getByUUID($salon_uuid);
       $this->arrData['Salon'] = $Salon;
-      
       $this->arrData['Grado'] = (new Grado())::get($Salon->grado_id);
-      
       $this->arrData['Docentes'] = [];
       foreach ( (new Usuario)->getDocentes() as $empleado)
       {
         $this->arrData['Docentes'][$empleado->id] = $empleado;
       }
-  
       $this->data = (new Nota())->getBoletinesByPeriodoSalon($periodo_id, $Salon->id);
-      
       $this->arrData['Puestos'] = (new Nota())->getPuestos_BySalonByPeriodo($Salon->id,$periodo_id);
-
       $Indicadores = (new Indicador())->getByPeriodoGrado($periodo_id, $Salon->grado_id);
       foreach ($Indicadores as $key => $indic)
       {
         $val = strtoupper(substr($indic->valorativo,0,1));
         $this->arrData [ 'Indicadores' ] [ $indic->asignatura_id ] [ $indic->codigo ] ['concepto'] = $val.':'.$indic->concepto;
       }
-  
       // // PARA LA GENERACIÓN DE ARCHIVOS
       $this->file_tipo = OdaUtils::sanearString($tipo_boletin->label());
       $this->file_name = OdaUtils::getSlug($this->file_tipo."-$Salon-periodo-$periodo_id");
       $this->file_title = $this->file_tipo .' ' .$Salon;
-      
       View::select(view: 'boletines_'.INSTITUTION_KEY.'.pdf', template: null);
     }
-
     catch (\Throwable $th)
     {
       OdaLog::error($th);
@@ -330,8 +310,7 @@ class NotasController extends ScaffoldController
       }
       $this->file_tipo = $tipo_boletin->label();
       $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Estud-$annio-periodo-$periodo_id");
-      $this->file_title = $tipo_boletin->label()." de Notas $Estud";
-      
+      $this->file_title = $tipo_boletin->label()." de Notas $Estud";      
       View::select(view: "boletines_hist.pdf", template: null);
     }
     catch (\Throwable $th)

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#spinner').style.display = "none";
   document.getElementById('btn-0').click();
+  
 });
 
 
@@ -235,9 +236,7 @@ function colorRango(valor)
   if (valor<0 || valor>100) { return 'DeepPink'; }
   if (valor<1) { return 'black'; }  
   if (valor<60) { return 'red'; }
-  if (valor<70) { return 'orange'; }
   if (valor<80) { return 'yellow'; }
-  if (valor<90) { return 'light-blue'; }
   if (valor<95) { return 'blue'; }
   if (valor<=100) { return 'green'; }
 }
@@ -247,10 +246,8 @@ function nombreRango(valor)
   if (valor<0 || valor>100) { return 'err'; } 
   if (valor<1) { return ''; }  
   if (valor<60) { return 'Bajo'; }
-  if (valor<70) { return 'Básico'; }
-  if (valor<80) { return 'Básico +'; }
-  if (valor<90) { return 'Alto'; }
-  if (valor<95) { return 'Alto +'; }
+  if (valor<80) { return 'Básico'; }
+  if (valor<95) { return 'Alto'; }
   if (valor<=100) { return 'Superior'; }
 }
 

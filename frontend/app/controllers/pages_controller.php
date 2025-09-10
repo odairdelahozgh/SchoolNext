@@ -33,15 +33,23 @@ class PagesController extends AppController
     View::select(implode('/', $params));
   }
 
-
   public function miperfil()
   {
-    $this->page_action = 'Mi Perfil';
-    $this->MiUsuario = (new Usuario())->get($this->user_id);
-    if ( in_array($this->MiUsuario->roll, ['coordinadores', 'admin']) )
+    try
     {
-      $this->arrData['listaUsuarios'] = (new Empleado())->getList(1);
+      $this->page_action = 'Mi Perfil';
+      $this->MiUsuario = (new Usuario())->get($this->user_id);
+      $this->arrData['listaUsuarios'] = [];
+      if ( in_array($this->MiUsuario->roll, ['coordinadores', 'admin']) )
+      {
+        $this->arrData['listaUsuarios'] = (new Usuario())->getDocentes();
+      }    
     }
+    catch (\Throwable $th)
+    {
+      OdaFlash::error($th, true);
+    }
+    View::select('miperfil');
   }
 
 
@@ -56,9 +64,16 @@ class PagesController extends AppController
   }
 
 
-  public function bootstrap_htmx_test() 
+  public function htmx() 
   {
-    View::select('bootstrap5htmx-view', 'bootstrap5htmx-template');
+    View::select('htmx', 'adminlite3htmx');
+  }
+
+
+  public function bs5htmx() 
+  {
+    //View::select('ejemplos/bs5htmx', 'bootstrap5htmx-template');
+    View::select('ejemplos/bs5htmx', 'adminlite3htmx');
   }
 
 
@@ -68,5 +83,10 @@ class PagesController extends AppController
     echo '<p>resultado [100-200] = '.rand(100, 200).'</p>';
   }
   
+  
+  public function adminlte4() 
+  {
+    View::template('adminlite4htmx');
+  }
 
 }

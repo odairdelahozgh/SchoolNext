@@ -12,8 +12,7 @@
   
   if ('estudiantes'==$controller_name) 
   {
-    echo OdaTags::linkButton(action: "admin/$controller_name/exportMoodleXls", text: 'CSV Estudiantes Moodle', attrs: 'class="w3-button w3-green" target="_blank"');
-    echo OdaTags::linkButton(action: "admin/$controller_name/exportMatricularMoodleXls", text: 'CSV Matricular Estudiantes Moodle', attrs: 'class="w3-button w3-green" target="_blank"');    
+    echo OdaTags::linkButton(action: "admin/$controller_name/exportMoodleCsv", text: 'CSV Estudiantes Moodle', attrs: 'class="w3-button w3-green" target="_blank"');
   }
   ?>
 

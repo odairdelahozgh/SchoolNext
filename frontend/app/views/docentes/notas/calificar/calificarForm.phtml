@@ -21,14 +21,15 @@
   );
 
   $cnt = $key+1;
-  $info_reg = "<div class=\"w3-center\">Item: $cnt <br>{$Reg->getFoto()} <br>Reg #$Reg->id <br>$chk</div>";
+  $info_reg = "<div class=\"w3-center\">Item: $cnt <br>{$Reg->getFoto()} <br>#$Reg->id <br>$chk</div>";
+  $info_reg = "<div class=\"w3-center\">Item: $cnt <br> <br>Reg #$Reg->id <br>$chk</div>";
 
   $frm = "<tr class=\"\">";  
   $frm .= OdaTags::tag(tag: 'td', content: $info_reg, attrs: 'rowspan="3"');
   $frm .= OdaTags::tag(tag: 'td', content: $Reg->estudiante_nombre."<br>$info_indic<br>".$notas_anteriores, attrs: 'colspan="4"');
   $frm .= OdaTags::tag(tag: 'td', content: '');
   
-  $slider_definitiva = OdaTags::inputRango(id_name: $Reg->id, value: $Reg->definitiva, min: 0, max: 100, step: 1);
+  $slider_definitiva = OdaTags::inputRango(id_name: $Reg->id, value: $Reg->definitiva, min: 0, max: $arrData['rango_nota_superior'], step: 1);
   $field_definitiva = $Reg->fieldForm('definitiva');
   $field_plan_apoyo = $Reg->fieldForm(field_name: 'plan_apoyo', type:'hidden');
   $field_nota_final = $Reg->fieldForm(field_name: 'nota_final', type:'hidden');
@@ -42,7 +43,7 @@
 
   // reglas para los indicadores
   $patternInidisc  = ' pattern="/^('. implode('|', $arrData['Indicadores']) .')$/"';
-  //$min_max  = ' min="'.$arrData['min_indic'].'" max="'.$arrData['max_indic'].'" ';
+  $min_max  = ' min="'.$arrData['min_indic'].'" max="'.$arrData['max_indic'].'" ';
   $min_max  = ' min="100" max="'.$arrData['max_indic'].'" ';
   $max_lenght = ' maxlength="'.strlen($arrData['max_indic']).'" size="'.(strlen($arrData['max_indic'])).'"' ;
   

@@ -14,6 +14,7 @@ class DocentesController extends AppController
     parent::before_filter();
     if (!str_contains('docentes', Session::get('roll')) 
       && !str_contains('admin', Session::get('roll')) 
+      && !str_contains('secretarias', Session::get('roll')) 
       && !str_contains('coordinadores', Session::get('roll')) )
     {
       OdaFlash::warning('No tiene permiso de acceso al módulo DOCENTES, fué redirigido');
@@ -80,11 +81,15 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Asignar Carga Acad&eacute;mica';
+      
       $usuario = $this->user_id;
-      if (1==$usuario)  // admin
+      $ArrGestionCarga = ['admin', 'secretarias', 'coordinadores'];
+      if ( in_array((string)Session::get('roll'), $ArrGestionCarga) ) 
       {
         $sap = (new SalAsigProf)::first(
-          "SELECT sap.user_id as ultimo_user_id FROM ".Config::get('tablas.salon_asignat_profe')." AS sap WHERE sap.id =(SELECT MAX(sapm.id) as max  FROM ".Config::get('tablas.salon_asignat_profe')." AS sapm)"
+          "SELECT sap.user_id as ultimo_user_id FROM "
+          .Config::get('tablas.salon_asignat_profe')." AS sap "
+          ." WHERE sap.id =(SELECT MAX(sapm.id) as max  FROM ".Config::get('tablas.salon_asignat_profe')." AS sapm)"
         );
         $usuario = $sap->ultimo_user_id;
       }
@@ -143,6 +148,7 @@ class DocentesController extends AppController
       }
       $this->arrData = ['estudiantes' => $estudiantes];
       $this->data = (new RegistrosGen)->getRegistrosProfesor($this->user_id);
+      //unset($estudiantes);
     } 
     catch (\Throwable $th)
     {
@@ -159,7 +165,7 @@ class DocentesController extends AppController
       $this->page_action = 'Registros de Desempeño Académico';
       $estudiantes = (new Estudiante)->getListPorDirector($this->user_id);
       $this->arrData = ['estudiantes' => $estudiantes];
-      $this->data = (new RegistroDesempAcad)->getRegistrosProfesor($this->user_id);
+      $this->data = (new RegistroDesempAcad)->getRegistrosDirector($this->user_id);
     }
     catch (\Throwable $th) 
     {
@@ -198,9 +204,15 @@ class DocentesController extends AppController
     try 
     { 
       $this->page_action = 'Notas del Sal&oacute;n';
+      
+      $Rango = (new Rango());
+      $this->arrData['rango_nota_perdida']  = $Rango->getLimiteInferior(Rangos::Basico);
+      $this->arrData['rango_nota_superior'] = $Rango->getLimiteSuperior(Rangos::Superior);
+
       $RegAsignatura = (new Asignatura)::get($asignatura_id);
       $RegSalon = (new Salon)::get($salon_id);
-      $max_periodo = ($this->_periodo_actual>=4) ? 5 : $this->_periodo_actual;
+
+      $max_periodo = ($this->_periodo_actual>=4) ? $this->_max_periodos : $this->_periodo_actual;
       for ($i=1; $i<=$max_periodo; $i++) 
       {
         $RegsIndicadP = (new Indicador)->getIndicadoresCalificar($i, $RegSalon->grado_id, $asignatura_id);
@@ -254,9 +266,11 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Calificar Notas del Sal&oacute;n';
+
       $RegSalon = (new Salon)->get($salon_id);
-      $RegPeriodo =(new Periodo)->get($periodo_id);
+      $RegPeriodo =(new PeriodoD)->getD($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
+
       $this->data = (new Nota)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
@@ -275,7 +289,8 @@ class DocentesController extends AppController
         $calificaciones [$cals->estudiante_id][3] = $cals->nota_final_periodo_3;
         $calificaciones [$cals->estudiante_id][4] = $cals->nota_final_periodo_4;
       }
-      
+
+      $Rango = new Rango();
       $this->arrData = [
         'Periodo'           => $RegPeriodo,
         'Asignatura'        => $RegAsignatura,
@@ -294,8 +309,11 @@ class DocentesController extends AppController
         'min_indic'         => $MinMaxIndicad['regs_min'],
         'max_indic'         => $MinMaxIndicad['regs_max'],
         'ancho_lim'         => $MinMaxIndicad['ancho_lim'],
-        //'cnt_indicador'     => count($RegsIndicad),
+        'rango_nota_perdida'  => $Rango->getLimiteInferior(Rangos::Basico),
+        'rango_nota_superior' => $Rango->getLimiteSuperior(Rangos::Superior),
       ];
+      
+
     }
     catch (\Throwable $th) 
     {
@@ -312,17 +330,16 @@ class DocentesController extends AppController
   {
     try 
     {
-      $this->page_action = 'Seguimientos Intermedios del Sal&oacute;n';
+      $this->page_action = (INSTITUTION_KEY=='santarosa') ? 'Preinformes del Sal&oacute;n' : 'Seguimientos Intermedios del Sal&oacute;n';
       $RegSalon = (new Salon)->get($salon_id);
       $RegPeriodo =(new Periodo)->get($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
+
       $this->data = (new Seguimientos)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
-      //OdaLog::debug('data'.count($this->data));
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar(periodo_id: $periodo_id, grado_id: $RegSalon->grado_id, asignatura_id: $asignatura_id);
-      //OdaLog::debug('dd'.count($RegsIndicad));
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
       
-
+      $Rango = new Rango();
       $this->arrData = [
         'Periodo'           => $RegPeriodo,
         'Asignatura'        => $RegAsignatura,
@@ -339,7 +356,9 @@ class DocentesController extends AppController
         'min_indic'         => $MinMaxIndicad['regs_min'],
         'max_indic'         => $MinMaxIndicad['regs_max'],
         'ancho_lim'         => $MinMaxIndicad['ancho_lim'],
-        //'cnt_indicador'     => count($RegsIndicad),
+        'rango_nota_inferior' => $Rango->getLimiteInferior(Rangos::Bajo),
+        'rango_nota_perdida'  => $Rango->getLimiteInferior(Rangos::Basico),
+        'rango_nota_superior' => $Rango->getLimiteSuperior(Rangos::Superior),
       ];
       View::select(view: 'notas/seguimientos/index');
     }
@@ -359,12 +378,14 @@ class DocentesController extends AppController
     {
       $this->page_action = 'Calificar Planes de Apoyo del Sal&oacute;n';
       $RegSalon = (new Salon)->get($salon_id);
-      $RegPeriodo = Periodo::getFirstById($periodo_id);
+      $RegPeriodo =(new Periodo)->get($periodo_id);
       //OdaLog::debug("id={$RegPeriodo->id} / rowid={$RegPeriodo->rowid}");
       $RegAsignatura = (new Asignatura)->get($asignatura_id);
       $this->data = (new PlanesApoyo)->getBySalonAsignaturaPeriodos($salon_id, $asignatura_id, [$periodo_id]);
       $RegsIndicad = (new Indicador)->getIndicadoresCalificar($periodo_id, $RegSalon->grado_id, $asignatura_id);
       $MinMaxIndicad = (new Indicador)->getMinMaxByPeriodoGradoAsignatura($periodo_id, $RegSalon->grado_id, $asignatura_id);
+      
+      $Rango = new Rango();
       $this->arrData = [
         'Periodo'           => $RegPeriodo,
         'Asignatura'        => $RegAsignatura,
@@ -382,6 +403,9 @@ class DocentesController extends AppController
         'max_indic'         => $MinMaxIndicad['regs_max'],
         'ancho_lim'         => $MinMaxIndicad['ancho_lim'],
         'cnt_indicador'     => count($RegsIndicad),
+        'rango_nota_inferior' => $Rango->getLimiteInferior(Rangos::Bajo),
+        'rango_nota_perdida'  => $Rango->getLimiteInferior(Rangos::Basico),
+        'rango_nota_superior' => $Rango->getLimiteSuperior(Rangos::Superior),
       ];
     } 
     catch (\Throwable $th) 

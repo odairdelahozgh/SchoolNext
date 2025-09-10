@@ -1,0 +1,49 @@
+<?php
+
+use AdminLTE\Layout;
+
+$configFilePath = __DIR__ . '/layout_fixed_collapsed_config.php';
+if (!file_exists($configFilePath)) {
+    $layoutType = 'default';
+    $configFilePath = __DIR__ . '/layout_default_config.php';
+}
+require_once $configFilePath;
+
+// Instantiate the Layout class
+$layout = new Layout($pageTitle, $layoutOptions);
+
+// Render the page
+$layout->renderHead();
+$layout->renderBodyStart();
+
+// Render main UI parts
+$layout->renderHeader('SchoolNEXT', [], $user);
+$layout->renderSidebar('SchoolNEXT', $user['name'], $menuItems);
+
+// Render content wrapper start and breadcrumbs
+$breadcrumbs = [
+    ['name' => 'Home', 'link' => '#'],
+    ['name' => 'Layouts', 'link' => 'layout_preview.php'],
+    ['name' => $pageTitle]
+];
+$layout->renderContentWrapperStart($pageTitle, $breadcrumbs);
+
+// --- Page Specific Content ---
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <?php View::content() ?>
+    </div>
+</div>
+
+<?php
+// --- End Page Specific Content ---
+
+// Render content wrapper end
+$layout->renderContentWrapperEnd();
+
+// Render footer and body end
+$layout->renderFooter();
+$layout->renderBodyEnd();
+?>

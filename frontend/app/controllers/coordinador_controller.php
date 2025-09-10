@@ -7,7 +7,13 @@
 class CoordinadorController extends AppController
 {
 
-  
+  public function uploadFotosEstudiantes(): void 
+  {
+    $this->page_action = 'Subir fotos de estudiantes';
+    View::select('subir_fotos');
+  }
+
+
   public function riesgo_academico() 
   {
     try 

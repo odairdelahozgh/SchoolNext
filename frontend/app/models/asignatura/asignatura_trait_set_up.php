@@ -7,11 +7,11 @@ trait AsignaturaTraitSetUp {
   private function setUp() {
     // 'calc_prom' ??? se debe eliminar
     self::$_fields_show = [
-      'all'       => ['id', 'nombre', 'abrev', 'orden', 'area_id', 'calc_prom', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
-      'index'     => ['is_active', 'nombre', 'abrev', 'orden', 'area_id'],
-      'create'    => ['nombre', 'abrev', 'orden', 'area_id'],
-      'edit'      => ['nombre', 'abrev', 'orden', 'area_id', 'is_active'],
-      'editUuid'  => ['nombre', 'abrev', 'orden', 'area_id', 'is_active'],
+      'all'       => ['rowid', 'label', 'abrev', 'orden', 'area_id', 'calc_prom', 'created_at', 'updated_at', 'created_by', 'updated_by', 'is_active'],
+      'index'     => ['is_active', 'label', 'abrev', 'orden', 'area_id'],
+      'create'    => ['label', 'abrev', 'orden', 'area_id'],
+      'edit'      => ['label', 'abrev', 'orden', 'area_id', 'is_active'],
+      'editUuid'  => ['label', 'abrev', 'orden', 'area_id', 'is_active'],
     ];
     
     self::$_widgets = [
@@ -20,8 +20,8 @@ trait AsignaturaTraitSetUp {
     ];
 
     self::$_attribs = [
-      'nombre'      => 'required',
-      'abrev'       => 'required',
+      'label'       => 'required',
+      'abreviatura' => 'required',
       'area_id'     => 'required',
     ];
   
@@ -35,15 +35,15 @@ trait AsignaturaTraitSetUp {
     ];
   
     self::$_labels = [
-      'nombre'          => 'Asignatura', 
-      'abrev'           => 'Abreviatura', 
-      'orden'           => 'Orden de Listado', 
-      'area_id'         => '&Aacute;rea',
-      'is_active'       => 'Estado',
-      'created_at'      => 'Creado el',
-      'created_by'      => 'Creado por',
-      'updated_at'      => 'Actualizado el',
-      'updated_by'      => 'Actualizado por',
+      'label'          => 'Asignatura', 
+      'abrev'          => 'Abreviatura', 
+      'orden'          => 'Orden de Listado', 
+      'area_id'        => '&Aacute;rea',
+      'is_active'      => 'Estado',
+      'created_at'     => 'Creado el',
+      'created_by'     => 'Creado por',
+      'updated_at'     => 'Actualizado el',
+      'updated_by'     => 'Actualizado por',
     ];
   
     self::$_placeholders = [

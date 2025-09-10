@@ -1,6 +1,4 @@
 <?php
-
-use Mpdf\Tag\Img;
 trait UsuarioTraitProps {
 
   protected static $default_foto_usuario = 'upload/users/user.png';

@@ -7,8 +7,10 @@ trait TraitValidar {
     $validador = new Validate($input_post, self::$_rules_validators);
     if (!$validador->exec()) {
       $errors = '<br>';
-      foreach ($validador->getMessages() as $key1 => $error1) {
-        foreach ($error1 as $key => $error) {
+      foreach ($validador->getMessages() as $key1 => $error1) 
+      {
+        foreach ($error1 as $key => $error)
+        {
           $errors .= "<strong>".self::$_labels[$key1]."</strong>: $error, <u>recibido</u>: '". substr($input_post[$key1], 15) ."'<br>";
         }
       }

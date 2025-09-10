@@ -149,28 +149,6 @@ class Nota extends LiteRecord {
   }
 
 
-  public function getBoletinesByPeriodoEstudiante(
-    int $periodo_id, 
-    int $estudiante_id
-  ): array|string 
-  {
-    $DQL = new OdaDql('Nota');
-
-    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
-          t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
-          t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
-        ->addSelect('a.nombre as asignatura_nombre')
-        ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
-        ->leftJoin('asignatura', 'a')
-        ->leftJoin('estudiante', 'e')
-        ->where('t.periodo_id=? AND t.estudiante_id=?')
-        ->orderBy('a.orden')
-        ->setParams([$periodo_id, $estudiante_id]);
-
-    return $DQL->execute();
-  }
-
-
   public function getByAnnioPeriodoEstudiante(
     int $annio, 
     int $periodo_id, 
@@ -218,6 +196,24 @@ class Nota extends LiteRecord {
   }
 
 
+  public function getBoletinesByPeriodoEstudiante(
+    int $periodo_id, 
+    int $estudiante_id
+  ): array|string 
+  {
+    $DQL = new OdaDql('Nota');
+    $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
+          t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
+          t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
+        ->addSelect('a.nombre as asignatura_nombre')
+        ->concat(['e.nombres', 'e.apellido1', 'e.apellido2'], 'estudiante_nombre')
+        ->leftJoin('asignatura', 'a')
+        ->leftJoin('estudiante', 'e')
+        ->where('t.periodo_id=? AND t.estudiante_id=?')
+        ->orderBy('a.orden')
+        ->setParams([$periodo_id, $estudiante_id]);
+    return $DQL->execute();
+  }
 
   public function getBoletinesByPeriodoSalon(
     int $periodo_id, 
@@ -225,7 +221,6 @@ class Nota extends LiteRecord {
   ): array|string 
   {
     $DQL = new OdaDql('Nota');
-
     $DQL->select('t.id, t.uuid, t.annio, t.periodo_id, t.grado_id, t.salon_id, t.asignatura_id, t.estudiante_id, t.profesor_id, 
           t.definitiva, t.plan_apoyo, t.nota_final, t.i01, t.i02, t.i03, t.i04, t.i05, t.i06, t.i07, t.i08, t.i09, t.i10, 
           t.i11, t.i12, t.i13, t.i14, t.i15, t.i16, t.i17, t.i18, t.i19, t.i20')
@@ -236,7 +231,6 @@ class Nota extends LiteRecord {
         ->where('t.periodo_id=? AND t.salon_id=?')
         ->orderBy('estudiante_nombre, a.orden')
         ->setParams([$periodo_id, $salon_id]);
-
     return $DQL->execute();
   }
 

@@ -29,13 +29,19 @@
     <h2>Agregar Carga</h2>
     
     <div id="result">
-      <?php if (1==$user_id) {
-        echo OdaForm::number('profe_sel', '', $arrData[0]);
-      } else {
-        echo OdaForm::hidden('profe_sel', '', $arrData[0]);
-      } 
       
+      <?php
+        $ArrGestionCarga = ['admin', 'secretarias', 'coordinadores'];
+        if ( in_array((string)Session::get('roll'), $ArrGestionCarga) )
+        {
+          echo OdaForm::number('profe_sel', '', $arrData[0]);
+        } 
+        else 
+        {
+          echo OdaForm::hidden('profe_sel', '', $arrData[0]);
+        }
       ?>
+
       <div id="asignatura_sel"></div>
       <div id="salon_sel"></div>
     </div>

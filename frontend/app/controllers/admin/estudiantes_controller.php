@@ -8,6 +8,64 @@
 class EstudiantesController extends ScaffoldController
 {
 
+  public function uploadFotosEstudiantes(): void 
+  {
+    //header("Content-Type: application/json");
+    $uploadDir = IMG_UPLOAD_PATH . "tmp/";
+    if (!is_dir($uploadDir)) 
+    {
+      mkdir($uploadDir, 0775, true);
+    }
+    $response = [];
+    if (!empty($_FILES['files'])) 
+    {
+      foreach ($_FILES['files']['tmp_name'] as $index => $tmpName)
+      {
+        $fileName = $_FILES['files']['name'][$index];
+        $fileSize = $_FILES['files']['size'][$index];
+        $fileTmp  = $_FILES['files']['tmp_name'][$index];
+        $fileType = $_FILES['files']['type'][$index];
+
+        $result = ["file" => $fileName, "success" => false];
+
+        if ($fileType !== "image/png") 
+        {
+          $result["error"] = "El archivo no es PNG";
+          $response[] = $result;
+          continue;
+        }
+
+        if ($fileSize > 100 * 1024) 
+        {
+          $result["error"] = "El archivo pesa más de 100kb";
+          $response[] = $result;
+          continue;
+        }
+
+        $nameWithoutExt = pathinfo($fileName, PATHINFO_FILENAME);
+        if (!preg_match('/^\d+$/', $nameWithoutExt)) 
+        {
+          $result["error"] = "El nombre del archivo debe ser un número";
+          $response[] = $result;
+          continue;
+        }
+
+        $destination = $uploadDir . basename($fileName);
+        if (move_uploaded_file($fileTmp, $destination)) 
+        {
+          $result["success"] = true;
+        } 
+        else 
+        {
+          $result["error"] = "Error al mover el archivo";
+        }
+        $response[] = $result;
+      }
+    }
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
+  }
+
+
   public function index(): void 
   {
     $this->page_action = "Listado $this->controller_name" ;

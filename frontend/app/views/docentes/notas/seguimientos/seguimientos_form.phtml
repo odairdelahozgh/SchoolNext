@@ -39,23 +39,41 @@ try {
   // fila #3
   $frm .= "<tr class=\"\">";
 
-  $field = $Reg->fieldForm(field_name: 'asi_desempeno', label: true);
-  $frm .= OdaTags::tag('td', $field, attrs: 'colspan="2"');
-  
-  // $field = $Reg->fieldForm(field_name: 'asi_calificacion', label: true);
-  // $frm .= OdaTags::tag('td', $field, attrs: 'colspan="2"');
-  
-  $field = $Reg->fieldForm(field_name: 'asi_fecha_entrega', type: 'date', label: true);
-  $frm .= OdaTags::tag('td', $field, attrs: 'colspan="3"');
+  if (INSTITUTION_KEY=='santarosa') 
+  {
+    $field = $Reg->fieldForm(field_name: 'asi_calificacion', label: true);
+    $frm .= OdaTags::tag('td', $field, attrs: 'colspan="2"');
+
+    $frm .= OdaTags::tag('td', '', attrs: 'colspan="3"');
+  }
+  else
+  {
+    $field = $Reg->fieldForm(field_name: 'asi_desempeno', label: true);
+    $frm .= OdaTags::tag('td', $field, attrs: 'colspan="2"');
+    
+    $field = $Reg->fieldForm(field_name: 'asi_fecha_entrega', type: 'date', label: true);
+    $frm .= OdaTags::tag('td', $field, attrs: 'colspan="3"');
+  }  
   $frm .= '</tr>';
   
   // fila #4
   $frm .= "<tr class=\"\">";
-  $field = $Reg->fieldForm(field_name: 'asi_activ_profe', type: 'textarea', label: true);
-  $frm .= OdaTags::tag('td', $field, attrs: 'colspan="5"');
-  
-  $field = $Reg->fieldForm(field_name: 'asi_activ_estud', type: 'textarea', label: true);
-  $frm .= OdaTags::tag('td', $field, attrs: 'colspan="5"');
+  if (INSTITUTION_KEY=='santarosa') 
+  {
+    $field = $Reg->fieldForm(field_name: 'asi_activ_profe', type: 'textarea', label: true);
+    $frm .= OdaTags::tag('td', $field, attrs: 'colspan="5"');
+    
+    //$field = $Reg->fieldForm(field_name: 'asi_activ_estud', type: 'textarea', label: true);
+    //$frm .= OdaTags::tag('td', $field, attrs: 'colspan="5"');
+  }
+  else
+  {
+    $field = $Reg->fieldForm(field_name: 'asi_activ_profe', type: 'textarea', label: true);
+    $frm .= OdaTags::tag('td', $field, attrs: 'colspan="5"');
+    
+    $field = $Reg->fieldForm(field_name: 'asi_activ_estud', type: 'textarea', label: true);
+    $frm .= OdaTags::tag('td', $field, attrs: 'colspan="5"');
+  }
   $frm .= '</tr>';
   
   return $frm;

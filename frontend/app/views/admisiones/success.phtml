@@ -1,7 +1,7 @@
 <div class="w3-container">
   <?=View::flash()?>
   <div class="w3-row w3-theme">
-    <h2 class="w3-margin-left w3-bottombar w3-border-green w3-margin-right">MÓDULO DE ADMISIONES - Windsor School</h2>
+    <h2 class="w3-margin-left w3-bottombar w3-border-green w3-margin-right">MÓDULO DE ADMISIONES - <?= $arrData['institucion_nombre']?> </h2>
     
     <span id="public_path"  class="w3-hide"><?=trim(PUBLIC_PATH)?></span>
     <span id="theme" class="w3-hide"><?=Session::get('theme')?></span>
@@ -18,7 +18,6 @@
     $Resumen->addRow([ 'Grado al que Aspira: ', $arrData['Grados'][$data->grado_aspira] ]);
 
     echo $Resumen.'<br><br>';
-    //echo OdaTags::linkExterno('http://www.windsorschool.edu.co', 'Volver al sitio web Windsor', 'class="w3-button"').'<br><br>';
     echo 'El colegio se comuncará con usted para iniciar el proceso basado en la información que usted acaba de suministrarnos.<hr>';
   ?>
 </div>

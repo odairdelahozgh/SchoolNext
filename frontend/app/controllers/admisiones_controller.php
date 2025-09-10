@@ -10,9 +10,8 @@ class AdmisionesController extends DmzController
   protected function before_filter()
   {
     parent::before_filter();
-
-    $this->theme = 'dark';
-    $this->themei = 'd';
+    $this->theme = 'light';
+    $this->themei = 'l';
     View::template('admisiones');
   }
 
@@ -22,6 +21,12 @@ class AdmisionesController extends DmzController
     try
     {
       $this->page_action = 'Inicio';
+      $DoliK = new DoliConst();
+      $this->data['institucion_nombre'] = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '<Nombre del Instituto>';
+      $this->data['institucion_email'] = $DoliK->getValue('MAIN_INFO_SOCIETE_MAIL') ?? '<Email del Instituto>';
+      $this->data['annio_matricula'] = (((int)date('m')>=8) ? ((int)date('Y')+1) : (int)date('Y') );
+      $this->data['tipo_form_admisiones'] = $DoliK->getValue('SCHOOLNEXTADMISIONES_FORMULARIO') ?? 'formsencillo';
+
       //View::select('index', 'looper/component-steps');
     }
     catch (\Throwable $th)
@@ -36,6 +41,9 @@ class AdmisionesController extends DmzController
     try
     {
       $this->page_action = 'Success';
+      $DoliK = new DoliConst();
+      $this->arrData['institucion_nombre'] = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '<Nombre del Instituto>';
+      
       $this->data = (new Aspirante())::get($id);
       $GradosActivos = (new Grado())->getListActivos();
       $this->arrData['Grados'] = null;

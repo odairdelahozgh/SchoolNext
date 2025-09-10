@@ -31,7 +31,13 @@
             attrs: 'class="w3-button w3-green"',
           );
         } else {
-          $arrMatriculas[$Estud->grado_promovido] += 1;
+          if (isset($arrMatriculas[$Estud->grado_promovido])) {
+            $arrMatriculas[$Estud->grado_promovido] += 1;
+          }
+          else
+          {
+            $arrMatriculas[$Estud->grado_promovido] = 1;
+          }
           $tot_matriculados += 1;
         }
 
@@ -42,13 +48,13 @@
                 .$Estud->getLnkRetirar(RetiroEstudiante::Institucion)
                 .$Estud->getLnkRetirar(RetiroEstudiante::Graduacion);
 
-        $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>"
+        $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>" 
                  ."<h3>{$Estud->getLnkEditPage($Estud)} {$Estud->isNuevoIco()}</h3>"
                  ."{$Estud->getPagoPension()} {$Estud->getlnkSetPonerAldia()} <br> 
                    {$Estud->getDebePreicfes()} - {$Estud->getDebeAlmuerzos()} <br>"
                  .$Estud->getlnkSetMesPagosTodos().'<br>'
-                 .'Boletines '.$Estud->getLnkBoletinesTodos().'<hr>'
-                 .'Cambiar de Salón  '.$Estud->getSalonesCambiar('secretaria').'<br>';
+                 .$Estud->getCuentaInstit(true).'<br><br>'
+                 .'Boletines '.$Estud->getLnkBoletinesTodos();
         
         $col3  = 
                 '<div clasas="w3-panel w3-teal">'.$lnk_gen_num_mat.'<br>'
@@ -64,7 +70,8 @@
                 .(($Estud->padre_email) ? "$Estud->padre_email<br>" : '')
                 .(($Estud->padre_id) ? "$Estud->padre_id<br>" : '<br>')
                 .OdaUtils::linkWhatsApp(telefono: (string)$Estud->padre_tel_1)
-                .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true);
+                .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true).'<hr>'
+                .'Cambiar de Salón  '.$Estud->getSalonesCambiar('secretaria').'<br>';
 
          $data=[$col1, $col2, $col3];
          $tabla->addRow(
@@ -78,47 +85,48 @@
         $btns_listas_clase .= (new Estudiante)::getLnkListaGenerica($value->id) ;
       }
 
+      $bloque_matriculas = '';
+      if ($show_matricula) {
+        $arrGrados = Grado::getGradosArray();
+        $resultados_mat = '';
+        foreach ($arrMatriculas as $key => $value) {
+          $resultados_mat .= OdaTags::Badges($arrGrados[$key], $value);
+        }
+        $tot_sin_matricula = $tot_estudiantes-$tot_matriculados;
+  
+  
+        $lnk_listado_mat = OdaTags::linkButton(
+          action: "admin/estudiantes/exportListMatriculadosPdf", 
+          text: 'Matriculados PDF', 
+          attrs: 'class="w3-button w3-green" target="_blank"'
+        );
+  
+        $lnk_listado_pendientes_mat = OdaTags::linkButton(
+          action: "admin/estudiantes/exportListPendientesMatriculaPdf", 
+          text: 'Pendientes x Matricular PDF', 
+          attrs: 'class="w3-button w3-blue" target="_blank"'
+        );
 
-      $arrGrados = Grado::getGradosArray();
-      $resultados_mat = '';
-      foreach ($arrMatriculas as $key => $value) {
-        $resultados_mat .= OdaTags::Badges($arrGrados[$key], $value);
+        $bloque_matriculas = "<div class=\"w3-row\">
+        <div class=\"w3-padding w3-bar\">
+          <h3>Matriculados [$tot_matriculados] / Faltan {$tot_sin_matricula}</h3>
+          $resultados_mat
+        </div>
+        <p>$lnk_listado_mat $lnk_listado_pendientes_mat<p>
+      </div>";
       }
-      $tot_sin_matricula = $tot_estudiantes-$tot_matriculados;
-
-
-      $lnk_listado_mat = OdaTags::linkButton(
-        action: "admin/estudiantes/exportListMatriculadosPdf", 
-        text: 'Matriculados PDF', 
-        attrs: 'class="w3-button w3-green" target="_blank"'
-      );
-
-      $lnk_listado_pendientes_mat = OdaTags::linkButton(
-        action: "admin/estudiantes/exportListPendientesMatriculaPdf", 
-        text: 'Pendientes x Matricular PDF', 
-        attrs: 'class="w3-button w3-blue" target="_blank"'
-      );
 
       echo "
       <div class=\"w3-row\">
 
-        <div class=\"w3-half\">
+        <div class=\"w3-row\">
           <div class=\"w3-padding\">
             <h3>Listas de Clase</h3>
-            $btns_listas_clase
+            {$btns_listas_clase}
           </div>
         </div>
-
-        <div class=\"w3-half\">
-          <div class=\"w3-padding w3-bar\">
-            <h3>Matriculados [$tot_matriculados] / Faltan {$tot_sin_matricula}</h3>
-            $resultados_mat
-          </div>
-          <p>$lnk_listado_mat $lnk_listado_pendientes_mat<p>
-        </div>
-
-      </div>
-      ";
+        {$bloque_matriculas}
+      </div>";
       echo $tabla;
 
 
@@ -129,5 +137,17 @@
 
    ?>   
 </div>
+
+<?php
+ echo "
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const input = document.getElementById('inputSearch');
+      input.value = '{$_default_search}';
+      input.focus();
+    });
+  </script>
+  ";
+?>
 
 <?= Tag::js(src: "table_filter"); ?>

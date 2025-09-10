@@ -17,7 +17,7 @@
 
       $info_indic = OdaTags::tag(tag:'span', content:"$forta $debil $recom", attrs:'class="w3-small"');
       
-      $tabla = Form::open(action: "admin/notas/guardarCalificaciones/{$arrData['Periodo']}/{$arrData['Salon']->id}/{$arrData['Asignatura']->id}").'<table>';
+      $tabla = Form::open(action: "admin/notas/guardarCalificaciones/{$arrData['Periodo']->rowid}/{$arrData['Salon']->id}/{$arrData['Asignatura']->id}").'<table>';
       $tabla .= '<tr> <td colspan="11"><hr></td><tr>';
       $tabla .= '<tr> <td colspan="11">'.Form::submit(text: 'Guardar').'</td><tr>';
       foreach ($data as $key => $Reg) {
@@ -34,7 +34,7 @@
     <div class="w3-rest w3-padding my-fixed-item">     
       
     <!-- Trigger/Open the Modal -->
-      <h6><?= "Periodo {$arrData['Periodo']} <br>{$arrData['Asignatura']->nombre} <br>{$arrData['Salon']->nombre} " ?></h6>
+      <h6><?= "{$arrData['Periodo']->label} <br>{$arrData['Asignatura']->nombre} <br>{$arrData['Salon']->nombre} " ?></h6>
       <h4>Calificación Masiva</h4>
       <p>
         <i 

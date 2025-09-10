@@ -46,15 +46,15 @@ function traer_data(salon_nombre, salon_uuid, periodo)
     let AsignaturasValidas = [];
 
     // SOLO PARA VERIFICAR CUALES TIENE DATOS DE SEGUIMIENTO
-    for (let cod_estudiante in datos) 
+    for (let nom_estudiante in datos) 
     {
-      for (let nom_estudiante in datos[cod_estudiante]) 
+      for (let cod_estudiante in datos[nom_estudiante]) 
       {
-        for (let text_abrev in datos[cod_estudiante][nom_estudiante]) 
+        for (let text_abrev in datos[nom_estudiante][cod_estudiante]) 
         {
-          for (let abrev in datos[cod_estudiante][nom_estudiante][text_abrev]) 
+          for (let abrev in datos[nom_estudiante][cod_estudiante][text_abrev]) 
           {
-            const obj = Object.keys(datos[cod_estudiante][nom_estudiante][text_abrev][abrev]);
+            const obj = Object.keys(datos[nom_estudiante][cod_estudiante][text_abrev][abrev]);
             if (obj.length>0)
             {
               AsignaturasValidas[abrev] = 1;
@@ -65,20 +65,20 @@ function traer_data(salon_nombre, salon_uuid, periodo)
     }
     
     // ARMA LA TABLA FINAL
-    for (let cod_estudiante in datos) 
+    for (let nom_estudiante in datos) 
     {
       cnt +=1;
       result += `<tr>`;
-      for (let nom_estudiante in datos[cod_estudiante]) 
+      for (let cod_estudiante in datos[nom_estudiante]) 
       {
         let columnas = '';
         let anadir = false;
-        for (let text_abrev in datos[cod_estudiante][nom_estudiante]) 
+        for (let text_abrev in datos[nom_estudiante][cod_estudiante]) 
         {
-          for (let abrev in datos[cod_estudiante][nom_estudiante][text_abrev]) 
+          for (let abrev in datos[nom_estudiante][cod_estudiante][text_abrev]) 
           {
-            const obj = Object.keys(datos[cod_estudiante][nom_estudiante][text_abrev][abrev]);
-            let data = datos[cod_estudiante][nom_estudiante][text_abrev][abrev];
+            const obj = Object.keys(datos[nom_estudiante][cod_estudiante][text_abrev][abrev]);
+            let data = datos[nom_estudiante][cod_estudiante][text_abrev][abrev];
             if (AsignaturasValidas.hasOwnProperty(abrev))
             {
               if (obj.length==0)

@@ -7,6 +7,9 @@
     echo OdaForm::hidden(field: 'ver_seguimientos', 
       value: Config::get('padres.mostrar_seguimientos'));
 
+    echo OdaForm::hidden(field: 'ver_preinformes', 
+      value: Config::get('padres.mostrar_preinformes'));
+
     echo OdaForm::hidden(field: 'ver_boletines', 
       value: Config::get('padres.mostrar_boletines'));
 
@@ -22,7 +25,10 @@
       
     echo OdaForm::hidden(field: 'periodo_planes_apoyo',
      value: Config::get('padres.periodo_planes_apoyo'));
-     
+    
+    echo OdaForm::hidden(field: 'periodo_preinformes',
+     value: Config::get('padres.periodo_preinformes'));
+
     echo OdaForm::hidden(field: 'periodo_seguimientos',
      value: Config::get('padres.periodo_seguimientos'));
     

@@ -13,6 +13,7 @@ class IndexController extends AppController
         'secretarias' => 'secretaria',
         'matriculas'  => 'secretaria',
         'sicologos'=> 'sicologia',
+        'psicologos'=> 'sicologia',
         'contables'=> 'contabilidad',
         'enfermeras'=> 'enfermeria',
   );
@@ -21,8 +22,9 @@ class IndexController extends AppController
   {
     $roll_usuario = strtolower(trim(Session::get('roll')));
     if (!$roll_usuario) 
-    {
-      if (trim(Session::get('username')) == trim(Session::get('documento'))) 
+    {  // SI NO TIENE ROLL ASIGNADO
+      OdaLog::debug('NO TENÍA ROLL '.__METHOD__.', linea:'.__LINE__, __FILE__);
+      if ( trim(Session::get('username')) == trim(Session::get('documento')) ) 
       {
         $roll_usuario = 'padres';
       } 
@@ -35,7 +37,9 @@ class IndexController extends AppController
       $usr->roll = $roll_usuario;
       $usr->save();
     }
-    if ( !array_key_exists($roll_usuario, self::MODULOS) ) {
+
+    if ( !array_key_exists($roll_usuario, self::MODULOS) ) 
+    {
       $this->logout();
     }
     Session::set('modulo', self::MODULOS[$roll_usuario] );

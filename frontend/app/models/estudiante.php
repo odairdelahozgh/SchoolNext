@@ -23,6 +23,7 @@ class Estudiante extends LiteRecord
   use EstudianteTraitSetUp;
 
   private mixed $DQL = null;
+  private string $tabla_estudiante = '';
 
   public function __construct() 
   {
@@ -30,8 +31,8 @@ class Estudiante extends LiteRecord
     self::$table = Config::get('tablas.estudiante');
     self::$pk = 'id';
     self::$_order_by_defa = 'g.orden,s.nombre,t.apellido1,t.apellido2,t.nombres';
-    
-    $this->DQL = (new OdaDql(__CLASS__))
+    $this->tabla_estudiante = Config::get('tablas.estudiante');
+    $this->DQL = (new OdaDql('Estudiante'))
       ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
       ->leftJoin('datosestud', 'de', 't.id=de.estudiante_id')
       ->leftJoin('salon', 's')
@@ -74,7 +75,7 @@ class Estudiante extends LiteRecord
       array('t.nombres', 't.apellido1', 't.apellido2'), 
       $orden
     );
-    $DQL = new OdaDql(__CLASS__);
+    $DQL = new OdaDql('Estudiante');
     $DQL->select($select)
         ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
         ->concat(explode(',', $orden), 'estudiante_nombre')
@@ -92,7 +93,7 @@ class Estudiante extends LiteRecord
   
   public function getListExportMoodle(): array|string 
   {
-    $DQL = (new OdaDql(__CLASS__))
+    $DQL = (new OdaDql('Estudiante'))
       ->select("t.id, t.documento, t.nombres, t.apellido1, t.apellido2, g.abrev")
       ->where('t.is_active=1')
       ->leftJoin('Grado', 'g', 't.grado_mat=g.id')
@@ -121,7 +122,7 @@ class Estudiante extends LiteRecord
       ];
       
       // Actualiza Estudiantes
-      $DQLUpdate = new OdaDql(__CLASS__);
+      $DQLUpdate = new OdaDql('Estudiante');
       $DQLUpdate->update(['email_instit' => $username, 'clave_instit' => $estud->documento ])
                 ->where('t.id=?')
                 ->setParams([$estud->id]);
@@ -144,7 +145,7 @@ class Estudiante extends LiteRecord
       array('t.nombres', 't.apellido1', 't.apellido2'), 
       $orden
     );
-    $DQL = (new OdaDql(__CLASS__))
+    $DQL = (new OdaDql('Estudiante'))
       ->select($select)
       ->addSelect('s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
       ->concat(explode(',', $orden), 'estudiante_nombre')
@@ -188,7 +189,7 @@ class Estudiante extends LiteRecord
       array('t.nombres', 't.apellido1', 't.apellido2'), 
       $orden
     );
-    $DQL = (new OdaDql(__CLASS__))
+    $DQL = (new OdaDql('Estudiante'))
       ->select('t.id, t.is_active, t.uuid, t.documento, t.salon_id')
       ->concat(explode(',', $orden), 'estudiante_nombre')
       ->concat(explode(',', $orden), 'nombre')
@@ -245,22 +246,18 @@ class Estudiante extends LiteRecord
       array('n', 'a1', 'a2'), 
       array('t.nombres', 't.apellido1', 't.apellido2'), 
       $orden
-    );
-    
+    );    
     $DQL->concat(explode(',', $orden), 'estudiante_nombre')
           ->concat(explode(',', $orden), 'nombre')
-          ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email');
-    
-    if (!is_null($order_by))
+          ->addSelect('de.madre, de.madre_id, de.madre_tel_1, de.madre_email, de.padre, de.padre_id, de.padre_tel_1, de.padre_email');    
+    if ( !is_null($order_by) )
     {
       $DQL->orderBy($order_by); 
     }
-
     if (!is_null($estado) AND 0==$estado)
     {
       $DQL->where('(t.is_active=0) or (t.is_active IS NULL)');
     }
-
     return $DQL->execute();
   }
 
@@ -321,7 +318,7 @@ class Estudiante extends LiteRecord
       array('t.nombres', 't.apellido1', 't.apellido2'), 
       $orden
     );
-    $DQL = (new OdaDql(__CLASS__))
+    $DQL = (new OdaDql('Estudiante'))
       ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
       ->concat(explode(',', $orden), 'estudiante_nombre')
       ->concat(explode(',', $orden), 'nombre')
@@ -331,7 +328,7 @@ class Estudiante extends LiteRecord
       ->andWhere("t.id IN ($filtro)")
       ->orderBy('g.orden,s.nombre,'.$orden);
     $DQL->setFrom('sweb_estudiantes');
-    return $DQL->execute();
+    return $DQL->execute()??[];
   }
 
 
@@ -344,7 +341,7 @@ class Estudiante extends LiteRecord
       array('t.nombres', 't.apellido1', 't.apellido2'), 
       $orden 
     );    
-    $DQL = (new OdaDql(__CLASS__))
+    $DQL = (new OdaDql('Estudiante'))
         ->select('t.*, s.nombre AS salon_nombre, s.grado_id, g.nombre AS grado_nombre')
         ->concat(explode(',', $orden), 'estudiante_nombre')
         ->concat(explode(',', $orden), 'nombre')
@@ -354,7 +351,7 @@ class Estudiante extends LiteRecord
         ->andWhere("t.id IN ($filtro)")
         ->orderBy('g.orden,s.nombre,'.$orden);
     $DQL->setFrom('sweb_estudiantes');
-    return $DQL->execute();
+    return $DQL->execute()??[];
   }
 
 
@@ -372,7 +369,7 @@ class Estudiante extends LiteRecord
       $salones[] = $carga->salon_id;
     }
     $filtro_in = implode(',', $salones);
-    $DQL = new OdaDql(__CLASS__);
+    $DQL = new OdaDql('Estudiante');
     $DQL->setFrom(Config::get('tablas.estudiante'));
     $DQL->select('t.*')
         ->concat(explode(',', $orden), 'estudiante_nombre')
@@ -403,7 +400,7 @@ class Estudiante extends LiteRecord
         $salones[] = $salon->id;
       }
       $filtro_in = implode(',', $salones);
-      $DQL = (new OdaDql(__CLASS__));
+      $DQL = (new OdaDql('Estudiante'));
       $DQL->setFrom(Config::get('tablas.estudiante'));
       $DQL->select('t.*')
           ->concat(explode(',', $orden), 'estudiante_nombre')
@@ -440,7 +437,7 @@ class Estudiante extends LiteRecord
         $salones[] = $salon->id;
       }
       $filtro_in = implode(',', $salones);
-      $DQL = (new OdaDql(__CLASS__));
+      $DQL = (new OdaDql('Estudiante'));
       $DQL->setFrom(Config::get('tablas.estudiante'));
       $DQL->select('t.*')
           ->concat(explode(',', $orden), 'estudiante_nombre')
@@ -499,7 +496,7 @@ class Estudiante extends LiteRecord
 
   public function getNumEstudiantes_BySalon(int $salon_id): int 
   {
-    $DQL = new OdaDql(__CLASS__);
+    $DQL = new OdaDql('Estudiante');
     $DQL->setFrom('sweb_estudiantes');
     $DQL->select('count(*) as total')
         ->groupBy('t.salon_id')

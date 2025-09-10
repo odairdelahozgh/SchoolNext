@@ -3,17 +3,15 @@
  * KumbiaPHP Web Framework
  * Parámetros de configuracion de la aplicacion
  */
- 
-$prefijo_dolibarr = 'llx_';
 
 return [
   'acciones_seguim'     => 'sweb_acciones_segto',
   'area'                => 'sweb_areas',
   'areas'               => 'sweb_areas',
-  'areas_d'             => $prefijo_dolibarr.'schoolnextcore_area',
+  'areas_d'             => PREFIJO_TABLAS_DOLIBARR.'schoolnextcore_area',
   'asignatura'          => 'sweb_asignaturas',
   'asignaturas'         => 'sweb_asignaturas',
-  'asignaturas_d'       => $prefijo_dolibarr.'schoolnextcore_asignatura',
+  'asignaturas_d'       => PREFIJO_TABLAS_DOLIBARR.'schoolnextcore_asignatura',
   'aspirante'           => 'sweb_aspirantes',
   'aspirantes'          => 'sweb_aspirantes',
   'aspirantes_adjuntos' => 'sweb_aspir_adjuntos',
@@ -53,11 +51,11 @@ return [
 
   'periodo'              => 'sweb_periodos',
   'periodos'             => 'sweb_periodos',
-  'periodos_d'           => $prefijo_dolibarr.'schoolnextcore_periodo',
+  'periodos_d'           => PREFIJO_TABLAS_DOLIBARR.'schoolnextcore_periodo',
   'plantillas'           => 'snxt_plantillas',
   'rango'                => 'sweb_rangos',
   'rangos'               => 'sweb_rangos',
-  'rangos_d'             => $prefijo_dolibarr.'schoolnextcore_rango',
+  'rangos_d'             => PREFIJO_TABLAS_DOLIBARR.'schoolnextcore_rango',
   
   'salon'                => 'sweb_salones',
   'salones'              => 'sweb_salones',
@@ -78,6 +76,6 @@ return [
   'usuarios_secciones'   => 'sweb_users_secciones',
   
   
-  'doli_const'   => $prefijo_dolibarr.'const',
+  'doli_const'   => PREFIJO_TABLAS_DOLIBARR.'const',
   
 ];

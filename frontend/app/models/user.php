@@ -99,8 +99,7 @@ class User extends ActiveRecord
 
     public function login()
     {
-      $auth = ('santarosa'==INSTITUTION_KEY) ? AuthDolibarr::factory('curl') : Auth2Odair::factory('model');
-            
+      $auth = ('santarosa'==INSTITUTION_KEY) ? AuthDolibarr::factory('curl') : Auth2Odair::factory('model');            
       $auth->setModel('User'); // Modelo que utilizará para consultar
       $auth->setFields(['id', 'username', 'password', 'nombres', 'apellido1', 'apellido2', 'roll', 'documento', 'usuario_instit', 'clave_instit', 'theme']);
       $auth->setLogin('username');
@@ -111,17 +110,13 @@ class User extends ActiveRecord
       $DoliK = new DoliConst();
       $institucion = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '<Nombre del Instituto>';
       $annio_inicial = $DoliK->getValue('SCHOOLNEXTCORE_ANNIO_INICIAL') ?? 2000;
-      $max_periodos = $DoliK->getValue('SCHOOLNEXTCORE_MAX_PERIODOS') ?? 1;
       $annio_actual = $DoliK->getValue('SCHOOLNEXTACADEMICO_ANNIO_ACTUAL') ?? 2000;
       $periodo_actual = $DoliK->getValue('SCHOOLNEXTACADEMICO_PERIODO_ACTUAL') ?? 1;
-
       Session::set('institucion', $institucion );
       Session::set('ip', OdaUtils::getIp() );
       Session::set('annio_inicial', (int)$annio_inicial);
-      Session::set('max_periodos', $max_periodos);
       Session::set('annio', (int)$annio_actual);
-      Session::set('periodo', (int)$periodo_actual);
-      
+      Session::set('periodo', (int)$periodo_actual);      
       $rango_nota_inferior = $DoliK->getValue('SCHOOLNEXTACADEMICO_LIMITE_NOTA_INFERIOR') ?? 1;
       $rango_nota_perdida  = $DoliK->getValue('SCHOOLNEXTACADEMICO_LIMITE_NOTA_PERDIDA') ?? 1;
       $rango_nota_superior = $DoliK->getValue('SCHOOLNEXTACADEMICO_LIMITE_NOTA_SUPERIOR') ?? 1;
@@ -142,25 +137,20 @@ class User extends ActiveRecord
       Session::set('f_fin_notas',  $PeriodoActual->f_fin_notas ?? '');
       Session::set('f_open_day',   $PeriodoActual->f_open_day ?? '');
       Session::set('es_director',  false);
-
       if ($auth->identify()) 
       {
         Session::set('es_director',  (new Salon)->isDirector( (int)Session::get('id') ) );
         Session::set('foto', "uploads/users/".Session::get('documento').".png");
         return true; 
-      }
-      
+      }      
       if ($auth->getError()) 
       { 
         OdaFlash::warning($auth->getError());
       }
-
       return false;
     }
 
-    /**
-     * User | logout() : Terminar sesion
-     */
+
     public function logout() 
     {
       if ('santarosa'==INSTITUTION_KEY) 
@@ -182,8 +172,7 @@ class User extends ActiveRecord
       if ('santarosa'==INSTITUTION_KEY) 
       {
         return AuthDolibarr::factory('model')->isValid();
-      }
-      
+      }      
       return Auth2Odair::factory('model')->isValid();
     }
 

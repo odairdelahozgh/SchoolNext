@@ -129,15 +129,15 @@ function traer_data(grado_id, annio, max_periodo) {
 
 }
 
-function colorRango(valor, instit) {
+
+function colorRango(valor, instit) 
+{
   if (valor<1 || valor>100) { return 'DeepPink'; }
 
   if (instit=='windsor')
   {
     if (valor<60) { return 'red'; }
-    if (valor<70) { return 'orange'; }
     if (valor<80) { return 'yellow'; }
-    if (valor<90) { return 'light-blue'; }
     if (valor<95) { return 'blue'; }
     if (valor<=100) { return 'green'; }
   }
@@ -154,8 +154,8 @@ function colorRango(valor, instit) {
   if (valor<38) { return 'orange'; }
   if (valor<45) { return 'light-blue'; }
   if (valor<=50) { return 'green'; }
+}
 
-} //END-colorRango
 
 function nombreRango(valor, instit) 
 {
@@ -165,10 +165,8 @@ function nombreRango(valor, instit)
   if (instit=='windsor')
   {
     if (valor<60) { return 'Bajo'; }
-    if (valor<70) { return 'Basi'; }
-    if (valor<80) { return 'Bas+'; }
-    if (valor<90) { return 'Alto'; }
-    if (valor<95) { return 'Alt+'; }
+    if (valor<80) { return 'Bas'; }
+    if (valor<95) { return 'Alt'; }
     if (valor<=100) { return 'Supe'; }    
   }
 
@@ -184,7 +182,6 @@ function nombreRango(valor, instit)
   if (valor<38) { return 'Basi'; }
   if (valor<45) { return 'Alto'; }
   if (valor<=50) { return 'Supe'; }
-
 }
 
 

@@ -141,7 +141,7 @@ class Indicador extends LiteRecord {
           ->where('t.periodo_id=? AND t.grado_id=? AND t.asignatura_id=?')
           ->leftJoin('grado', 'g')
           ->leftJoin('asignatura', 'a')
-          ->orderBy(self::$_order_by_defa)
+          ->orderBy('t.periodo_id, t.grado_id, t.asignatura_id, t.codigo')
           ->setParams([$periodo_id, $grado_id, $asignatura_id]);      
       return $DQL->execute();
     }

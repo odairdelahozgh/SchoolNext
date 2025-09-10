@@ -79,21 +79,18 @@ trait EmpleadoTraitProps {
   }
   
   
-  /**
-   * @deprecated ??
-   */
+  #[\Deprecated(message: "use getFotoEmpleado")]
   public function getFoto(
     int $max_width=80, 
     bool $show_cod=true
-  ) 
+  ): string 
   { 
     return self::getFotoEmpleado($this->documento, $show_cod); 
   }
   
 
-  /**
-   * @deprecated ??
-   */
+  
+  #[\Deprecated(message: "use getFotoEmpleado")]
   public function getFotoCircle(
     int $max_width=80, 
     bool $show_cod=true
@@ -106,18 +103,17 @@ trait EmpleadoTraitProps {
   public function isNuevo(): bool 
   { 
     $fecha_lim = (string)(Date('Y')-1).'-10-01';
-    return ( (substr($this->created_at, 0,10)>=$fecha_lim ) ? true : false);
+    return (substr($this->created_at, 0,10)>=$fecha_lim ) ? true : false;
   }
 
 
   public function is_nuevo_ico(): string 
   { 
-    return ( $this->isNuevo() ? '<span class="w3-text-red">NEW</span>' : '' ); 
+    return $this->isNuevo() ? '<span class="w3-text-red">NEW</span>' : ''; 
   }
 
-  /**
-   * @deprecated ??
-   */
+  
+  #[\Deprecated]
   public function is_active_f(
     bool $show_ico=false, 
     string $attr="w3-small"

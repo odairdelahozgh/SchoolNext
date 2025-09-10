@@ -58,7 +58,13 @@ try {
   $myTabla2->addRow([
     '6. '.$arch6.$modelAdjuntos->getLinkArchivo(6), $estado_arch6, $coment_arch6,
   ]);
-  
+    
+  $arch7 = ($modelAdjuntos->nombre_archivo7) ? $frmAdjuntos->getInput('nombre_archivo7', 'hidden') : '';
+  $estado_arch7 = ($modelAdjuntos->nombre_archivo7) ? $frmAdjuntos->getSelect('estado_archivo7', EstadoAdjuntos::toArray(false)) : 'Archivo no subido';
+  $coment_arch7 = ($modelAdjuntos->nombre_archivo7) ? $frmAdjuntos->getInput('coment_archivo7') : $modelAdjuntos->coment_archivo7;
+  $myTabla2->addRow([
+    '7. '.$arch7.$modelAdjuntos->getLinkArchivo(7), $estado_arch7, $coment_arch7,
+  ]);
   
   $lnk_docs_mat = OdaTags::tag('span', "Descargar Documentos", 'class="w3-button w3-grey"')
     .'<br><small>NOTA: Para descargar, se debe generar primero el Número de Matrícula</small>';

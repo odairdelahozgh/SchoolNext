@@ -298,12 +298,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/odairdelahozgh/AdminLTE4Helper.git",
-                "reference": "178613951dc6d99dd814ad03c28ac197349593d3"
+                "reference": "0ac749b24b6652e94f24bea93c6b2b6fe388d793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odairdelahozgh/AdminLTE4Helper/zipball/178613951dc6d99dd814ad03c28ac197349593d3",
-                "reference": "178613951dc6d99dd814ad03c28ac197349593d3",
+                "url": "https://api.github.com/repos/odairdelahozgh/AdminLTE4Helper/zipball/0ac749b24b6652e94f24bea93c6b2b6fe388d793",
+                "reference": "0ac749b24b6652e94f24bea93c6b2b6fe388d793",
                 "shasum": ""
             },
             "require": {
@@ -325,7 +325,7 @@
                 "issues": "https://github.com/odairdelahozgh/AdminLTE4Helper/issues",
                 "source": "https://github.com/odairdelahozgh/AdminLTE4Helper/tree/main"
             },
-            "time": "2025-09-10T06:06:25+00:00"
+            "time": "2025-09-10T06:27:55+00:00"
         },
         {
             "name": "paragonie/random_compat",

@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '23f2024c7e9238648a8cadd2d431dd4304162daf',
+        'reference' => 'f3fcfb7adf77b49afdadf9d7737d27f86ee94139',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '23f2024c7e9238648a8cadd2d431dd4304162daf',
+            'reference' => 'f3fcfb7adf77b49afdadf9d7737d27f86ee94139',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -67,7 +67,7 @@
         'odairdelahoz/adminlte4-helper' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ff2f2761a29ba0998e3e4ae1dcf974b1aa923f4d',
+            'reference' => '178613951dc6d99dd814ad03c28ac197349593d3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../odairdelahoz/adminlte4-helper',
             'aliases' => array(

@@ -3,7 +3,6 @@
         "mpdf/mpdf": "^8.1",
         "tedivm/jshrink": "~1.0",
         "shuchkin/simplexlsx": "^1.0",
-        "odairdelahoz/htmx-components": "^1.0",
         "almasaeed2010/adminlte": "4.0.0-rc3",
         "odairdelahoz/adminlte4-helper": "@dev"
     },

@@ -18,7 +18,7 @@ $layout->renderBodyStart();
 
 // Render main UI parts
 $layout->renderHeader('SchoolNEXT', [], $user);
-$layout->renderSidebar('SchoolNEXT', $user['name'], $menuItems);
+$layout->renderSidebar(strtoupper(INSTITUTION_KEY), $user['name'], $menuItems);
 
 // Render content wrapper start and breadcrumbs
 $breadcrumbs = [
@@ -44,6 +44,6 @@ $layout->renderContentWrapperStart($pageTitle, $breadcrumbs);
 $layout->renderContentWrapperEnd();
 
 // Render footer and body end
-$layout->renderFooter();
+$layout->renderFooter('SchoolNEXT v.2.0', date('Y'), 'https://construxzionsoft.com.co', 'ConstruxionSoft');
 $layout->renderBodyEnd();
 ?>

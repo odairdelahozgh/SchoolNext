@@ -60,20 +60,20 @@ class PagesController extends AppController
 
   public function bootstrap() 
   {
-    View::template('looper/layout-pagenavs');
+    View::template('adminlite4htmx');
   }
 
 
   public function htmx() 
   {
-    View::select('htmx', 'adminlite3htmx');
+    View::select('htmx', 'adminlite4htmx');
   }
 
 
   public function bs5htmx() 
   {
     //View::select('ejemplos/bs5htmx', 'bootstrap5htmx-template');
-    View::select('ejemplos/bs5htmx', 'adminlite3htmx');
+    View::select('ejemplos/bs5htmx', 'adminlite4htmx');
   }
 
 

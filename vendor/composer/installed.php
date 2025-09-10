@@ -3,7 +3,7 @@
         'name' => 'kumbia/framework',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'e294c952f168ba489c9cb99d3a7c2c81908a475a',
+        'reference' => '6a26cde1b7291973cbbcb25e5e0e3f0be189a14b',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -60,7 +60,7 @@
         'kumbia/framework' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'e294c952f168ba489c9cb99d3a7c2c81908a475a',
+            'reference' => '6a26cde1b7291973cbbcb25e5e0e3f0be189a14b',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

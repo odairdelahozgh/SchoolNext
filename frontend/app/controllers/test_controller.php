@@ -10,30 +10,12 @@ class TestController extends AppController
   // $this->parameters, $this->limit_params, $this->scaffold, $this->data
   protected function before_filter() 
   {
-    View::template('adminlite4-template');
+    View::template('layout_adminlte4');
   }
-
-  public function index2() 
-  {
-    View::select(null, null);
-    try
-    {
-      $apiClient = new ApiClient(
-        Config::get('dolibarr.'.INSTITUTION_KEY.'.api_url'), 
-        Config::get('dolibarr.'.INSTITUTION_KEY.'.api_key')      
-      );
-      $this->data = $apiClient->get('/agendaevents');
-    }
-    catch (\Throwable $th)
-    {
-      OdaFlash::error($th, true);
-    }
-  
-  }
-
 
   public function index()
   {
+    $this->page_action = 'Test Page';
     $id_photo = (Session::get('documento') !=$this->user_id) ? Session::get('documento') : $this->user_id;
     $this->user = [
       'username' => $this->user_name,

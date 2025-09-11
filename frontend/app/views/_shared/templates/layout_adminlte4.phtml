@@ -24,19 +24,17 @@ $layout->renderSidebar(strtoupper(INSTITUTION_KEY), $user['name'], $menuItems);
 $breadcrumbs = [
     ['name' => 'Home', 'link' => '#'],
     ['name' => 'Layouts', 'link' => 'layout_preview.php'],
-    ['name' => $pageTitle]
+    ['name' => $page_action]
 ];
 $layout->renderContentWrapperStart($pageTitle, $breadcrumbs);
 
 // --- Page Specific Content ---
 ?>
-
 <div class="row">
     <div class="col-md-12">
         <?php View::content() ?>
     </div>
 </div>
-
 <?php
 // --- End Page Specific Content ---
 
@@ -45,5 +43,7 @@ $layout->renderContentWrapperEnd();
 
 // Render footer and body end
 $layout->renderFooter('SchoolNEXT v.2.0', date('Y'), 'https://construxzionsoft.com.co', 'ConstruxionSoft');
-$layout->renderBodyEnd([PUBLIC_PATH.'javascript/htmx2.min.js']);
+$layout->renderBodyEnd(
+  [PUBLIC_PATH.'javascript/htmx2.min.js'],
+);
 ?>

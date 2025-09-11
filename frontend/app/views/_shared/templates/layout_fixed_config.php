@@ -1,7 +1,5 @@
 <?php
-// layout_fixed_config.php
-
-$pageTitle = 'Fixed Header & Sidebar Layout';
+$pageTitle = $page_title;
 $layoutOptions = [
     'fixed_header' => true,
     'fixed_sidebar' => true,

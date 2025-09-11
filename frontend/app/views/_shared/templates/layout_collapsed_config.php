@@ -2,6 +2,7 @@
 // layout_collapsed_config.php
 
 $pageTitle = 'Collapsed Sidebar Layout';
+$pageTitle = $page_title;
 $layoutOptions = [
     'fixed_header' => false,
     'fixed_sidebar' => false,

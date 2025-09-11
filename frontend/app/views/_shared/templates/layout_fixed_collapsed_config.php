@@ -1,7 +1,5 @@
 <?php
-// layout_fixed_collapsed_config.php
-
-$pageTitle = 'Fixed & Collapsed Layout';
+$pageTitle = $page_title;
 $layoutOptions = [
     'fixed_header' => true,
     'fixed_sidebar' => true,

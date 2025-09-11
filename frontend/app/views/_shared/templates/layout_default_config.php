@@ -1,7 +1,5 @@
 <?php
-// layout_default_config.php
-
-$pageTitle = 'Default Layout';
+$pageTitle = $page_title;
 $layoutOptions = [
     'fixed_header' => false,
     'fixed_sidebar' => false,

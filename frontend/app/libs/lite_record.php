@@ -27,7 +27,7 @@ class LiteRecord extends ORM
   protected static $_order_by_defa = 't.id';
   protected static $_class_name = __CLASS__;
   
-  const LIM_PAGO_PERIODOS = [ 1=>3, 2=>6, 3=>9, 4=>11, 5=>11 ]; /// esto se eliminará
+  const LIM_PAGO_PERIODOS = [ 1=>3, 2=>6, 3=>8, 4=>11, 5=>11 ]; /// esto se eliminará
   const IS_ACTIVE     = [0 =>'Inactivo', 1=>'Activo']; /// esto se eliminará
   const ICO_IS_ACTIVE = [0=>'face-frown', 1=>'face-smile']; /// esto se eliminará
 

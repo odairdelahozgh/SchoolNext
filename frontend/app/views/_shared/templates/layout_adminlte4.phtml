@@ -9,7 +9,6 @@ if (!file_exists($configFilePath)) {
 }
 require_once $configFilePath;
 
-// Instantiate the Layout class
 $layout = new Layout($pageTitle, $layoutOptions);
 
 // Render the page
@@ -17,10 +16,10 @@ $layout->renderHead();
 $layout->renderBodyStart();
 
 // Render main UI parts
-$layout->renderHeader('SchoolNEXT', [], $user);
+$layout->renderHeader('SchoolNEXT', ['name' => 'Layouts', 'link' => 'layout_preview.php'], $user);
 $layout->renderSidebar(strtoupper(INSTITUTION_KEY), $user['name'], $menuItems);
 
-// Render content wrapper start and breadcrumbs
+
 $breadcrumbs = [
     ['name' => 'Home', 'link' => '#'],
     ['name' => 'Layouts', 'link' => 'layout_preview.php'],
@@ -40,9 +39,7 @@ $layout->renderContentWrapperStart($pageTitle, $breadcrumbs);
 
 // Render content wrapper end
 $layout->renderContentWrapperEnd();
-
-// Render footer and body end
-$layout->renderFooter('SchoolNEXT v.2.0', date('Y'), 'https://construxzionsoft.com.co', 'ConstruxionSoft');
+$layout->renderFooter('https://construxzionsoft.com.co', 'ConstruxionSoft');
 $layout->renderBodyEnd(
   [PUBLIC_PATH.'javascript/htmx2.min.js'],
 );

@@ -113,21 +113,27 @@ abstract class AppController extends Controller
   }
   
   
-  final protected function finalize() {
+final protected function finalize()
+  {
     try {
       $this->page_action = $this->page_action ?? $this->action_name;
-
       $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
-      
-      if ($this->action_name!=='index') {
-        $this->_data_count = count($this->data);
-        if (0==$this->_data_count) { OdaFlash::info('No hay registros para mostrar.'); }
+      if ($this->action_name!=='index')
+      {
+        $this->_data_count = 0;
+        if (is_countable($this->data))
+        {
+          if (0 == count($this->data))
+          {
+            OdaFlash::info('No hay registros para mostrar.'); 
+          }
+        }        
       }
-
     } catch (\Throwable $th) {
       OdaFlash::error($th);
     }
-  } //END-finalize
+  }
+  
 
   public function index() {
     try {

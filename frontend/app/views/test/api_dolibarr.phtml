@@ -1,0 +1,10 @@
+<?php
+echo '<hr/>';
+echo gettype($data['body']).'<br/><br/>';
+echo $data['body'];
+
+echo '<hr/>';
+echo gettype($data).'<br/><br/>';
+foreach ($data as $key => $value) {
+  echo $value->body;
+}

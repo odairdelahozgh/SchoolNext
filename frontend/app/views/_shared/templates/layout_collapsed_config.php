@@ -7,7 +7,7 @@ $layoutOptions = [
     'fixed_header' => false,
     'fixed_sidebar' => false,
     'collapsed_sidebar' => true,
-    'dist_path' => 'vendor/adminlte'
+    'dist_path' => PUBLIC_PATH. 'vendor/adminlte'
 ];
 
 $menuItems = [

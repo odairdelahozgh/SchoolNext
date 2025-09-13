@@ -27,5 +27,29 @@ class TestController extends AppController
     ];
   }
 
+
+  public function api_dolibarr()
+  {
+    try {
+      $this->page_action = 'Test Dolibarr';
+      $this->action_name = 'api_dolibarr';
+      $this->page_title = 'Test API Dolibarr';
+      $this->data = [0];
+      $apiUrl = (string)Config::get('dolibarr.'.INSTITUTION_KEY.'.api_url');
+      $apiKey = (string)Config::get('dolibarr.'.INSTITUTION_KEY.'.api_key');
+      
+      $apiClient = new ApiClient($apiUrl, $apiKey);
+      $response = $apiClient->get('/agendaevents?sortfield=t.id&sortorder=ASC&limit=100');
+      if ($response['statusCode'] == 200)
+      {
+        //$this->data = json_decode($response['body'], true);
+        $this->data = $response;
+      }
+      
+    } catch (\Throwable $th) {
+      OdaFlash::error($th);
+    }
+  }
   
+
 }

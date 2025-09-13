@@ -52,9 +52,9 @@ class UsuarioDolibarr extends LiteRecord {
     return $DQL->execute();
   }
 
-
+  // TODO: en desarrollo
   public function getDocentes()
-  { // en desarrollo
+  {
     $DQL = new OdaDql('UsuarioDolibarr');
     $DQL->setFrom(PREFIJO_TABLAS_DOLIBARR.'usergroup');
     $DQL->select("t.*")

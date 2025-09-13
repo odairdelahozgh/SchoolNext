@@ -14,19 +14,13 @@ class ApiClient
 
     protected function request($method, $endpoint, $data = [])
     {
-      /* 
-        curl -X GET --header 'Accept: application/json' --header 'DOLAPIKEY: 1g3mbFb7Gga15MIIJ60jC95xkz6bCTXE' 'https://crm.colegiomixtosantarosa.com/api/index.php/agendaevents?sortfield=t.id&sortorder=ASC&limit=100'
-        
-        https://crm.colegiomixtosantarosa.com/api/index.php/agendaevents?sortfield=t.id&sortorder=ASC&limit=100
-      */
-        //$ch = curl_init($this->apiUrl . $endpoint);
-        $ch = curl_init();
+      //  /agendaevents?sortfield=t.id&sortorder=ASC&limit=100
+        $ch = curl_init($this->apiUrl . $endpoint);
         $headers = [
             "DOLAPIKEY: {$this->apiToken}",
-            //"Accept: application/json",
+            "Accept: application/json",
             //"Content-Type: application/json"
-        ];  
-        curl_setopt($ch, CURLOPT_URL, $this->apiUrl . $endpoint);
+        ];
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
@@ -37,14 +31,15 @@ class ApiClient
         $response = curl_exec($ch);
         if ($response === false)
         {
-          error_log('cURL error: ' . curl_error($ch));
-        } else
+          OdaLog::alert('cURL error: ' . curl_error($ch));
+        } 
+        else
         {
           $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
           $header = substr($response, 0, $header_size);
           $body = substr($response, $header_size);
-          error_log('Response Headers: ' . $header);
-          error_log('Response Body: ' . $body);
+          OdaLog::debug('Response Headers: ' . $header);
+          OdaLog::debug('Response Body: ' . $body);
         }
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
@@ -79,21 +74,6 @@ class ApiClient
     {
         return $this->put($endpoint, $data);
     }
+
+    
 }
-
-    /*
-    // GET request
-    $response = $client->get('/endpoint');
-
-    // POST request
-    $response = $client->post('/endpoint', ['key' => 'value']);
-
-    // PUT request
-    $response = $client->put('/endpoint', ['key' => 'value']);
-
-    // DELETE request
-    $response = $client->delete('/endpoint');
-
-    // UPDATE request
-    $response = $client->update('/endpoint', ['key' => 'value']);
-  */

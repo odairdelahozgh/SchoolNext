@@ -109,7 +109,8 @@ class MpdfListasClase extends Mpdf
       }
       if ($periodo>2) /// mostrar columna adicional del promedio
       {
-        array_push($cols, round($suma_notas/$cont_notas, 1) );
+        $promedio = ($cont_notas>0) ? round($suma_notas/$cont_notas, 1) : 0;
+        array_push($cols, round($promedio, 1) );
         array_push($styles, 'style="text-align: center; vertical-align: middle;"');
       }
     }    

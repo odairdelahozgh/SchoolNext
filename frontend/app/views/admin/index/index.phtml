@@ -8,7 +8,7 @@
     <?php
       /*
       */
-      $lnks = ['empleados', 'estudiantes', 'tareas' , 'notas', 'indicadores', 'usuarios'];
+      $lnks = ['empleados', 'estudiantes', 'salones' , 'notas', 'indicadores', 'usuarios'];
       $text = '';
       foreach ($lnks as $key => $item) {
         $text .= '<div class="w3-quarter w3-padding w3-center">';
@@ -44,6 +44,5 @@
   <?=OdaTags::linkExterno('https://php.watch/versions/8.0', 'Novedades PHP 8.0', 'class="w3-button w3-bar-item w3-hover-blue"' );?>
   <?=OdaTags::link('pages/tools/colores', 'Help Page Colores', 'class="w3-button w3-bar-item w3-hover-blue"' );?>
   <?=OdaTags::link('pages/tools/iconos', 'Help Page Íconos', 'class="w3-button w3-bar-item w3-hover-blue"' );?>
-  <?=OdaTags::link('pages/tools/odautils', 'Help Page Utilitarios', 'class="w3-button w3-bar-item w3-hover-blue"' );?>
 
 </div>

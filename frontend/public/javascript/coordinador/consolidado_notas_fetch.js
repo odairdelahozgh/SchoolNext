@@ -22,34 +22,22 @@ function traer_data(salon_id) {
     let cnt_estudiantes = 1;
     let instit = document.getElementById('instit').innerHTML.trim();
 
-    for (let salon in datos) 
-    { 
+    for (let salon in datos) { 
       [salon_nombre, salon_id, salon_uuid] = salon.split(";");
-      
-      lnk_preinformes_salon = 'Preinformes:&nbsp;&nbsp;';
       lnk_boletines_salon = 'Boletines:&nbsp;&nbsp;';
-
       let max_periodo = ((4==periodo_actual) ? 5 : periodo_actual);
       for (let index=1; index<=max_periodo; index++) {
-        lnk_preinformes_salon +=  `
-        <a href="${ruta_base}admin/notas/exportPreinformeSalonPdf/${index}/${salon_uuid}" 
-        class="w3-btn w3-round-large w3-green" 
-        target="_blank" 
-        title="Descarga Preinformes de ${salon_nombre} (Per&iacute;odo ${index})">
-        <i class="fa-solid fa-file-pdf"></i> ${salon_nombre} (Periodo ${index})</a> &nbsp;
-        `;
         lnk_boletines_salon +=  `
-        <a href="${ruta_base}admin/notas/exportBoletinSalonPdf/${index}/${salon_uuid}/1" 
+        <a href="${ruta_base}admin/notas/exportBoletinSalonPdf/${index}/${salon_uuid}" 
         class="w3-btn w3-round-large w3-black" 
         target="_blank" 
         title="Descarga Boletines de ${salon_nombre} (Per&iacute;odo ${index})">
-        <i class="fa-solid fa-file-pdf"></i> ${salon_nombre} (Periodo ${index})</a> &nbsp;
+        <i class="fa-solid fa-file-pdf"></i> ${salon_nombre} (P${index})</a> &nbsp;
         `;
       }
 
-      caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_preinformes_salon}<br><br> ${lnk_boletines_salon}<br><br>`;
-      for (let estudiante in datos[salon])
-      {
+      caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_boletines_salon}<br><br>`;
+      for (let estudiante in datos[salon]) {
         [estudiante_nombre, estudiante_id, estudiante_uuid, is_active, madre, madre_tel, padre, padre_tel,annio_pagado, mes_pagado]= estudiante.split(";");
         body_table += 
         '<tr class="w3-theme-'+theme.toString().substr(0,1)+`5">
@@ -103,40 +91,33 @@ function traer_data(salon_id) {
             let def = '';
             let lleva_pa = '<br>';
 
-            if (definitiva>0 && !materiaPerdida(definitiva, instit)) 
+            if (definitiva>0 && definitiva<60) 
             {
               def = `<strong style="color:red">${definitiva}</strong><br>`;
               if (plan_apoyo > 0) 
               {
-                lleva_pa = '<strong style="color:'+((materiaPerdida(plan_apoyo, instit))?'red':'black')+'">PA:'+plan_apoyo+'</strong><br>';
+                lleva_pa = '<strong style="color:'+((plan_apoyo<60)?'red':'black')+'">PA:'+plan_apoyo+'</strong><br>';
               } 
               else 
               {
                 lleva_pa = (plan_apoyo > 0) ? '<strong style="color:red">'+definitiva+'</strong><br><strong style="color:red">PA:'+plan_apoyo+'</strong><br>' : 'PA:?<br>';
               }
-            }
+            } 
             else 
             {
               lleva_pa = '<br>';
             }
             const text_adic = `${asignatura_abrev} P${periodo}`;
 
-            if (!is_prescolar(salon_nombre))
-            {
+            if (!is_prescolar(salon_nombre)) {
               fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
             } 
             else 
             {
-              if (instit='santarosa')
-              {
-                fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
-              }
-              else
-              {
-                const estado = (tiene_logros > 0) ? "<i class=\"fa-solid fa-check w3-large\"></i>" : "<i class=\"fa-solid fa-xmark w3-large w3-red\"></i>";
-                fila += `<td class="w3-center w3-padding-tiny w3-small"> ${estado} </td>`;
-              }
+              const estado = (tiene_logros > 0) ? "<i class=\"fa-solid fa-check w3-large\"></i>" : "<i class=\"fa-solid fa-xmark w3-large w3-red\"></i>";
+              fila += `<td class="w3-center w3-padding-tiny w3-small"> ${estado} </td>`;
             }
+
 
             if ( (parseInt(nota_final)>0) && (periodo!=5) ) 
             {
@@ -221,8 +202,10 @@ function traer_data(salon_id) {
           &nbsp;<i class="fa-solid fa-file-pdf"></i> Registro Escolar
         </a>`;
 
-        body_table = body_table.replace(/BTN-REGISTROS/i, lnk_registro_escolar);        
+        body_table = body_table.replace(/BTN-REGISTROS/i, lnk_registro_escolar);
+        
         cnt_estudiantes += 1;
+
       }
     }
         
@@ -232,6 +215,7 @@ function traer_data(salon_id) {
         <tbody id="tbody">${body_table}</tbody>
       </table>
       `;
+
       
     document.querySelector('#spinner').style.display = "none";
 
@@ -241,21 +225,23 @@ function traer_data(salon_id) {
       error => document.querySelector('#resultados').innerHTML = error
     );
 
+
 }
 
 
-function colorRango(valor, instit) 
-{
+function colorRango(valor, instit) {
   if (valor<1 || valor>100) { return 'DeepPink'; }
 
-  if (instit=='windsor') {
+  if (instit=='windsor')
+  {
     if (valor<60) { return 'red'; }
     if (valor<80) { return 'yellow'; }
     if (valor<95) { return 'blue'; }
     if (valor<=100) { return 'green'; }
   }
 
-  if (instit=='santarosa') {
+  if (instit=='santarosa')
+  {
     if (valor<30) { return 'red'; }
     if (valor<38) { return 'orange'; }
     if (valor<45) { return 'light-blue'; }
@@ -266,22 +252,24 @@ function colorRango(valor, instit)
   if (valor<38) { return 'orange'; }
   if (valor<45) { return 'light-blue'; }
   if (valor<=50) { return 'green'; }
-}
 
+}
 
 function nombreRango(valor, instit) 
 {
   if (valor<0 || valor>100) { return 'err'; }
   if (valor==1) { return ''; }
 
-  if (instit=='windsor') {
+  if (instit=='windsor')
+  {
     if (valor<60) { return 'Bajo'; }
     if (valor<80) { return 'Bas'; }
     if (valor<95) { return 'Alt'; }
     if (valor<=100) { return 'Supe'; }    
   }
 
-  if (instit=='santarosa') {
+  if (instit=='santarosa') 
+  {
     if (valor<30) { return 'Bajo'; }
     if (valor<38) { return 'Basi'; }
     if (valor<45) { return 'Alto'; }
@@ -307,7 +295,6 @@ function notaFormato(valor, brake = true, fixed =2, text2='')
   return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}`;
 }
 
-
 function is_prescolar(nombre_salon) 
 {
   var regex = /(PV-A|PK-A|KD-A|TN-A)/;
@@ -317,7 +304,8 @@ function is_prescolar(nombre_salon)
 
 function ultimoPago(annio_pagado, mes_pagado, annio_actual)
 {  
-  if (mes_pagado<1 || mes_pagado>12) {
+  if (mes_pagado<1 || mes_pagado>12) 
+  {
     return 'err-mes';
   }
     
@@ -325,24 +313,10 @@ function ultimoPago(annio_pagado, mes_pagado, annio_actual)
   let nombre_mes = Meses[mes_pagado-1];
   result = `Último Pago: ${nombre_mes} de ${annio_pagado}`;
 
-  if (annio_actual > annio_pagado) {
+  if (annio_actual > annio_pagado)
+  {
     result = `<del>${result}</del>`;
   }
 
   return result;
-}
-
-
-function materiaPerdida(valor, instit) 
-{
-  $result = false;
-  if (instit=='windsor') and (valor<60) 
-  {
-    $result = true;
-  }
-  if (instit=='windsor') and (valor<30) 
-  {
-    $result = true;
-  }
-  return $result;
 }

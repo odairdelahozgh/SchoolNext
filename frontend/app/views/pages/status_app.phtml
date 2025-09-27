@@ -7,7 +7,7 @@
   $good = '<span class="w3-text-green">'._Icons::solid(icon: 'face-smile').'</span>';
   $bad  = '<span class="w3-text-red">'._Icons::solid(icon: 'face-frown').'</span>';
 
-  $mode = PRODUCTION ? 'Producciónn' : 'Desarrollo';
+  $mode = PRODUCTION ? 'Producción' : 'Desarrollo';
   if (!$timezone = date_default_timezone_get()) {
     $timezone = 'No se ha especificado un Timezone.';
   }
@@ -15,72 +15,77 @@
 
 <div class="w3-container">
   <div class="w3-row">
-    <div class="w3-half">
-      <?php
-        $tabla = new OdaTable(theme: 'dark');
-        $tabla->setCaption(caption: 'General');
-        $tabla->setHead(data_head: ['Ip Actual', OdaUtils::getIp()]);
-        $tabla->addRow(data: ['Modo', $mode]);
-        $tabla->addRow(data: ['Zona Horaria', $timezone]);
-        $tabla->addRow(data: []);
-        echo $tabla;
-      ?>
-    </div>
-    
-    <div class="w3-half">
+
+    <div class="w3-col">
     <?php
         $tabla = new OdaTable(theme: 'dark');
-        $tabla->setCaption(caption: 'Frameworks');
-        $tabla->setHead(data_head: ['Framework','Version']);
-        $tabla->addRow(data: ['KumbiaPHP', KUMBIA_VERSION]);
-        $tabla->addRow(data: ['W3 CSS', '4.15 Dec 2020']);
-        $tabla->addRow(data: ['W3 JS', '1.04 April 2019']);
+        $tabla->setCaption(caption: 'Constantes');
+        $tabla->setHead(data_head: ['Constante','Valor']);
+        $tabla->addRow(data: ['PRODUCTION', ((PRODUCTION) ? 'SI' : 'NO: DESARROLLO')]);
+        $tabla->addRow(data: ['APP_ROOT_PRIVATE', APP_ROOT_PRIVATE]);
+        $tabla->addRow(data: ['APP_PATH', APP_PATH]);
+        $tabla->addRow(data: ['CORE_PATH', CORE_PATH]);
+        $tabla->addRow(data: ['PUBLIC_PATH', PUBLIC_PATH]);
+        $tabla->addRow(data: ['INSTITUTION_KEY', INSTITUTION_KEY]);
+        $tabla->addRow(data: ['APP_NAME', APP_NAME]);
+        $tabla->addRow(data: ['VENDOR_PATH', VENDOR_PATH]);
+        $tabla->addRow(data: ['HELPERS_PATH', HELPERS_PATH]);
+        $tabla->addRow(data: ['ABS_PUBLIC_PATH', ABS_PUBLIC_PATH]);
+        $tabla->addRow(data: ['LOGO', LOGO]);
+        $tabla->addRow(data: ['LOGO_BRAND', LOGO_BRAND]);
+        $tabla->addRow(data: ['FILE_UPLOAD_PATH', FILE_UPLOAD_PATH]);
+        $tabla->addRow(data: ['FILE_DOWNLOAD_PATH', FILE_DOWNLOAD_PATH]);
+        $tabla->addRow(data: ['IMG_UPLOAD_PATH', IMG_UPLOAD_PATH]);
+        $tabla->addRow(data: ['IMG_DOWNLOAD_PATH', IMG_DOWNLOAD_PATH]);
+        $tabla->addRow(data: ['IMG_ESTUDIANTES_PATH', IMG_ESTUDIANTES_PATH]);
+        $tabla->addRow(data: ['PREFIJO_TABLAS_DOLIBARR', PREFIJO_TABLAS_DOLIBARR]);
         echo $tabla;
     ?>
     </div>
 
+        
   </div>
 
   <hr>
 
   <div class="w3-row">
 
-    <div class="w3-half">
+    <div class="w3-third">
       <?php
         $tabla = new OdaTable(theme: 'dark');
         $tabla->setCaption(caption: 'Configuración de PHP');
-        $tabla->setHead(data_head: ['Config','Obligatorio','Servidor','Diagnóstico']);
+        $tabla->setHead(data_head: ['Config','Servidor','']);
 
         $ver_compare = version_compare(version1: PHP_VERSION, version2: '7.4.1') >= 0;
-        $tabla->addRow(data: ['php version', '>=7.4.1', phpversion(), ($ver_compare ? $good : $bad)]);
+        $tabla->addRow(data: ['php version', phpversion(), ($ver_compare ? $good : $bad)]);
         
         
-        $tabla->addRow(['magic quotes gpc', '??', (ini_get('magic_quotes_gpc')?'ON':'OFF'), '??']);
+        $tabla->addRow(['magic quotes gpc', (ini_get('magic_quotes_gpc')?'ON':'OFF'), '??']);
         
         $upload_max_filesize = (int)(substr(ini_get('upload_max_filesize'), 0, strlen(ini_get('upload_max_filesize'))-1));
-        $tabla->addRow(['upload_max_filesize:<br> Tamaño Máximo de Archivo', '', ini_get('upload_max_filesize'), '']);
+        $tabla->addRow(['upload_max_filesize', ini_get('upload_max_filesize'), '']);
         
         // post_max_size > upload_max_filesize
         $post_max_size = (int)(substr(ini_get('post_max_size'), 0, strlen(ini_get('post_max_size'))-1));
         $diag = ($post_max_size >= $upload_max_filesize) ? $good : $bad ;
-        $tabla->addRow(['post_max_size:<br> Máximo datos de publicación. <br> Default=8M', '>=upload_max_filesize<br>'."[>=$upload_max_filesize]", ini_get('post_max_size'), $diag]);
+        $tabla->addRow(['post_max_size', ini_get('post_max_size'), $diag]);
         
         // memory_limit >= post_max_size
         $memory_limit = (int)(substr(ini_get('memory_limit'), 0, strlen(ini_get('memory_limit'))-1));
-        $tabla->addRow(['memory limit', '>=post_max_size<br>'."[>=$post_max_size]", ini_get('memory_limit'), (($post_max_size<=$memory_limit) ? $good : $bad) ]);
+        $tabla->addRow(['memory limit', ini_get('memory_limit'), (($post_max_size<=$memory_limit) ? $good : $bad) ]);
 
-        $tabla->addRow(['register globals', '??', (ini_get('register_globals')?'ON':'OFF'), '??']);
-        $tabla->addRow(['session auto_start', '??', (ini_get('session.auto_start')?'ON':'OFF'), '??']);
-        $tabla->addRow(['utf8_decode()', '??', (function_exists('utf8_decode')?'ON':'OFF'), '??']);
-        $tabla->addRow(data: ['exec()', '??', (ini_get('exec')?'ON':'OFF'), '??']);
+        $tabla->addRow(['register globals', (ini_get('register_globals')?'ON':'OFF'), '??']);
+        $tabla->addRow(['session auto_start', (ini_get('session.auto_start')?'ON':'OFF'), '??']);
+        $tabla->addRow(['utf8_decode()',  (function_exists('utf8_decode')?'ON':'OFF'), '??']);
+        $tabla->addRow(data: ['exec()', (ini_get('exec')?'ON':'OFF'), '??']);
         echo $tabla;
       ?>
     </div>
-    <div class="w3-half">
+    <div class="w3-third">
       <?php 
         $tabla = new OdaTable(theme: 'dark');
         $tabla->setCaption('Extensiones PHP');
-        $tabla->setHead(['Extension','Obligatorio','Servidor','Diagnóstico']);
+        $tabla->setHead(['Extension','Obligatorio','']);
 
         $Extensiones = [
           'pdo_mysql'=>'SI',
@@ -106,12 +111,32 @@
         foreach ($Extensiones as $ext_name => $req) {
           if (extension_loaded(extension: $ext_name)) {
             $diag = ('SI'==$req) ? $good : $bad;
-            $tabla->addRow(data: [$ext_name, $req, 'ON', $diag]);
+            $tabla->addRow(data: [$ext_name, $req, $diag]);
           } else {
             $diag = ('NO'==$req) ? $good : $bad ;
-            $tabla->addRow(data: [$ext_name, $req, 'OFF', $diag]);
+            $tabla->addRow(data: [$ext_name, $req, $diag]);
           }
         }
+        echo $tabla;
+      ?>
+    </div>
+
+    <div class="w3-rest">
+      <?php
+        $tabla = new OdaTable(theme: 'dark');
+        $tabla->setCaption(caption: 'General');
+        $tabla->setHead(data_head: ['Ip Actual', OdaUtils::getIp()]);
+        $tabla->addRow(data: ['Modo', $mode]);
+        $tabla->addRow(data: ['Zona Horaria', $timezone]);
+        $tabla->addRow(data: []);
+        echo $tabla;
+
+        $tabla = new OdaTable(theme: 'dark');
+        $tabla->setCaption(caption: 'Frameworks');
+        $tabla->setHead(data_head: ['Framework','Version']);
+        $tabla->addRow(data: ['KumbiaPHP', KUMBIA_VERSION]);
+        $tabla->addRow(data: ['W3 CSS', '4.15 Dec 2020']);
+        $tabla->addRow(data: ['W3 JS', '1.04 April 2019']);
         echo $tabla;
       ?>
     </div>

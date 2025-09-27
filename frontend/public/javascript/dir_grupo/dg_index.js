@@ -17,7 +17,6 @@ function traer_data(salon_id) {
     let body_table = '';
     let caption = '';
     let cnt_estudiantes = 1;
-    let instit = document.getElementById('instit').innerHTML.trim();
 
     for (let salon in datos) { 
       [salon_nombre, salon_id, salon_uuid] = salon.split(";");
@@ -83,45 +82,14 @@ function traer_data(salon_id) {
             asi = (is_asi_validar_ok==1) ? '<a href="'+ruta_base+'admin/seguimientos/exportSeguimientosRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Seguimiento Intermedio">S</a>' : '';
             paf = (is_paf_validar_ok==1) ? '<a href="'+ruta_base+'admin/planes_apoyo/exportPlanesApoyoRegistroPdf/'+reg_uuid+'" class="w3-badge w3-white w3-tiny" target="_blank" title="Plan de Apoyo">P</a>' : '';
             br = ((asi.length+paf.length)>0) ? '<br>' : '';
-            
-            let def = '';
-            let lleva_pa = '<br>';
-
-            if (definitiva>0 && !materiaPerdida(definitiva, instit)) 
-            {
-              def = `<strong style="color:red">${definitiva}</strong><br>`;
-              if (plan_apoyo > 0) 
-              {
-                lleva_pa = '<strong style="color:'+((materiaPerdida(plan_apoyo, instit))?'red':'black')+'">PA:'+plan_apoyo+'</strong><br>';
-              } 
-              else 
-              {
-                lleva_pa = (plan_apoyo > 0) ? '<strong style="color:red">'+definitiva+'</strong><br><strong style="color:red">PA:'+plan_apoyo+'</strong><br>' : 'PA:?<br>';
-              }
-            }
-            else 
-            {
+            let lleva_pa = '';
+            if (definitiva<60) {
+              lleva_pa = (plan_apoyo > 0) ? 'PA:'+plan_apoyo+'<br>' : 'PA:?<br>';
+            } else {
               lleva_pa = '<br>';
-            }
-
-            const text_adic = `${asignatura_abrev} P${periodo}`;
-            if (!is_prescolar(salon_nombre))
-            {
-              fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
-            } 
-            else 
-            {
-              if (instit='santarosa')
-              {
-                fila += `<td class="w3-center w3-padding-tiny w3-small">${def} ${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0, text_adic) + `${br} ${asi} ${paf}</td>`;
-              }
-              else 
-              {
-                const estado = (tiene_logros > 0) ? "<i class=\"fa-solid fa-check w3-large\"></i>" : "<i class=\"fa-solid fa-xmark w3-large w3-red\"></i>";
-                fila += `<td class="w3-center w3-padding-tiny w3-small"> ${estado} </td>`;
-              }
-            }
-
+            }      
+            fila += `<td class="w3-center w3-padding-small w3-small">${lleva_pa}` + notaFormato(parseInt(nota_final), true, 0) + `${br} ${asi} ${paf}</td>`;
+            
             if ( (parseInt(nota_final)>0) && (periodo!=5) ) {
               elementos += 1;
               suma += parseInt(nota_final);
@@ -167,7 +135,7 @@ function traer_data(salon_id) {
           fila_nueva_proms = fila_proms.replace(/PROMTOT/i, notaFormato(avg_prom));
           body_table += fila_nueva_proms;
 
-          promedio_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom, instit)+'">'+nombreRango(avg_prom, instit)+'</span>';
+          promedio_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom)+'">'+nombreRango(avg_prom)+'</span>';
         } else {
           promedio_estudiante = '';
         }
@@ -196,87 +164,39 @@ function traer_data(salon_id) {
 
 }
 
-function colorRango(valor, instit) 
+function colorRango(valor) 
 {
-  if (valor<1 || valor>100) { return 'DeepPink'; }
-
-  if (instit=='windsor') {
-    if (valor<60) { return 'red'; }
-    if (valor<80) { return 'yellow'; }
-    if (valor<95) { return 'blue'; }
-    if (valor<=100) { return 'green'; }
-  }
-
-  if (instit=='santarosa') {
-    if (valor<30) { return 'red'; }
-    if (valor<38) { return 'orange'; }
-    if (valor<45) { return 'light-blue'; }
-    if (valor<=50) { return 'green'; }
-  }
-  
-  if (valor<30) { return 'red'; }
-  if (valor<38) { return 'orange'; }
-  if (valor<45) { return 'light-blue'; }
-  if (valor<=50) { return 'green'; }
+  if (valor<0 || valor>100) { return 'DeepPink'; }
+  if (valor<1) { return 'black'; }  
+  if (valor<60) { return 'red'; }
+  if (valor<80) { return 'yellow'; }
+  if (valor<95) { return 'blue'; }
+  if (valor<=100) { return 'green'; }
 }
 
 
-function nombreRango(valor, instit) 
+function nombreRango(valor) 
 {
-  if (valor<0 || valor>100) { return 'err'; }
-  if (valor==1) { return ''; }
-
-  if (instit=='windsor') {
-    if (valor<60) { return 'Bajo'; }
-    if (valor<80) { return 'Bas'; }
-    if (valor<95) { return 'Alt'; }
-    if (valor<=100) { return 'Supe'; }    
-  }
-
-  if (instit=='santarosa') {
-    if (valor<30) { return 'Bajo'; }
-    if (valor<38) { return 'Basi'; }
-    if (valor<45) { return 'Alto'; }
-    if (valor<=50) { return 'Supe'; }
-  }
-
-  if (valor<30) { return 'Bajo'; }
-  if (valor<38) { return 'Basi'; }
-  if (valor<45) { return 'Alto'; }
-  if (valor<=50) { return 'Supe'; }
+  if (valor<0 || valor>100) { return 'err'; } 
+  if (valor<1) { return ''; }  
+  if (valor<60) { return 'Bajo'; }
+  if (valor<80) { return 'Básico'; }
+  if (valor<95) { return 'Alto'; }
+  if (valor<=100) { return 'Superior'; }
 }
 
 
-function notaFormato(valor, brake = true, fixed =2, text2='') 
-{
-  let instit = document.getElementById('instit').innerHTML.trim();
+function notaFormato(valor, brake = true, fixed =2) {
   fixed =  (valor % 1 !== 0) ? fixed : 0;  
   let valor_fixed = valor.toFixed(fixed);
-  let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed, instit)+'"';
-  let nombre_rango = nombreRango(valor_fixed, instit);
-  let nombre_rango_title = `title="${nombre_rango} ${text2}"`;
+  let style_color = 'class="w3-tag w3-'+colorRango(valor_fixed)+'"';
+  let nombre_rango = nombreRango(valor_fixed);
+  let nombre_rango_title = `title="${nombre_rango}"`;
   let br = (brake) ? '<br>' : '';
-  return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}`;
+  return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}${nombre_rango}`;
 }
 
 function is_prescolar(nombre_salon) {
   var regex = /(PV-A|PK-A|KD-A|TN-A)/;
   return regex.test(nombre_salon);
-}
-
-
-function materiaPerdida(valor, instit) 
-{
-  $result = false;
-  if (instit=='windsor') and (valor<60) 
-  {
-    $result = true;
-  }
-
-  if (instit=='windsor') and (valor<30) 
-  {
-    $result = true;
-  }
-
-  return $result;
 }

@@ -8,7 +8,7 @@
 require_once VENDOR_PATH . 'autoload.php';
 use Mpdf\Mpdf;
 
-class MpdfBoletines extends Mpdf 
+class MpdfBoletinesWindsor extends Mpdf 
 {
   private string $bgcolor='';
   private string $color='';

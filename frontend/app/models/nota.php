@@ -421,11 +421,11 @@ class Nota extends LiteRecord {
       FROM ((((( {$tbl_notas} N 
       LEFT JOIN sweb_asignaturas A on(N.asignatura_id = A.id)) 
       LEFT JOIN sweb_estudiantes E on (N.estudiante_id = E.id)) 
-      LEFT JOIN sweb_datosestud DE on (N.estudiante_id = DE.estudiante_id))
+      LEFT JOIN sweb_datosestud DE on (N.estudiante_id = DE.estudiante_id)) 
       LEFT JOIN sweb_salones S on (N.salon_id = S.id)) 
       LEFT JOIN sweb_grados G on (N.grado_id = G.id)) 
       
-      WHERE N.salon_id = {$salon_id}
+      WHERE N.salon_id = {$salon_id} AND A.calc_prom=1
   
       ORDER BY S.position,E.apellido1,E.apellido2,E.nombres,N.periodo_id,A.orden,A.abrev";
   

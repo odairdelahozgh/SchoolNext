@@ -23,7 +23,7 @@ LEFT JOIN sweb_estudiantes AS E ON N.estudiante_id = E.id
 LEFT JOIN sweb_asignaturas AS A ON N.asignatura_id = A.id
 LEFT JOIN sweb_grados      AS G ON N.grado_id = G.id
 WHERE 
-N.periodo_id in (1,2) AND
+N.periodo_id in (1,2,3) AND
 N.estudiante_id IN(SELECT EG.id FROM sweb_estudiantes AS EG WHERE EG.is_active=1 AND EG.grado_mat=11)
 
 UNION ALL

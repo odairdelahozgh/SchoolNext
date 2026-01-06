@@ -164,23 +164,26 @@ class EstudiantesController extends ScaffoldController
   {
     try
     {
-      $no_promover = '1368,2352,2284,2283,1848,2081,1368,2341,2367,2172,1968,1433';
+      $no_promover = '';
       $NewGrado = (new Grado())::get($grado_id);
       $DQLEstudiantes = new OdaDql('Estudiante');
       $DQLEstudiantes->setFrom(Config::get('tablas.estudiantes'));
 
-      $data = [
+      $annio_promovido = (date('M')>=9) ? date('Y') : date('Y') + 1;
+      $dataE = [
+        'is_active' => (($NewGrado->id == $NewGrado->proximo_grado) ? 0 : 1), // SE INACTIVAN SI ES GRADO FINAL 
         'is_habilitar_mat' => 1,
-        'annio_promovido' => (1 + $this->_annio_actual),
+        'annio_promovido' => $annio_promovido,
         'grado_promovido' => $NewGrado->proximo_grado, 
         'numero_mat' => '', 
       ];
-      $DQLEstudiantes->update($data)
+
+      $DQLEstudiantes->update($dataE)
         ->where(' (t.is_active=1) and (t.id NOT IN ('.$no_promover.')) and (t.grado_mat=?)')
         ->setParams([$grado_id]);
-
-      OdaLog::debug($DQLEstudiantes->renderlog());
+      //OdaLog::debug($DQLEstudiantes->renderlog());
       $DQLEstudiantes->execute();
+
       redirect::to('secre-estud-list-activos');
     }
     catch (\Throwable $th)

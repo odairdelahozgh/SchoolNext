@@ -34,7 +34,7 @@ trait EstudianteTraitProps {
 
   public function getNombre(): string 
   { 
-    return $this->nombres.' '.$this->apellido1.' '.$this->apellido2; 
+    return (string)$this->nombres.' '.(string)$this->apellido1.' '.(string)$this->apellido2; 
   }
 
 
@@ -46,7 +46,7 @@ trait EstudianteTraitProps {
   {
     $nombre_completo = str_replace(
       array('n', 'a1', 'a2'),
-      array( $this->nombres, $this->apellido1, $this->apellido2),
+      array( (string)$this->nombres, (string)$this->apellido1, (string)$this->apellido2),
       $orden
     );
 

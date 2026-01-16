@@ -1,6 +1,40 @@
 <?php
 trait EstudianteTraitLinks {
 
+  public static function getLnkListMatriculadosPdf(int|null $cant = null): string 
+  {
+    $str_cnt =      (null !== $cant) ? "[{$cant}]" : '';
+    return OdaTags::linkButton(
+          action: "admin/estudiantes/exportListMatriculadosPdf", 
+          text: "Matriculados PDF {$str_cnt}", 
+          attrs: 'class="w3-button w3-green" target="_blank"'
+        );
+  }
+
+  public static function getLnkListPendientesMatriculaPdf(int|null $cant = null): string 
+  {
+    $str_cnt =      (null !== $cant) ? "[{$cant}]" : '';
+    return OdaTags::linkButton(
+      action: "admin/estudiantes/exportListPendientesMatriculaPdf", 
+      text: "Pendientes x Matricular PDF {$str_cnt}", 
+      attrs: 'class="w3-button w3-blue" target="_blank"'
+    );
+  }
+
+  public function getLnkGenerarNumeroMatricula(): string
+  {
+    if (!$this->getEstadoMat()->puedeMatricular())
+    {
+      return '';
+    }
+    
+    return OdaTags::linkButton(
+      action: "admin/estudiantes/generarNumeroMatricula/{$this->id}", 
+      text: 'Generar Número Matricula', 
+      attrs: 'class="w3-button w3-green"',
+    );
+  }
+
 
   public static function getLnkRegistroEscolarByAnnioEstudiantePDF(int $annio, int $estudiante_id) 
   {
@@ -19,7 +53,7 @@ trait EstudianteTraitLinks {
   public function getLnkEditPage(string $caption, string $attrs=''): string 
   {
     return OdaTags::link(
-      action: "secretaria/editEstudiante/$this->id", 
+      action: "secretaria/editEstudiante/{$this->id}", 
       text: $caption, 
       attrs: $attrs);
   }
@@ -143,7 +177,7 @@ trait EstudianteTraitLinks {
   {
     return Html::linkAction(
       "vincularPadresHijos/{$this->id}", 
-      "Padres Hijos", 
+      "Vincular con Padres", 
       "class=\"w3-button w3-pale-blue w3-block\""
     );
   }

@@ -391,11 +391,12 @@ class OdaUtils extends Util {
    */
   public static function linkWhatsApp(
     string $telefono, 
-    string $caption='(click) Escribir al WhatsApp ahora', 
+    string $caption='Escribir al WhatsApp', 
     bool $show_tel=false, 
     string $message=''
   ): string 
   {
+    if (!$telefono) return '';
     $insitit_name = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
     $text = $show_tel ? $telefono : $caption;
     $message_comp = "$insitit_name: $message";
@@ -406,9 +407,21 @@ class OdaUtils extends Util {
       .'</a>';
   }
 
+  public static function linkWA(
+    string $telefono, 
+    string $message='Escribir al WhatsApp'
+  ): string 
+  {
+    if (!$telefono) return '';
+    return "&nbsp;<a 
+        title=\"$message\" href=\"https://wa.me/{$telefono}?text=$message\" target=\"_blank\">"
+        ._Icons::brands(icon: 'whatsapp', size: 'w3-large')
+      .'</a>&nbsp;';
+  }
 
   public static function linkTelefono(string $telefono, string $caption='(click) Llamarle ahora', $show_tel=false): string {
-    $text = ($show_tel) ? $telefono : '' ;
+    if (!$telefono) return '';
+    $text = ($show_tel) ? ' '.$telefono : '' ;
     return "$text <a title=\"$caption\" href=\"tel:57$telefono\">"._Icons::solid(icon: 'square-phone', size: 'w3-large').'</a>';
   }
 

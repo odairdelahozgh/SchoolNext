@@ -44,6 +44,14 @@ enum EstadoMatricula: int {
     };
   }
 
+  public function puedeMatricular(): bool
+  {
+    return match($this) {
+      static::Bloqueado, static::NoPromovido => false,
+      default => true,
+    };
+  }
+
   //Una vez que hayas cargado los documentos, .
 
   public function ico(): string 

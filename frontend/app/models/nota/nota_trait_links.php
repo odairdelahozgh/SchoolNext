@@ -121,7 +121,7 @@ trait NotaTraitLinks
       return OdaTags::linkButton
       (
         action: "docentes/notasCalificar/{$periodo_id}/{$salon_id}/{$asignatura_id}", 
-        text: "Calificar <br>Periodo{$periodo_id}", 
+        text: "Calificar <br>Periodo {$periodo_id}", 
         icon: '', 
         attrs: 'title="Ingresar NOTAS" class="w3-button w3-small w3-pale-green w3-round-large"',
       );
@@ -147,7 +147,7 @@ trait NotaTraitLinks
       return OdaTags::linkButton
       (
         action: "docentes/notasCalificarSeguimientos/{$periodo_id}/{$salon_id}/{$asignatura_id}", 
-        text: "{$titulo} <br>Periodo{$periodo_id}", 
+        text: "{$titulo} <br>Periodo {$periodo_id}", 
         icon: '', 
         attrs: "title=\"Ingresar {$titulo}\" class=\"w3-button w3-small w3-pale-blue w3-round-large\""
       );
@@ -171,7 +171,7 @@ trait NotaTraitLinks
       return OdaTags::linkButton
       (
         action: "docentes/notasCalificarPlanesApoyo/{$periodo_id}/{$salon_id}/{$asignatura_id}", 
-        text: "Planes de <br>Apoyo Periodo{$periodo_id}", 
+        text: "Planes de <br>Apoyo Periodo {$periodo_id}", 
         icon: '', 
         attrs: 'title="Ingresar PLANES DE APOYO" class="w3-button w3-small w3-pale-red w3-round-large"'
       );

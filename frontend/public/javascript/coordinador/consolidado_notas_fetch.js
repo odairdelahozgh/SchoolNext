@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelector('#spinner').style.display = "none";
   document.getElementById('btn-0').click();
 });
 
@@ -9,8 +8,7 @@ function traer_data(salon_id) {
   //console.clear();
   let ruta_base = document.getElementById('public_path').innerHTML.trim();
   let theme = document.getElementById('theme').innerHTML.trim();
-  document.querySelector('#resultados').innerHTML = '';
-  document.querySelector('#spinner').style.display = "block";
+  document.querySelector('#resultados').innerHTML = '<i class="fa fa-refresh w3-xxlarge w3-spin"></i>';
 
   fetch(ruta_base+'api/notas/notas_salon/'+salon_id)
   .then((res) => res.json())
@@ -24,8 +22,14 @@ function traer_data(salon_id) {
 
     for (let salon in datos) { 
       [salon_nombre, salon_id, salon_uuid] = salon.split(";");
+
+      caption = `<h2>Salon:${salon_nombre}</h2>`;
       lnk_boletines_salon = 'Boletines:&nbsp;&nbsp;';
       let max_periodo = ((4==periodo_actual) ? 5 : periodo_actual);
+      if (instit=='santarosa') {
+        max_periodo = 4;
+      }
+
       for (let index=1; index<=max_periodo; index++) {
         lnk_boletines_salon +=  `
         <a href="${ruta_base}admin/notas/exportBoletinSalonPdf/${index}/${salon_uuid}" 
@@ -35,8 +39,25 @@ function traer_data(salon_id) {
         <i class="fa-solid fa-file-pdf"></i> ${salon_nombre} (P${index})</a> &nbsp;
         `;
       }
+      
+      caption = caption +  `${lnk_boletines_salon}<br><br>`
+      
+      if (instit=='santarosa') 
+      {
+        lnk_preinformes_salon = 'Preinformes:&nbsp;&nbsp;';
+        for (let index=1; index<=max_periodo; index++) 
+        {
+          lnk_preinformes_salon +=  `
+          <a href="${ruta_base}admin/notas/exportPreinformeSalonPdf/${index}/${salon_uuid}" 
+          class="w3-btn w3-round-large w3-black" 
+          target="_blank" 
+          title="Descarga Preinformes de ${salon_nombre} (Per&iacute;odo ${index})">
+          <i class="fa-solid fa-file-pdf"></i> ${salon_nombre} (P${index})</a> &nbsp;
+          `;
+        }
+        caption = caption +  `${lnk_preinformes_salon}<br><br>`
+      }
 
-      caption = `<h2>Salon:${salon_nombre}</h2> ${lnk_boletines_salon}<br><br>`;
       for (let estudiante in datos[salon]) {
         [estudiante_nombre, estudiante_id, estudiante_uuid, is_active, madre, madre_tel, padre, padre_tel,annio_pagado, mes_pagado]= estudiante.split(";");
         body_table += 
@@ -91,12 +112,12 @@ function traer_data(salon_id) {
             let def = '';
             let lleva_pa = '<br>';
 
-            if (definitiva>0 && definitiva<60) 
+            if (definitiva>0 && esNotaBaja(definitiva, instit)) 
             {
               def = `<strong style="color:red">${definitiva}</strong><br>`;
               if (plan_apoyo > 0) 
               {
-                lleva_pa = '<strong style="color:'+((plan_apoyo<60)?'red':'black')+'">PA:'+plan_apoyo+'</strong><br>';
+                lleva_pa = '<strong style="color:'+((esNotaBaja(plan_apoyo, instit))?'red':'black')+'">PA:'+plan_apoyo+'</strong><br>';
               } 
               else 
               {
@@ -181,7 +202,8 @@ function traer_data(salon_id) {
           fila_proms += '</tr>';
   
           avg_prom = (suma_prom/cnt_mat);
-          fila_nueva_proms = fila_proms.replace(/PROMTOT/i, notaFormato(avg_prom));
+          //fila_nueva_proms = fila_proms.replace(/PROMTOT/i, notaFormato(avg_prom));
+          fila_nueva_proms = fila_proms.replace(/PROMTOT/i, '');
           body_table += fila_nueva_proms;
 
           promedio_estudiante = '<span class="w3-tag w3-'+colorRango(avg_prom, instit)+'">'+nombreRango(avg_prom, instit)+'</span>';
@@ -215,19 +237,21 @@ function traer_data(salon_id) {
         <tbody id="tbody">${body_table}</tbody>
       </table>
       `;
-
-      
-    document.querySelector('#spinner').style.display = "none";
-
     })
     .catch
     (
       error => document.querySelector('#resultados').innerHTML = error
     );
 
-
 }
 
+
+
+function esNotaBaja(valor, instit) 
+{
+  if ( instit=='windsor' && valor<60 ) return true;
+  if ( instit=='santarosa' && valor<30 ) return true;
+}
 
 function colorRango(valor, instit) {
   if (valor<1 || valor>100) { return 'DeepPink'; }
@@ -295,6 +319,7 @@ function notaFormato(valor, brake = true, fixed =2, text2='')
   return `<span ${style_color} ${nombre_rango_title}>${valor_fixed}</span>${br}`;
 }
 
+
 function is_prescolar(nombre_salon) 
 {
   var regex = /(PV-A|PK-A|KD-A|TN-A)/;
@@ -308,7 +333,7 @@ function ultimoPago(annio_pagado, mes_pagado, annio_actual)
   {
     return 'err-mes';
   }
-    
+  
   const Meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   let nombre_mes = Meses[mes_pagado-1];
   result = `Último Pago: ${nombre_mes} de ${annio_pagado}`;

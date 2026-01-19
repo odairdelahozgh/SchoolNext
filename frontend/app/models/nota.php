@@ -519,7 +519,6 @@ class Nota extends LiteRecord {
   ) 
   {
     try {
-      //WHERE (N.grado_id = $grado_id) AND (A.calc_prom = 1)
       $tbl_notas = 'sweb_notas'.  ( ($annio != self::$_annio_actual) ? "_$annio" : '' );
       $aResult = [];
       $sql = "SELECT 
@@ -535,9 +534,8 @@ class Nota extends LiteRecord {
       LEFT JOIN sweb_salones S on N.salon_id = S.id
       LEFT JOIN sweb_grados G on N.grado_id = G.id
       
-      WHERE (N.grado_id = {$grado_id}) AND N.asignatura_id NOT IN (30,35,36,37,38,39,40)
+      WHERE (N.grado_id = {$grado_id}) AND  AND A.calc_prom=1
       ORDER BY G.orden,E.nombres,E.apellido1,E.apellido2,N.periodo_id,A.orden,A.abrev";
-      // revisar filtro WHERE asignaturas 30,31,32,35,36,37,38,39,40,43,44,45,46,47,48
       $registros = static::query($sql)->fetchAll();
 
       foreach ($registros as $reg) {

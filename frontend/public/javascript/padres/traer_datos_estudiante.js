@@ -198,7 +198,7 @@ function template_datos_estud(data, ruta, salon_nombre)
   <div class="w3-card-1">
 
     <header class="w3-container w3-light-blue  w3-round-xlarge">
-      <h2 class="w3-round-xlarge">[${data.id}] ${data.nombres} ${data.apellido1} ${data.apellido2} [${salon_nombre}]</h2>
+      <h2 class="w3-round-xlarge">${data.nombres} ${data.apellido1} ${data.apellido2} [${salon_nombre}]</h2>
     </header>
 
     <div class="w3-container">

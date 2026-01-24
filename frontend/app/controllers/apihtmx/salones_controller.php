@@ -12,7 +12,13 @@ class SalonesController extends HtmxController
   public function get_activos() 
   {
     View::select('index');
-    $this->data = (new Salon)->getListActivos();
+    $rows = (new Salon)->getListActivos();
+    
+    $this->data['headers'] = ['ID', 'Nombre Salón'];
+    foreach ($rows as $key => $salon)
+    {
+      $this->data['items'][] = [$salon->id, $salon->nombre];
+    }
   }
 
   

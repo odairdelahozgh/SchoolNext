@@ -308,18 +308,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/odairdelahozgh/AdminLTE4Helper.git",
-                "reference": "2a52a51aae1986b73010f699b1272180cab7371a"
+                "reference": "e04b256952f5c3a95711bf29abaaf5051c7f71b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/odairdelahozgh/AdminLTE4Helper/zipball/2a52a51aae1986b73010f699b1272180cab7371a",
-                "reference": "2a52a51aae1986b73010f699b1272180cab7371a",
+                "url": "https://api.github.com/repos/odairdelahozgh/AdminLTE4Helper/zipball/e04b256952f5c3a95711bf29abaaf5051c7f71b5",
+                "reference": "e04b256952f5c3a95711bf29abaaf5051c7f71b5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1"
             },
-            "time": "2025-09-12T01:17:00+00:00",
+            "time": "2026-01-22T18:37:10+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "source",

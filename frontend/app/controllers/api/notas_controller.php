@@ -11,33 +11,57 @@ class NotasController extends RestController
 
   public function get_all() 
   {
-    $this->data = (new Nota)->all();
+    try
+    {
+      $this->data = (new Nota)->all();
+    }
+    catch (\Throwable $th) 
+    {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
+    }
   }
 
 
   public function get_singleuuid(string $uuid) 
   {
-    $record = (new Nota)->getByUUID($uuid);
-    if ( isset($record) ) 
+    try
     {
-      $this->data = $record;
-    } 
-    else 
+      $record = (new Nota)->getByUUID($uuid);
+      if ( isset($record) ) 
+      {
+        $this->data = $record;
+      } 
+      else 
+      {
+        $this->error('El registro buscado no existe', 404);
+      }
+    }
+    catch (\Throwable $th) 
     {
-      $this->error('El registro buscado no existe', 404);
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
 
   public function get_singleid(int $id) 
   {
-    $record = (new Nota)::get($id);
-    if ( isset($record) ) 
+    try 
     {
-      $this->data = $record;
-    } 
-    else 
+      $record = (new Nota)::get($id);
+      if ( isset($record) ) 
+      {
+        $this->data = $record;
+      } 
+      else 
+      {
+        $this->error('El registro buscado no existe', 404);
+      }
+    }
+    catch (\Throwable $th) 
     {
-      $this->error('El registro buscado no existe', 404);
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
 
@@ -53,11 +77,13 @@ class NotasController extends RestController
       } 
       else 
       {
-        $this->error("Se se encontraron notas para el salon: $salon_id", 404);
+        $this->error("No se encontraron notas para el salon: $salon_id", 404);
       }
-    } catch (\Throwable $th) {
-      OdaLog::error($th);
-      $this->error('EXCEPCION INTERNA CAPTURADA', 404);
+    }
+    catch (\Throwable $th) 
+    {
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
   
@@ -77,11 +103,11 @@ class NotasController extends RestController
       {
         $this->error("No hay notas para el GRADO:$grado_id en el AÑO:$annio", 404);
       }
-    } 
+    }
     catch (\Throwable $th) 
     {
-      OdaLog::error($th);
-      $this->error('EXCEPCION INTERNA CAPTURADA', 404);
+      OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
   
@@ -101,10 +127,11 @@ class NotasController extends RestController
       {
         $this->error("No se encontraron Notras Promedio para el periodo:$periodo_id del salon:$salon_id", 404);
       }
-    } 
+    }
     catch (\Throwable $th) 
     {
       OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
 
@@ -122,10 +149,11 @@ class NotasController extends RestController
       {
         $this->error("No se encontraron SALONES en el AÑO $annio", 404);
       }
-    } 
+    }
     catch (\Throwable $th) 
     {
       OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
   
@@ -149,6 +177,7 @@ class NotasController extends RestController
     catch (\Throwable $th) 
     {
       OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
 
@@ -166,10 +195,11 @@ class NotasController extends RestController
       {
         $this->error("No se encontraron GRADOS en el AÑO $annio", 404);
       }
-    } 
+    }
     catch (\Throwable $th) 
     {
       OdaLog::debug($th, 'api_'.__CLASS__.'-'.__FUNCTION__);
+      $this->error('EXCEPCION INTERNA CAPTURADA', 500);
     }
   }
 

@@ -16,10 +16,24 @@ require_once CORE_PATH . 'kumbia/controller.php';
  */
 abstract class HtmxController extends Controller
 {
+  
+  use TraitControllers;
+
   protected function before_filter() 
   {
     View::template(null);
   }
-  
-  
+
+  protected function after_filter()
+  {
+  }
+
+  protected function initialize()
+  {
+  }
+
+  protected function finalize()
+  {
+  }
+
 }

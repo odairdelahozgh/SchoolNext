@@ -14,21 +14,19 @@
  */
 require_once CORE_PATH . 'kumbia/kumbia_rest.php';
 abstract class RestController extends KumbiaRest {
-    protected $users = array(  /// USUARIOS LIMITADOS
+    protected $users_valid = array(  /// USUARIOS LIMITADOS
         'admin' => '123456',
         'rafabarros' => '987123654'
     );
+
     /**
-     * Inicialización de la petición
-     * ****************************************
      * Aqui debe ir la autenticación de la API
-     * ****************************************
      */
     final protected function initialize() {
       return true;
         // $user = isset($_SERVER['PHP_AUTH_USER']) ? filter_var($_SERVER['PHP_AUTH_USER']) : null;
         // $pass = isset($_SERVER['PHP_AUTH_PW']) ? filter_var($_SERVER['PHP_AUTH_PW']) : null;
-        // if (isset($this->users[$user]) && ($this->users[$user] == $pass)) {
+        // if (isset($this->users_valid[$user]) && ($this->users_valid[$user] == $pass)) {
         //   return true;
         // } else {
         //   $this->data = $this->error("Fail authentication", 401);

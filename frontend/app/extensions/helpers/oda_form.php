@@ -61,7 +61,7 @@ class OdaForm extends Form {
     }
     $form  = $this->getOpenForm();
     $form .= self::getHiddens();
-    $form .= OdaTags::tag('div', $data_sets, 'class="w3-row"');
+    $form .= OdaTags::tag('div', $data_sets, 'class="row w3-row"');
     $form .= "<div class=\"w3-padding w3-bar\">
               {$this::getSubmit()} {$this->getBtnBack()}
               </div>";
@@ -231,7 +231,7 @@ class OdaForm extends Form {
     $this->_fields_in_form[] = $field;
     $value_defa = ($this->_isEdit) ? $this->_modelo->$field : 1;
     $help  = $this->getHelp($field);
-    $radio_group = '<div class="w3-bar">';
+    $radio_group = '<div class="form-check w3-bar">';
     foreach ($this->getDefault($field) as $key_radio => $value_radio) {
       $checked = ($value_defa==$key_radio) ? true : false ;
       $radio_group .= "<div class=\"w3-bar-item\">$value_radio&nbsp;&nbsp;".Form::radio($field, $key_radio, $attrs, $checked).'</div>  ';
@@ -284,7 +284,7 @@ class OdaForm extends Form {
   }
 
   private function getHelp(string $field): string { 
-    return (($this->_modelo->getHelp($field)) ? '<i class="fa-solid fa-circle-info"></i> <small>'.$this->_modelo->getHelp($field).'</small>' : ''); 
+    return (($this->_modelo->getHelp($field)) ? '<br/><i class="bi bi-question-circle"></i><i class="fa-solid fa-circle-info"></i> <small class="text-muted">'.$this->_modelo->getHelp($field).'</small>' : ''); 
   } // END
 
   private function getPlaceholder(string $field): string { 

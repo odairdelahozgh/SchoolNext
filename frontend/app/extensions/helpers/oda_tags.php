@@ -79,14 +79,20 @@ class OdaTags {
       .self::link($action, $text, "title=\"Volver a $text\"");
   } // END-linkBC
   
-  public static function img($src, $alt = '', $attrs = '', $err_message='no image') {
-    if (!file_exists(ABS_PUBLIC_PATH."/img/$src")) {
-     return $err_message;
-     //return $err_message.'<br>'.ABS_PUBLIC_PATH."/img/$src";
+  public static function img($src, $alt = '', $attrs = '', $err_message='no image') 
+  {
+    if (!file_exists(ABS_PUBLIC_PATH."/img/$src")) 
+    {
+      return $err_message;
     }
     return '<img src="'.PUBLIC_PATH."img/$src\" alt=\"$alt\" ".Tag::getAttrs($attrs).'/>';
-  } // END-img
-  
+  }
+
+  public static function img_source($src, $alt = '', $attrs = '', $err_message='no image') 
+  {
+    return ABS_PUBLIC_PATH."/img/$src";
+  }
+
   public static function fileimg($src, $alt = '', $attrs = '', $err_message='no image') {
     if (!file_exists(ABS_PUBLIC_PATH."/files/upload/$src")) {
      return $err_message;

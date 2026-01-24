@@ -6,10 +6,10 @@ error_reporting(E_ALL ^ E_STRICT);
 ini_set('display_errors', 'Off'); // Off/On
 const PRODUCTION = false; // servidor=true / local=false
 
+const APP_ROOT_PRIVATE = '/home/windsor1/schoolnext_private/';
 //const APP_ROOT_PRIVATE = '/home/u113041793/domains/colegiomixtosantarosa.com/_schoolnext_santarosa_private/';
-//const APP_ROOT_PRIVATE = '/home/tecnoro1/schoolnext_private/';
 
-//const APP_PATH = APP_ROOT_PRIVATE.'frontend/app/'; // SERVIDOR
+//const APP_PATH = APP_ROOT_PRIVATE.'frontend/app/';
 define('APP_PATH', dirname(__DIR__).'/app/');
 
 // const CORE_PATH = APP_ROOT_PRIVATE.'core1.2/';  // SERVIDOR

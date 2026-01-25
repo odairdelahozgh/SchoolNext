@@ -1,6 +1,5 @@
 <?php
 require_once VENDOR_PATH. 'autoload.php';
-
 use AdminLTE\Layout;
 
 $configFilePath = __DIR__ . '/layout_fixed_collapsed_config.php';
@@ -42,6 +41,6 @@ $layout->renderContentWrapperStart($pageTitle, $breadcrumbs);
 $layout->renderContentWrapperEnd();
 $layout->renderFooter('https://construxzionsoft.com.co', 'ConstruxionSoft');
 $layout->renderBodyEnd(
-  [PUBLIC_PATH.'javascript/htmx2.min.js'],
+  [PUBLIC_PATH.'javascript/htmx207.min.js'],
 );
 ?>

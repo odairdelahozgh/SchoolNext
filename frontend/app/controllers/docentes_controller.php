@@ -30,8 +30,10 @@ class DocentesController extends AppController
       $this->page_action = 'Seguimientos del Grupo';
       $this->data = (new usuario)->misGrupos();
     } 
-    catch (\Throwable $th) { OdaFlash::error($th); }
-
+    catch (\Throwable $th) 
+    { 
+      OdaFlash::error($th, true); 
+    }
     View::select('direccionDeGrupo/seguimientos_consolidado');
   }
 
@@ -43,8 +45,10 @@ class DocentesController extends AppController
       $this->page_action = 'Registros del Grupo';
       $this->data = (new usuario)->misGrupos();
     } 
-    catch (\Throwable $th) { OdaFlash::error($th); }
-    
+    catch (\Throwable $th) 
+    { 
+      OdaFlash::error($th, true); 
+    }    
     View::select('direccionDeGrupo/dg_registros_consoli');
   }
 
@@ -57,7 +61,7 @@ class DocentesController extends AppController
     } 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
   }
 
@@ -71,7 +75,7 @@ class DocentesController extends AppController
     } 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
   }
 
@@ -98,7 +102,7 @@ class DocentesController extends AppController
     }
     catch (\Throwable $th)
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
   }
 
@@ -125,7 +129,7 @@ class DocentesController extends AppController
     } 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select('direccionDeGrupo/index');
   }
@@ -152,7 +156,7 @@ class DocentesController extends AppController
     } 
     catch (\Throwable $th)
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select('registrosObservGenerales/index');
   }
@@ -169,7 +173,7 @@ class DocentesController extends AppController
     }
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select('registrosDesempAcad/index');
   }
@@ -182,8 +186,6 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Indicadores de Logro';
-      //$RegGrado = (new Grado)->get($grado_id);
-      //$RegAsignatura = (new Asignatura)->get($asignatura_id);
       $this->arrData = [
         'grado' => (new Grado)->get($grado_id), 
         'asignatura' => (new Asignatura)->get($asignatura_id) 
@@ -191,9 +193,29 @@ class DocentesController extends AppController
     }
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select(view: 'indicadores/index');
+  }
+
+
+  public function indicadoresList(
+    int $grado_id, 
+    int $asignatura_id): void 
+  {
+    try 
+    {
+      $this->page_action = 'Indicadores de Logro';
+      $this->arrData = [
+        'grado' => (new Grado)->get($grado_id), 
+        'asignatura' => (new Asignatura)->get($asignatura_id) 
+      ];
+    }
+    catch (\Throwable $th)
+    {
+      OdaFlash::error($th, true);
+    }
+    View::select(view: 'indicadores/list', template: 'layout_adminlte4');
   }
 
 
@@ -317,7 +339,7 @@ class DocentesController extends AppController
     }
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select(view: 'notas/calificar/index');
   }
@@ -364,7 +386,7 @@ class DocentesController extends AppController
     }
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
   }
 
@@ -410,7 +432,7 @@ class DocentesController extends AppController
     } 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select(view: 'notas/planes_apoyo/index');
   }
@@ -418,8 +440,15 @@ class DocentesController extends AppController
 
   public function perfilUsuario(): void 
   {
-    $this->page_action = 'Perfil del Usuario';
-    //$this->data = (array)(new Usuario())::get($this->user_id);
+    try 
+    {
+      $this->page_action = 'Perfil del Usuario';
+      //$this->data = (array)(new Usuario())::get($this->user_id);
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th, true);
+    }
     View::select(view: 'perfilUsuario/index');
   }
 

@@ -100,7 +100,7 @@ class RegistroDesempAcad extends LiteRecord {
     $salones = implode(",", $RegSalones);
 
     $DQL = new OdaDql('RegistroDesempAcad');
-    //$DQL->setFrom(Config::get('tablas.estud_reg_academ'));
+    $DQL->setFrom(Config::get('tablas.estud_reg_academ'));
     $DQL->select('t.*, s.nombre as salon_nombre')
         ->concat(['e.nombres','e.apellido1','e.apellido2'],  'estudiante_nombre')
         ->concat(['u.nombres','u.apellido1','u.apellido2'],  'usuario_nombre')
@@ -108,7 +108,7 @@ class RegistroDesempAcad extends LiteRecord {
         ->leftJoin('salon', 's')
         ->leftJoin('usuario', 'u', 't.created_by=u.id');
     if ($user_id<>1) {
-      $DQL->where("t.created_by in(".$salones.")");
+      $DQL->where("t.salon_id in(".$salones.")");
     }
     $DQL->orderBy('t.fecha DESC');
     

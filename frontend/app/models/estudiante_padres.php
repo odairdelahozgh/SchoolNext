@@ -50,6 +50,7 @@ class EstudiantePadres extends LiteRecord
       if ($RegEstud) 
       {
         // Existe Estudiante
+        OdaLog::debug('Existe Estudiante id: '.$RegEstud->id);
         $source  =  Config::get('tablas.datosestud');
         $sql = "SELECT * FROM $source WHERE estudiante_id = ?";
         $RegEstudDetalle = static::query($sql, [$estudiante_id])->fetch();
@@ -58,15 +59,17 @@ class EstudiantePadres extends LiteRecord
         $source  =  Config::get('tablas.usuario');
         $sql = "SELECT * FROM $source WHERE documento = ?";
         $regUserMadre = static::query($sql, [$RegEstudDetalle->madre_id])->fetch();
-        if ($regUserMadre) 
+        if ($regUserMadre->id)
         {
+          OdaLog::debug('La madre ya existe usuario id: '.$regUserMadre->id);
           // Usuario de la madre ya estaba creado
           // está viculado Madre-Estudiante ???
           $source  =  Config::get('tablas.usuarios_estudiantes');
           $sql = "SELECT * FROM $source WHERE dm_user_id = ? AND estudiante_id=?";
           $regMadreEstud = static::query($sql, [$regUserMadre->id, $RegEstud->id])->fetch();
-          if (!$regMadreEstud) 
+          if (!$regMadreEstud->id) 
           { // crear vinculo
+            OdaLog::debug('Vinculando Madre id: '.$regUserMadre->id.' con Estudiante id: '.$RegEstud->id);
             $MadreEstud = new EstudiantePadres();
             $MadreEstud->create(
               [
@@ -82,6 +85,7 @@ class EstudiantePadres extends LiteRecord
         else 
         {
           // se debe crear usuario madre
+          OdaLog::debug('Se va a crear usuario madre documento: '.$RegEstudDetalle->madre_id);
           $Usuario = new Usuario();
           $Usuario->create([
             'uuid' => ($Usuario->xxh3Hash()),
@@ -104,6 +108,9 @@ class EstudiantePadres extends LiteRecord
             'is_active'=>1,
           ]);
           $Usuario->setPassword();
+          OdaLog::debug('Usuario madre creado id: '.$Usuario->id);
+
+          OdaLog::debug('Crear relación Estudiante-Madre id: '.$Usuario->id);
           $RelMadreEstud = new EstudiantePadres();
           $RelMadreEstud->create(
             [
@@ -114,6 +121,7 @@ class EstudiantePadres extends LiteRecord
               'updated_at'=>'',
               ]
             );
+          OdaLog::debug('Relación Estudiante-Madre creada id: '.$RelMadreEstud->id);
         }
 
 
@@ -121,14 +129,16 @@ class EstudiantePadres extends LiteRecord
         $source  =  Config::get('tablas.usuario');
         $sql = "SELECT * FROM $source WHERE documento = ?";
         $regUserPadre = static::query($sql, [$RegEstudDetalle->padre_id])->fetch();
-        if ($regUserPadre) 
+        if ($regUserPadre->id) 
         {
+          OdaLog::debug('El padre ya existe usuario id: '.$regUserPadre->id);
           // está viculado Madre-Estudiante ???
           $source  =  Config::get('tablas.usuarios_estudiantes');
           $sql = "SELECT * FROM $source WHERE dm_user_id = ? AND estudiante_id=?";
           $regPadreEstud = static::query($sql, [$regUserPadre->id, $RegEstud->id])->fetch();
-          if (!$regPadreEstud) 
+          if (!$regPadreEstud->id) 
           { // crear vinculo
+            OdaLog::debug('Vinculando Padre id: '.$regUserPadre->id.' con Estudiante id: '.$RegEstud->id);
             $PadreEstud = new EstudiantePadres();
             $PadreEstud->create(
               [
@@ -144,6 +154,7 @@ class EstudiantePadres extends LiteRecord
         else 
         {
           // se debe crear usuario PADRE
+          OdaLog::debug('Se va a crear usuario padre documento: '.$RegEstudDetalle->padre_id);
           $Usuario = new Usuario();
           $Usuario->create([
             'uuid' => ($Usuario->xxh3Hash()),
@@ -166,6 +177,9 @@ class EstudiantePadres extends LiteRecord
             'is_active'=>1,
           ]);
           $Usuario->setPassword();
+          OdaLog::debug('Usuario padre creado id: '.$Usuario->id);
+
+          OdaLog::debug('Se va a crear relación Estudiante-Padre id: '.$Usuario->id);
           $RelPadreEstud = new EstudiantePadres();
           $RelPadreEstud->create(
             [
@@ -176,6 +190,7 @@ class EstudiantePadres extends LiteRecord
               'updated_at'=>'',
               ]
             );
+          OdaLog::debug('Relación Estudiante-Padre creada id: '.$RelPadreEstud->id);
         }
       }
     

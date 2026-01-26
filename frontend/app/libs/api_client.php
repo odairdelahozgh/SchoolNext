@@ -11,42 +11,64 @@ class ApiClient
       protected string $apiToken)
     {
     }
-
     protected function request($method, $endpoint, $data = [])
     {
-      //  /agendaevents?sortfield=t.id&sortorder=ASC&limit=100
-        $ch = curl_init($this->apiUrl . $endpoint);
-        $headers = [
-            "DOLAPIKEY: {$this->apiToken}",
-            "Accept: application/json",
-            //"Content-Type: application/json"
-        ];
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        //curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        //curl_setopt($ch, CURLOPT_VERBOSE, true);
-        //curl_setopt($ch, CURLOPT_HEADER, true);
+      $response =[
+        'statusCode' => 0,
+        'headers' => '',
+        'error' => '',
+        'body' => '',
+      ];
+
+      $HTTPHeader = ['DOLAPIKEY: '.$this->apiToken];
+      $Curl = curl_init();
+      curl_setopt($Curl, CURLOPT_URL, $this->apiUrl.$endpoint);
+      curl_setopt($Curl, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($Curl, CURLOPT_HTTPHEADER, $HTTPHeader);
+      $result_json = curl_exec($Curl);
+      
+      $error = '';
+      if (curl_errno($Curl))
+      {
+        $error = "Error en la solicitud cURL: " . curl_error($Curl);
+        return $response;
+      }
+
+      $dataLogin = json_decode($result_json, true);
+      if (isset($dataLogin['error']))
+      {
+        $error = "Error del API: " . $dataLogin['error']['message'];
+        return $response;
+      }
+      curl_close($Curl);
+      return $response;
+
+
+/*         $ch = curl_init();
+        $HTTPHeader = ['DOLAPIKEY: '.$this->apiToken];
+        curl_setopt($ch, CURLOPT_URL, $this->apiUrl.$endpoint);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, $method);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $HTTPHeader);
         $response = curl_exec($ch);
+        $error = '';
         if ($response === false)
         {
-          OdaLog::alert('cURL error: ' . curl_error($ch));
+          $error = curl_error($ch);
         } 
         else
         {
           $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
           $header = substr($response, 0, $header_size);
           $body = substr($response, $header_size);
-          OdaLog::debug('Response Headers: ' . $header);
-          OdaLog::debug('Response Body: ' . $body);
         }
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         return [
             'statusCode' => $statusCode,
-            'body' => $body ?? null,
-        ];
+            'headers' => $header,
+            'error' => $error,
+            'body' => $body,
+        ]; */
     }
 
 

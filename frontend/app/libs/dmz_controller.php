@@ -18,7 +18,6 @@ abstract class DmzController extends Controller
 {
   public $page_action = '';
   public $page_title  = 'Título Página';
-  //public $theme     = 'w3-theme-windsor-blue-grey';
 
   public int  $_data_count = 0;
   public array  $arrData = [];
@@ -34,7 +33,7 @@ abstract class DmzController extends Controller
   public string $themei = 'd';
   
   public ?int $user_id = 0;
-  public ?string $user_name = '';
+  public ?string $user_name = 'anonimo';
   public string $_instituto_id = '';
   public string $_instituto_nombre = '';
   public int $_periodo_actual = 0;
@@ -44,15 +43,11 @@ abstract class DmzController extends Controller
     try {
     $this->data = [0];
     
-    $this->user_id = 0;
-    $this->user_name = 'anonimo';
-    
-    $DoliK = new DoliConst();
-    $this->_periodo_actual = (int)$DoliK->getValue('SCHOOLNEXTCORE_PERIODO_ACTUAL');
-    $this->_annio_actual = (int)$DoliK->getValue('SCHOOLNEXTCORE_ANNIO_ACTUAL');
+    $this->_periodo_actual = PERIODO_ACTUAL;
+    $this->_annio_actual = ANNIO_ACTUAL;
+    $this->_instituto_id = INSTITUTION_KEY;
+    $this->_instituto_nombre = INSTITUTION_NAME;
 
-    $this->_instituto_id = Config::get('institutions.'.INSTITUTION_KEY.'.id');
-    $this->_instituto_nombre = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
     $this->theme = 'dark' ;
     $this->themei = substr($this->theme,0,1);
     

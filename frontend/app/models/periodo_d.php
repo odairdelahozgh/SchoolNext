@@ -6,6 +6,7 @@
  * @package  Models https://github.com/KumbiaPHP/ActiveRecord
  */
 
+include "periodo/periodo_trait_props_d.php";
 include "periodo/periodo_trait_set_up_d.php";
 
 //#[AllowDynamicProperties]
@@ -24,7 +25,7 @@ class PeriodoD extends LiteRecord
   private string $date_creation; // datetime NOT NULL,
   private string $tms; // timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   private int $fk_user_creat; // int(11) NOT NULL,
-  private int $fk_user_modif; // int(11) DEFAULT NULL
+  private ?int $fk_user_modif; // int(11) DEFAULT NULL
 
   public ?string $fecha_inicio; // date DEFAULT NULL,
   public ?string $fecha_fin; // date DEFAULT NULL,
@@ -61,26 +62,6 @@ class PeriodoD extends LiteRecord
     $this->setUp();
   }
 
-  
-  public function __toString(): string 
-  {
-    return "$this->label [$this->rowid]";
-  }
-
-
-  public static function getNumPeriodos(): int 
-  {
-    $sql = "SELECT count(*) as cant FROM ".static::getSource();
-    $Const = (new DoliConst())::first($sql);
-    return (int)$Const->cant;
-  }
-
-  public function getD(int $rowid): mixed 
-  {
-    $sql = "SELECT * FROM ".static::getSource().' WHERE '.static::$pk.' = ?';
-    return static::query($sql, [$rowid])->fetch();
-  }
-  
   
 
 }

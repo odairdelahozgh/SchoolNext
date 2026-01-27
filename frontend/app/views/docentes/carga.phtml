@@ -8,8 +8,27 @@
 ?>
 
 <div class="w3-row">
-  
-  <div class="w3-container w3-twothird">
+
+  <div class="w3-container">
+    <?php 
+    try 
+    {
+      $lnk_lista_de_clase = SalAsigProf::getLnkListaClase($_periodo_actual);
+      $lnk5p = '';
+      if ( (4==$_periodo_actual) && (5==$_max_periodos) )
+      { 
+        $lnk5p = SalAsigProf::getLnkListaClase(5);
+      }
+      echo $lnk_lista_de_clase . $lnk5p;      
+    }
+    catch (\Throwable $th)
+    {
+      OdaFlash::error($th);
+    }
+    ?>
+  </div>
+    
+  <div class="w3-container">
     <?php
       try {
         echo OdaForm::inputSearch();
@@ -37,26 +56,6 @@
         echo Tag::js("table_filter");
       }
       catch (\Throwable $th) { OdaFlash::error($th); }
-    ?>
-  </div>
-
-  <div class="w3-container w3-rest">
-    <?php 
-    try 
-    {
-      $periodo_max = (int)Config::get('institutions.'.INSTITUTION_KEY.'.periodo_max');
-      $lnk_lista_de_clase = SalAsigProf::getLnkListaClase($_periodo_actual);
-      $lnk5p = '';
-      if ( (4==$_periodo_actual) && (5==$periodo_max) )
-      { 
-        $lnk5p = SalAsigProf::getLnkListaClase(5);
-      }
-      echo $lnk_lista_de_clase . $lnk5p;      
-    }
-    catch (\Throwable $th)
-    {
-      OdaFlash::error($th);
-    }
     ?>
   </div>
 

@@ -14,8 +14,7 @@ class SecretariaController extends AppController
     if ( !str_contains('secretarias', Session::get('roll')) && 
          !str_contains('admin', Session::get('roll')) ) 
     {
-      $username = Session::get('roll');
-      OdaFlash::warning($username.': No tiene permiso de acceso al módulo SECRETARIAS, fué redirigido');
+      OdaFlash::warning("No tiene permisos de acceso al m&oacute;dulo <b>{$this->controller_name}</b>, fu&eacute; redirigido");
       Redirect::to(Session::get('modulo'));
     }
   }
@@ -74,7 +73,7 @@ class SecretariaController extends AppController
 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select('estudiantes/show_estud/showForm');
   }
@@ -86,9 +85,6 @@ class SecretariaController extends AppController
     $this->_default_search = $search;
     $this->data = (new Estudiante)->getListSecretaria(estado: 1);
     $this->arrData['Salones'] = (array)(new Salon)->getList(estado: 1);
-    
-    $DoliK = new DoliConst();
-    $this->show_matricula = $DoliK->getValue('SCHOOLNEXTACADEMICO_PROCESO_MATRICULA_ACTIVO');
 
     View::select('estudiantes/estud_list_activos');
   }
@@ -263,7 +259,7 @@ class SecretariaController extends AppController
   public function historico_notas() 
   {
     $this->page_action = 'Hist&oacute;rico de Notas';
-    $this->data = range($this->_annio_actual-1, $this->_annio_inicial, -1);
+    $this->data = range($this->_annio_matricula-1, $this->_annio_inicial, -1);
     View::select('historico_notas/index');
   }
 

@@ -14,7 +14,7 @@ class ContabilidadController extends AppController
     parent::before_filter();
 
     if ( !str_contains('contables', Session::get('roll')) && !str_contains('admin', Session::get('roll'))) {
-      OdaFlash::warning('No tiene permiso de acceso al módulo CONTABILIDAD, fué redirigido');
+      OdaFlash::warning("No tiene permisos de acceso al m&oacute;dulo <b>{$this->controller_name}</b>, fu&eacute; redirigido");
       Redirect::to(Session::get('modulo'));
     }
   }

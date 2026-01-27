@@ -17,7 +17,7 @@ class DocentesController extends AppController
       && !str_contains('secretarias', Session::get('roll')) 
       && !str_contains('coordinadores', Session::get('roll')) )
     {
-      OdaFlash::warning('No tiene permiso de acceso al módulo DOCENTES, fué redirigido');
+      OdaFlash::warning("No tiene permisos de acceso al m&oacute;dulo <b>{$this->controller_name}</b>, fu&eacute; redirigido");
       Redirect::to(Session::get('modulo'));
     }
   }
@@ -140,7 +140,8 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Registros de Observaciones Generales';
-      //[31	dianarc] [33	jackelinerr] [19	lizbethgc]
+      // [31	dianarc] [33	jackelinerr] [19	lizbethgc]
+      // TODO : cambiar la forma de identificar coordinadores
       $es_coordinador =  [31, 33, 19];
       if ( in_array($this->user_id, $es_coordinador) ) 
       {
@@ -234,8 +235,8 @@ class DocentesController extends AppController
       $RegAsignatura = (new Asignatura)::get($asignatura_id);
       $RegSalon = (new Salon)::get($salon_id);
 
-      $max_periodo = ($this->_periodo_actual>=4) ? $this->_max_periodos : $this->_periodo_actual;
-      for ($i=1; $i<=$max_periodo; $i++) 
+      $periodo_hasta = ($this->_periodo_actual>=4) ? $this->_max_periodos : $this->_periodo_actual;
+      for ($i=1; $i<=$periodo_hasta; $i++) 
       {
         $RegsIndicadP = (new Indicador)->getIndicadoresCalificar($i, $RegSalon->grado_id, $asignatura_id);
         $IndicP = [];
@@ -264,7 +265,7 @@ class DocentesController extends AppController
       $Notas = (new Nota)->getBySalonAsignaturaPeriodos(
         $salon_id, 
         $asignatura_id, 
-        range(1, $max_periodo) 
+        range(1, $periodo_hasta) 
       );
       if (0 == count($Notas)) 
       {
@@ -284,7 +285,11 @@ class DocentesController extends AppController
   }
 
 
-  public function notasCalificar(int $periodo_id, int $salon_id, int $asignatura_id): void {
+  public function notasCalificar(
+    int $periodo_id, 
+    int $salon_id, 
+    int $asignatura_id
+  ): void {
     try 
     {
       $this->page_action = 'Calificar Notas del Sal&oacute;n';
@@ -348,11 +353,12 @@ class DocentesController extends AppController
   public function notasCalificarSeguimientos(
     int $periodo_id, 
     int $salon_id, 
-    int $asignatura_id): void 
+    int $asignatura_id
+  ): void 
   {
     try 
     {
-      $this->page_action = (INSTITUTION_KEY=='santarosa') ? 'Preinformes del Sal&oacute;n' : 'Seguimientos Intermedios del Sal&oacute;n';
+      $this->page_action = ($this->_instituto_id=='santarosa') ? 'Preinformes del Sal&oacute;n' : 'Seguimientos Intermedios del Sal&oacute;n';
       $RegSalon = (new Salon)->get($salon_id);
       $RegPeriodo =(new Periodo)->get($periodo_id);
       $RegAsignatura = (new Asignatura)->get($asignatura_id);

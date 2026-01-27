@@ -35,6 +35,7 @@ class LiteRecord extends ORM
   {
     self::$_user_id = Session::get('id') ?? 0;
     self::$_username = Session::get('username') ?? 'Anonimo';
+    
     self::$_max_periodos = Session::get('max_periodos') ?? 4;
     self::$_periodo_actual = Session::get('periodo') ?? 1;
     self::$_annio_actual = Session::get('annio') ?? date('Y');

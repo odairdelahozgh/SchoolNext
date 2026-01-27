@@ -59,6 +59,9 @@ abstract class AppController extends Controller
   public int|null $_annio_actual = 0;
   public int|null $_annio_inicial = 0;
   
+  public int|null $_annio_matricula = 0;
+  public bool|null $_show_matricula = false;
+
   public string $_ahora = '';
   public $_now = null;
 
@@ -89,14 +92,18 @@ abstract class AppController extends Controller
       $this->user_name = Session::get('username');
       $this->user_nombre_completo = trim(Session::get('nombres').' '.Session::get('apellido1').' '.Session::get('apellido2'));
 
-      $this->_max_periodos = Session::get('max_periodos');
-      $this->_periodo_actual = Session::get('periodo');
-      $this->_annio_actual = Session::get('annio');
-      $this->_annio_inicial = Session::get('annio_inicial');
+      $this->_max_periodos = MAX_PERIODOS;
+      $this->_periodo_actual = PERIODO_ACTUAL;
+      $this->_annio_actual = ANNIO_ACTUAL;
+      $this->_annio_inicial = ANNIO_INICIAL;
 
-      //$optTheme = (date("H",time())<18) ? 'light' : 'dark' ;
-      $this->_instituto_id = Config::get('institutions.'.INSTITUTION_KEY.'.id');
-      $this->_instituto_nombre = Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
+      $this->_instituto_id = INSTITUTION_KEY;
+      $this->_instituto_nombre = INSTITUTION_NAME;
+      
+      $this->_annio_matricula = ANNIO_MATRICULA;
+      $this->_show_matricula = SHOW_MATRICULA;
+
+      
       $this->theme = (Session::get('theme')) ? Session::get('theme') : 'dark' ;
       $this->themei = substr($this->theme,0,1);
       
@@ -116,7 +123,7 @@ abstract class AppController extends Controller
 final protected function finalize()
   {
     try {
-      $this->page_action = $this->page_action ?? $this->action_name;
+      $this->page_action ??= $this->action_name;
       $this->page_title  = strtoupper($this->controller_name) .' - ' . $this->page_action .' | ' .Config::get('institutions.'.INSTITUTION_KEY.'.nombre');
       if ($this->action_name!=='index')
       {

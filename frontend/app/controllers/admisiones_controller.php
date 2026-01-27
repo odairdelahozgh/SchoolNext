@@ -22,16 +22,32 @@ class AdmisionesController extends DmzController
     {
       $this->page_action = 'Inicio';
       $DoliK = new DoliConst();
-      $this->data['institucion_nombre'] = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '<Nombre del Instituto>';
-      $this->data['institucion_email'] = $DoliK->getValue('MAIN_INFO_SOCIETE_MAIL') ?? '<Email del Instituto>';
-      $this->data['annio_matricula'] = (((int)date('m')>=8) ? ((int)date('Y')+1) : (int)date('Y') );
-      $this->data['tipo_form_admisiones'] = $DoliK->getValue('SCHOOLNEXTADMISIONES_FORMULARIO') ?? 'formsencillo';
-
-      //View::select('index', 'looper/component-steps');
+      $this->data['institucion_nombre'] = $this->_instituto_nombre;
+      $this->data['institucion_email']  = INSTITUTION_MAIL;
+      $this->data['annio_matricula']    = ANNIO_MATRICULA;
+      $this->data['tipo_form_admisiones'] = INSTITUTION_FRM_ADMISIONES;
+      //View::select('index2', 'layout_adminlte4_blank');
     }
     catch (\Throwable $th)
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
+    }
+  }
+
+  public function index2() 
+  {
+    try
+    {
+      $this->page_action = ' ';
+      $this->data['institucion_nombre'] = $this->_instituto_nombre;
+      $this->data['institucion_email']  = INSTITUTION_MAIL;
+      $this->data['annio_matricula']    = ANNIO_MATRICULA;
+      $this->data['tipo_form_admisiones'] = INSTITUTION_FRM_ADMISIONES;
+      View::select('index2', 'layout_adminlte4_blank');
+    }
+    catch (\Throwable $th)
+    {
+      OdaFlash::error($th, true);
     }
   }
 
@@ -41,12 +57,12 @@ class AdmisionesController extends DmzController
     try
     {
       $this->page_action = 'Success';
-      $DoliK = new DoliConst();
-      $this->arrData['institucion_nombre'] = $DoliK->getValue('MAIN_INFO_SOCIETE_NOM') ?? '<Nombre del Instituto>';
+      $this->arrData['institucion_nombre'] = $this->_instituto_nombre;
       
       $this->data = (new Aspirante())::get($id);
       $GradosActivos = (new Grado())->getListActivos();
       $this->arrData['Grados'] = null;
+      
       foreach ($GradosActivos as $key => $grado)
       {
         $this->arrData['Grados'][$grado->id] = $grado->nombre;
@@ -54,7 +70,7 @@ class AdmisionesController extends DmzController
     }
     catch (\Throwable $th)
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
   }
 

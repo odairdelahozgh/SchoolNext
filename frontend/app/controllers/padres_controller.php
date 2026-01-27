@@ -15,7 +15,7 @@ class PadresController extends AppController
     if ( !str_contains('padres', Session::get('roll')) && 
          !str_contains('admin', Session::get('roll')) )
     {
-      OdaFlash::warning('No tiene permiso de acceso al módulo PADRES, fué redirigido');
+      OdaFlash::warning("No tiene permisos de acceso al m&oacute;dulo <b>{$this->controller_name}</b>, fu&eacute; redirigido");
       Redirect::to(Session::get('modulo'));
     }
   }
@@ -30,7 +30,7 @@ class PadresController extends AppController
   
   public function contabilidad(): void 
   {
-    $this->page_action = 'Información Contable';
+    $this->page_action = 'Informaci&oacute;n Contable';
   }
   
 
@@ -40,12 +40,12 @@ class PadresController extends AppController
     {
       $this->page_action = 'Estudiantes a Cargo';
       $this->arrData['periodo'] = Session::get('periodo');
-      $user_id = (1!=$this->user_id) ? $this->user_id : 22482 ; // simular un usuario de padres
-      $this->data = (new Estudiante)->getListPadresRetirados($user_id);
+      //$user_id = (1!=$this->user_id) ? $this->user_id : 22482 ; // simular un usuario de padres
+      $this->data = (new Estudiante)->getListPadresRetirados($this->user_id);
     } 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select('estudiantes/index');
   }
@@ -53,11 +53,9 @@ class PadresController extends AppController
   
   public function matriculas(): void 
   {
-    $this->page_action = 'Matr&iacute;culas A&ntilde;o '.Config::get('matriculas.annio_mat');
-    $arr_padres_id = [22204, 21985, 22065];
-    $rnd =$arr_padres_id[rand(0, count($arr_padres_id)-1)]; 
-    $user_id = (1!=$this->user_id) ? $this->user_id : $rnd ;
-    $this->data = (new Estudiante)->getListPadres($user_id);
+    $this->page_action = 'Matr&iacute;culas A&ntilde;o '.(string)$this->_annio_matricula;
+
+    $this->data = (new Estudiante)->getListPadres($this->user_id);
     foreach ($this->data as $estudiante) 
     {
       $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
@@ -72,8 +70,8 @@ class PadresController extends AppController
           'uuid'=>$Adjuntos->xxh3Hash(), 
           'created_at'=> $this->_ahora,
           'updated_at'=> $this->_ahora,
-          'created_by'=> $user_id,
-          'updated_by'=> $user_id,
+          'created_by'=> $this->user_id,
+          'updated_by'=> $this->user_id,
           'estado_archivo1'=> EstadoAdjuntos::ENREVISION->value,
           'estado_archivo2'=> EstadoAdjuntos::ENREVISION->value,
           'estado_archivo3'=> EstadoAdjuntos::ENREVISION->value,
@@ -92,6 +90,7 @@ class PadresController extends AppController
   {
     $this->page_action = 'Subir Archivos';
     $tabla_datos_adju = Config::get('tablas.estud_adjuntos');
+
     $this->arrData['Adjuntos'] = (new EstudianteAdjuntos())::first(
       "SELECT * FROM {$tabla_datos_adju} WHERE estudiante_id=?", [$estudiante_id]
     );

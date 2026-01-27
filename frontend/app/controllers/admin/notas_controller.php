@@ -222,6 +222,7 @@ class NotasController extends ScaffoldController
   public function exportBoletinEstudiantePdf(int $periodo_id, string $estudiante_uuid, int $tipo = 1): void 
   {
     $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
+    $this->arrData['Annio'] = $this->_annio_actual;
     $this->arrData['Periodo'] = $periodo_id;
     $Estud = (new Estudiante())->getByUUID($estudiante_uuid);
     $this->arrData['Estud'] = $Estud;
@@ -244,7 +245,7 @@ class NotasController extends ScaffoldController
     $this->file_tipo = $tipo_boletin->label();
     $this->file_name = OdaUtils::getSlug($tipo_boletin->label()."-de-$Estud-periodo-$periodo_id");
     $this->file_title = $tipo_boletin->label()." de Notas $Estud";
-    View::select(view: 'boletines_'.INSTITUTION_KEY.'.pdf', template: null);
+    View::select(view: 'boletines_'.$this->_instituto_id.'.pdf', template: null);
   }
 
 
@@ -253,6 +254,7 @@ class NotasController extends ScaffoldController
     try
     {
       $tipo_boletin = TBoletin::tryFrom($tipo) ?? TBoletin::Boletin;
+      $this->arrData['Annio'] = $this->_annio_actual;
       $this->arrData['Periodo'] = $periodo_id;
       $Salon = (new Salon())->getByUUID($salon_uuid);
       $this->arrData['Salon'] = $Salon;
@@ -274,7 +276,7 @@ class NotasController extends ScaffoldController
       $this->file_tipo = OdaUtils::sanearString($tipo_boletin->label());
       $this->file_name = OdaUtils::getSlug($this->file_tipo."-$Salon-periodo-$periodo_id");
       $this->file_title = $this->file_tipo .' ' .$Salon;
-      View::select(view: 'boletines_'.INSTITUTION_KEY.'.pdf', template: null);
+      View::select(view: 'boletines_'.$this->_instituto_id.'.pdf', template: null);
     }
     catch (\Throwable $th)
     {

@@ -15,7 +15,7 @@ class SicologiaController extends AppController
     if ( !str_contains('sicologos', Session::get('roll')) && 
          !str_contains('admin', Session::get('roll')) ) 
     {
-      OdaFlash::warning('No tiene permiso de acceso al módulo PSICOLOGÍA, fué redirigido');
+      OdaFlash::warning("No tiene permisos de acceso al m&oacute;dulo <b>{$this->controller_name}</b>, fu&eacute; redirigido");
       Redirect::to(Session::get('modulo'));
     }
   }

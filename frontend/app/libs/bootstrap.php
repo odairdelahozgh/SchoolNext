@@ -3,8 +3,6 @@
 // Para cargar cambia en public/index.php el require del bootstrap a app
 // Arranca KumbiaPHP
 
-use PhpParser\Node\Expr\AssignOp\Concat;
-
 const VENDOR_PATH = APP_PATH.'../vendor/' ;
 const HELPERS_PATH = APP_PATH.'extensions/helpers/' ;
 

@@ -27,24 +27,52 @@ class TestController extends AppController
     ];
   }
 
-
   public function api_dolibarr()
   {
     try {
       $this->page_action = 'Test Dolibarr';
       $this->action_name = 'api_dolibarr';
       $this->page_title = 'Test API Dolibarr';
-      $this->data = [0];
-      $apiUrl = (string)Config::get('dolibarr.'.INSTITUTION_KEY.'.api_url');
-      $apiKey = (string)Config::get('dolibarr.'.INSTITUTION_KEY.'.api_key');
       
-      $apiClient = new ApiClient($apiUrl, $apiKey);
-      $response = $apiClient->get('/agendaevents?sortfield=t.id&sortorder=ASC&limit=100');
-      if ($response['statusCode'] == 200)
-      {
-        //$this->data = json_decode($response['body'], true);
-        $this->data = $response;
-      }
+      $endpoint_lists = [
+        'userlist' => 
+          [
+            'title' => 'Listar Usuarios',
+            'url' => 'users?sortfield=t.rowid&sortorder=ASC&limit=100',
+            'fields' => ['lastname', 'firstname', 'email', 'address', 'user_mobile', 'town', 'login', 'job', 'country_id', 'gender', 'office_phone', 'note_private' ],
+          ],
+        'agendaevents' => 
+          [
+            'title' => 'Get a list of Agenda Events',
+            'url' => 'agendaevents?sortfield=t.id&sortorder=ASC&limit=100',
+            'fields' => ['label', 'note_private', 'type', 'type_code', 'type_label', 'code', 'datec', 'datem', 'datep', 'datef', 'fulldayevent', 'location', 'priority', 'percentage' ],
+          ],
+        'setupcompany' => 
+          [
+            'title' => 'Get Info Company',
+            'url' => 'setup/company',
+            'fields' => ['module', 'country_id', 'country_code', 'state_id', 'note_private', 'name', 'address', 'town', 'phone', 'phone_mobile', 'email', 'url'],
+          ],
+      ];
+
+      
+      $endpoint_name = 'userlist';
+      $this->arrData = [
+        'title' => 'Test API Dolibarr',
+        'content' => 'Probando conexion con API Dolibarr',
+        'apiUrl' => 'https://backendnext.windsorschool.edu.co/api/index.php',
+        'apiKey' => 'HTVd6TM2jl2w3v79EKclAjO07wo26CNb',
+        'endpoint' => 
+          [
+            'name' => $endpoint_name,
+            'title' => $endpoint_lists[$endpoint_name]['title'],
+            'url' => $endpoint_lists[$endpoint_name]['url'],
+            'fields' => $endpoint_lists[$endpoint_name]['fields'],
+          ],
+      ];
+
+      $apiClient = new ApiClient(apiUrl: $this->arrData['apiUrl'], apiToken: $this->arrData['apiKey'] );
+      $this->data = $apiClient->get(endpoint: $this->arrData['endpoint']['url']);
       
     } catch (\Throwable $th) {
       OdaFlash::error($th);

@@ -155,7 +155,7 @@ trait AspirantePsicoTraitSetUp {
       'relhermanos' =>  'Escriba cómo es la relación del niño con sus hermanos.',
       'relpadres' =>  'Escriba cómo es la relación con los padres, manejo de autoridad, afecto',
       'relpares' =>  'Escriba cómo ha sido la relación con sus compañeros de clase, si ha presentado dificultad en las relaciones y el abordaje del mismo',
-      'vive_con' =>  'Si están separados, relacione las Personas con las que vive actualmente y el parentesco',
+      'vive_con' =>  '(Si están separados)<br/> personas con las que vive',
     ];
   
     self::$_labels = [

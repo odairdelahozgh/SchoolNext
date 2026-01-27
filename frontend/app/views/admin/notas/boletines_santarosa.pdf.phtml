@@ -3,9 +3,6 @@ try
 {
   $seccion_id = $arrData['Grado']->seccion_id;
   $format = (1==$seccion_id) ? 'LETTER': 'LEGAL'; // 'LETTER' => [612.00, 792.00],  'LEGAL' => [612.00, 1008.00],
-  $periodo = $arrData['Periodo'];
-  $DoliK = new DoliConst();
-  $annio = $DoliK->getValue('SCHOOLNEXTACADEMICO_ANNIO_ACTUAL') ?? '';
   $archivoPDF = new MpdfBoletinesSantarosa([
     'tempDir' => APP_PATH . 'temp/mpdf',
     'format' => $format,
@@ -23,8 +20,6 @@ try
   $pivote_estudiante = 0;
   $pivote_materia = 0;
   $tabla_rango = (1==$seccion_id) ? '' : (new RangoD())->showTablaRangos();
-  $DoliK = new DoliConst();
-  $_show_nota_boletin = (bool)$DoliK->getValue('SCHOOLNEXTACADEMICO_SHOW_NOTA_BOLETIN') ?? false;
   $t_materia = new OdaTable();
   //$suma_humanidades = 0;
   //$cnt_humanidades = 0;
@@ -51,8 +46,8 @@ try
         $arrData['Salon']->nombre,
         $puesto,
         $promedio,
-        $annio,
-        $periodo,
+        $arrData['Annio'],
+        $arrData['Periodo'],
       ];
       $archivoPDF->WriteHTML($archivoPDF->encabezadoBloqueBoletines($Params_encab));
 
@@ -73,13 +68,13 @@ try
       $nota_definitiva = '';
       if ($nota->plan_apoyo>0) {
         //$rango_plan_apoyo = (new RangoD())->getRangoNota($nota->plan_apoyo);
-        //$nota_plan_apoyo = $_show_nota_boletin ? "<b>[{$rango_plan_apoyo}] {$nota->plan_apoyo}</b>" : '' ;
+        //$nota_plan_apoyo = SHOW_NOTA_BOLETIN ? "<b>[{$rango_plan_apoyo}] {$nota->plan_apoyo}</b>" : '' ;
         $rango_definitiva = (new RangoD())->getRangoNota($nota->definitiva);
-        $nota_definitiva = $_show_nota_boletin ? "<b>[{$rango_definitiva}] {$nota->definitiva}</b> Recuperado -> " : '' ;
+        $nota_definitiva = SHOW_NOTA_BOLETIN ? "<b>[{$rango_definitiva}] {$nota->definitiva}</b> Recuperado -> " : '' ;
       }
       
       $rango = (new RangoD())->getRangoNota($nota->nota_final);
-      $nota_estud = $_show_nota_boletin ? "<b>[{$rango}] {$nota->nota_final}</b>" : '' ;
+      $nota_estud = SHOW_NOTA_BOLETIN ? "<b>[{$rango}] {$nota->nota_final}</b>" : '' ;
 
       $titulo_calificacion = "$nota_definitiva $nota_estud";
       $t_materia = new OdaTable('style="width:100%;"');
@@ -88,7 +83,7 @@ try
     $indicadores = '';
     for ($i=1; $i<=20; $i++)
     {
-      $codigo = ($i<=9) ? $nota->{'i0'."$i"} : $nota->{'i'."$i"};
+      $codigo = ($i<=9) ? $nota->{"i0{$i}"} : $nota->{"i{$i}"};
       if (strlen($codigo??'')>0)
       {
         $valorativo_concepto = $arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'] ?? '';
@@ -131,7 +126,7 @@ try
         $t_humanidades = new OdaTable('style="width:100%;"');
         $prom = ($cnt_humanidades>0) ? round($suma_humanidades / $cnt_humanidades, 2) : 0;
         $rango = (new RangoD())->getRangoNota($prom);
-        $nota_estud = $_show_nota_boletin ? $prom : '' ;
+        $nota_estud = SHOW_NOTA_BOLETIN ? $prom : '' ;
         $titulo_calificacion = '<b>['.$rango.'] '.$nota_estud.'</b>';
         $t_humanidades->addRow(['<b>HUMANIDADES</b>', $titulo_calificacion], attrs: ['style="width:50%;"'], attrs_td: ['style="text-align:left;"', 'style="text-align:right;"']);
         $archivoPDF->WriteHTML(
@@ -155,7 +150,7 @@ try
   $archivoPDF->WriteHTML('<br/><b>Observaciones:</b> <br/><br/> <hr/><br/> <hr/>');
   $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
   $archivoPDF->showWatermarkText = false;
-  $archivoPDF->Output("$file_name.pdf", 'I');
+  $archivoPDF->Output("{$file_name}.pdf", 'D');
 }
 catch (\Throwable $th) 
 {

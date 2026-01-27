@@ -25,4 +25,5 @@ $url = $_SERVER['PATH_INFO'] ?? '/';  // LOCAL y SANTAROSA
 const INSTITUTION_KEY = "windsor"; // "santarosa" "windsor" "development" En minúsculas
 const APP_NAME= "SchoolNEXT>>";
 
+
 require APP_PATH . 'libs/bootstrap.php'; //bootstrap de app

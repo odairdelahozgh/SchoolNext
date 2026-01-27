@@ -107,20 +107,21 @@
             $nom_estud = strtoupper(OdaUtils::nombrePersona((string)$nota->estudiante_nombre)." [{$arrData['Salon']->nombre}]")
                          ."</br>P$periodo:  {$arrData['Asignatura']->nombre} ".$nota->verNota();
             $arr_notas_anteriores = [];
-            $notas_anteriores = '';
+            $notas_anteriores = '<br>Record: ';
 
             for ($i=1; $i<=$periodo; $i++)
             { 
               if ($arrData['Calificaciones'][$nota->estudiante_id][$i]>0)
               {
                 $arr_notas_anteriores[] = $arrData['Calificaciones'][$nota->estudiante_id][$i];
-                $notas_anteriores .= 'P'.$i.': '.$arrData['Calificaciones'][$nota->estudiante_id][$i] .'&nbsp&nbsp';
+                $notas_anteriores .= '(P'.$i.') <u>'.$arrData['Calificaciones'][$nota->estudiante_id][$i] .'</u>&nbsp&nbsp';
               }
             }
 
             if ($periodo>1 && count($arr_notas_anteriores)>0)
             {
-              $notas_anteriores .= '<br>Prom: ' .array_sum($arr_notas_anteriores)/count($arr_notas_anteriores);
+              $promedio = array_sum($arr_notas_anteriores)/count($arr_notas_anteriores);
+              $notas_anteriores .= '&nbsp'.OdaTags::Badges(caption: 'Prom: ', value: $promedio, color: 'w3-blue');
             }
             else 
             {

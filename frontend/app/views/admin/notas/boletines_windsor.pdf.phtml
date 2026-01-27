@@ -1,7 +1,7 @@
 <?php
 try 
 {
-  $archivoPDF = new MpdfBoletines([
+  $archivoPDF = new MpdfBoletinesWindsor([
     'tempDir' => APP_PATH . 'temp/mpdf',
     'format' => 'Legal',
     'progressBar' => true,
@@ -23,9 +23,6 @@ $pivote_estudiante = 0;
 $pivote_materia = 0;
 $tabla_rango = (1==$seccion) ? '' : (new RangoD())->showTablaRangos();
 
-$DoliK = new DoliConst();
-$_show_nota_boletin = $DoliK->getValue('SCHOOLNEXTACADEMICO_SHOW_NOTA_BOLETIN') ?? false;
-
 $t_materia = new OdaTable();
 foreach ($data as $key => $nota)
 {
@@ -44,7 +41,7 @@ foreach ($data as $key => $nota)
     $Params_encab = [
       $nota->estudiante_nombre,
       $arrData['Periodo'],
-      $annio,
+      $arrData['Annio'],
       $arrData['Salon']->nombre,
     ];
     $archivoPDF->WriteHTML($archivoPDF->encabezadoBloqueBoletines($Params_encab));
@@ -63,7 +60,7 @@ foreach ($data as $key => $nota)
     }
 
     $rango = (new RangoD())->getRangoNota($nota->definitiva);
-    $nota_estud = $_show_nota_boletin ? $nota->definitiva : '' ;
+    $nota_estud = SHOW_NOTA_BOLETIN ? $nota->definitiva : '' ;
     $titulo_calificacion = (1==$seccion) ? '' : '<b>'.((1==$Asignat->calc_prom) ? "[{$rango}]" : '').' '.$nota_estud.'</b>';
     
     $t_materia = new OdaTable('style="width:100%;"');
@@ -72,7 +69,7 @@ foreach ($data as $key => $nota)
 
   for ($i=1; $i<=20; $i++)
   {
-    $codigo = ($i<=9) ? $nota->{'i0'."$i"} : $nota->{'i'."$i"};
+    $codigo = ($i<=9) ? $nota->{"i0{$i}"} : $nota->{"i{$i}"};
     if (strlen($codigo??'')>0)
     {
       $valorativo_concepto = $arrData ['Indicadores'] [$nota->asignatura_id] [$codigo] ['concepto'] ?? '';
@@ -102,7 +99,7 @@ $Params_pie = [
 $archivoPDF->WriteHTML($archivoPDF->pieBloqueBoletines($Params_pie));
 
 $archivoPDF->showWatermarkText = false;
-$archivoPDF->Output("$file_name.pdf", 'D');
+$archivoPDF->Output("{$file_name}.pdf", 'D');
 }
 
 catch (\Throwable $th) 

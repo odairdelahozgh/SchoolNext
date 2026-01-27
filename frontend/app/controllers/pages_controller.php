@@ -33,6 +33,11 @@ class PagesController extends AppController
     View::select(implode('/', $params));
   }
 
+  public function index() 
+  {
+    View::template('default');
+  }
+
   public function miperfil()
   {
     try
@@ -49,44 +54,7 @@ class PagesController extends AppController
     {
       OdaFlash::error($th, true);
     }
-    View::select('miperfil');
-  }
-
-
-  public function index() 
-  {
-  }
-
-
-  public function bootstrap() 
-  {
-    View::template('adminlite4htmx');
-  }
-
-
-  public function htmx() 
-  {
-    View::select('htmx', 'adminlite4htmx');
-  }
-
-
-  public function bs5htmx() 
-  {
-    //View::select('ejemplos/bs5htmx', 'bootstrap5htmx-template');
-    View::select('ejemplos/bs5htmx', 'adminlite4htmx');
-  }
-
-
-  public function test_htmx() 
-  {
-    View::select(null, null);
-    echo '<p>resultado [100-200] = '.rand(100, 200).'</p>';
-  }
-  
-  
-  public function adminlte4() 
-  {
-    View::template('adminlite4htmx');
+    View::select('miperfil', 'default' );
   }
 
 }

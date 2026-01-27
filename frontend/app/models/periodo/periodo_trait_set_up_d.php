@@ -2,46 +2,67 @@
 
 trait PeriodoTraitSetUpD {
   
-  use TraitUuid, TraitForms, TraitValidar;
+  use TraitUuid, TraitForms, TraitValidar,
+  PeriodoTraitPropsD;
   
   private function setUp(): void {
     
     self::$_fields_show = [
-      'all'     => ['rowid', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'created_by', 'updated_by', 'created_at', 'updated_at', 'mes_req_boletin'],
-      'index'   => ['rowid', 'periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day'],
-      'create'  => ['periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'mes_req_boletin'],
-      'edit'    => ['periodo', 'fecha_inicio', 'fecha_fin', 'f_ini_logro', 'f_fin_logro', 'f_ini_notas', 'f_fin_notas', 'f_open_day', 'mes_req_boletin'],
+      'all'     => [],
+      'index'   => [],
+      'create'  => [],
+      'edit'    => [],
     ];
     
-    self::$_attribs = [
-      'periodo'       => 'required', 
-      'fecha_inicio'  => 'required', 
-      'fecha_fin'     => 'required', 
-      'f_ini_logro'   => 'required', 
-      'f_fin_logro'   => 'required', 
-      'f_ini_notas'   => 'required', 
-      'f_fin_notas'   => 'required', 
-      'f_open_day'    => 'required',
-    ];
-  
-    self::$_defaults = [
-      'is_active'       => 1,
-    ];
-  
-    self::$_helps = [
-      'is_active'    => 'Indica si está activo el registro.',
-    ];
-  
+    self::$_attribs = [];
+
+    self::$_defaults = [];
+
+    self::$_helps = [];
+
     self::$_labels = [
-      'is_active'       => 'Está Activo? ',
-      'created_at'      => 'Creado el',
-      'created_by'      => 'Creado por',
-      'updated_at'      => 'Actualizado el',
-      'updated_by'      => 'Actualizado por',
+      'rowid' => 'ID',
+      'ref' => 'Referencia',
+      'label' => 'Etiqueta',
+      'status' => 'Estado',
+
+      'import_key' => 'Lllave de importación',
+      'model_pdf' => 'Modelo PDF',
+      'last_main_doc' => '',
+      'date_creation' => 'Fecha de Creación',
+      'tms' => '',
+      'fk_user_creat' => '',
+      'fk_user_modif' => '',
+
+      'fecha_inicio' => '',
+      'fecha_fin' => '',
+      'f_ini_logro' => '',
+      'f_fin_logro' => '',
+      'f_ini_seguimientos' => '',
+      'f_fin_seguimientos' => '',
+      'f_ini_preinformes' => '',
+      'f_fin_preinformes' => '',
+      'f_ini_planes_apoyo' => '',
+      'f_fin_planes_apoyo' => '',
+      'f_ini_notas' => '',
+      'f_fin_notas' => '',
+      'f_open_day' => '',
+
+      'mes_req_boletin' => '',
+      'orden' => '',
+
+      'seguimientos_abrir' => '',
+      'seguimientos_cerrar' => '',
+      'preinformes_abrir' => '',
+      'preinformes_cerrar' => '',
+      'boletines_abrir' => '',
+      'boletines_cerrar' => '',
+      'planes_apoyo_abrir' => '',
+      'planes_apoyo_cerrar' => '',
+
     ];
   
-    self::$_placeholders = [
-    ];
+    self::$_placeholders = [];
 
   }
 

@@ -48,10 +48,15 @@ trait EstudianteTraitMatriculas {
 
   public function esDeudor(): bool 
   {
+    $mes_limite = 1;
+    if ($this->annio_promovido > $this->annio_pagado) 
+    {
+      $mes_limite = 11;
+    }
     return (
       ($this->is_debe_preicfes) 
       or ($this->is_debe_almuerzos) 
-      or ($this->mes_pagado!=11));
+      or ($this->mes_pagado>=$mes_limite));
   }
 
   

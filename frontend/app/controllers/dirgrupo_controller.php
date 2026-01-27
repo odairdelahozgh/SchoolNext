@@ -12,9 +12,8 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Direcci&oacute;n de Grupo';
-      $periodo = Session::get('periodo');
       $this->data = (new usuario)->misGrupos();
-      for ($i=1; $i <=$periodo ; $i++) 
+      for ($i=1; $i <= $this->_periodo_actual ; $i++) 
       { 
         $a_regs = (new Nota)::getNotasPromAnnioPeriodoSalon($i, $this->data[0]->id);
         foreach ($a_regs as $key => $value) 
@@ -31,7 +30,7 @@ class DocentesController extends AppController
     }
     catch (\Throwable $th) 
     {
-        OdaFlash::error($th);
+        OdaFlash::error($th, true);
     }
   }
 
@@ -41,11 +40,11 @@ class DocentesController extends AppController
     try 
     {
       $this->page_action = 'Registros del Grupo';
-      $this->data = range($this->_annio_actual, 2021, -1);
+      $this->data = range($this->_annio_actual, $this->_annio_inicial, -1);
     } 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select('registros/dg_registros_consoli');
   }  
@@ -60,7 +59,7 @@ class DocentesController extends AppController
     } 
     catch (\Throwable $th) 
     {
-      OdaFlash::error($th);
+      OdaFlash::error($th, true);
     }
     View::select('seguimientos/dg_seguimientos_consoli');
   }

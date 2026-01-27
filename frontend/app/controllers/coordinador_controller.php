@@ -93,7 +93,7 @@ class CoordinadorController extends AppController
     $this->page_action = 'Listado de Estudiantes Activos';
     $this->arrData['Salones'] = (array)(new Salon)->getList(estado: 1);
     if (19==$this->user_id) 
-    { // solo LIZBETH (mejorar)
+    { // TODO solo LIZBETH (mejorar)
       $this->data = (new Estudiante)->getListPorCoordinador($this->user_id);
     }
     else
@@ -107,8 +107,7 @@ class CoordinadorController extends AppController
   public function gestion_registros() 
   {
     $this->page_action = 'Gesti&oacute;n Registros';
-    // Mejora: Parametrizar año inicial 
-    $this->annios = range($this->_annio_actual, 2021, -1);
+    $this->annios = range($this->_annio_actual, $this->_annio_inicial, -1);
     View::select('registros/index');
   }
 
@@ -118,7 +117,7 @@ class CoordinadorController extends AppController
     try 
     {
       $this->page_action = 'Consolidado de Notas';
-      $this->data = (new Salon())->getByCoordinador(Session::get('id'));
+      $this->data = (new Salon())->getByCoordinador($this->user_id);
     } 
     catch (\Throwable $th) 
     {
@@ -141,7 +140,7 @@ class CoordinadorController extends AppController
     try 
     {
       $this->page_action = 'Hist&oacute;rico de Notas';
-      $this->data = range($this->_annio_actual, $this->_annio_inicial, -1);
+      $this->data = range($this->_annio_matricula-1, $this->_annio_inicial, -1);
     } 
     catch (\Throwable $th) 
     {
@@ -158,7 +157,7 @@ class CoordinadorController extends AppController
   {
     $this->page_action = 'Cambiar de Salón a Estudiante';
     $Estud = (new Estudiante)::first("SELECT * FROM sweb_estudiantes WHERE id=?", [$estudiante_id]);
-    if ( $Estud->setCambiarSalon((int)$salon_id, $cambiar_en_notas) ) 
+    if ( $Estud->setCambiarSalon($salon_id, $cambiar_en_notas) ) 
     {
       OdaFlash::valid("$this->page_action: $Estud]");
     } 

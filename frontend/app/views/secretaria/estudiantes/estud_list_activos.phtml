@@ -8,9 +8,7 @@
    
    <?php 
    try {
-
-      $ico_man = '<i class="fa-solid fa-person w3-large"></i>';
-      $ico_woman = '<i class="fa-solid fa-person-dress w3-large"></i>';
+      $ico_email = '<i class="fa-solid fa-envelope w3-large"></i>';
       $tabla = new OdaTable(theme: $theme, showTotalRegs: true);
       $tabla->setHead(
          data_head:    ['Actions', 'Estudiante', 'Cambiar Salon'], 
@@ -21,17 +19,22 @@
       $arrMatriculas = [];
       $tot_estudiantes = 0;
       $tot_matriculados = 0;
-      foreach($data as $key => $Estud) {
+      foreach($data as $key => $Estud)
+      {
         $tot_estudiantes += 1;
-        $lnk_gen_num_mat = '<br>'.OdaTags::tag('span', "Matrícula #{$Estud->numero_mat_f()}", 'class="w3-tag"');
-        if ( empty($Estud->numero_mat) ) {
-          $lnk_gen_num_mat = '<br>'.OdaTags::linkButton(
-            action: "admin/estudiantes/generarNumeroMatricula/{$Estud->id}", 
-            text: 'Generar Número Matricula', 
-            attrs: 'class="w3-button w3-green"',
-          );
-        } else {
-          if (isset($arrMatriculas[$Estud->grado_promovido])) {
+        $lnk_gen_num_mat = '';
+        if ( empty($Estud->numero_mat) ) 
+        {
+          if ($_show_matricula)
+          {
+            $lnk_gen_num_mat = '<br>'.$Estud->getLnkGenerarNumeroMatricula();
+          }
+        }
+        else 
+        {
+          $lnk_gen_num_mat = '<br>'.OdaTags::tag('span', "Matricula #{$Estud->numero_mat_f()}", 'class="w3-tag"');
+          if (isset($arrMatriculas[$Estud->grado_promovido])) 
+          {
             $arrMatriculas[$Estud->grado_promovido] += 1;
           }
           else
@@ -49,7 +52,7 @@
                 .$Estud->getLnkRetirar(RetiroEstudiante::Graduacion);
 
         $col2 = "Grado: $Estud->grado_nombre [$Estud->salon_nombre] <br>" 
-                 ."<h3>{$Estud->getLnkEditPage($Estud)} {$Estud->isNuevoIco()}</h3>"
+                 ."<h3>{$Estud->getLnkEditPage($Estud->getNombre())} {$Estud->isNuevoIco()}</h3>"
                  ."{$Estud->getPagoPension()} {$Estud->getlnkSetPonerAldia()} <br> 
                    {$Estud->getDebePreicfes()} - {$Estud->getDebeAlmuerzos()} <br>"
                  .$Estud->getlnkSetMesPagosTodos().'<br>'
@@ -58,20 +61,22 @@
         
         $col3  = 
                 '<div clasas="w3-panel w3-teal">'.$lnk_gen_num_mat.'<br>'
-                .$Estud->getEstadoMat()->label_ico().'<hr>'
-
-                .$ico_woman. (($Estud->madre) ? "$Estud->madre<br>" : '')
-                .(($Estud->madre_email) ? "$Estud->madre_email<br>" : '')
-                .(($Estud->madre_id) ? "$Estud->madre_id<br>" : '<br>')
-                .OdaUtils::linkWhatsApp(telefono: (string)$Estud->madre_tel_1)
-                .OdaUtils::linkTelefono(telefono: (string)$Estud->madre_tel_1, show_tel:true).'<hr>'
-
-                .$ico_man .(($Estud->padre) ? "$Estud->padre<br>" : '')
-                .(($Estud->padre_email) ? "$Estud->padre_email<br>" : '')
-                .(($Estud->padre_id) ? "$Estud->padre_id<br>" : '<br>')
-                .OdaUtils::linkWhatsApp(telefono: (string)$Estud->padre_tel_1)
-                .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true).'<hr>'
-                .'Cambiar de Salón  '.$Estud->getSalonesCambiar('secretaria').'<br>';
+                .$Estud->getEstadoMat()->label_ico().'<br>'
+                .'<small>'.$Estud->getEstadoMat()->comments().'</small><hr>'
+                .'<br>'
+                .(($Estud->madre) ? "$Estud->madre<br>" : '')
+                .(($Estud->madre_email) ? "$ico_email $Estud->madre_email<br>" : '')
+                .(($Estud->madre_id) ? "C.C. $Estud->madre_id<br>" : '')
+                .($Estud->madre_tel_1 ? OdaUtils::linkTelefono(telefono: (string)$Estud->madre_tel_1, show_tel:true) : '' )
+                .($Estud->madre_tel_1 ? OdaUtils::linkWA(telefono: (string)$Estud->madre_tel_1) : '')
+                .'<br><br>'
+                .(($Estud->padre) ? "$Estud->padre<br>" : '')
+                .(($Estud->padre_email) ? "$ico_email $Estud->padre_email<br>" : '')
+                .(($Estud->padre_id) ? "C.C. $Estud->padre_id<br>" : '')
+                .OdaUtils::linkTelefono(telefono: (string)$Estud->padre_tel_1, show_tel:true)
+                .OdaUtils::linkWA(telefono: (string)$Estud->padre_tel_1)
+                .'<br><br>'
+                .'Cambiar de Salon  '.$Estud->getSalonesCambiar('secretaria').'<br>';
 
          $data=[$col1, $col2, $col3];
          $tabla->addRow(
@@ -86,7 +91,7 @@
       }
 
       $bloque_matriculas = '';
-      if ($show_matricula) {
+      if ($_show_matricula) {
         $arrGrados = Grado::getGradosArray();
         $resultados_mat = '';
         foreach ($arrMatriculas as $key => $value) {
@@ -94,22 +99,11 @@
         }
         $tot_sin_matricula = $tot_estudiantes-$tot_matriculados;
   
-  
-        $lnk_listado_mat = OdaTags::linkButton(
-          action: "admin/estudiantes/exportListMatriculadosPdf", 
-          text: 'Matriculados PDF', 
-          attrs: 'class="w3-button w3-green" target="_blank"'
-        );
-  
-        $lnk_listado_pendientes_mat = OdaTags::linkButton(
-          action: "admin/estudiantes/exportListPendientesMatriculaPdf", 
-          text: 'Pendientes x Matricular PDF', 
-          attrs: 'class="w3-button w3-blue" target="_blank"'
-        );
+        $lnk_listado_mat = $Estud->getLnkListMatriculadosPdf($tot_matriculados);
+        $lnk_listado_pendientes_mat = $Estud->getLnkListPendientesMatriculaPdf($tot_sin_matricula);
 
         $bloque_matriculas = "<div class=\"w3-row\">
         <div class=\"w3-padding w3-bar\">
-          <h3>Matriculados [$tot_matriculados] / Faltan {$tot_sin_matricula}</h3>
           $resultados_mat
         </div>
         <p>$lnk_listado_mat $lnk_listado_pendientes_mat<p>

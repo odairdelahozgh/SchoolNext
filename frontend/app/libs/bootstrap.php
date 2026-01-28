@@ -6,9 +6,19 @@
 const VENDOR_PATH = APP_PATH.'../vendor/' ;
 const HELPERS_PATH = APP_PATH.'extensions/helpers/' ;
 
-//const ABS_PUBLIC_PATH  = '/home/u113041793/domains/colegiomixtosantarosa.com/public_html/_schoolnext_website';  // SANTAROSA
-//const ABS_PUBLIC_PATH = '/home/tecnoro1/schoolnext.tecnorobotica.com';  // WINDSOR
-const ABS_PUBLIC_PATH = 'D:\schoolnext\frontend\public'; // LOCAL
+if ('windsor' === INSTITUTION_KEY) {
+  define('ABS_PUBLIC_PATH', '/home/windsor1/schoolnext.windsorschool.edu.co');
+} 
+else 
+{
+  if ('santarosa' === INSTITUTION_KEY) {
+    define('ABS_PUBLIC_PATH', '/home/u113041793/domains/colegiomixtosantarosa.com/public_html/_schoolnext_santarosa');
+  }
+  else
+  {
+    define('ABS_PUBLIC_PATH', 'D:\schoolnext\frontend\public');
+  }
+}
 
 const LOGO = 'logo_'.INSTITUTION_KEY.'.png';
 const LOGO_BRAND = 'logo_brand_'.INSTITUTION_KEY.'.png';

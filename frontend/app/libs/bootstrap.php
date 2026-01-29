@@ -2,6 +2,8 @@
 // Bootstrap de la aplicacion para personalizarlo
 // Para cargar cambia en public/index.php el require del bootstrap a app
 // Arranca KumbiaPHP
+const INSTITUTION_KEY = "windsor";
+const APP_NAME= "SchoolNEXT>>";
 
 const VENDOR_PATH = APP_PATH.'../vendor/' ;
 const HELPERS_PATH = APP_PATH.'extensions/helpers/' ;

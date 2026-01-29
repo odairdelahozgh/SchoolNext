@@ -27,6 +27,7 @@ class TestController extends AppController
     ];
   }
 
+  
   public function api_dolibarr()
   {
     try {
@@ -60,8 +61,8 @@ class TestController extends AppController
       $this->arrData = [
         'title' => 'Test API Dolibarr',
         'content' => 'Probando conexion con API Dolibarr',
-        'apiUrl' => 'https://backendnext.windsorschool.edu.co/api/index.php',
-        'apiKey' => 'HTVd6TM2jl2w3v79EKclAjO07wo26CNb',
+        'apiUrl' => Config::get('dolibarr.'.$this->_instituto_id.'.api_url'),
+        'apiKey' => Config::get('dolibarr.'.$this->_instituto_id.'.api_key'),
         'endpoint' => 
           [
             'name' => $endpoint_name,
@@ -74,8 +75,10 @@ class TestController extends AppController
       $apiClient = new ApiClient(apiUrl: $this->arrData['apiUrl'], apiToken: $this->arrData['apiKey'] );
       $this->data = $apiClient->get(endpoint: $this->arrData['endpoint']['url']);
       
-    } catch (\Throwable $th) {
-      OdaFlash::error($th);
+    } 
+    catch (\Throwable $th) 
+    {
+      OdaFlash::error($th, true);
     }
   }
   

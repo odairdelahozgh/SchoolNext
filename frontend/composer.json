@@ -1,4 +1,6 @@
 {
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "mpdf/mpdf": "^8.1",
         "tedivm/jshrink": "~1.0",

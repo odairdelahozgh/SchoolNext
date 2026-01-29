@@ -3,7 +3,7 @@
 return [
   'windsor' => [
     'prefijo_bd' => 'llx_',
-    'api_url' => 'https://backendnext.tecnorobotica.com/api/index.php',
+    'api_url' => 'https://backendnext.windsorschool.edu.co/api/index.php',
     'api_key' => 'HTVd6TM2jl2w3v79EKclAjO07wo26CNb',
   ],
   

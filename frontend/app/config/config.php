@@ -8,7 +8,6 @@
 $year = date('Y');
 
 $DoliK = new DoliConst();
-define('INSTITUTION_KEY',   $DoliK->getValue('SCHOOLNEXTCORE_INSTITUTO_KEY' ?? ''));
 define('INSTITUTION_NAME',  $DoliK->getValue('MAIN_INFO_SOCIETE_NOM' ?? ''));
 define('INSTITUTION_MAIL', $DoliK->getValue('MAIN_INFO_SOCIETE_MAIL' ?? ''));
 define('INSTITUTION_FRM_ADMISIONES', $DoliK->getValue('SCHOOLNEXTADMISIONES_FORMULARIO') ?? 'formsencillo');
@@ -52,7 +51,7 @@ define('PERIODO_PAPOYO_CERRAR', $PeriodoActual->planes_apoyo_cerrar ?? '');
 return [
     'application' => [
         'production' => false,
-        'database' => 'windsor',
+        'database' => INSTITUTION_KEY,
         'dbdate' => 'YYYY-MM-DD',
         'debug' => 'On',
         'log_exceptions' => 'On', //log_exceptions: muestra las excepciones en pantalla (On/off)
@@ -89,40 +88,6 @@ return [
       'whatsapp'  => '+573017153066',
       'email'     => 'contacto@construxzionsoft.com.co',
       'app_description'  => 'SchoolNext>> Es una Aplicación Web Moderna para la Gestión de Instituciones Educativas de Colombia',
-    ],
-
-    // esto se va a eliminar
-    'institution' => [
-      'nombre'  => 'Windsor School',
-      'razon_social'  => 'Windsor Group SAS',
-      'id_name' => 'windsor',
-      'nit' => '900329420',
-      'cod_dane'  => '320001068151',
-      'resolucion'  => '293, Nov 4 de 2011',
-
-      'slogan'  => 'Brilliant minds for a challenging world',
-      'campania'  => 'No esperemos que el mundo cambie. Primero hagámoslo nosotros.',
-      'logo'  => 'logo.png',
-      'logo_resolucion' => 'logo.png',
-      
-      'ciudad' => 'Valledupar',
-      'direccion' => 'Kilometro 2.5 via Rio Seco - Valledupar, Cesar',
-      'telefono_fijo' => '(+601) 794-4484',
-      'telefono_movil'  => '(+57) 317 370 4197',
-      'email' => 'windsorschoolvalledupar@gmail.com',
-      'dominio' => 'windsorschool.edu.co',
-      
-      'rector'          => 'Miriam Casadiego Ríos',
-      'rector_cc'       => '57401865',
-      
-      'rep_legal'       => 'Yani Calderón Sarmiento',
-      'rep_legal_cc'    => '',
-      
-      'secretaria'      => 'Yuleinis Manjarres Gil',
-      'secretaria_cc'   => '1065579951',
-      
-      'contador'        => 'Mary Monachello',
-      'contador_cc'     => '',
     ],
 
 ];

@@ -29,7 +29,6 @@ class EnfermeriaController extends AppController
   {
     $this->page_action = 'Estudiantes Activos';
     $this->data= (new Estudiante)->getList();
-    View::template('list_details');
   }
 
 

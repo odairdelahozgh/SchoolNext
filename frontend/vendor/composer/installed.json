@@ -58,17 +58,17 @@
         },
         {
             "name": "mpdf/mpdf",
-            "version": "v8.2.6",
-            "version_normalized": "8.2.6.0",
+            "version": "v8.2.7",
+            "version_normalized": "8.2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpdf/mpdf.git",
-                "reference": "dd30e3b01061cf8dfe65e7041ab4cc46d8ebdd44"
+                "reference": "b59670a09498689c33ce639bac8f5ba26721dab3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/dd30e3b01061cf8dfe65e7041ab4cc46d8ebdd44",
-                "reference": "dd30e3b01061cf8dfe65e7041ab4cc46d8ebdd44",
+                "url": "https://api.github.com/repos/mpdf/mpdf/zipball/b59670a09498689c33ce639bac8f5ba26721dab3",
+                "reference": "b59670a09498689c33ce639bac8f5ba26721dab3",
                 "shasum": ""
             },
             "require": {
@@ -95,7 +95,7 @@
                 "ext-xml": "Needed mainly for SVG manipulation",
                 "ext-zlib": "Needed for compression of embedded resources, such as fonts"
             },
-            "time": "2025-08-18T08:51:51+00:00",
+            "time": "2025-12-01T10:18:02+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -322,7 +322,7 @@
             "time": "2026-01-22T18:37:10+00:00",
             "default-branch": true,
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "AdminLTE\\": "./"
@@ -578,17 +578,17 @@
         },
         {
             "name": "shuchkin/simplexlsx",
-            "version": "1.1.14",
-            "version_normalized": "1.1.14.0",
+            "version": "1.1.16",
+            "version_normalized": "1.1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shuchkin/simplexlsx.git",
-                "reference": "00006719a4d5df6426fa86c6586a5804941e8c38"
+                "reference": "892d449f29d8071e74d9fba00dff832d2627662c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shuchkin/simplexlsx/zipball/00006719a4d5df6426fa86c6586a5804941e8c38",
-                "reference": "00006719a4d5df6426fa86c6586a5804941e8c38",
+                "url": "https://api.github.com/repos/shuchkin/simplexlsx/zipball/892d449f29d8071e74d9fba00dff832d2627662c",
+                "reference": "892d449f29d8071e74d9fba00dff832d2627662c",
                 "shasum": ""
             },
             "require": {
@@ -598,7 +598,7 @@
                 "ext-zlib": "*",
                 "php": ">=5.5"
             },
-            "time": "2025-05-21T14:34:33+00:00",
+            "time": "2025-12-04T22:19:47+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -629,23 +629,23 @@
             ],
             "support": {
                 "issues": "https://github.com/shuchkin/simplexlsx/issues",
-                "source": "https://github.com/shuchkin/simplexlsx/tree/1.1.14"
+                "source": "https://github.com/shuchkin/simplexlsx/tree/1.1.16"
             },
             "install-path": "../shuchkin/simplexlsx"
         },
         {
             "name": "tedivm/jshrink",
-            "version": "v1.8.0",
-            "version_normalized": "1.8.0.0",
+            "version": "v1.8.1",
+            "version_normalized": "1.8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tedious/JShrink.git",
-                "reference": "29ee510d684c22060040f4260a527206eb8199f1"
+                "reference": "f76454d4c48ddae6354a2f0eeb16633d4e755c9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tedious/JShrink/zipball/29ee510d684c22060040f4260a527206eb8199f1",
-                "reference": "29ee510d684c22060040f4260a527206eb8199f1",
+                "url": "https://api.github.com/repos/tedious/JShrink/zipball/f76454d4c48ddae6354a2f0eeb16633d4e755c9a",
+                "reference": "f76454d4c48ddae6354a2f0eeb16633d4e755c9a",
                 "shasum": ""
             },
             "require": {
@@ -656,7 +656,7 @@
                 "php-coveralls/php-coveralls": "^2.5.0",
                 "phpunit/phpunit": "^9|^10"
             },
-            "time": "2025-07-28T17:09:23+00:00",
+            "time": "2025-11-20T14:34:30+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -682,7 +682,7 @@
             ],
             "support": {
                 "issues": "https://github.com/tedious/JShrink/issues",
-                "source": "https://github.com/tedious/JShrink/tree/v1.8.0"
+                "source": "https://github.com/tedious/JShrink/tree/v1.8.1"
             },
             "funding": [
                 {

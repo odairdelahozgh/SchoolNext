@@ -622,12 +622,12 @@ class SimpleXLSXEx
 
         return $r;
     }
-    public function getColorValue(SimpleXMLElement $a = null, $default = '')
+    public function getColorValue($a)
     {
-        if ($a === null) {
-            return $default;
+        if (!($a instanceof SimpleXMLElement)) {
+            return '';
         }
-        $c = $default; // auto
+        $c = '';
         if ($a['rgb'] !== null && preg_match('/^[A-F0-9]{8}$/', (string) $a['rgb'])) {
             $c = substr((string) $a['rgb'], 2, 6); // FFCCBBAA -> CCBBAA
         } elseif ($a['indexed'] !== null && isset(static::$IC[ (int) $a['indexed'] ])) {

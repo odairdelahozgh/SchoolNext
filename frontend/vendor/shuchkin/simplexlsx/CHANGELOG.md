@@ -1,5 +1,11 @@
 # Changelog
 
+# 1.1.16 (2025-12-05)
+* Updated [c-rex SpreadsheetML Reference](https://c-rex.net/samples/ooxml/e1/Part4/OOXML_P4_DOCX_SpreadsheetML_topic_ID0EBC63.html) links
+
+# 1.1.15 (2025-12-04)
+* SimpleXLSXEx::getColorValue PHP 8.4 nullable capability
+
 # 1.1.14 (2025-05-21)
 * fixed hidden cols/rows
 

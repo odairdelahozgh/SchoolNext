@@ -39,7 +39,7 @@ class PadresController extends AppController
     try 
     {
       $this->page_action = 'Estudiantes a Cargo';
-      $this->arrData['periodo'] = Session::get('periodo');
+      $this->arrData['periodo'] = $this->_periodo_actual;
       //$user_id = (1!=$this->user_id) ? $this->user_id : 22482 ; // simular un usuario de padres
       $this->data = (new Estudiante)->getListPadresRetirados($this->user_id);
     } 

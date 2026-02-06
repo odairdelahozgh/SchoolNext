@@ -82,19 +82,19 @@ return [
     
 
     'development' => [
-      'periodo_max' => 4,
-      'app_externa' => 'moodle',
-      'id'      => 'santarosa',
-      'nombre'       => 'Colegio Mixto Santa Rosa',
-      'razon_social' => 'Colegio Mixto Santa Rosa',
+      'periodo_max'  => 4,
+      'app_externa'  => 'moodle',
+      'id'           => 'development',
+      'nombre'       => 'Development Institution',
+      'razon_social' => 'Development Institution',
       'nit'          => '',
       'cod_dane'     => '',
       'resolucion'   => '',
 
       'slogan'          => '',
       'campania'        => '',
-      'logo'            => 'logo_santarosa.png',
-      'logo_resolucion' => 'logo_brand_santarosa.png',
+      'logo'            => 'logo_development.png',
+      'logo_resolucion' => 'logo_brand_development.png',
       
       'ciudad' => 'Valledupar',
       'direccion' => '',
@@ -104,13 +104,13 @@ return [
       'dominio' => 'colegiomixtosantarosa.com',
       //'website' => 'https://www.colegiomixtosantarosa.com',
       
-      'rector'          => 'Luz Aida Remicio',
+      'rector'          => 'Rector De Prueba',
       'rector_cc'       => '',
       
-      'rep_legal'       => 'Luz Aida Remicio',
+      'rep_legal'       => 'Rep. Legal De Prueba',
       'rep_legal_cc'    => '',
       
-      'secretaria'      => 'Jahni Delgado',
+      'secretaria'      => 'Secretaria De Prueba',
       'secretaria_cc'   => '',
       
       'contador'        => '',
